@@ -9,3 +9,6 @@
 ^README\.html$
 ^_packageSetup\.R$
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
