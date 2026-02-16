@@ -1,0 +1,5 @@
+url: https://ptompalski.github.io/CanadaForestAllometry/
+destination: "docs"
+template:
+  bootstrap: 5
+
