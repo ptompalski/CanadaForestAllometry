@@ -45,6 +45,7 @@ Imports:
 RoxygenNote: 7.3.3
 Suggests: 
     quarto,
+    ggplot2,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://ptompalski.github.io/CanadaForestAllometry/
