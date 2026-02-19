@@ -35,54 +35,19 @@ knitr::opts_chunk$set(
 
 `CanadaForestAllometry` is an R package that brings together a collection of published allometric models developed for Canadian forests. The package provides a unified interface to estimate a range of tree- and stand-level attributes, based on models published in the Canadian forestry literature. The focus of `CanadaForestAllometry` is on standardization: models are implemented as faithfully as possible to their original formulations, with transparent parameter tables, consistent inputs/outputs, and jurisdiction-appropriate assumptions (e.g. merchantability rules).
 
-`CanadaForestAllometry` currently includes allometric models to:
+## Online documentation
 
-- Estimate tree-level volume (total and merchantable)
-- Estimate aboveground biomass (AGB)
-- Convert volume to biomass
-- Convert total volume to merchantable volume
-- Apply simple growth models to estimate changes in attributes over time
-
-
+Full documentation is available at https://ptompalski.github.io/CanadaForestAllometry/
 
 ## Included models
 
-### Aboveground biomass
-- `agb_lambert_ung()` -  Canadian national tree aboveground biomass equations (Lambert et al. 2005, Ung et al. 2008).
+`CanadaForestAllometry` currently includes allometric models to:
 
-Example:
-
-```{r, echo=T, warning=F, message=F}
- trees <- tibble::tibble(
-  tree_id = 1:4,
-  DBH = c(22, 30, 18, 35),
-  height = c(18, 24, NA, 27),
-  species = c("PICE.GLA", "PICE.GLA", "ABIE.BAL", "PINU.BAN")
- )
-
-trees |>
-  dplyr::mutate(
-    agb = agb_lambert_ung(
-      DBH = DBH,
-      height = height,
-      species = species,
-      keep_model_id = TRUE
-    )
-  ) |>
-  unnest(agb)
-```
-
-
-### National volume-to-biomass conversions models
-
-Implementation of the national volume-to-biomass conversion models (Boudewyn et al. 2007), using the updated model parameters available at https://nfi.nfis.org/en/biomass_models. 
-
-- `v2b()` - converts merchantable volume to biomass components
-- `vol_total_to_merchantable()` - converts total volume to merchantable volume
-- `agb_component_proportions()` - calculates component proportions (stemwood, bark, branches, foliage) using either merchantable volume or total aboveground biomass as input
-
-### Other
-- National growth and yield model (H, BA, V) (Ung et al. 2009)
+- Estimate tree-level volume (total and merchantable). Read more: [Tree volume models](https://ptompalski.github.io/CanadaForestAllometry/articles/Tree-Volume-Models.html)
+- Estimate aboveground biomass (AGB). Read more: [Aboveground biomass models](https://ptompalski.github.io/CanadaForestAllometry/articles/Tree-Aboveground-Biomass-Models.html)
+- Convert volume to biomass. Read more: [National volume-to-biomass conversions models](https://ptompalski.github.io/CanadaForestAllometry/articles/Volume-to-biomass.html)
+- Convert total volume to merchantable volume
+- Apply simple growth models to estimate changes in attributes over time
 
 
 ## Installation 
@@ -102,41 +67,3 @@ This package is licensed under the GNU Lesser General Public License (LGPL-3.0).
 
 See the `LICENSE` file for full license terms.
 
-## References 
-
-Boudewyn, P.A.; Song, X.; Magnussen, S.; Gillis, M.D. (2007). Model-based, volume-to-biomass conversion for forested and vegetated land in Canada. Natural Resources Canada, Canadian Forest Service, Pacific Forestry Centre, Victoria, BC. Information Report BC-X-411. 112 p.
-
-Fortin, M., DeBlois, J., Bernier, S., Blais, G., 2007. Mise au point d’un tarif de cubage général pour les forêts québécoises : une approche pour mieux évaluer l’incertitude associée aux prévisions. The Forestry Chronicle 83, 754–765. https://doi.org/10.5558/tfc83754-5
-
-
-Gal, J., & Bella, I.E. (1994). New stem taper functions for 12 Saskatchewan timber species. Natural Resources Canada, Canadian Forest Service, Northwest Region, Information Report NOR-X-338. Table 5.
-
-Honer, T.G. (1967). Standard volume tables and merchantable conversion actors. Canadian Forest Service Information Report N-X-67.
-
-Honer, T.G.; Ker, M.F.; Alemdag, I.S. 1983. Metric timber tables for the commercial tree species of central and eastern Canada. Environ. Can., Can. For. Serv., Maritimes For. Res. Cent., Fredericton, NB. Inf. Rep. M-X-140. https://ostrnrcan-dostrncan.canada.ca/handle/1845/239814
-
-Huang, S. (1994). Ecologically Based Individual Tree Volume Estimation for Major Alberta Tree Species. Report 1 - Individual tree volume estimation procedures for Alberta: Methods of Formulation and Statistical Foundations. Alberta Environmental Protection, Land and Forest Service, Forest Management Division, Edmonton, AB.
-
-Ker, M.F. 1974. Metric Tree Volume Tables for Newfoundland. Newfoundland Forest Research Centre, St. Johns, NF. Information Report N-X-122. https://ostrnrcan-dostrncan.canada.ca/handle/1845/238893
-
-Kozak, A. (1988). A variable-exponent taper equation. Canadian Journal of Forest Research, 18, 1363–1368
-
-Kozak, A. (1994). Development of Taper Equations by BEC Zones and Species. Province of British Columbia, Ministry of Forests (report).
-
-Klos, R. J., Wang, G. G., Dang, Q.-L., & East, E. W. (2007). Taper equations for five major commercial tree species in Manitoba, Canada. Western Journal of Applied Forestry, 22(3), 163–170.
-
-Lambert, M. C., Ung, C. H., & Raulier, F. (2005). Canadian national tree aboveground biomass equations. Canadian Journal of Forest Research, 35(8), 1996–2018. https://doi.org/10.1139/x05-112
-
-Nigh, G.D., 2016. Total and merchantable volume equations for common tree species in British Columbia: by region and biogeoclimactic zone (No. Prov. B.C., Victoria, B.C. Tech. Rep. 106.).
-
-Sharma, M. (2021). Total and Merchantable Volume Equations for 25 Commercial Tree Species Grown in Canada and the Northeastern United States. Forests, 12, 1270.
-
-Ung, C.H., Bernier, P., & Guo, X.-J. (2008). Canadian national biomass equations: new parameter estimates that include British Columbia data. Canadian Journal of Forest Research, 38(5), 1123–1132. https://doi.org/10.1139/X07-224
- 
-Ung, C.H., Bernier, P.Y., Guo, X.J., Lambert, M.-C., 2009. A simple growth and yield model for assessing changes in standing volume across Canada’s forests. The Forestry Chronicle 85, 57–64. https://doi.org/10.5558/tfc85057-1
-
-Ung, C.H., Guo, X.J., Fortin, M., 2013. Canadian national taper models. Forestry Chronicle 89, 211–224. https://doi.org/10.5558/tfc2013-040
-
-Warren, G.R. & Meades, J.P. (1986). Wood defect and density studies II: Total and net volume equations for Newfoundland’s forest management units. Canadian Forest Service Information Report N-X-242.
-
-Zakrzewski, W.T., Penner, M., 2013. A comparison of tree stem taper models for use in Ontario. Ontario Forest Research Institute, Report 176.

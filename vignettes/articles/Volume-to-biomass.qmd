@@ -1,0 +1,30 @@
+---
+title: "National volume-to-biomass conversions models"
+bibliography: ../../REFERENCES.bib
+csl: ../../isprs-journal-of-photogrammetry-and-remote-sensing.csl
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+library(CanadaForestAllometry)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(ggplot2)
+```
+
+
+The `CanadaForestAllometry` package implements the national volume-to-biomass conversion models developed by @Boudewyn2007, which allow to translate between merchantable stem volume and aboveground biomass components. These models were designed to enable consistent large-scale biomass estimation in situations where inventory systems report volume rather than directly measured biomass. The @Boudewyn2007 approach combines species- and ecozone-specific conversion factors with empirically derived component allocation equations to estimate stemwood, bark, branches, and foliage biomass from merchantable volume. The functions use the updated model parameters available at https://nfi.nfis.org/en/biomass_models. 
+
+- `v2b()` - converts merchantable volume to biomass components
+- `vol_total_to_merchantable()` - converts total volume to merchantable volume
+- `agb_component_proportions()` - calculates component proportions (stemwood, bark, branches, foliage) using either merchantable volume or total aboveground biomass as input
+
+# References

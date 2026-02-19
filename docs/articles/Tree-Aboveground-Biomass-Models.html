@@ -37,6 +37,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -91,7 +92,7 @@
 <span>      keep_model_id <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">unnest</span><span class="op">(</span><span class="va">agb</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/tidyr/man/unnest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">agb</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 12</span></span>
 <span><span class="co">#&gt;   tree_id   DBH height species  Bwood Bbark Bstem Bfoliage Bbranches Bcrown</span></span>
 <span><span class="co">#&gt;     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;</span></span>
