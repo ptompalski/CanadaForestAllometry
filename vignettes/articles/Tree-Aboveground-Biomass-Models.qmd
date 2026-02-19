@@ -1,0 +1,54 @@
+---
+title: "Tree Aboveground Biomass Models"
+bibliography: ../../REFERENCES.bib
+csl: ../../isprs-journal-of-photogrammetry-and-remote-sensing.csl
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+library(CanadaForestAllometry)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(ggplot2)
+```
+
+The `CanadaForestAllometry` package implements the national aboveground biomass (AGB) equations originally developed by @Lambert2005 and subsequently revised by @Ung2008. The revision by @Ung2008 incorporated previously unavailable British Columbia data, expanding species coverage and updating parameter estimates while preserving the original additive modelling framework.
+
+These equations were derived from destructively sampled trees across Canada and estimate dry biomass for four aboveground components: stem wood, stem bark, branches, and foliage. Two model formulations were developed: one using DBH alone, and a second using DBH combined with total tree height.
+
+The `agb_lambert_ung()` function implements both equation systems within a single interface. When a valid height is supplied, the DBH–height formulation is used; otherwise, the DBH-only formulation is applied.
+
+
+
+## Example:
+
+```{r, echo=T, warning=F, message=F}
+ trees <- tibble::tibble(
+  tree_id = 1:4,
+  DBH = c(22, 30, 18, 35),
+  height = c(18, 24, NA, 27),
+  species = c("PICE.GLA", "PICE.GLA", "ABIE.BAL", "PINU.BAN")
+ )
+
+trees |>
+  dplyr::mutate(
+    agb = agb_lambert_ung(
+      DBH = DBH,
+      height = height,
+      species = species,
+      keep_model_id = TRUE
+    )
+  ) |>
+  unnest(agb)
+```
+
+
+# References

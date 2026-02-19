@@ -25,18 +25,18 @@ volume_model_registry <- function() {
     ),
 
     reference = c(
-      "Ung et al. 2013",
-      "Ung et al. 2013",
-      "Kozak 1994",
-      "Honer et al. 1983",
-      "Huang 1994",
-      "Zakrzewski & Penner 2013",
-      "Gal & Bella 1994",
-      "Klos et al. 2007",
-      "Sharma 2021",
-      "Fortin et al. 2007",
-      "Nigh 2016",
-      "Honer 1967; Ker 1974; Warren & Meades 1986"
+      "@Ung2013",
+      "@Ung2013",
+      "@Kozak1994",
+      "@Honer1983",
+      "@Huang1994",
+      "@Zakrzewski2013",
+      "@Gal1994",
+      "@Klos2007",
+      "@Sharma2021",
+      "@Fortin2007",
+      "@Nigh2016",
+      "@Honer1967; @Ker1974; @Warren1986"
     ),
 
     engine = c(

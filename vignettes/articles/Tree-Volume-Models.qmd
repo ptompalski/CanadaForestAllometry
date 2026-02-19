@@ -1,0 +1,339 @@
+---
+title: "Tree Volume Models"
+bibliography: ../../REFERENCES.bib
+csl: ../../isprs-journal-of-photogrammetry-and-remote-sensing.csl
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+library(CanadaForestAllometry)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(ggplot2)
+```
+
+
+# Tree volume models included in the package
+
+There are several individual tree volume allometric models designed for Canadian forests. Most were developed at the jurisdiction level and require DBH, height, and species as inputs.
+
+The package currently includes:
+
+```{r results = "asis", echo = FALSE}
+reg <- CanadaForestAllometry:::volume_model_registry_species()
+
+# ---- collapse registry to one row per engine ----
+reg_collapsed <- reg |>
+  dplyr::group_by(engine) |>
+  dplyr::summarise(
+    scope = dplyr::first(scope),
+    province_scope = list({
+      x <- sort(unique(unlist(province_scope)))
+      if (any(x == "ALL")) "ALL" else x
+    }),
+
+    # FIX: keep the actual description, not reference
+    description = paste(unique(description), collapse = "; "),
+
+    requires_ht_any = any(requires_ht),
+    requires_ht_all = all(requires_ht),
+
+    species = list(sort(unique(unlist(species)))),
+    n_species = length(species[[1]]),
+
+    reference = paste(unique(reference), collapse = "; "),
+    .groups = "drop"
+  )
+
+# ---- helpers ----
+fmt_geo <- function(scope, province_scope) {
+  if (length(province_scope) == 1 && identical(province_scope, "ALL")) {
+    "Canada (national)"
+  } else {
+    paste(province_scope, collapse = ", ")
+  }
+}
+
+fmt_inputs <- function(any_ht, all_ht) {
+  dplyr::case_when(
+    !any_ht ~ "DBH",
+    all_ht  ~ "DBH & height",
+    TRUE    ~ "DBH or DBH & height"
+  )
+}
+
+fmt_model_bullet_oneline <- function(
+  engine,
+  coverage,
+  # inputs,
+  n_species,
+  description,
+  reference
+) {
+  parts <- c(
+    paste0("`", engine, "()`"),
+    paste0(description),
+    paste0("Coverage: ", coverage),
+    # paste0("Inputs: ", inputs),
+    paste0(n_species, " species"),
+    paste0("", reference)
+  )
+
+  paste0("- ", paste(parts, collapse = ". "))
+}
+
+# ---- build bullets ----
+bullets <- reg_collapsed |>
+  dplyr::mutate(
+    Coverage = purrr::map2_chr(scope, province_scope, fmt_geo),
+    Inputs = fmt_inputs(requires_ht_any, requires_ht_all)
+  ) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    bullet = fmt_model_bullet_oneline(
+      engine,
+      Coverage,
+      # Inputs,
+      n_species,
+      description,
+      reference
+    )
+  ) |>
+  dplyr::ungroup()
+
+# ---- emit Markdown (important for README.Rmd) ----
+cat(paste(bullets$bullet, collapse = "\n"))
+
+
+```
+
+# `vol()`: automatic tree volume estimation across multiple models
+
+`vol()` is a convenience wrapper for estimating total and merchantable tree volume using the volume models implemented in `CanadaForestAllometry`. Rather than requiring users to select a specific model, `vol()` uses the internal model registry and automatically determines which models are applicable for each tree based on:
+
+- species availability in model parameter tables
+- geographic scope (province/jurisdiction)
+- required inputs (e.g. total height, subregion such as BEC zone)
+- model ranking (regional models preferred over national where available)
+
+Example:
+```{r, echo=T, warning=F, message=F}
+trees <- tibble::tibble(
+  DBH = c(18, 22, 30, 26, 20),
+  height = c(15, 18, 22, 20, 20),
+  species = c("PICE.MAR", "BETU.PAP", "POPU.TRE", "PSEU.MEN", "PINU.BAN"),
+  jurisdiction =  c("AB", "ON", "QC", "BC", "MB"),
+  subregion = c(NA, NA, NA, "CWH", "Boreal Plains")
+)
+
+trees |>
+  dplyr::mutate(
+    vol(
+      DBH = DBH,
+      height = height,
+      species = species,
+      jurisdiction = jurisdiction,
+      subregion = subregion,
+      keep_model_id = TRUE
+    )
+  )
+```
+
+
+# Merchantability criteria
+Merchantable volume in `CanadaForestAllometry` is defined using jurisdiction-specific merchantability rules, following the officially adopted criteria in each province or territory (e.g., minimum top diameter, minimum DBH, and stump height). For most models, these rules are applied dynamically based on the provided jurisdiction.
+
+Some volume models, however, have merchantability criteria fixed within the model formulation itself, reflecting how the original equations were developed and calibrated. In these cases (e.g., `vol_honer83()`, `vol_sharma2021()`, `vol_fortin2007()`, `vol_nigh2016()`), merchantable volume is computed using the model-specific, hard-coded criteria and does not vary by jurisdiction or species.
+
+The jurisdiction-specific merchantability criteria used by `CanadaForestAllometry` can be inspected in the built-in dataset `merchcrit`, which documents the values applied for each jurisdiction (and, where applicable, by species or subregion).
+
+
+
+# Comparing Tree Volume Models
+
+Tree stem volume is estimated in Canada using a variety of model families, ranging from national equations (e.g., @Ung2013) to province-specific taper and volume systems (e.g., @Kozak1994, @Huang1994, @Zakrzewski2013, @Sharma2021). These models differ in their functional form, calibration data, and jurisdictional scope.
+
+The `CanadaForestAllometry` package implements these models under a unified interface, allowing consistent input formatting and transparent model selection. However, different equations may yield systematically different predictions for the same tree dimensions. 
+
+The figure below shows total and merchantable volume calculated using all implemented models (x-axis) across species. It provides a quick overview of species coverage (i.e., which species are covered by each model) and highlights differences among model outputs, with tree DBH and height held constant for every calculation.
+
+```{r}
+#| label: volume by model and species
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 6
+#| fig-height: 9
+#| dpi: 300
+
+reg <- volume_model_registry() %>%
+    mutate(
+        subregion_required = if ("subregion_required" %in% names(.)) {
+            subregion_required
+        } else {
+            FALSE
+        },
+        subregion_arg = if ("subregion_arg" %in% names(.)) {
+            subregion_arg
+        } else {
+            NA_character_
+        }
+    )
+
+extract_species <- function(tbl) {
+    cand <- c("Species", "species", "species_code", "SPP", "sp", "spp")
+    nm <- cand[cand %in% names(tbl)][1]
+    if (is.na(nm)) {
+        return(character(0))
+    }
+    sort(unique(as.character(stats::na.omit(tbl[[nm]]))))
+}
+
+pick_subregion_for_species <- function(tbl, species_code) {
+    if (!"Subregion" %in% names(tbl)) {
+        return(NA_character_)
+    }
+
+    spp_col <- c("Species", "species", "species_code")[
+        c("Species", "species", "species_code") %in% names(tbl)
+    ][1]
+    if (!is.na(spp_col)) {
+        x <- tbl %>% filter(.data[[spp_col]] == species_code)
+        s <- unique(as.character(stats::na.omit(x$Subregion)))
+        if (length(s) > 0) return(s[[1]])
+    }
+
+    s <- unique(as.character(stats::na.omit(tbl$Subregion)))
+    if (length(s) == 0) NA_character_ else s[[1]]
+}
+
+pick_jurisdiction <- function(province_scope) {
+    if ("ALL" %in% province_scope) "ON" else as.character(province_scope[[1]])
+}
+
+run_one <- function(model_row, species_code) {
+    engine_name <- model_row$engine[[1]]
+    fn <- get(engine_name, mode = "function")
+
+    params_tbl <- CanadaForestAllometry:::get_params_tbl(model_row$params_key[[1]])
+    subr <- pick_subregion_for_species(params_tbl, species_code)
+    juris <- pick_jurisdiction(model_row$province_scope[[1]])
+
+    args <- list(
+        DBH = 20,
+        height = 20,
+        species = species_code,
+        jurisdiction = juris
+    )
+
+    # distinguish Ung DBH-only row
+    if (
+        identical(engine_name, "vol_ung2013") &&
+            !isTRUE(model_row$requires_ht[[1]])
+    ) {
+        args$height <- NULL
+    }
+
+    # pass model-specific subregion arg if available
+    if (!is.na(model_row$subregion_arg[[1]]) && !is.na(subr)) {
+        args[[model_row$subregion_arg[[1]]]] <- subr
+    }
+
+    # keep only args accepted by this engine
+    args <- args[intersect(names(args), names(formals(fn)))]
+
+    out <- tryCatch(
+        do.call(fn, args),
+        error = function(e) {
+            tibble::tibble(
+                vol_total = NA_real_,
+                vol_merchantable = NA_real_,
+                .error = conditionMessage(e)
+            )
+        }
+    )
+    out <- tibble::as_tibble(out)
+
+    tibble::tibble(
+        model_id = model_row$model_id[[1]],
+        engine = engine_name,
+        species_code = species_code,
+        jurisdiction = juris,
+        subregion_used = subr,
+        vol_total = if ("vol_total" %in% names(out)) {
+            out$vol_total[[1]]
+        } else {
+            NA_real_
+        },
+        vol_merchantable = if ("vol_merchantable" %in% names(out)) {
+            out$vol_merchantable[[1]]
+        } else {
+            NA_real_
+        },
+        error = if (".error" %in% names(out)) out$.error[[1]] else NA_character_
+    )
+}
+
+species_map <- reg %>%
+    mutate(
+        params_tbl = map(params_key, CanadaForestAllometry:::get_params_tbl),
+        species_vec = map(params_tbl, extract_species)
+    ) |>
+    select(-params_tbl) |>
+    unnest_longer(species_vec, values_to = "species_code")
+
+model_species_vol <- map_dfr(
+    seq_len(nrow(species_map)),
+    ~ run_one(species_map[.x, ], species_map$species_code[[.x]])
+)
+
+# table
+# model_species_vol
+
+plot_df <- model_species_vol %>%
+    select(model_id,engine, species_code, vol_total, vol_merchantable) %>%
+    mutate(engine = if_else(model_id=="national_ung_dbh", "vol_ung2013() (dbh)", engine)) %>%
+    mutate(engine = if_else(model_id=="national_ung_dbh_ht", "vol_ung2013() (dbh+ht)", engine)) %>%
+    pivot_longer(
+        cols = c(vol_total, vol_merchantable),
+        names_to = "volume_type",
+        values_to = "value"
+    ) %>%
+    mutate(
+        volume_type = factor(
+            volume_type,
+            levels = c("vol_total", "vol_merchantable"),
+            labels = c("Total volume", "Merchantable volume")
+        )
+    )
+
+ggplot(plot_df, aes(y = species_code, x = engine, fill = value)) +
+    geom_tile(color = "white", linewidth = 0.15) +
+    scale_fill_viridis_c(option = "C", na.value = "grey92") +
+    facet_wrap(~volume_type, nrow = 1) +
+    labs(
+        y = "Species code",
+        x = "Model",
+        fill = "Volume (m3)",
+        title = "Model outputs at DBH=20 cm, height=20 m"
+    ) +
+    theme_minimal(base_size = 10) +
+    theme(
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        panel.grid = element_blank()
+    ) +
+    scale_y_discrete(limits = rev) +
+    coord_equal()+
+    theme(legend.position="bottom")
+```
+
+
+# References
