@@ -32,7 +32,7 @@
 - All existing functions are available under the new package name.
 
 
-# CTAE 0.6.0
+# CanadaForestAllometry 0.6.0
 
 ## Boudewyn et al. (2007) volume-to-biomass refactor (`v2b()`)
 
@@ -71,7 +71,7 @@ Results from `v2b()` may differ from earlier implementations of the Boudewyn mod
 These differences arise because earlier code paths applied the Table 6 proportion equations directly, without enforcing the Table 7 bounds. The new implementation follows the documented model behavior more closely by applying these caps.
 
 
-# CTAE 0.5.2
+# CanadaForestAllometry 0.5.2
 
 ## Changes
 
@@ -87,12 +87,12 @@ These differences arise because earlier code paths applied the Table 6 proportio
 - The refactored implementation is vectorized and must be called on full vectors of inputs; row-wise usage (e.g., via `dplyr::rowwise()`) is no longer supported and may lead to incorrect results or poor performance.
 - The equation set used can be included explicitly via `keep_model_id = TRUE`, in which case `model_id` is  returned as the last column.
 
-# CTAE 0.5.1
+# CanadaForestAllometry 0.5.1
 
 - Changed package license from GPL to LGPL-3.
 - Added Nigh 2016 model for BC `vol_nigh2016`
 
-# CTAE 0.5.0
+# CanadaForestAllometry 0.5.0
 
 ## Major features
 

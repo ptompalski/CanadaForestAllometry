@@ -16,6 +16,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
+  </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -65,6 +71,79 @@
 <li>This is a naming change only</li>
 <li>All existing functions are available under the new package name.</li>
 </ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.0" id="canadaforestallometry-060">CanadaForestAllometry 0.6.0<a class="anchor" aria-label="anchor" href="#canadaforestallometry-060"></a></h2>
+<div class="section level3">
+<h3 id="boudewyn-et-al-volume-to-biomass-refactor-v2b-0-6-0">Boudewyn et al. (2007) volume-to-biomass refactor (<code>v2b()</code>)<a class="anchor" aria-label="anchor" href="#boudewyn-et-al-volume-to-biomass-refactor-v2b-0-6-0"></a></h3>
+<p>The Boudewyn et al. (2007) volume-to-biomass implementation has been fully refactored and standardized under a new high-level wrapper, <code><a href="../reference/v2b.html">v2b()</a></code>.</p>
+<p>This refactor preserves the original model structure (Tables 3–7) while improving correctness, transparency, and vectorization:</p>
+<ul><li>Model components are now modularized and vectorized, making the functions safe to use inside <code><a href="https://rdrr.io/pkg/dplyr/man/mutate.html" class="external-link">dplyr::mutate()</a></code> workflows.</li>
+<li>Parameter selection is stricter and more explicit, with clear errors when parameters are missing or non-unique.</li>
+<li>Volume-based biomass proportion models (Table 6) now explicitly apply the proportion bounds (“caps”) reported in Table 7, as described in Boudewyn et al. (2007), to prevent unrealistic proportions when extrapolating.</li>
+<li>Optional renormalization ensures capped proportions sum to 1.</li>
+<li>Warnings are issued when volumes fall outside the calibration range (<code>x_min</code> / <code>x_max</code>) reported in Table 7.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="boudewyn-et-al-total-volume-to-merchantable-volume-vol_total_to_merchantable-0-6-0">Boudewyn et al. (2007) total volume to merchantable volume (<code>vol_total_to_merchantable()</code>)<a class="anchor" aria-label="anchor" href="#boudewyn-et-al-total-volume-to-merchantable-volume-vol_total_to_merchantable-0-6-0"></a></h3>
+<p>New implementation of the Boudewyn et al. (2007) <em>total volume → merchantable volume</em> conversion based on Appendix 6 (Table 14).</p>
+<ul><li>Fully vectorized and safe for use inside <code><a href="https://rdrr.io/pkg/dplyr/man/mutate.html" class="external-link">dplyr::mutate()</a></code> + <code><a href="https://rdrr.io/pkg/tidyr/man/unnest.html" class="external-link">tidyr::unnest()</a></code>.</li>
+<li>Supports genus-level species matching using NFI species codes.</li>
+<li>Optional controls for:
+<ul><li>returning the predicted merchantable proportion (<code>include_prop = TRUE</code>);</li>
+<li>clamping predicted proportions to [0, 1];</li>
+<li>warning on extrapolation below the calibration minimum (<code>volmin</code>);</li>
+<li>clamping input volume to the calibration domain (<code>clamp_x = TRUE</code>).</li>
+</ul></li>
+</ul><p>This function is intended for workflows where total volume is available but merchantable volume is required, e.g. prior to applying Boudewyn volume-to-biomass conversions.</p>
+<p>Results may represent extrapolations when total volume falls below the calibration range reported in Boudewyn et al. (2007); warnings are issued by default in such cases.</p>
+<div class="section level5">
+<h5 id="important-note-on-numerical-differences-0-6-0">Important note on numerical differences<a class="anchor" aria-label="anchor" href="#important-note-on-numerical-differences-0-6-0"></a></h5>
+<p>Results from <code><a href="../reference/v2b.html">v2b()</a></code> may differ from earlier implementations of the Boudewyn models, particularly for high-volume stands.<br>
+These differences arise because earlier code paths applied the Table 6 proportion equations directly, without enforcing the Table 7 bounds. The new implementation follows the documented model behavior more closely by applying these caps.</p>
+</div>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.2" id="canadaforestallometry-052">CanadaForestAllometry 0.5.2<a class="anchor" aria-label="anchor" href="#canadaforestallometry-052"></a></h2>
+<div class="section level3">
+<h3 id="changes-0-5-2">Changes<a class="anchor" aria-label="anchor" href="#changes-0-5-2"></a></h3>
+<ul><li>Refactored the Lambert &amp; Ung aboveground biomass implementation into a single unified function, <code><a href="../reference/agb_lambert_ung.html">agb_lambert_ung()</a></code>, replacing the previous DBH-only and DBH+height variants.</li>
+<li>The refactored function exposes the two Lambert &amp; Ung equation sets (DBH-only and DBH + height) via the new <code>equation_set</code> argument (<code>"dbh"</code>, <code>"dbh_height"</code>, or <code>"auto"</code>).</li>
+<li>When <code>equation_set = "auto"</code> (default), the function automatically selects the DBH + height equations when valid height is provided, and falls back to the DBH-only equations otherwise.</li>
+<li>The implementation is now fully vectorized across trees and species and uses cached coefficient lookup for substantially improved performance.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-0-5-2">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-5-2"></a></h3>
+<ul><li>The former DBH-only and DBH+height Lambert &amp; Ung functions have been superseded by <code><a href="../reference/agb_lambert_ung.html">agb_lambert_ung()</a></code> and are no longer exported.</li>
+<li>The refactored implementation is vectorized and must be called on full vectors of inputs; row-wise usage (e.g., via <code><a href="https://rdrr.io/pkg/dplyr/man/rowwise.html" class="external-link">dplyr::rowwise()</a></code>) is no longer supported and may lead to incorrect results or poor performance.</li>
+<li>The equation set used can be included explicitly via <code>keep_model_id = TRUE</code>, in which case <code>model_id</code> is returned as the last column.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.1" id="canadaforestallometry-051">CanadaForestAllometry 0.5.1<a class="anchor" aria-label="anchor" href="#canadaforestallometry-051"></a></h2>
+<ul><li>Changed package license from GPL to LGPL-3.</li>
+<li>Added Nigh 2016 model for BC <code>vol_nigh2016</code>
+</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="canadaforestallometry-050">CanadaForestAllometry 0.5.0<a class="anchor" aria-label="anchor" href="#canadaforestallometry-050"></a></h2>
+<div class="section level3">
+<h3 id="major-features-0-5-0">Major features<a class="anchor" aria-label="anchor" href="#major-features-0-5-0"></a></h3>
+<ul><li>Added a suite of tree volume models with:
+<ul><li>consistent handling of species codes, jurisdictions, and subregions,</li>
+<li>standardized outputs for total and merchantable volume,</li>
+<li>shared internal helpers for parameter lookup and validation.</li>
+</ul></li>
+<li>Added a user-friendly model-selection wrapper that can evaluate multiple candidate volume models and optionally select the best available model, with explicit warnings when fallbacks are used.</li>
+<li>Added jurisdiction-specific merchantability criteria</li>
+<li>Added extensive internal parameter datasets for volume and taper models.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing-0-5-0">Testing<a class="anchor" aria-label="anchor" href="#testing-0-5-0"></a></h3>
+<ul><li>Added test coverage for volume-related functions.</li>
+<li>Improved error and warning messages .</li>
+</ul></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
@@ -74,7 +153,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
