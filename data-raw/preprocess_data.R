@@ -119,7 +119,7 @@ parameters_NationalTaperModelsDBHHT <- natdbhht %>%
 # data for the Honer model
 # Entered manually from Honer et al 1983 paper.
 parameters_Honer <- readxl::read_excel("data-raw/Honer1983_parameters.xlsx")
-usethis::use_data(parameters_Honer, overwrite = T, internal = T)
+# usethis::use_data(parameters_Honer, overwrite = T, internal = T)
 
 # data - model paramters for the regional models (several models) ####
 # original csv files with model parameters provided by Juha Metsaranta.
@@ -757,6 +757,14 @@ parameters_volNL <-
 
 # usethis::use_data(parameters_volNL, overwrite = T, internal = TRUE)
 
+# site index datasets ####
+
+## Payandeh 1974
+parameters_Payandeh1974 <- read.csv("data-raw/Payandeh_1974_parameters.csv")
+
+
+# combine all into one ####
+
 internal_objs <- c(
   "parameters_LambertUng",
   "parameters_NationalTaperModelsDBH",
@@ -773,7 +781,8 @@ internal_objs <- c(
   "parameters_Nigh2016",
   "parameters_v2b",
   "ecozones",
-  "parameters_volNL"
+  "parameters_volNL",
+  "parameters_Payandeh1974"
 )
 
 # sanity check: make sure they exist before saving

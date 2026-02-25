@@ -15,3 +15,8 @@
 ^vignettes/articles$
 ^vignettes/articles/\.quarto$
 ^vignettes/articles/*_files$
+^sources$
+^REFERENCES\.bib$
+^.*\.csl$
+^vignettes/\.quarto$
+^vignettes/\.quarto/_freeze$
