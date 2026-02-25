@@ -153,33 +153,19 @@ si_payandeh1974 <- function(age, height = NULL, si = NULL, species) {
     cli::cli_abort("{.arg age} must have length > 0.")
   }
 
-  recycle_to <- function(v, n, arg) {
-    if (length(v) == n) {
-      return(v)
-    }
-    if (length(v) == 1L) {
-      return(rep(v, n))
-    }
-    cli::cli_abort("{.arg {arg}} must have length 1 or {n}.")
-  }
+  recycled <- assert_len_compat(
+    age = age,
+    x = x,
+    species = species,
+    .n = n,
+    .recycle = TRUE
+  )
+  age <- recycled$age
+  x <- recycled$x
+  species <- recycled$species
 
-  age <- recycle_to(age, n, "age")
-  x <- recycle_to(x, n, x_name)
-  species <- recycle_to(species, n, "species")
-
-  if (!is.numeric(age)) {
-    cli::cli_abort("{.arg age} must be numeric.")
-  }
-  if (!is.numeric(x)) {
-    cli::cli_abort("{.arg {x_name}} must be numeric.")
-  }
-
-  if (any(!is.finite(age) | age <= 0)) {
-    cli::cli_abort("{.arg age} must contain only finite values > 0.")
-  }
-  if (any(!is.finite(x) | x <= 0)) {
-    cli::cli_abort("{.arg {x_name}} must contain only finite values > 0.")
-  }
+  assert_numeric_vec(age, "age", finite = TRUE, gt = 0, allow_na = FALSE)
+  assert_numeric_vec(x, x_name, finite = TRUE, gt = 0, allow_na = FALSE)
 
   species_std <- standardize_species_code(species)
 
@@ -210,13 +196,7 @@ si_payandeh1974 <- function(age, height = NULL, si = NULL, species) {
     "si_b4",
     "si_b5"
   )
-  miss <- setdiff(req, names(pars))
-  if (length(miss) > 0) {
-    cli::cli_abort(c(
-      "{.val parameters_Payandeh1974} is missing required columns.",
-      "x" = "{paste(miss, collapse = ', ')}"
-    ))
-  }
+  assert_required_cols(pars, req, object = "parameters_Payandeh1974")
 
   out <- dplyr::tibble(
     age = as.numeric(age),

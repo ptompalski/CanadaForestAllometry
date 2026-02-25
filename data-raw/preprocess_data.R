@@ -411,7 +411,7 @@ add_ecozone_names <- function(df, ecozone_tbl = CodesEcozones) {
 # CANFI genus -> NFI genus code mapping (your object)
 # canfi_genus_codes <- tibble::tribble(...)
 
-# --- helpers ---------------------------------------------------------
+## --- helpers ---------------------------------------------------------
 
 make_species_nfi <- function(
   genus,
@@ -575,7 +575,7 @@ prep_caps_species_level <- function(
 }
 
 
-# --- import ----------------------------------------------------------
+## --- import ----------------------------------------------------------
 
 # Adjust these filenames to match your local copies
 files <- list(
@@ -648,7 +648,7 @@ parameters_v2b <- list(
     )
 )
 
-# --- save ------------------------------------------------------------
+## --- save ------------------------------------------------------------
 # usethis::use_data(parameters_v2b, overwrite = T, internal = TRUE)
 
 # ecozone - internal dataset
@@ -674,7 +674,7 @@ ecozones <- tribble(
 
 # usethis::use_data(ecozones, overwrite = T, internal = TRUE)
 
-# Newfoundland - parameters from C. Hennigar implemantation in OSM
+# Newfoundland - parameters from C. Hennigar implemantation in OSM ####
 # https://github.com/OSM-Contributors/OSM/blob/main/OSM.NewfoundlandModels/Volume/HonerVolume_N_X_242_122.cs
 
 # PlantCodes (OSM/USDA) -> NFI species codes
@@ -694,7 +694,7 @@ plant_to_nfi <- tibble::tribble(
   "BEPO"      , "BETU.POP" # gray birch
 )
 
-# ---- read csvs ----------------------------------------------------------------
+## read csvs ----------------------------------------------------------------
 
 bf <- read_csv(
   file.path("data-raw/nx242_bf_district_original.csv"),
@@ -723,7 +723,7 @@ sp <- read_csv(
   mutate(param_set = "NX122_NX67_SPECIES") %>%
   left_join(plant_to_nfi, by = "plant_code")
 
-# ---- combine to one tidy table ------------------------------------------------
+## ---- combine to one tidy table ------------------------------------------------
 
 parameters_volNL <-
   bind_rows(
@@ -759,8 +759,17 @@ parameters_volNL <-
 
 # site index datasets ####
 
-## Payandeh 1974
+## Payandeh 1974 ####
 parameters_Payandeh1974 <- read.csv("data-raw/Payandeh_1974_parameters.csv")
+
+## Lundgren & Dolid 1970 ####
+# Lundgren, Allen L.; Dolid, William A. 1970. Biological growth functions describe published site index curves for Lake States timber species. Research Paper NC-36. St. Paul, MN: U.S. Dept. of Agriculture, Forest Service, North Central Forest Experiment Station
+
+parameters_LungrenDolid1970 <- read.csv(
+  "data-raw/DolidLundgren1970_parameters.csv"
+)
+parameters_LungrenDolid1970 <- parameters_LungrenDolid1970 %>%
+  select(Species = nfi_species, model:b3)
 
 
 # combine all into one ####
@@ -782,7 +791,8 @@ internal_objs <- c(
   "parameters_v2b",
   "ecozones",
   "parameters_volNL",
-  "parameters_Payandeh1974"
+  "parameters_Payandeh1974",
+  "parameters_LungrenDolid1970"
 )
 
 # sanity check: make sure they exist before saving

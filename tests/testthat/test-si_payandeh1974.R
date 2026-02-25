@@ -175,7 +175,7 @@ testthat::test_that("si_payandeh1974 validates positive finite predictors in bot
       si = 0,
       species = "ABIE.BAL"
     ),
-    "si.*finite values > 0",
+    "si.*values > 0",
     ignore.case = TRUE
   )
 
@@ -185,7 +185,7 @@ testthat::test_that("si_payandeh1974 validates positive finite predictors in bot
       si = NA_real_,
       species = "ABIE.BAL"
     ),
-    "si.*finite values > 0",
+    "si.*cannot contain NA",
     ignore.case = TRUE
   )
 
@@ -195,7 +195,7 @@ testthat::test_that("si_payandeh1974 validates positive finite predictors in bot
       height = 0,
       species = "ABIE.BAL"
     ),
-    "height.*finite values > 0",
+    "height.*values > 0",
     ignore.case = TRUE
   )
 
@@ -205,7 +205,7 @@ testthat::test_that("si_payandeh1974 validates positive finite predictors in bot
       height = NA_real_,
       species = "ABIE.BAL"
     ),
-    "height.*finite values > 0",
+    "height.*cannot contain NA",
     ignore.case = TRUE
   )
 })

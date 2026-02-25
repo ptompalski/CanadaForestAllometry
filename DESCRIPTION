@@ -23,6 +23,8 @@ Author: Authors@R: c(
          comment = "Author of the original Java implementation of the Fortin et al. (2007) Quebec merchantable volume model"),
     person("Christopher", "Hennigar", role = "ctb",
          comment = "Author of the original C# implementation of Newfoundland and Labrador volume model"),
+    person("James", "Maltman", role = "ctb",
+         comment = "Contributed initial implementations of several site index models"),
     person(paste("His Majesty the King in Right of Canada,",
                  "as represented by the Minister of Natural Resources Canada"), role = "cph")
    )
