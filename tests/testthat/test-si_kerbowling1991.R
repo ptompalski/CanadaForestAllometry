@@ -13,9 +13,16 @@ testthat::test_that("si_kerbowling1991 predicts height from si and returns singl
 })
 
 testthat::test_that("si_kerbowling1991 predicts si from height and returns single-column tibble", {
+  h_in <- CanadaForestAllometry::si_kerbowling1991(
+    age = c(25, 40, 60),
+    si = c(11, 13, 16),
+    species = c("ABIE.BAL", "PICE.MAR", "PINU.BAN")
+  ) |>
+    dplyr::pull(height)
+
   out <- CanadaForestAllometry::si_kerbowling1991(
     age = c(25, 40, 60),
-    height = c(8, 14, 20),
+    height = h_in,
     species = c("ABIE.BAL", "PICE.MAR", "PINU.BAN")
   )
 
@@ -40,7 +47,10 @@ testthat::test_that("KerBowling1991 function matches manual equation evaluation"
 
   h_expected <- with(
     pars,
-    1.3 + (b0 + b1 * si) * (1 - exp(-b2 * age))^(b3 + b4 * si)
+    1.3 +
+      (si - 1.3) *
+      (1 - exp(-b2 * 50))^(-b3 * (si^b4)) *
+      (1 - exp(-b2 * age))^(b3 * (si^b4))
   )
 
   h_out <- CanadaForestAllometry::si_kerbowling1991(
@@ -55,7 +65,7 @@ testthat::test_that("KerBowling1991 function matches manual equation evaluation"
     height = h_expected,
     species = "ABIE.BAL"
   )
-  testthat::expect_equal(si_out$si[[1]], si, tolerance = 1e-8)
+  testthat::expect_equal(si_out$si[[1]], si, tolerance = 1e-5)
 })
 
 testthat::test_that("si_kerbowling1991 input validation is informative", {

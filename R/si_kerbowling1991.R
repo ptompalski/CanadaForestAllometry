@@ -1,7 +1,8 @@
 #' Ker and Bowling (1991) site index model
 #'
 #' Unified, vectorized implementation of the Ker and Bowling (1991)
-#' polymorphic site-index equation (model 1) for New Brunswick softwoods.
+#' polymorphic site-index equation (model 1, conditioned form; eq. 9) for New
+#' Brunswick softwoods.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{
@@ -9,10 +10,13 @@
 #'   \item If `si` is provided, the function predicts `height`.
 #' }
 #'
-#' In model 1, predicting `height` from `si` is direct. Predicting `si` from
-#' `height` is implicit (site index appears both in a linear term and in the
-#' exponent), so there is no closed-form algebraic inverse. For that mode, this
-#' implementation solves for `si` numerically with `stats::uniroot()`.
+#' This implementation uses the conditioned equation at index age 50 years
+#' (breast-height age), so predicted height equals site index at `age = 50`.
+#'
+#' Predicting `height` from `si` is direct. Predicting `si` from `height` is
+#' implicit (site index also appears in the exponent term), so there is no
+#' closed-form algebraic inverse. For that mode, this implementation solves for
+#' `si` numerically with `stats::uniroot()`.
 #'
 #' Inputs/outputs are metric (m), matching the source model.
 #'
@@ -103,7 +107,10 @@ si_kerbowling1991 <- function(age, height = NULL, si = NULL, species) {
   if (mode == "predict_height") {
     h <- with(
       df,
-      1.3 + (b0 + b1 * si) * (1 - exp(-b2 * age))^(b3 + b4 * si)
+      1.3 +
+        (si - 1.3) *
+        (1 - exp(-b2 * 50))^(-b3 * (si^b4)) *
+        (1 - exp(-b2 * age))^(b3 * (si^b4))
     )
 
     if (any(!is.finite(h))) {
@@ -128,8 +135,6 @@ si_kerbowling1991 <- function(age, height = NULL, si = NULL, species) {
       .kerbowling1991_solve_si_one(
         age = df$age[[i]],
         height = df$height[[i]],
-        b0 = df$b0[[i]],
-        b1 = df$b1[[i]],
         b2 = df$b2[[i]],
         b3 = df$b3[[i]],
         b4 = df$b4[[i]]
@@ -182,7 +187,7 @@ si_kerbowling1991 <- function(age, height = NULL, si = NULL, species) {
     dplyr::as_tibble() |>
     dplyr::distinct(.data$Species, .keep_all = TRUE)
 
-  req <- c("Species", "b0", "b1", "b2", "b3", "b4")
+  req <- c("Species", "b2", "b3", "b4")
   assert_required_cols(pars, req, object = "parameters_KerBowling1991")
 
   out <- dplyr::tibble(
@@ -192,10 +197,9 @@ si_kerbowling1991 <- function(age, height = NULL, si = NULL, species) {
   ) |>
     dplyr::left_join(pars, by = "Species")
 
-  if (anyNA(out$b0) || anyNA(out$b1) || anyNA(out$b2) ||
-      anyNA(out$b3) || anyNA(out$b4)) {
+  if (anyNA(out$b2) || anyNA(out$b3) || anyNA(out$b4)) {
     bad <- unique(out$Species[
-      is.na(out$b0) | is.na(out$b1) | is.na(out$b2) | is.na(out$b3) | is.na(out$b4)
+      is.na(out$b2) | is.na(out$b3) | is.na(out$b4)
     ])
     cli::cli_abort(
       "No KerBowling1991 parameters found for species: {paste(bad, collapse = ', ')}."
@@ -213,26 +217,45 @@ si_kerbowling1991 <- function(age, height = NULL, si = NULL, species) {
 
 
 # internal
-.kerbowling1991_solve_si_one <- function(age, height, b0, b1, b2, b3, b4) {
+.kerbowling1991_solve_si_one <- function(age, height, b2, b3, b4) {
   f <- function(si) {
-    1.3 + (b0 + b1 * si) * (1 - exp(-b2 * age))^(b3 + b4 * si) - height
+    1.3 +
+      (si - 1.3) *
+      (1 - exp(-b2 * 50))^(-b3 * (si^b4)) *
+      (1 - exp(-b2 * age))^(b3 * (si^b4)) -
+      height
   }
 
-  lower <- 1e-6
-  upper <- max(30, height * 2)
+  lower <- 1.300001
+  upper <- max(60, height * 3)
 
-  f_lower <- f(lower)
-  f_upper <- f(upper)
+  bracket <- NULL
+  for (iter in seq_len(8)) {
+    grid <- unique(c(lower, seq(1.5, upper, length.out = 250)))
+    vals <- vapply(grid, f, numeric(1))
 
-  iter <- 0L
-  while (is.finite(f_lower) && is.finite(f_upper) &&
-         sign(f_lower) == sign(f_upper) && iter < 20L) {
+    keep <- is.finite(vals)
+    grid <- grid[keep]
+    vals <- vals[keep]
+
+    if (length(vals) >= 2L) {
+      exact <- which(vals == 0)
+      if (length(exact) > 0L) {
+        return(grid[exact[[1]]])
+      }
+
+      idx <- which(vals[-1] * vals[-length(vals)] < 0)
+      if (length(idx) > 0L) {
+        i <- idx[[1]]
+        bracket <- c(grid[[i]], grid[[i + 1L]])
+        break
+      }
+    }
+
     upper <- upper * 2
-    f_upper <- f(upper)
-    iter <- iter + 1L
   }
 
-  if (!is.finite(f_lower) || !is.finite(f_upper) || sign(f_lower) == sign(f_upper)) {
+  if (is.null(bracket)) {
     cli::cli_abort(c(
       "Failed to bracket a site-index solution in {.fn si_kerbowling1991}.",
       "i" = "Check that age, height, and species are within model domain."
@@ -241,8 +264,8 @@ si_kerbowling1991 <- function(age, height = NULL, si = NULL, species) {
 
   stats::uniroot(
     f,
-    lower = lower,
-    upper = upper,
+    lower = bracket[[1]],
+    upper = bracket[[2]],
     tol = .Machine$double.eps^0.25
   )$root
 }

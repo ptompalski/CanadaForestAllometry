@@ -13,7 +13,7 @@ si_scottvoorhis1986(
 )
 }
 \arguments{
-\item{age}{Numeric vector. Breast-height age (years), not total age.}
+\item{age}{Numeric vector. Breast-height age (years).}
 
 \item{height}{Optional numeric vector. Total tree height (m). If provided,
 `si` is predicted.}
@@ -40,6 +40,17 @@ Unified, vectorized implementation of the Scott and Voorhis (1986)
 polymorphic site-index equation for northeastern species.
 }
 \details{
+\strong{Model scope (species coverage):} this implementation includes
+parameter sets for 19 species:
+\code{ABIE.BAL, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.ECH,
+PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, THUJ.OCC, ACER.SAC, BETU.ALL,
+BETU.PAP, FRAX.AME, LIQU.STY, LIRI.TUL, POPU.GRA, QUER.ALB}.
+
+\strong{Geographic use (Canada):} the model is intended for northeastern
+forest conditions. In Canada, it is most defensible for species/populations
+in eastern regions (notably Atlantic Canada and adjacent central Canada where
+these species occur). Use caution outside that domain.
+
 \strong{Age definition note:} `age` is breast-height age (years). The model
 internally computes age-to-breast-height and uses total age in the height
 equation.

@@ -26,7 +26,8 @@ A tibble with columns:
 }
 \description{
 Unified, vectorized implementation of the Ker and Bowling (1991)
-polymorphic site-index equation (model 1) for New Brunswick softwoods.
+polymorphic site-index equation (model 1, conditioned form; eq. 9) for New
+Brunswick softwoods.
 }
 \details{
 Provide exactly one of `height` or `si`:
@@ -35,10 +36,13 @@ Provide exactly one of `height` or `si`:
   \item If `si` is provided, the function predicts `height`.
 }
 
-In model 1, predicting `height` from `si` is direct. Predicting `si` from
-`height` is implicit (site index appears both in a linear term and in the
-exponent), so there is no closed-form algebraic inverse. For that mode, this
-implementation solves for `si` numerically with `stats::uniroot()`.
+This implementation uses the conditioned equation at index age 50 years
+(breast-height age), so predicted height equals site index at `age = 50`.
+
+Predicting `height` from `si` is direct. Predicting `si` from `height` is
+implicit (site index also appears in the exponent term), so there is no
+closed-form algebraic inverse. For that mode, this implementation solves for
+`si` numerically with `stats::uniroot()`.
 
 Inputs/outputs are metric (m), matching the source model.
 }
