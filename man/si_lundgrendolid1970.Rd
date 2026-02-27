@@ -62,8 +62,7 @@ si_lundgrendolid1970(
 si_lundgrendolid1970(
   age = c(20, 40, 60),
   si = c(12, 18, 24),
-  species = c("PICE.MAR", "PINU.BAN", "BETU.PAP"),
-  model = "monomolecular"
+  species = c("PICE.MAR", "PINU.BAN", "BETU.PAP")
 )
 
 # Works with the pipe operator: predict site index from age + height
@@ -95,8 +94,7 @@ trees_si |>
     height_pred = si_lundgrendolid1970(
       age = age,
       si = si,
-      species = species,
-      model = "monomolecular"
+      species = species
     )
   ) |>
   tidyr::unnest(height_pred)

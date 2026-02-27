@@ -771,6 +771,22 @@ parameters_LungrenDolid1970 <- read.csv(
 parameters_LungrenDolid1970 <- parameters_LungrenDolid1970 %>%
   select(Species = nfi_species, model:b3)
 
+## Ker & Bowling 1991 ####
+parameters_KerBowling1991 <- read.csv(
+  "data-raw/KerBowling1991_parameters.csv"
+)
+parameters_KerBowling1991 <-
+  parameters_KerBowling1991 %>%
+  select(Species = nfi_species, b0:b4)
+
+## Scott & Voorhis
+parameters_ScottVoorhis1986 <- read.csv(
+  "data-raw/ScottVoorhis1986_parameters.csv"
+)
+parameters_ScottVoorhis1986 <-
+  parameters_ScottVoorhis1986 %>%
+  select(Species = nfi_species, b1:b5)
+
 
 # combine all into one ####
 
@@ -792,7 +808,9 @@ internal_objs <- c(
   "ecozones",
   "parameters_volNL",
   "parameters_Payandeh1974",
-  "parameters_LungrenDolid1970"
+  "parameters_LungrenDolid1970",
+  "parameters_KerBowling1991",
+  "parameters_ScottVoorhis1986"
 )
 
 # sanity check: make sure they exist before saving
