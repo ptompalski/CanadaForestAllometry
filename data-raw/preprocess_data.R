@@ -790,6 +790,10 @@ parameters_ScottVoorhis1986 <-
 ##  Nigh 2000 growth intercept (site index model is for a single species and can be hardcoded)
 parameters_Nigh2000_gi <- read.csv("data-raw/nigh_2000_gi.csv")
 
+## Thrower 1994
+parameters_Thrower1994 <- read.csv("data-raw/Thrower1994_parameters.csv")
+parameters_Thrower1994 <- parameters_Thrower1994 %>%
+  select(Species = nfi_species, model_form:source_short)
 
 # combine all into one ####
 
@@ -814,7 +818,8 @@ internal_objs <- c(
   "parameters_LungrenDolid1970",
   "parameters_KerBowling1991",
   "parameters_ScottVoorhis1986",
-  "parameters_Nigh2000_gi"
+  "parameters_Nigh2000_gi",
+  "parameters_Thrower1994"
 )
 
 # sanity check: make sure they exist before saving
