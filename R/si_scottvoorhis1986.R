@@ -155,6 +155,9 @@ si_scottvoorhis1986 <- function(
     numeric(1)
   )
 
+  # nocov start
+  # Unreachable in normal flow: solver returns a finite root or aborts during
+  # bracketing failure before returning to this caller.
   if (any(!is.finite(si_ft_est))) {
     cli::cli_abort(c(
       "Non-finite site index prediction generated in {.fn si_scottvoorhis1986}.",
@@ -167,6 +170,7 @@ si_scottvoorhis1986 <- function(
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # nocov end
 
   dplyr::tibble(si = si_ft_est / 3.28084)
 }

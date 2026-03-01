@@ -113,12 +113,16 @@ si_payandeh1974 <- function(age, height = NULL, si = NULL, species) {
         "i" = "Check inputs and species-specific parameters."
       ))
     }
+    # nocov start
+    # Unreachable with current parameter table and validated positive inputs:
+    # each multiplicative term in `h_ft` is strictly positive.
     if (any(h_ft < 0)) {
       cli::cli_abort(c(
         "Negative height prediction generated in {.fn si_payandeh1974}.",
         "i" = "Check inputs and species-specific parameters."
       ))
     }
+    # nocov end
 
     return(dplyr::tibble(height = h_ft / 3.28084))
   }
@@ -136,12 +140,16 @@ si_payandeh1974 <- function(age, height = NULL, si = NULL, species) {
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # nocov start
+  # Unreachable with current parameter table and validated positive inputs:
+  # each multiplicative term in `si_ft` is strictly positive.
   if (any(si_ft < 0)) {
     cli::cli_abort(c(
       "Negative site index prediction generated in {.fn si_payandeh1974}.",
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # nocov end
 
   dplyr::tibble(si = si_ft / 3.28084)
 }

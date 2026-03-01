@@ -166,3 +166,26 @@ testthat::test_that("si_nigh2000 validates positive finite predictors in both mo
     ignore.case = TRUE
   )
 })
+testthat::test_that(".nigh2000_solve_si_one hits exact-grid root at lower bound", {
+  age <- 25
+  si_true <- 1.300001
+  h <- CanadaForestAllometry:::.nigh2000_height(age = age, si = si_true)
+
+  si_est <- CanadaForestAllometry:::.nigh2000_solve_si_one(
+    age = age,
+    height = h
+  )
+
+  testthat::expect_identical(si_est, si_true)
+})
+
+testthat::test_that(".nigh2000_solve_si_one errors when no sign-change bracket exists", {
+  testthat::expect_error(
+    CanadaForestAllometry:::.nigh2000_solve_si_one(
+      age = 20,
+      height = 0.1
+    ),
+    "Failed to bracket a site-index solution",
+    ignore.case = TRUE
+  )
+})

@@ -209,3 +209,25 @@ testthat::test_that("si_payandeh1974 validates positive finite predictors in bot
     ignore.case = TRUE
   )
 })
+
+testthat::test_that("si_payandeh1974 catches non-finite predictions in both modes", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_payandeh1974(
+      age = 50,
+      si = 1e308,
+      species = "ABIE.BAL"
+    ),
+    "Non-finite height prediction",
+    ignore.case = TRUE
+  )
+
+  testthat::expect_error(
+    CanadaForestAllometry::si_payandeh1974(
+      age = 1e-300,
+      height = 40,
+      species = "ABIE.BAL"
+    ),
+    "Non-finite site index prediction",
+    ignore.case = TRUE
+  )
+})

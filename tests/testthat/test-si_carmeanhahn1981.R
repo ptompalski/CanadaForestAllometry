@@ -112,3 +112,39 @@ testthat::test_that("si_carmeanhahn1981 input validation is informative", {
     ignore.case = TRUE
   )
 })
+testthat::test_that("si_carmeanhahn1981 catches non-finite height predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_carmeanhahn1981(
+      age = 20,
+      si = 1e308,
+      species = "ABIE.BAL"
+    ),
+    "Non-finite height prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("si_carmeanhahn1981 catches non-finite site-index predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_carmeanhahn1981(
+      age = 20,
+      height = 1e308,
+      species = "ABIE.BAL"
+    ),
+    "Non-finite site index prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that(".carmeanhahn1981_prepare validates zero-length inputs", {
+  testthat::expect_error(
+    CanadaForestAllometry:::.carmeanhahn1981_prepare(
+      age = numeric(0),
+      x = numeric(0),
+      species = character(0),
+      x_name = "si"
+    ),
+    "age.*length > 0",
+    ignore.case = TRUE
+  )
+})

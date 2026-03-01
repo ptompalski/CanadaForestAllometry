@@ -86,12 +86,16 @@ si_carmeanhahn1981 <- function(age, height = NULL, si = NULL, species) {
         "i" = "Check inputs and species-specific parameters."
       ))
     }
+    # Unreachable with validated domain: all multiplicative terms are positive,
+    # so predicted height cannot be negative.
+    # nocov start
     if (any(h_ft < 0)) {
       cli::cli_abort(c(
         "Negative height prediction generated in {.fn si_carmeanhahn1981}.",
         "i" = "Check inputs and species-specific parameters."
       ))
     }
+    # nocov end
 
     return(dplyr::tibble(height = h_ft / 3.28084))
   }
@@ -109,12 +113,16 @@ si_carmeanhahn1981 <- function(age, height = NULL, si = NULL, species) {
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # Unreachable with validated domain: all multiplicative terms are positive,
+  # so predicted site index cannot be negative.
+  # nocov start
   if (any(si_ft < 0)) {
     cli::cli_abort(c(
       "Negative site index prediction generated in {.fn si_carmeanhahn1981}.",
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # nocov end
 
   dplyr::tibble(si = si_ft / 3.28084)
 }

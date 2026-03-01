@@ -168,9 +168,13 @@ si_thrower1994 <- function(age, height = NULL, si = NULL, species) {
     out$height <- out$x
   } else {
     out$si <- out$x
+    # nocov start
+    # Unreachable via public API because `assert_numeric_vec(..., gt = 0)`
+    # already rejects non-positive `si` before this defensive check.
     if (any(out$si <= 0)) {
       cli::cli_abort("{.arg si} must contain values > 0.")
     }
+    # nocov end
   }
 
   out

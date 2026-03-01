@@ -249,3 +249,55 @@ testthat::test_that("si_scottvoorhis1986 validates positive finite predictors in
     ignore.case = TRUE
   )
 })
+
+testthat::test_that("si_scottvoorhis1986 catches non-finite and negative height outputs", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_scottvoorhis1986(
+      age = 30,
+      si = 1e308,
+      species = "ABIE.BAL"
+    ),
+    "Non-finite height prediction",
+    ignore.case = TRUE
+  )
+
+  testthat::expect_error(
+    CanadaForestAllometry::si_scottvoorhis1986(
+      age = 30,
+      si = 0.01,
+      species = "ABIE.BAL"
+    ),
+    "Negative height prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("si_scottvoorhis1986 reports bracketing failure for out-of-domain solve", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_scottvoorhis1986(
+      age = 200,
+      height = 0.1,
+      species = "ABIE.BAL",
+      convert_to_total_age = TRUE
+    ),
+    "Failed to bracket a site-index solution",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("ScottVoorhis1986 internal solver handles non-finite bh-age evaluations", {
+  testthat::expect_error(
+    CanadaForestAllometry:::.scottvoorhis1986_solve_si_one(
+      age = 30,
+      height_ft = 50,
+      b1 = 0,
+      b2 = 0.1,
+      b3 = 0,
+      b4 = 1,
+      b5 = 0,
+      convert_to_total_age = TRUE
+    ),
+    "Failed to bracket a site-index solution",
+    ignore.case = TRUE
+  )
+})

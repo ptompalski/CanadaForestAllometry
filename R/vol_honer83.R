@@ -66,9 +66,13 @@ vol_honer83 <- function(DBH, height, species) {
     function(sp) {
       p <- get_volume_params("regional_honer83", species = sp, strict = TRUE)
       # ensure join key exists/consistent
+      # Defensive compatibility guard: get_volume_params() is expected to return
+      # the Species column from the underlying parameter table.
+      # nocov start
       if (!"Species" %in% names(p)) {
         p$Species <- sp
       }
+      # nocov end
       p
     }
   )

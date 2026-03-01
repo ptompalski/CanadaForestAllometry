@@ -205,3 +205,76 @@ testthat::test_that("si_kerbowling1991 validates positive finite predictors in b
     ignore.case = TRUE
   )
 })
+testthat::test_that("si_kerbowling1991 catches non-finite height predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_kerbowling1991(
+      age = 0.1,
+      si = 1e-12,
+      species = "ABIE.BAL"
+    ),
+    "Non-finite height prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("si_kerbowling1991 catches negative height predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_kerbowling1991(
+      age = 50.1,
+      si = 0.01,
+      species = "ABIE.BAL"
+    ),
+    "Negative height prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that(".kerbowling1991_solve_si_one returns exact-grid root at lower bound", {
+  ns <- asNamespace("CanadaForestAllometry")
+  pars <- get("parameters_KerBowling1991", envir = ns, inherits = FALSE) |>
+    dplyr::as_tibble() |>
+    dplyr::filter(.data$Species == "ABIE.BAL") |>
+    dplyr::slice(1)
+
+  testthat::skip_if_not(nrow(pars) == 1)
+
+  age <- 25
+  si_true <- 1.300001
+
+  height <- 1.3 +
+    (si_true - 1.3) *
+    (1 - exp(-pars$b2[[1]] * 50))^(-pars$b3[[1]] * (si_true^pars$b4[[1]])) *
+    (1 - exp(-pars$b2[[1]] * age))^(pars$b3[[1]] * (si_true^pars$b4[[1]]))
+
+  si_est <- CanadaForestAllometry:::.kerbowling1991_solve_si_one(
+    age = age,
+    height = height,
+    b2 = pars$b2[[1]],
+    b3 = pars$b3[[1]],
+    b4 = pars$b4[[1]]
+  )
+
+  testthat::expect_identical(si_est, si_true)
+})
+
+testthat::test_that(".kerbowling1991_solve_si_one errors when no bracketed root exists", {
+  ns <- asNamespace("CanadaForestAllometry")
+  pars <- get("parameters_KerBowling1991", envir = ns, inherits = FALSE) |>
+    dplyr::as_tibble() |>
+    dplyr::filter(.data$Species == "ABIE.BAL") |>
+    dplyr::slice(1)
+
+  testthat::skip_if_not(nrow(pars) == 1)
+
+  testthat::expect_error(
+    CanadaForestAllometry:::.kerbowling1991_solve_si_one(
+      age = 20,
+      height = 0.1,
+      b2 = pars$b2[[1]],
+      b3 = pars$b3[[1]],
+      b4 = pars$b4[[1]]
+    ),
+    "Failed to bracket a site-index solution",
+    ignore.case = TRUE
+  )
+})

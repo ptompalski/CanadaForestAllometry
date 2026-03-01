@@ -490,3 +490,58 @@ testthat::test_that("vol_kozak94: errors on no params, bad form factor, bad DIB,
     fixed = FALSE
   )
 })
+testthat::test_that("vol_kozak94 clamps height below 1.3 m consistently", {
+  out_low <- vol_kozak94(
+    DBH = 20,
+    height = 0.8,
+    species = "PSEU.MEN",
+    BEC_zone = "CWH"
+  )
+
+  out_13 <- vol_kozak94(
+    DBH = 20,
+    height = 1.3,
+    species = "PSEU.MEN",
+    BEC_zone = "CWH"
+  )
+
+  testthat::expect_equal(out_low$vol_total, out_13$vol_total, tolerance = 1e-12)
+  testthat::expect_equal(out_low$vol_merchantable, out_13$vol_merchantable, tolerance = 1e-12)
+})
+
+testthat::test_that("vol_kozak94 can return zero merchantable above mindbh for very short trees", {
+  mc <- get_merch_criteria(
+    "BC",
+    species = "POPU.BAL",
+    BEC_zone = "BWBS",
+    verbose = FALSE
+  ) |>
+    dplyr::slice(1)
+
+  testthat::expect_true(all(c("mindbh_cm") %in% names(mc)))
+
+  dbh <- max(20, mc$mindbh_cm[[1]])
+
+  out <- vol_kozak94(
+    DBH = dbh,
+    height = 1.31,
+    species = "POPU.BAL",
+    BEC_zone = "BWBS"
+  )
+
+  testthat::expect_true(out$vol_total > 0)
+  testthat::expect_equal(out$vol_merchantable, 0)
+})
+
+testthat::test_that("vol_kozak94 errors clearly for unsupported BEC zones (no mocks)", {
+  testthat::expect_error(
+    vol_kozak94(
+      DBH = 20,
+      height = 20,
+      species = "PSEU.MEN",
+      BEC_zone = "ZZZ"
+    ),
+    "No Kozak94 parameters found",
+    ignore.case = TRUE
+  )
+})

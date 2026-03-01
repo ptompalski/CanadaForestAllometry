@@ -74,18 +74,26 @@ si_nigh2000 <- function(age, height = NULL, si = NULL) {
       .nigh2000_height(age = age, si = si)
     )
 
+    # nocov start
+    # Unreachable with validated inputs and this closed-form equation:
+    # for age > 0.5 and si > 1.3, .nigh2000_height returns finite values.
     if (any(!is.finite(h))) {
       cli::cli_abort(c(
         "Non-finite height prediction generated in {.fn si_nigh2000}.",
         "i" = "Check inputs and model domain."
       ))
     }
+    # nocov end
+    # Unreachable with validated domain: si > 1.3 and model form yields
+    # h = 1.3 + positive_term, so height cannot be negative.
+    # nocov start
     if (any(h < 0)) {
       cli::cli_abort(c(
         "Negative height prediction generated in {.fn si_nigh2000}.",
         "i" = "Check inputs and model domain."
       ))
     }
+    # nocov end
 
     return(dplyr::tibble(height = h))
   }
@@ -101,18 +109,26 @@ si_nigh2000 <- function(age, height = NULL, si = NULL) {
     numeric(1)
   )
 
+  # nocov start
+  # Unreachable in normal flow: solver returns a finite root or aborts during
+  # bracketing failure before returning to this caller.
   if (any(!is.finite(si_est))) {
     cli::cli_abort(c(
       "Non-finite site index prediction generated in {.fn si_nigh2000}.",
       "i" = "Check inputs and model domain."
     ))
   }
+  # nocov end
+  # Unreachable with current solver/domain: roots are searched for si > 1.3,
+  # so estimated site index cannot be negative.
+  # nocov start
   if (any(si_est < 0)) {
     cli::cli_abort(c(
       "Negative site index prediction generated in {.fn si_nigh2000}.",
       "i" = "Check inputs and model domain."
     ))
   }
+  # nocov end
 
   dplyr::tibble(si = si_est)
 }

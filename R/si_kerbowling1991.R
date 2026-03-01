@@ -143,18 +143,23 @@ si_kerbowling1991 <- function(age, height = NULL, si = NULL, species) {
     numeric(1)
   )
 
+  # Unreachable in normal flow: .kerbowling1991_solve_si_one() either returns
+  # a finite root or aborts before control returns here.
+  # nocov start
   if (any(!is.finite(si_est))) {
     cli::cli_abort(c(
       "Non-finite site index prediction generated in {.fn si_kerbowling1991}.",
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # Unreachable with current solver bounds: SI is solved with lower bound > 1.3.
   if (any(si_est < 0)) {
     cli::cli_abort(c(
       "Negative site index prediction generated in {.fn si_kerbowling1991}.",
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # nocov end
 
   dplyr::tibble(si = si_est)
 }

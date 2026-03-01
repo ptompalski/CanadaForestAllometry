@@ -76,12 +76,16 @@ ytbh_thrower1994 <- function(si, species) {
   ytbh[has_lin] <- ytbh[has_lin] +
     out$ytb_s_linear_coef[has_lin] * (out$si[has_lin] / out$ytb_s_linear_scale[has_lin])
 
+  # nocov start
+  # Unreachable with current constraints: `si` is validated finite and > 0,
+  # and this model only applies finite algebra/log transforms with fixed params.
   if (any(!is.finite(ytbh))) {
     cli::cli_abort(c(
       "Non-finite years-to-breast-height prediction generated in {.fn ytbh_thrower1994}.",
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # nocov end
   if (any(ytbh < 0)) {
     cli::cli_abort(c(
       "Negative years-to-breast-height prediction generated in {.fn ytbh_thrower1994}.",

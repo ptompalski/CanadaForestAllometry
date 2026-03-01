@@ -184,3 +184,76 @@ testthat::test_that("Ung2013 volumes are reasonable across all species (from par
     )
   testthat::expect_true(all(mono_ht$ok))
 })
+
+testthat::test_that("vol_ung2013 returns NA rows for non-finite DBH/height and zero rows for degenerate height model cases", {
+  out_dbh_na <- vol_ung2013(
+    DBH = c(20, NA_real_),
+    species = c("PICE.GLA", "PICE.GLA"),
+    jurisdiction = c("ON", "ON")
+  )
+  testthat::expect_true(is.finite(out_dbh_na$vol_total[[1]]))
+  testthat::expect_true(is.na(out_dbh_na$vol_total[[2]]))
+  testthat::expect_true(is.na(out_dbh_na$vol_merchantable[[2]]))
+
+  out_dbh_zero <- vol_ung2013(
+    DBH = 0,
+    species = "PICE.GLA",
+    jurisdiction = "ON"
+  )
+  testthat::expect_identical(out_dbh_zero$vol_total[[1]], 0)
+  testthat::expect_identical(out_dbh_zero$vol_merchantable[[1]], 0)
+
+  out_ht_na <- vol_ung2013(
+    DBH = c(20, 20),
+    height = c(18, NA_real_),
+    species = c("PICE.GLA", "PICE.GLA"),
+    jurisdiction = c("ON", "ON")
+  )
+  testthat::expect_true(is.finite(out_ht_na$vol_total[[1]]))
+  testthat::expect_true(is.na(out_ht_na$vol_total[[2]]))
+  testthat::expect_true(is.na(out_ht_na$vol_merchantable[[2]]))
+
+  out_ht_zero <- vol_ung2013(
+    DBH = 20,
+    height = 0.5,
+    species = "PICE.GLA",
+    jurisdiction = "ON"
+  )
+  testthat::expect_identical(out_ht_zero$vol_total[[1]], 0)
+  testthat::expect_identical(out_ht_zero$vol_merchantable[[1]], 0)
+})
+
+testthat::test_that(".ctae_vol_from_segments covers low-information and no-topdbh branches", {
+  v0 <- CanadaForestAllometry:::.ctae_vol_from_segments(
+    H = c(0.3, 0.4),
+    D2C = c(0, 0),
+    stp = 0.1,
+    topdbh = 10,
+    mindbh = 5,
+    dbh_i = 20
+  )
+  testthat::expect_identical(as.numeric(v0[["vol_total"]]), 0)
+  testthat::expect_identical(as.numeric(v0[["vol_merch"]]), 0)
+
+  v_all <- CanadaForestAllometry:::.ctae_vol_from_segments(
+    H = c(0.3, 0.4, 0.5),
+    D2C = c(100, 90, 80),
+    stp = 0.1,
+    topdbh = 0,
+    mindbh = 0,
+    dbh_i = 20
+  )
+  testthat::expect_true(is.finite(v_all[["vol_total"]]))
+  testthat::expect_equal(v_all[["vol_merch"]], v_all[["vol_total"]], tolerance = 1e-12)
+
+  v_mindbh <- CanadaForestAllometry:::.ctae_vol_from_segments(
+    H = c(0.3, 0.4, 0.5),
+    D2C = c(100, 90, 80),
+    stp = 0.1,
+    topdbh = 10,
+    mindbh = 30,
+    dbh_i = 20
+  )
+  testthat::expect_true(is.finite(v_mindbh[["vol_total"]]))
+  testthat::expect_identical(as.numeric(v_mindbh[["vol_merch"]]), 0)
+})

@@ -50,15 +50,23 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
   # ---- internal: DIB at height h (m), inside bark (cm) ----
   kozak_dib <- function(h, HT, dbhht, ff, p, bias_factor) {
     xq <- h / HT
+    # Internal-call guard: h is always > 0 in current call paths and HT is
+    # validated/clamped > 0, so this is defensive-only.
+    # nocov start
     if (!is.finite(xq) || xq <= 0) {
       return(NA_real_)
     }
+    # nocov end
 
     xl <- 1.0 - sqrt(xq)
     xx <- xl / per
+    # Internal-call guard: integration bounds keep h <= HT, so xx < 0 is
+    # defensive-only for unexpected parameter/state corruption.
+    # nocov start
     if (xx < 0) {
       xx <- 0
     }
+    # nocov end
     xl <- asin(xl)
     xb <- 1.0 / (xq + dbhht)
 
@@ -79,12 +87,18 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
 
   # ---- internal: Smalian integration from x1 to xt (m) ----
   kozak_smalian <- function(x1, xt, di1, p, HT, dbhht, ff, bias_factor) {
+    # Internal-call guard: callers enforce ordered, finite segment bounds.
+    # nocov start
     if (!is.finite(x1) || !is.finite(xt) || xt < x1) {
       return(c(v = NA_real_, di2 = NA_real_))
     }
+    # nocov end
+    # Internal-call guard: callers provide non-negative, finite starting DIB.
+    # nocov start
     if (!is.finite(di1) || di1 < 0) {
       return(c(v = NA_real_, di2 = NA_real_))
     }
+    # nocov end
 
     v <- 0.0
     repeat {
@@ -94,14 +108,19 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       }
 
       di2 <- kozak_dib(x2, HT, dbhht, ff, p, bias_factor)
+      # nocov start
+      # Defensive-only: internal callers pass validated parameters and segment
+      # bounds, so di2 non-finite is not expected with shipped parameter tables.
       if (!is.finite(di2)) {
         return(c(v = NA_real_, di2 = NA_real_))
       }
 
       inc <- cons * (x2 - x1) * (di1^2 + di2^2) * 0.5
+      # Defensive-only for unexpected numeric overflow/underflow.
       if (!is.finite(inc)) {
         return(c(v = NA_real_, di2 = NA_real_))
       }
+      # nocov end
 
       v <- v + inc
 
@@ -139,9 +158,13 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       hm2 <- (topdbh / (bias_factor * ff))^(1 / expon)
       hm2 <- (1 - hm2 * per)^2
 
+      # nocov start
+      # Defensive-only: with validated inputs and shipped coefficients, hm2 is
+      # expected finite within solver iterations.
       if (!is.finite(hm2)) {
         return(NA_real_)
       }
+      # nocov end
       if (abs(hm2 - hm1) < tolcrit) {
         break
       }
@@ -287,9 +310,12 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
     }
 
     dbhht <- dbh / HT
+    # Unreachable with validated inputs: DBH > 0 and HT is clamped >= 1.3.
+    # nocov start
     if (!is.finite(dbhht)) {
       abort_i(i, "dbh/height ratio is not finite.")
     }
+    # nocov end
 
     ff <- p$a0[[1]] * dbh^(p$a1[[1]]) * (p$a2[[1]]^dbh)
     if (!is.finite(ff) || ff <= 0) {
@@ -306,6 +332,9 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       stmv <- cons * dib3^2 * stumpht
       dsh <- dib3
     } else {
+      # nocov start
+      # Defensive branch for jurisdictions where stump height exceeds 0.3 m;
+      # current BC merch tables use stumpht_m = 0.3.
       stmv <- cons * dib3^2 * stumpht
       v <- kozak_smalian(0.3, stumpht, dib3, p, HT, dbhht, ff, bias_factor)
       if (!is.finite(v[["v"]]) || !is.finite(v[["di2"]])) {
@@ -313,24 +342,33 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       }
       dsh <- v[["di2"]]
       stmv <- stmv + v[["v"]]
+      # nocov end
     }
 
+    # nocov start
+    # Defensive-only: stump integration above enforces finite, non-negative
+    # volumes/diameters under validated inputs and parameters.
     if (!is.finite(stmv) || stmv < 0) {
       abort_i(i, "Computed stump volume is non-finite/negative.")
     }
     if (!is.finite(dsh) || dsh < 0) {
       abort_i(i, "Computed stump-top diameter is non-finite/negative.")
     }
+    # nocov end
 
     # merchantable + top
     if (dsh < topdbh) {
       v <- kozak_smalian(stumpht, HT, dsh, p, HT, dbhht, ff, bias_factor)
+      # nocov start
+      # Defensive-only: whole-stem-above-stump integration is expected finite
+      # under validated inputs and shipped parameter rows.
       if (!is.finite(v[["v"]])) {
         abort_i(
           i,
           "Smalian integration failed for top section (whole stem above stump)."
         )
       }
+      # nocov end
       volm <- 0
       topv <- v[["v"]]
     } else {
@@ -340,9 +378,13 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       }
 
       hm <- hm1 * HT
+      # nocov start
+      # Defensive-only: solver and clamps are expected to keep hm finite and
+      # above stump height for valid parameter rows.
       if (!is.finite(hm) || hm < stumpht) {
         abort_i(i, "Computed merchantable height is invalid (< stump height).")
       }
+      # nocov end
 
       numlogs <- floor((hm - stumpht) / LOGLENGTH + 1)
       numlogs <- max(numlogs, 1)
@@ -358,12 +400,16 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
         }
 
         v <- kozak_smalian(x1, xt, di1, p, HT, dbhht, ff, bias_factor)
+        # nocov start
+        # Defensive-only: merch-log integrations are expected finite with valid
+        # inputs and shipped parameter tables.
         if (!is.finite(v[["v"]]) || !is.finite(v[["di2"]])) {
           abort_i(
             i,
             paste0("Smalian integration failed for merch log ", k, ".")
           )
         }
+        # nocov end
 
         vol_logs[k] <- v[["v"]]
         di1 <- v[["di2"]]
@@ -372,14 +418,22 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       }
 
       volm <- sum(vol_logs, na.rm = TRUE)
+      # nocov start
+      # Defensive-only: sum of validated positive log sections should remain
+      # finite and non-negative.
       if (!is.finite(volm) || volm < 0) {
         abort_i(i, "Computed merchantable volume is non-finite/negative.")
       }
+      # nocov end
 
       vtop <- kozak_smalian(hm, HT, topdbh, p, HT, dbhht, ff, bias_factor)
+      # nocov start
+      # Defensive-only: top section integration is expected finite for valid
+      # geometry and parameter values.
       if (!is.finite(vtop[["v"]])) {
         abort_i(i, "Smalian integration failed for top section (hm -> tip).")
       }
+      # nocov end
       topv <- vtop[["v"]]
     }
 
@@ -387,18 +441,24 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       volm <- 0
     }
 
+    # nocov start
+    # Defensive-only: top volume is constructed from validated integrations.
     if (!is.finite(topv) || topv < 0) {
       abort_i(i, "Computed top volume is non-finite/negative.")
     }
+    # nocov end
 
     vol_stump[i] <- stmv
     vol_merch[i] <- volm
     vol_top[i] <- topv
     vol_total[i] <- stmv + volm + topv
 
+    # nocov start
+    # Defensive-only: total is a sum of finite component volumes.
     if (!is.finite(vol_total[i])) {
       abort_i(i, "Computed total volume is non-finite.")
     }
+    # nocov end
   }
 
   dplyr::tibble(

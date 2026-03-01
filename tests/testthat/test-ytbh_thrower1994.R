@@ -77,3 +77,14 @@ testthat::test_that("ytbh_thrower1994 validates inputs", {
     ignore.case = TRUE
   )
 })
+
+testthat::test_that("ytbh_thrower1994 catches negative model output", {
+  testthat::expect_error(
+    CanadaForestAllometry::ytbh_thrower1994(
+      si = 100,
+      species = "THUJ.PLI"
+    ),
+    "Negative years-to-breast-height prediction",
+    ignore.case = TRUE
+  )
+})

@@ -199,7 +199,10 @@ get_params_tbl <- function(params_key) {
     return(obj)
   }
 
-  # optional fallback for non-parameter objects stored in data/
+  # Optional compatibility fallback for non-parameter objects stored in data/.
+  # Registry-driven parameter lookups always use `parameters_*` keys and do not
+  # enter this block in normal package flow.
+  # nocov start
   if (!startsWith(params_key, "parameters_")) {
     tmp <- new.env(parent = emptyenv())
     utils::data(
@@ -211,6 +214,7 @@ get_params_tbl <- function(params_key) {
       return(get(params_key, envir = tmp, inherits = FALSE))
     }
   }
+  # nocov end
 
   rlang::abort(paste0("Internal params object not found: `", params_key, "`."))
 }

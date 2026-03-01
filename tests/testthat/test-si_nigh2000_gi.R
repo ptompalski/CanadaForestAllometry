@@ -120,3 +120,34 @@ testthat::test_that("si_nigh2000_gi validates positive finite predictors", {
     ignore.case = TRUE
   )
 })
+testthat::test_that("si_nigh2000_gi accepts near-integer age within tolerance", {
+  out <- CanadaForestAllometry::si_nigh2000_gi(
+    age = 10 + 1e-9,
+    gi = 8
+  )
+
+  testthat::expect_s3_class(out, "tbl_df")
+  testthat::expect_named(out, "si")
+  testthat::expect_true(is.finite(out$si[[1]]))
+})
+
+testthat::test_that("si_nigh2000_gi rejects age beyond integer tolerance", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_nigh2000_gi(
+      age = 10 + 1e-6,
+      gi = 8
+    ),
+    "integer breast-height ages",
+    ignore.case = TRUE
+  )
+})
+testthat::test_that("si_nigh2000_gi catches non-finite site-index predictions at extreme GI", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_nigh2000_gi(
+      age = 50,
+      gi = 1e308
+    ),
+    "Non-finite site-index prediction",
+    ignore.case = TRUE
+  )
+})

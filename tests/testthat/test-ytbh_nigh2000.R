@@ -77,3 +77,10 @@ testthat::test_that("ytbh_nigh2000 validates positive finite predictors", {
     ignore.case = TRUE
   )
 })
+testthat::test_that("ytbh_nigh2000 errors when equation yields negative predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::ytbh_nigh2000(si = 40),
+    "Negative years-to-breast-height prediction",
+    ignore.case = TRUE
+  )
+})

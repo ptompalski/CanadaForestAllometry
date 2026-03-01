@@ -33,12 +33,16 @@ ytbh_nigh2000 <- function(si) {
 
   ytbh <- 18.18 - 0.5526 * as.numeric(si)
 
+  # Unreachable with validated inputs: si is finite and ytbh is a linear
+  # transform of si, so the prediction remains finite.
+  # nocov start
   if (any(!is.finite(ytbh))) {
     cli::cli_abort(c(
       "Non-finite years-to-breast-height prediction generated in {.fn ytbh_nigh2000}.",
       "i" = "Check inputs and model domain."
     ))
   }
+  # nocov end
   if (any(ytbh < 0)) {
     cli::cli_abort(c(
       "Negative years-to-breast-height prediction generated in {.fn ytbh_nigh2000}.",

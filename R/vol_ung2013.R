@@ -115,9 +115,12 @@ vol_ung2013 <- function(DBH, height = NULL, species, jurisdiction) {
     unique(df$Species),
     function(sp) {
       p <- get_volume_params(model_id, species = sp, strict = FALSE)
+      # nocov start
+      # Defensive compatibility for non-standard parameter tables lacking Species.
       if (!"Species" %in% names(p)) {
         p$Species <- sp
       }
+      # nocov end
       dplyr::as_tibble(p)
     }
   ) |>
@@ -181,11 +184,17 @@ vol_national_dbh_engine <- function(DBH, species, jurisdiction) {
         Dijk
       ))
     ) {
+      # nocov start
+      # Defensive branch for incomplete joined rows.
       return(c(vol_total = NA_real_, vol_merch = NA_real_))
+      # nocov end
     }
+    # nocov start
+    # Defensive branch for non-finite DBH; function returns NA row instead of abort.
     if (!is.finite(dbh_i)) {
       return(c(vol_total = NA_real_, vol_merch = NA_real_))
     }
+    # nocov end
 
     V1 <- Di1^2 + Dij1^2
     V2 <- Di2^2 + Dij2^2 + Dijk^2
@@ -194,9 +203,12 @@ vol_national_dbh_engine <- function(DBH, species, jurisdiction) {
     Hd <- 1.3
 
     Htot <- b0 * dbh_i^b1
+    # nocov start
+    # Defensive degenerate-height path: return zeros when total height is unusable.
     if (!is.finite(Htot) || Htot <= stumpht_m || Htot <= Hd) {
       return(c(vol_total = 0, vol_merch = 0))
     }
+    # nocov end
 
     H <- seq(stumpht_m, Htot, by = stp)
 
@@ -296,20 +308,29 @@ vol_national_dbh_ht_engine <- function(DBH, height, species, jurisdiction) {
         Dijk
       ))
     ) {
+      # nocov start
+      # Defensive branch for incomplete joined rows.
       return(c(vol_total = NA_real_, vol_merch = NA_real_))
+      # nocov end
     }
+    # nocov start
+    # Defensive branch for non-finite DBH/height; function returns NA row.
     if (!is.finite(dbh_i) || !is.finite(ht_i)) {
       return(c(vol_total = NA_real_, vol_merch = NA_real_))
     }
+    # nocov end
 
     stp <- 0.1
     Hd <- 1.3
     V2 <- Di2^2 + Dij2^2 + Dijk^2
 
     Htot <- if (ht_i < stumpht_m) stumpht_m else ht_i
+    # nocov start
+    # Defensive degenerate-height path: return zeros when total height is unusable.
     if (!is.finite(Htot) || Htot <= stumpht_m || Htot <= Hd) {
       return(c(vol_total = 0, vol_merch = 0))
     }
+    # nocov end
 
     Hseq <- seq(stumpht_m, Htot, by = stp)
 
@@ -352,9 +373,12 @@ vol_national_dbh_ht_engine <- function(DBH, height, species, jurisdiction) {
 # Returns c(vol_total=..., vol_merch=...)
 .ctae_vol_from_segments <- function(H, D2C, stp, topdbh, mindbh, dbh_i) {
   ok <- is.finite(D2C) & D2C > 0
+  # nocov start
+  # Defensive no-information path: not enough positive diameter segments.
   if (!any(ok) || sum(ok) < 2L) {
     return(c(vol_total = 0, vol_merch = 0))
   }
+  # nocov end
 
   H <- H[ok]
   D2C <- D2C[ok]
@@ -365,17 +389,23 @@ vol_national_dbh_ht_engine <- function(DBH, height, species, jurisdiction) {
   Vi <- (pi / 80000) * (D2_lo + D2_hi) * stp
 
   volt <- sum(Vi)
+  # nocov start
+  # Defensive overflow guard on integrated total volume.
   if (!is.finite(volt) || is.infinite(volt)) {
     volt <- 0
   }
+  # nocov end
 
   # merch threshold uses lower-end diameter per segment (closest to original behavior)
   if (topdbh > 0) {
     D_lo <- sqrt(D2_lo)
     volm <- sum(Vi[D_lo > topdbh])
   } else {
+    # nocov start
+    # Defensive fallback: if topdbh is absent/non-positive, treat merch as total.
     # If no topdbh is defined, treat merch as total (same logic as legacy)
     volm <- volt
+    # nocov end
   }
 
   if (dbh_i < mindbh) {

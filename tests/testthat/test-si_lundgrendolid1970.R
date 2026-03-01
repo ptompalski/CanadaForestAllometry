@@ -157,3 +157,128 @@ testthat::test_that("si_lundgrendolid1970 validates model choice", {
     ignore.case = TRUE
   )
 })
+testthat::test_that("si_lundgrendolid1970 validates missing parameters in monomolecular branch", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 25,
+      si = 15,
+      species = "NOPE.SPP",
+      model = "monomolecular"
+    ),
+    "No LundgrenDolid1970",
+    ignore.case = TRUE
+  )
+})
+testthat::test_that("si_lundgrendolid1970 catches invalid denominator in monomolecular mode", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 1,
+      height = 15,
+      species = "PINU.BAN",
+      model = "monomolecular"
+    ),
+    "Invalid denominator generated",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("si_lundgrendolid1970 catches non-finite site-index predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 20,
+      height = 1e308,
+      species = "PICE.MAR",
+      model = "exponential_monomolecular"
+    ),
+    "Non-finite site index prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("si_lundgrendolid1970 catches negative height predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 1,
+      si = 10,
+      species = "PINU.BAN",
+      model = "monomolecular"
+    ),
+    "Negative height prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("si_lundgrendolid1970 catches non-finite height predictions", {
+  testthat::expect_error(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 20,
+      si = 1e308,
+      species = "PICE.MAR",
+      model = "exponential_monomolecular"
+    ),
+    "Non-finite height prediction",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("si_lundgrendolid1970 emits white spruce caution message once per model", {
+  msgs_exp_1 <- testthat::capture_messages(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 40,
+      si = 15,
+      species = "PICE.GLA",
+      model = "exponential_monomolecular"
+    )
+  )
+  msgs_exp_2 <- testthat::capture_messages(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 40,
+      si = 15,
+      species = "PICE.GLA",
+      model = "exponential_monomolecular"
+    )
+  )
+
+  testthat::expect_lte(length(msgs_exp_1), 1L)
+  testthat::expect_length(msgs_exp_2, 0L)
+  if (length(msgs_exp_1) == 1L) {
+    testthat::expect_match(msgs_exp_1[[1]], "not recommended for white spruce", ignore.case = TRUE)
+  }
+
+  msgs_mono_1 <- testthat::capture_messages(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 40,
+      si = 15,
+      species = "PICE.GLA",
+      model = "monomolecular"
+    )
+  )
+  msgs_mono_2 <- testthat::capture_messages(
+    CanadaForestAllometry::si_lundgrendolid1970(
+      age = 40,
+      si = 15,
+      species = "PICE.GLA",
+      model = "monomolecular"
+    )
+  )
+
+  testthat::expect_lte(length(msgs_mono_1), 1L)
+  testthat::expect_length(msgs_mono_2, 0L)
+  if (length(msgs_mono_1) == 1L) {
+    testthat::expect_match(msgs_mono_1[[1]], "not recommended for white spruce", ignore.case = TRUE)
+  }
+})
+
+testthat::test_that(".lundgrendolid1970_prepare validates zero-length inputs", {
+  testthat::expect_error(
+    CanadaForestAllometry:::.lundgrendolid1970_prepare(
+      age = numeric(0),
+      x = numeric(0),
+      species = character(0),
+      x_name = "si",
+      model = "exponential_monomolecular"
+    ),
+    "age.*length > 0",
+    ignore.case = TRUE
+  )
+})

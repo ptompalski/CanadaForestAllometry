@@ -213,9 +213,13 @@ vol_nigh2016 <- function(DBH, height, species, subregion) {
     if (!is.finite(vt) || !is.finite(vm)) {
       abort_i(i, "Prediction is not finite.")
     }
+    # Unreachable for valid inputs: exp(b0) * DBH^b1 * H^b2 is non-negative
+    # when DBH > 0 and H > 0; negative predictions would imply data/engine corruption.
+    # nocov start
     if (vt < 0 || vm < 0) {
       abort_i(i, "Prediction is negative (check inputs / parameters).")
     }
+    # nocov end
 
     vol_total[i] <- vt
     vol_merch[i] <- vm

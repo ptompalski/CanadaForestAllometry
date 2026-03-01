@@ -152,12 +152,16 @@ si_lundgrendolid1970 <- function(
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # Unreachable with current valid parameter tables and positive inputs:
+  # denominator is already checked > 0 and height is validated > 0.
+  # nocov start
   if (any(si_ft < 0)) {
     cli::cli_abort(c(
       "Negative site index prediction generated in {.fn si_lundgrendolid1970}.",
       "i" = "Check inputs and species-specific parameters."
     ))
   }
+  # nocov end
 
   dplyr::tibble(si = si_ft / 3.28084)
 }

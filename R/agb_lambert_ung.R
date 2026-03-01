@@ -83,12 +83,16 @@
 
   required <- c("species", "model", "parameter", "estimate")
   missing <- setdiff(required, names(params))
+  # Defensive schema guard: unreachable with current bundled
+  # parameters_LambertUng internal table.
+  # nocov start
   if (length(missing) > 0) {
     rlang::abort(paste0(
       "`parameters_LambertUng` is missing required columns: ",
       paste(missing, collapse = ", ")
     ))
   }
+  # nocov end
 
   params <- params |>
     dplyr::transmute(

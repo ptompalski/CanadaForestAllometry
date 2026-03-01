@@ -87,9 +87,13 @@ get_merch_criteria <- function(
     ) {
       return(NA_character_)
     }
+    # Defensive guard: species is standardized before this helper is used, so
+    # non-empty/non-ALL values are expected to already match NFI dotted format.
+    # nocov start
     if (!grepl("^[A-Z]{4}\\.[A-Z]{3}$", sp)) {
       return(NA_character_)
     }
+    # nocov end
     paste0(substr(sp, 1, 4), ".SPP")
   }
 
@@ -336,8 +340,16 @@ get_merch_criteria <- function(
 # Internal helper to access merch criteria table from namespace/data.
 .get_merchcrit_tbl <- function() {
   ns <- asNamespace("CanadaForestAllometry")
+  # nocov start
+  # Runtime-path guard: depending on loading mode (e.g., covr/devtools), merch
+  # data may be resolved from namespace or from exported package data.
   if (exists("merchcrit", envir = ns, inherits = FALSE)) {
     return(get("merchcrit", envir = ns, inherits = FALSE))
   }
-  CanadaForestAllometry::merchcrit
+  # nocov end
+  # Environment-compatibility fallback for unusual namespace/data loading
+  # states; normal package runtime resolves `merchcrit` in namespace.
+  # nocov start
+  CanadaForestAllometry::merchcrit # nocov
+  # nocov end
 }

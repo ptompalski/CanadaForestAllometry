@@ -68,12 +68,16 @@ si_nigh2000_gi <- function(age, gi) {
   ) |>
     dplyr::left_join(pars, by = "age")
 
+  # Unreachable with current internal data: age is constrained to [1, 50]
+  # and parameters_Nigh2000_gi contains complete rows for ages 1..50.
+  # nocov start
   if (anyNA(out$b0) || anyNA(out$b1)) {
     bad_age <- unique(out$age[is.na(out$b0) | is.na(out$b1)])
     cli::cli_abort(
       "No Nigh2000 growth-intercept parameters found for age(s): {paste(bad_age, collapse = ', ')}."
     )
   }
+  # nocov end
 
   si <- with(out, 1.3 + b0 * (gi^b1))
 
@@ -83,12 +87,16 @@ si_nigh2000_gi <- function(age, gi) {
       "i" = "Check inputs and model domain."
     ))
   }
+  # Unreachable with current valid domain: gi > 0 and fitted b0/b1 are > 0,
+  # so 1.3 + b0 * gi^b1 cannot be negative.
+  # nocov start
   if (any(si < 0)) {
     cli::cli_abort(c(
       "Negative site-index prediction generated in {.fn si_nigh2000_gi}.",
       "i" = "Check inputs and model domain."
     ))
   }
+  # nocov end
 
   dplyr::tibble(si = si)
 }

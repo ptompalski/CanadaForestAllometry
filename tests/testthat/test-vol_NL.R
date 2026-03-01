@@ -521,3 +521,100 @@ testthat::test_that("District 19 is accepted but falls back to province model (C
   testthat::expect_equal(b$vol_merchantable_gross, a$vol_merchantable_gross)
   testthat::expect_equal(b$vol_merchantable_net, a$vol_merchantable_net)
 })
+testthat::test_that("vol_nl row-level validation includes context for bad numeric inputs", {
+  testthat::expect_error(
+    CanadaForestAllometry::vol_nl(
+      DBH = NA_real_,
+      height = 20,
+      species = "PICE.MAR",
+      subregion = "Province"
+    ),
+    "failed for row 1.*finite numeric",
+    ignore.case = TRUE
+  )
+
+  testthat::expect_error(
+    CanadaForestAllometry::vol_nl(
+      DBH = 0,
+      height = 20,
+      species = "PICE.MAR",
+      subregion = "Province"
+    ),
+    "failed for row 1.*DBH must be > 0",
+    ignore.case = TRUE
+  )
+
+  testthat::expect_error(
+    CanadaForestAllometry::vol_nl(
+      DBH = 20,
+      height = 0,
+      species = "PICE.MAR",
+      subregion = "Province"
+    ),
+    "failed for row 1.*height must be > 0",
+    ignore.case = TRUE
+  )
+})
+
+testthat::test_that("vol_nl normalizes numeric-like district keys and preserves vectorization", {
+  out <- CanadaForestAllometry::vol_nl(
+    DBH = c(20, 20, 20, 20),
+    height = c(20, 20, 20, 20),
+    species = c("PICE.MAR", "PICE.MAR", "PICE.MAR", "ABIE.BAL"),
+    subregion = c("Province", "19.0", "04", "2"),
+    keep_net = TRUE
+  )
+
+  testthat::expect_s3_class(out, "tbl_df")
+  testthat::expect_equal(nrow(out), 4L)
+  testthat::expect_true(all(is.finite(out$vol_total)))
+  testthat::expect_true(all(is.finite(out$vol_merchantable_gross)))
+  testthat::expect_true(all(is.finite(out$vol_merchantable_net)))
+})
+
+testthat::test_that("vol_nl district 19.0 behaves like district 19 and province fallback", {
+  x_prov <- CanadaForestAllometry::vol_nl(
+    DBH = 20,
+    height = 20,
+    species = "PICE.MAR",
+    subregion = "Province",
+    keep_net = TRUE
+  )
+
+  x_19 <- CanadaForestAllometry::vol_nl(
+    DBH = 20,
+    height = 20,
+    species = "PICE.MAR",
+    subregion = 19,
+    keep_net = TRUE
+  )
+
+  x_19d <- CanadaForestAllometry::vol_nl(
+    DBH = 20,
+    height = 20,
+    species = "PICE.MAR",
+    subregion = "19.0",
+    keep_net = TRUE
+  )
+
+  testthat::expect_equal(x_19$vol_total, x_19d$vol_total)
+  testthat::expect_equal(x_19$vol_merchantable_gross, x_19d$vol_merchantable_gross)
+  testthat::expect_equal(x_19$vol_merchantable_net, x_19d$vol_merchantable_net)
+
+  testthat::expect_equal(x_prov$vol_total, x_19$vol_total)
+  testthat::expect_equal(x_prov$vol_merchantable_gross, x_19$vol_merchantable_gross)
+  testthat::expect_equal(x_prov$vol_merchantable_net, x_19$vol_merchantable_net)
+})
+
+testthat::test_that("vol_nl errors when species has no NL parameter rows", {
+  testthat::expect_error(
+    CanadaForestAllometry::vol_nl(
+      DBH = 20,
+      height = 20,
+      species = "PSEU.MEN",
+      subregion = "Province"
+    ),
+    "No NL parameters returned for this species x subregion",
+    fixed = FALSE
+  )
+})
