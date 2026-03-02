@@ -19,14 +19,14 @@ Full documentation is available at
 
 `CanadaForestAllometry` currently includes allometric models to:
 
-- Estimate tree-level volume (total and merchantable). Read more: [Tree
-  volume
+- Estimate tree-level volume (total and merchantable): [Tree volume
   models](https://ptompalski.github.io/CanadaForestAllometry/articles/Tree-Volume-Models.html)
-- Estimate aboveground biomass (AGB). Read more: [Aboveground biomass
+- Estimate aboveground biomass (AGB): [Aboveground biomass
   models](https://ptompalski.github.io/CanadaForestAllometry/articles/Tree-Aboveground-Biomass-Models.html)
-- Convert volume to biomass. Read more: [National volume-to-biomass
-  conversions
+- Convert volume to biomass: [National volume-to-biomass conversions
   models](https://ptompalski.github.io/CanadaForestAllometry/articles/Volume-to-biomass.html)
+- Estimate site index and site productivity: [Site index
+  models](https://ptompalski.github.io/CanadaForestAllometry/articles/Site-Index-Models.html)
 - Convert total volume to merchantable volume
 - Apply simple growth models to estimate changes in attributes over time
 

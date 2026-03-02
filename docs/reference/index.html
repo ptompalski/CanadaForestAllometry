@@ -18,7 +18,8 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
     <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
   </ul></li>
@@ -37,9 +38,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="aboveground-biomass">Aboveground biomass<a class="anchor" aria-label="anchor" href="#aboveground-biomass"></a></h2>
 
-
+      <div class="section-desc"><p>Functions for AGB estimation.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -59,57 +60,17 @@
 
         </dt>
         <dd>Calculate tree-level AGB using Lambert &amp; Ung national biomass equations</dd>
+      </dl></div><div class="section level2">
+      <h2 id="volume-models">Volume models<a class="anchor" aria-label="anchor" href="#volume-models"></a></h2>
 
-        <dt>
+      <div class="section-desc"><p>Functions for volume estimation.</p></div>
 
-          <code><a href="get_merch_criteria.html">get_merch_criteria()</a></code>
+      <dl></dl></div><div class="section level2">
 
-        </dt>
-        <dd>Get merchantability criteria for a jurisdiction/species (BEC-aware for BC)</dd>
 
-        <dt>
 
-          <code><a href="get_volume_params.html">get_volume_params()</a></code>
 
-        </dt>
-        <dd>Get volume-model parameters from the CanadaForestAllometry registry</dd>
-
-        <dt>
-
-          <code><a href="merchcrit.html">merchcrit</a></code>
-
-        </dt>
-        <dd>Merchantability criteria</dd>
-
-        <dt>
-
-          <code><a href="Ung2009.html">Ung2009()</a></code>
-
-        </dt>
-        <dd>Ung2009 Growth and Yield Model</dd>
-
-        <dt>
-
-          <code><a href="v2b.html">v2b()</a></code>
-
-        </dt>
-        <dd>Convert volume to aboveground biomass components (Boudewyn et al. 2007)</dd>
-
-        <dt>
-
-          <code><a href="vol.html">vol()</a></code>
-
-        </dt>
-        <dd>Calculate tree volume: choose best available model or run all candidate models</dd>
-
-        <dt>
-
-          <code><a href="volume_model_registry.html">volume_model_registry()</a></code>
-
-        </dt>
-        <dd>Volume model registry</dd>
-
-        <dt>
+      <dl><dt>
 
           <code><a href="vol_fortin2007.html">vol_fortin2007()</a></code>
 
@@ -192,8 +153,199 @@
 
         </dt>
         <dd>Estimate tree volume using Zakrzewski (2013) taper model (Ontario)</dd>
+
+        <dt>
+
+          <code><a href="vol.html">vol()</a></code>
+
+        </dt>
+        <dd>Calculate tree volume: choose best available model or run all candidate models</dd>
+
+        <dt>
+
+          <code><a href="volume_model_registry.html">volume_model_registry()</a></code>
+
+        </dt>
+        <dd>Volume model registry</dd>
+
+        <dt>
+
+          <code><a href="get_volume_params.html">get_volume_params()</a></code>
+
+        </dt>
+        <dd>Get volume-model parameters from the CanadaForestAllometry registry</dd>
+      </dl></div><div class="section level2">
+      <h2 id="site-index-models">Site index models<a class="anchor" aria-label="anchor" href="#site-index-models"></a></h2>
+
+      <div class="section-desc"><p>Functions for site index modeling.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="si_carmeanhahn1981.html">si_carmeanhahn1981()</a></code>
+
+        </dt>
+        <dd>Carmean and Hahn (1981) site index model</dd>
+
+        <dt>
+
+          <code><a href="si_kerbowling1991.html">si_kerbowling1991()</a></code>
+
+        </dt>
+        <dd>Ker and Bowling (1991) site index model</dd>
+
+        <dt>
+
+          <code><a href="si_lundgrendolid1970.html">si_lundgrendolid1970()</a></code>
+
+        </dt>
+        <dd>Lundgren and Dolid (1970) site index model</dd>
+
+        <dt>
+
+          <code><a href="si_model_registry.html">si_model_registry()</a></code>
+
+        </dt>
+        <dd>Site-index model registry</dd>
+
+        <dt>
+
+          <code><a href="si_nigh2000.html">si_nigh2000()</a></code>
+
+        </dt>
+        <dd>Nigh (2000) site index model for interior western redcedar (BC)</dd>
+
+        <dt>
+
+          <code><a href="si_nigh2000_gi.html">si_nigh2000_gi()</a></code>
+
+        </dt>
+        <dd>Nigh (2000) growth-intercept site index model for interior western redcedar</dd>
+
+        <dt>
+
+          <code><a href="si_nighcourtin1998.html">si_nighcourtin1998()</a></code>
+
+        </dt>
+        <dd>Nigh and Courtin (1998) site index model for red alder (BC coast)</dd>
+
+        <dt>
+
+          <code><a href="si_payandeh1974.html">si_payandeh1974()</a></code>
+
+        </dt>
+        <dd>Payandeh (1974) site index model</dd>
+
+        <dt>
+
+          <code><a href="si_scottvoorhis1986.html">si_scottvoorhis1986()</a></code>
+
+        </dt>
+        <dd>Scott and Voorhis (1986) site index model</dd>
+
+        <dt>
+
+          <code><a href="si_thrower1994.html">si_thrower1994()</a></code>
+
+        </dt>
+        <dd>Thrower et al. (1994) site index models for BC interior species</dd>
+
+        <dt>
+
+          <code><a href="ytbh_nigh2000.html">ytbh_nigh2000()</a></code>
+
+        </dt>
+        <dd>Nigh (2000) years-to-breast-height model for interior western redcedar</dd>
+
+        <dt>
+
+          <code><a href="ytbh_nighcourtin1998.html">ytbh_nighcourtin1998()</a></code>
+
+        </dt>
+        <dd>Nigh and Courtin (1998) years-to-breast-height model for red alder</dd>
+
+        <dt>
+
+          <code><a href="ytbh_thrower1994.html">ytbh_thrower1994()</a></code>
+
+        </dt>
+        <dd>Thrower et al. (1994) years-to-breast-height models</dd>
+      </dl></div><div class="section level2">
+      <h2 id="volume-conversions">Volume conversions<a class="anchor" aria-label="anchor" href="#volume-conversions"></a></h2>
+
+      <div class="section-desc"><p>Functions convert volume to biomass, total volume to merchantable, or calculate AGB component proportions.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="v2b.html">v2b()</a></code>
+
+        </dt>
+        <dd>Convert volume to aboveground biomass components (Boudewyn et al. 2007)</dd>
+
+        <dt>
+
+          <code><a href="agb_component_proportions.html">agb_component_proportions()</a></code>
+
+        </dt>
+        <dd>Boudewyn biomass component proportions (Tables 6–7)</dd>
+
+        <dt>
+
+          <code><a href="vol_total_to_merchantable.html">vol_total_to_merchantable()</a></code>
+
+        </dt>
+        <dd>Convert total volume to merchantable volume (Boudewyn et al. 2007; Appendix 6 / Table 14)</dd>
+      </dl></div><div class="section level2">
+      <h2 id="growth-and-yield">Growth and yield<a class="anchor" aria-label="anchor" href="#growth-and-yield"></a></h2>
+
+      <div class="section-desc"><p>Growth and yield models.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="Ung2009.html">Ung2009()</a></code>
+
+        </dt>
+        <dd>Ung2009 Growth and Yield Model</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data-and-merchantability">Data and merchantability<a class="anchor" aria-label="anchor" href="#data-and-merchantability"></a></h2>
+
+      <div class="section-desc"><p>Datasets and merchantability criteria used by model wrappers.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="merchcrit.html">merchcrit</a></code>
+
+        </dt>
+        <dd>Merchantability criteria</dd>
+
+        <dt>
+
+          <code><a href="get_merch_criteria.html">get_merch_criteria()</a></code>
+
+        </dt>
+        <dd>Get merchantability criteria for a jurisdiction/species (BEC-aware for BC)</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

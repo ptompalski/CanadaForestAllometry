@@ -1,0 +1,76 @@
+---
+title: "Site Index Models"
+bibliography: ../../REFERENCES.bib
+csl: ../../isprs-journal-of-photogrammetry-and-remote-sensing.csl
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+library(CanadaForestAllometry)
+library(dplyr)
+```
+
+# Site index models included in the package
+
+
+
+```{r results = "asis", echo = FALSE}
+reg <- CanadaForestAllometry:::si_model_registry_species() |>
+  dplyr::arrange(dplyr::desc(rank), model_id)
+
+reg_fun <- reg |>
+  dplyr::group_by(engine) |>
+  dplyr::summarise(
+    rank = max(rank, na.rm = TRUE),
+    description = paste(unique(description), collapse = "; "),
+    reference = paste(unique(reference), collapse = "; "),
+    province_scope = list(sort(unique(unlist(province_scope)))),
+    species = list(sort(unique(unlist(species)))),
+    .groups = "drop"
+  ) |>
+  dplyr::arrange(dplyr::desc(rank), engine)
+
+bullets <- reg_fun |>
+  dplyr::mutate(
+    coverage = vapply(
+      province_scope,
+      function(x) {
+        if (any(x == "ALL")) {
+          "Canada (all provinces/territories)"
+        } else {
+          paste(x, collapse = ", ")
+        }
+      },
+      character(1)
+    ),
+    species_cov = vapply(
+      species,
+      function(x) {
+        if (length(x) == 0L) {
+          "unknown"
+        } else {
+          paste0(length(x), " species (", paste(x, collapse = ", "), ")")
+        }
+      },
+      character(1)
+    ),
+    bullet = paste0(
+      "- `", engine, "()`",
+      ". ", description,
+      ". Coverage: ", coverage,
+      ". Species coverage: ", species_cov,
+      ". Reference: ", reference, "."
+    )
+  )
+
+cat(paste(bullets$bullet, collapse = "\n"))
+```
+
+# References
