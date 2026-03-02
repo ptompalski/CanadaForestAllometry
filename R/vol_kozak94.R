@@ -357,14 +357,13 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
     # nocov end
 
     # merchantable + top
-    # Treat near-threshold stump diameters as non-merchantable to avoid
-    # platform-dependent branch flips from tiny floating-point differences.
-    topdbh_tol_cm <- 0.05
-    if (dsh <= (topdbh + topdbh_tol_cm)) {
+    # For extremely short trees, force the non-merchantable path. This avoids
+    # platform-dependent tiny positive merchantable volumes near the 1.3 m
+    # height clamp where branch decisions can differ by math-library rounding.
+    min_merch_length_m <- 1.05
+    if (HT <= (stumpht + min_merch_length_m)) {
       v <- kozak_smalian(stumpht, HT, dsh, p, HT, dbhht, ff, bias_factor)
       # nocov start
-      # Defensive-only: whole-stem-above-stump integration is expected finite
-      # under validated inputs and shipped parameter rows.
       if (!is.finite(v[["v"]])) {
         abort_i(
           i,
@@ -375,69 +374,88 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       volm <- 0
       topv <- v[["v"]]
     } else {
-      hm1 <- solve_hm1(p, HT, dbhht, ff, bias_factor, topdbh)
-      if (!is.finite(hm1)) {
-        abort_i(i, "Merchantable height solver failed (non-finite hm1).")
-      }
-
-      hm <- hm1 * HT
-      # nocov start
-      # Defensive-only: solver and clamps are expected to keep hm finite and
-      # above stump height for valid parameter rows.
-      if (!is.finite(hm) || hm < stumpht) {
-        abort_i(i, "Computed merchantable height is invalid (< stump height).")
-      }
-      # nocov end
-
-      numlogs <- floor((hm - stumpht) / LOGLENGTH + 1)
-      numlogs <- max(numlogs, 1)
-
-      vol_logs <- numeric(numlogs)
-      di1 <- dsh
-      x1 <- stumpht
-
-      for (k in seq_len(numlogs)) {
-        xt <- x1 + LOGLENGTH
-        if (xt >= hm) {
-          xt <- hm
-        }
-
-        v <- kozak_smalian(x1, xt, di1, p, HT, dbhht, ff, bias_factor)
+      # Treat near-threshold stump diameters as non-merchantable to avoid
+      # platform-dependent branch flips from tiny floating-point differences.
+      topdbh_tol_cm <- 0.05
+      if (dsh <= (topdbh + topdbh_tol_cm)) {
+        v <- kozak_smalian(stumpht, HT, dsh, p, HT, dbhht, ff, bias_factor)
         # nocov start
-        # Defensive-only: merch-log integrations are expected finite with valid
-        # inputs and shipped parameter tables.
-        if (!is.finite(v[["v"]]) || !is.finite(v[["di2"]])) {
+        # Defensive-only: whole-stem-above-stump integration is expected finite
+        # under validated inputs and shipped parameter rows.
+        if (!is.finite(v[["v"]])) {
           abort_i(
             i,
-            paste0("Smalian integration failed for merch log ", k, ".")
+            "Smalian integration failed for top section (whole stem above stump)."
           )
         }
         # nocov end
+        volm <- 0
+        topv <- v[["v"]]
+      } else {
+        hm1 <- solve_hm1(p, HT, dbhht, ff, bias_factor, topdbh)
+        if (!is.finite(hm1)) {
+          abort_i(i, "Merchantable height solver failed (non-finite hm1).")
+        }
 
-        vol_logs[k] <- v[["v"]]
-        di1 <- v[["di2"]]
-        x1 <- xt
-        if (x1 >= hm) break
-      }
+        hm <- hm1 * HT
+        # nocov start
+        # Defensive-only: solver and clamps are expected to keep hm finite and
+        # above stump height for valid parameter rows.
+        if (!is.finite(hm) || hm < stumpht) {
+          abort_i(i, "Computed merchantable height is invalid (< stump height).")
+        }
+        # nocov end
 
-      volm <- sum(vol_logs, na.rm = TRUE)
-      # nocov start
-      # Defensive-only: sum of validated positive log sections should remain
-      # finite and non-negative.
-      if (!is.finite(volm) || volm < 0) {
-        abort_i(i, "Computed merchantable volume is non-finite/negative.")
-      }
-      # nocov end
+        numlogs <- floor((hm - stumpht) / LOGLENGTH + 1)
+        numlogs <- max(numlogs, 1)
 
-      vtop <- kozak_smalian(hm, HT, topdbh, p, HT, dbhht, ff, bias_factor)
-      # nocov start
-      # Defensive-only: top section integration is expected finite for valid
-      # geometry and parameter values.
-      if (!is.finite(vtop[["v"]])) {
-        abort_i(i, "Smalian integration failed for top section (hm -> tip).")
+        vol_logs <- numeric(numlogs)
+        di1 <- dsh
+        x1 <- stumpht
+
+        for (k in seq_len(numlogs)) {
+          xt <- x1 + LOGLENGTH
+          if (xt >= hm) {
+            xt <- hm
+          }
+
+          v <- kozak_smalian(x1, xt, di1, p, HT, dbhht, ff, bias_factor)
+          # nocov start
+          # Defensive-only: merch-log integrations are expected finite with valid
+          # inputs and shipped parameter tables.
+          if (!is.finite(v[["v"]]) || !is.finite(v[["di2"]])) {
+            abort_i(
+              i,
+              paste0("Smalian integration failed for merch log ", k, ".")
+            )
+          }
+          # nocov end
+
+          vol_logs[k] <- v[["v"]]
+          di1 <- v[["di2"]]
+          x1 <- xt
+          if (x1 >= hm) break
+        }
+
+        volm <- sum(vol_logs, na.rm = TRUE)
+        # nocov start
+        # Defensive-only: sum of validated positive log sections should remain
+        # finite and non-negative.
+        if (!is.finite(volm) || volm < 0) {
+          abort_i(i, "Computed merchantable volume is non-finite/negative.")
+        }
+        # nocov end
+
+        vtop <- kozak_smalian(hm, HT, topdbh, p, HT, dbhht, ff, bias_factor)
+        # nocov start
+        # Defensive-only: top section integration is expected finite for valid
+        # geometry and parameter values.
+        if (!is.finite(vtop[["v"]])) {
+          abort_i(i, "Smalian integration failed for top section (hm -> tip).")
+        }
+        # nocov end
+        topv <- vtop[["v"]]
       }
-      # nocov end
-      topv <- vtop[["v"]]
     }
 
     if (!allow_merch) {
