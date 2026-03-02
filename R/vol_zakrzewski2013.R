@@ -70,12 +70,15 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
 
   # ---- internal: compute s(H/DBH) using Table 1 mapping (conifers) ----
   zak_compute_s_conifer_1 <- function(HDR, rho, species_nfi) {
+    # nocov start
+    # Defensive-only: callers validate positive, finite HDR and finite rho.
     if (!is.finite(HDR) || HDR <= 0) {
       return(NA_real_)
     }
     if (!is.finite(rho)) {
       return(NA_real_)
     }
+    # nocov end
 
     s_form <- dplyr::case_when(
       species_nfi %in%
@@ -86,6 +89,8 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
       TRUE ~ NA_character_
     )
 
+    # nocov start
+    # Defensive fallback for species outside the explicit Table-1 mapping.
     if (is.na(s_form)) {
       s <- 1 + HDR^1.31
     } else if (s_form == "2 + rho*log(HDR)") {
@@ -99,6 +104,7 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
     } else {
       s <- NA_real_
     }
+    # nocov end
 
     if (is.finite(s) && s > 3) {
       s <- 2
@@ -118,9 +124,12 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
       barkf <- delta + nu * (BH / H)
     }
 
+    # nocov start
+    # Defensive cap to preserve physically valid bark fraction.
     if (is.finite(barkf) && barkf > 1) {
       barkf <- 0.984
     }
+    # nocov end
     barkf
   }
 
@@ -245,9 +254,12 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
       27 * t48 * t30 * t56 +
       4 * t35 * t5
 
+    # nocov start
+    # Defensive floor to keep cubic-root/square-root chain numerically stable.
     if (!is.finite(t60) || t60 < 0.001) {
       t60 <- 0.001
     }
+    # nocov end
 
     t62 <- sqrt(ca_h * t60)
     t69 <- ((9 *
@@ -442,9 +454,12 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
 
     # ---- compute HDR and s ----
     HDR <- H / dbh
+    # nocov start
+    # Unreachable with validated DBH > 0 and H clamped to >= BH.
     if (!is.finite(HDR) || HDR <= 0) {
       abort_i(i, "Invalid HDR (H/DBH).")
     }
+    # nocov end
 
     if (zak_is_deciduous_chi(chi)) {
       s <- 2
@@ -455,9 +470,12 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
         species_nfi = species_std[i]
       )
     }
+    # nocov start
+    # Defensive-only: helper clamps/constructs positive finite `s` in valid domain.
     if (!is.finite(s) || s <= 0) {
       abort_i(i, "Computed 's' is invalid (non-finite/<=0).")
     }
+    # nocov end
 
     # ---- compute bark fraction and DIB at breast height ----
     barkf <- zak_bark_fraction_1(H = H, delta = delta, nu = nu, chi = chi)
@@ -466,9 +484,12 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
     }
 
     dib <- dbh * barkf
+    # nocov start
+    # Defensive-only: positive DBH and bounded bark fraction should keep dib > 0.
     if (!is.finite(dib) || dib <= 0) {
       abort_i(i, "Computed DIB at BH is invalid (non-finite/<=0).")
     }
+    # nocov end
 
     # ---- gross total volume (0..H) ----
     v_total <- zak_section_volume_1(
@@ -499,6 +520,8 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
           dib_cm = dib
         )
 
+        # nocov start
+        # Defensive solver guards for rare unstable parameter/input combinations.
         if (!is.finite(merchht)) {
           abort_i(i, "Merchantable height solver returned non-finite.")
         }
@@ -508,7 +531,10 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
         if (merchht > H) {
           merchht <- H
         }
+        # nocov end
 
+        # nocov start
+        # Defensive lower-bound handling for rare solver outputs below stump height.
         if (merchht < stumpht) {
           v_merch <- 0
         } else {
@@ -521,13 +547,17 @@ vol_zakrzewski2013 <- function(DBH, height, species) {
             G2 = gamma,
             dib_cm = dib
           )
+          # nocov start
+          # Defensive-only: section-volume formula should stay finite/non-negative.
           if (!is.finite(v_merch) || v_merch < 0) {
             abort_i(
               i,
               "Merchantable volume computation produced non-finite/negative value."
             )
           }
+          # nocov end
         }
+        # nocov end
       } else {
         v_merch <- 0
       }

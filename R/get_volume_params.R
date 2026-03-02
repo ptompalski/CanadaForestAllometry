@@ -55,9 +55,13 @@ get_volume_params <- function(
     ) {
       return(NA_character_)
     }
+    # Defensive guard: species is standardized before this helper is used, so
+    # non-empty/non-ALL values are expected to already match NFI dotted format.
+    # nocov start
     if (!grepl("^[A-Z]{4}\\.[A-Z]{3}$", sp)) {
       return(NA_character_)
     }
+    # nocov end
     paste0(substr(sp, 1, 4), ".SPP")
   }
 

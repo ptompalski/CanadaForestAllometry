@@ -165,6 +165,14 @@ testthat::test_that("v2b_component_keys returns expected join keys", {
     v2b_component_keys("B14"),
     c("juris_id", "ecozone", "genus")
   )
+  testthat::expect_equal(
+    v2b_component_keys("B6_tb"),
+    c("juris_id", "ecozone", "genus", "species", "variety")
+  )
+  testthat::expect_equal(
+    v2b_component_keys("B7_tb"),
+    c("juris_id", "ecozone", "genus", "species", "variety")
+  )
   testthat::expect_error(
     v2b_component_keys("NOPE"),
     class = "ctae_v2b_unknown_component"

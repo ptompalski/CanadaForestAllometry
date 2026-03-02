@@ -4,19 +4,27 @@ total_to_merch_build_keys <- function(species, jurisdiction, ecozone) {
   # species/jurisdiction/ecozone are assumed already recycled to same length
   n <- length(species)
 
+  # Internal invariant: caller recycles all vectors to equal length before this
+  # helper is called (see vol_total_to_merchantable()).
+  # nocov start
   if (length(jurisdiction) != n || length(ecozone) != n) {
     rlang::abort(
       "Internal error: inputs to total_to_merch_build_keys() must have equal length.",
       class = "ctae_internal_recycling_error"
     )
   }
+  # nocov end
 
+  # Internal invariant: ecozone is standardized upstream, so non-NA values are
+  # guaranteed to be integer codes in 1..15.
+  # nocov start
   if (any(!is.na(ecozone) & !ecozone %in% 1:15)) {
     rlang::abort(
       "Invalid ecozone code detected. Valid ecozone codes are integers 1-15.",
       class = "ctae_invalid_ecozone"
     )
   }
+  # nocov end
 
   juris_id <- standardize_jurisdiction_code(jurisdiction)
   species_nfi <- standardize_species_code(species, keep_all = FALSE)

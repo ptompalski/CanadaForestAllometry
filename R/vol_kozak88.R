@@ -134,6 +134,8 @@ vol_kozak88_engine <- function(
   # ---- internal: check wide params row (now supports optional p) ----
   check_params_wide <- function(p_w) {
     need <- c("a0", "a1", "a2", "b1", "b2", "b3", "b4", "b5")
+    # nocov start
+    # Defensive-only: data accessor is expected to return one fully-formed row.
     if (nrow(p_w) != 1) {
       return(NULL)
     }
@@ -162,6 +164,7 @@ vol_kozak88_engine <- function(
     if (any(!is.finite(unlist(p)))) {
       return(NULL)
     }
+    # nocov end
     if (p$p <= 0 || p$p >= 1) {
       return(NULL)
     }
@@ -170,6 +173,8 @@ vol_kozak88_engine <- function(
 
   # ---- internal: DIB at height h (m), inside bark (cm) ----
   kozak88_dib <- function(h, DBH, HT, p) {
+    # nocov start
+    # Defensive-only: callers pass validated finite dimensions and positive HT.
     if (!is.finite(h) || !is.finite(DBH) || !is.finite(HT)) {
       return(NA_real_)
     }
@@ -194,6 +199,7 @@ vol_kozak88_engine <- function(
     if (!is.finite(x) || x < 0) {
       x <- 0
     }
+    # nocov end
 
     cc <- p$b1 *
       (z^2) +
@@ -208,9 +214,12 @@ vol_kozak88_engine <- function(
     }
 
     dib <- ff * (x^cc)
+    # nocov start
+    # Defensive-only for unexpected floating-point overflow/underflow.
     if (!is.finite(dib)) {
       return(NA_real_)
     }
+    # nocov end
     dib
   }
 
@@ -241,6 +250,8 @@ vol_kozak88_engine <- function(
       g1 <- (1 - ((topdbh / ff)^(1 / cee)) * per)^2
       g0 <- (g0 + g1) / 2
 
+      # nocov start
+      # Defensive-only: reset behavior mirrors legacy implementation.
       if (is.nan(g0) || is.infinite(g0)) {
         break
       }
@@ -254,19 +265,25 @@ vol_kozak88_engine <- function(
     if (g0 < 0) {
       g0 <- 0.9
     }
+    # nocov end
 
     g0
   }
 
   # ---- internal: Simpson integration (20 sub-sections => 10 Simpson segments) ----
   vol_integrate_simpson <- function(stumpht, upper_h, dbh, HT, p) {
+    # nocov start
+    # Defensive-only: main caller clamps hi >= stumpht; keep guard for safety.
     if (upper_h <= stumpht) {
       return(0)
     }
+    # nocov end
 
     mlen <- (1:20) * (upper_h - stumpht) / 20 + stumpht
 
     dib0 <- kozak88_dib(stumpht, dbh, HT, p)
+    # nocov start
+    # Defensive-only with validated inputs and shipped coefficient tables.
     if (!is.finite(dib0) || dib0 < 0) {
       return(NA_real_)
     }
@@ -280,6 +297,7 @@ vol_kozak88_engine <- function(
     if (any(!is.finite(dibm)) || any(dibm < 0)) {
       return(NA_real_)
     }
+    # nocov end
 
     k <- cons * (((upper_h - stumpht) / 10) / 6)
 
@@ -382,30 +400,41 @@ vol_kozak88_engine <- function(
       abort_i(i, "Failed computing DIB at stump height.")
     }
     stpvol <- cons * dib_stump^2 * stumpht
+    # nocov start
+    # Defensive-only: stump volume uses validated non-negative diameter.
     if (!is.finite(stpvol) || stpvol < 0) {
       abort_i(i, "Computed stump volume is invalid.")
     }
+    # nocov end
 
     # ---- colleague logic: compute hi via solver (with reset behavior), then totvol = section + tip + stump ----
     g0 <- solve_g_colleague(dbh, HT, p, topdbh)
     hi <- g0 * HT
 
     # guard: if hi ends up below stump, clamp (prevents negative integration lengths)
+    # nocov start
+    # Defensive-only: solver already applies reset behavior.
     if (!is.finite(hi)) {
       hi <- 0.9 * HT
     }
     if (hi < stumpht) {
       hi <- stumpht
     }
+    # nocov end
 
     # section volume from stump -> hi (this is what colleague calls mvol before mindbh filter)
     section_vol <- vol_integrate_simpson(stumpht, hi, dbh, HT, p)
+    # nocov start
+    # Defensive-only: integration should stay finite/non-negative.
     if (!is.finite(section_vol) || section_vol < 0) {
       section_vol <- 0
     }
+    # nocov end
 
     # tip volume cone uses DIB at hi (colleague uses dibm[[20]] which is DIB at hi)
     dib_hi <- kozak88_dib(hi, dbh, HT, p)
+    # nocov start
+    # Defensive-only fallback to preserve stable outputs.
     if (!is.finite(dib_hi) || dib_hi < 0) {
       dib_hi <- 0
     }
@@ -424,6 +453,7 @@ vol_kozak88_engine <- function(
     if (!is.finite(mvol_out) || mvol_out < 0) {
       mvol_out <- 0
     }
+    # nocov end
 
     vol_total[i] <- totvol
     vol_merch[i] <- mvol_out

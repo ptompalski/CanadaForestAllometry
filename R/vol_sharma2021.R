@@ -69,9 +69,13 @@ vol_sharma2021 <- function(DBH, height, species) {
         subregion = "ALL",
         strict = TRUE
       )
+      # Defensive compatibility guard: get_volume_params() is expected to return
+      # the Species column from the underlying parameter table.
+      # nocov start
       if (!"Species" %in% names(p)) {
         p$Species <- sp
       }
+      # nocov end
 
       req <- c("total_inside_bark", "merchantable_inside_bark")
 
@@ -80,6 +84,9 @@ vol_sharma2021 <- function(DBH, height, species) {
         dplyr::select(Species, volume_type, alpha, beta, gamma)
 
       missing_req <- setdiff(req, unique(p$volume_type))
+      # Defensive data-integrity guard: bundled Sharma table should contain both
+      # fixed volume_type rows for supported species.
+      # nocov start
       if (length(missing_req) > 0) {
         rlang::abort(paste0(
           "vol_sharma2021(): missing parameter row(s) for species=",
@@ -88,6 +95,7 @@ vol_sharma2021 <- function(DBH, height, species) {
           paste(missing_req, collapse = ", ")
         ))
       }
+      # nocov end
 
       p
     }

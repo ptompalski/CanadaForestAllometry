@@ -3,3 +3,40 @@ destination: "docs"
 template:
   bootstrap: 5
 
+reference:
+  - title: Aboveground biomass
+    desc: Functions for AGB estimation.
+    contents:
+      - starts_with("agb_")
+
+  - title: Volume models
+    desc: Functions for volume estimation.
+    contents:
+      - starts_with("vol_")
+      - vol
+      - volume_model_registry
+      - get_volume_params
+
+  - title: Site index models
+    desc: Functions for site index modeling.
+    contents:
+      - starts_with("si_")
+      - starts_with("ytbh_")
+
+  - title: Volume conversions
+    desc: Functions convert volume to biomass, total volume to merchantable, or calculate AGB component proportions.
+    contents:
+      - v2b
+      - agb_component_proportions
+      - vol_total_to_merchantable
+
+  - title: Growth and yield
+    desc: Growth and yield models.
+    contents:
+      - Ung2009
+
+  - title: Data and merchantability
+    desc: Datasets and merchantability criteria used by model wrappers.
+    contents:
+      - merchcrit
+      - get_merch_criteria

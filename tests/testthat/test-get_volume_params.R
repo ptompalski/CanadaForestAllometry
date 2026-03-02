@@ -131,6 +131,19 @@ testthat::test_that("strict = TRUE includes province/subregion context in error 
   )
 })
 
+testthat::test_that("strict = TRUE message omits empty province/subregion context", {
+  testthat::expect_error(
+    CanadaForestAllometry::get_volume_params(
+      model_id = "national_ung_dbh",
+      species = "PICE.SPP",
+      subregion = NA_character_,
+      strict = TRUE
+    ),
+    "No parameters found for model_id='national_ung_dbh', species='PICE.SPP'",
+    fixed = FALSE
+  )
+})
+
 testthat::test_that("genus fallback works when species not found but GENUS.SPP exists", {
   reg <- gp_registry()
 

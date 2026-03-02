@@ -1,0 +1,5 @@
+species_common,nfi_species,model,b0,b1,b2,b3,b4,n_height_age_pairs,r2,se_m,source
+Balsam fir,ABIE.BAL,model_1,17.8623,0.8524,0.01373,6.1299,-0.6157,4423,0.969,0.95,"Ker and Bowling (1991), Table 2"
+Black spruce,PICE.MAR,model_1,12.3072,0.9223,0.01741,8.7428,-0.7346,3435,0.965,1.00,"Ker and Bowling (1991), Table 2"
+Jack pine,PINU.BAN,model_1,4.2491,1.0578,0.02862,5.5393,-0.5102,1200,0.980,0.84,"Ker and Bowling (1991), Table 2"
+White spruce,PICE.GLA,model_1,13.4578,0.8301,0.02081,11.1515,-0.7518,2386,0.965,1.11,"Ker and Bowling (1991), Table 2"

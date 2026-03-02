@@ -269,3 +269,15 @@ testthat::test_that("vol_fortin2007: numeric guardrails catch overflow/non-finit
     fixed = FALSE
   )
 })
+
+testthat::test_that("vol_fortin2007 errors when one species lacks Fortin parameters", {
+  testthat::expect_error(
+    vol_fortin2007(
+      DBH = c(20, 20),
+      height = c(20, 20),
+      species = c("ABIE.BAL", "PSEU.MEN")
+    ),
+    "No Fortin2007 parameters found for this species",
+    fixed = FALSE
+  )
+})

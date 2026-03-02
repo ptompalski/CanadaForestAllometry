@@ -2,10 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-biomass_equations
-volume_models
+sources
 _packageSetup.R
 archived
 readme.html
-
 **/.quarto/
+vignettes/.quarto/
+vignettes/.quarto/_freeze/

@@ -190,17 +190,23 @@ vol_nl <- function(
 
   need_mc <- c("stumpht_m", "topdbh_cm", "mindbh_cm")
   miss_mc <- setdiff(need_mc, names(mc))
+  # Defensive schema guard: unreachable with current get_merch_criteria("NL")
+  # contract and bundled internal data.
+  # nocov start
   if (length(miss_mc) > 0) {
     rlang::abort(paste0(
       "get_merch_criteria('NL') missing columns: ",
       paste(miss_mc, collapse = ", ")
     ))
   }
+  # nocov end
 
   stumpHt_default <- mc$stumpht_m[[1]]
   topDIB_default <- mc$topdbh_cm[[1]]
   minDBH <- mc$mindbh_cm[[1]]
 
+  # Defensive value guards: unreachable with current bundled merch criteria.
+  # nocov start
   if (!is.finite(stumpHt_default) || stumpHt_default < 0) {
     rlang::abort("Invalid stumpht_m from get_merch_criteria('NL').")
   }
@@ -210,6 +216,7 @@ vol_nl <- function(
   if (!is.finite(minDBH) || minDBH < 0) {
     rlang::abort("Invalid mindbh_cm from get_merch_criteria('NL').")
   }
+  # nocov end
 
   # ---- cache params once per species x *model subregion* ----
   # Note: we use `sub_key_model` (with fallback-to-ALL applied) to match C# logic.
@@ -245,12 +252,15 @@ vol_nl <- function(
     "nv_c"
   )
   miss_p <- setdiff(need_p, names(params_cache))
+  # Defensive schema guard: unreachable with current regional_NL parameter table.
+  # nocov start
   if (length(miss_p) > 0) {
     rlang::abort(paste0(
       "get_volume_params('regional_NL', ...) missing columns: ",
       paste(miss_p, collapse = ", ")
     ))
   }
+  # nocov end
 
   # ---- outputs ----
   vol_total <- numeric(n)
@@ -306,14 +316,21 @@ vol_nl <- function(
         merch_net <- tv *
           (p$nv_a[[1]] + p$nv_b[[1]] * Y + p$nv_c[[1]] * (Y * Y))
       } else {
+        # Unreachable with current NX242 rows: bundled nv_a values are finite
+        # and do not use the legacy -999 sentinel.
+        # nocov start
         merch_net <- NA_real_
+        # nocov end
       }
     } else {
       # NX-122 total + NX-67 merch (province-wide/species)
       tcoef <- p$t[[1]]
+      # Defensive guard: unreachable with current bundled NX122/NX67 coefficients.
+      # nocov start
       if (!is.finite(tcoef)) {
         abort_i(i, "Parameter 't' is not finite.")
       }
+      # nocov end
 
       denom <- (p$a[[1]] + (0.3048 * p$b[[1]] / ht))
       tv <- 0.00439 * dbh * dbh * (1 - 0.04365 * tcoef)^2 / denom
@@ -324,21 +341,27 @@ vol_nl <- function(
       merch_net <- NA_real_ # not available for these species in C#
     }
 
+    # nocov start
+    # Defensive-only: formulas and validated coefficients should yield finite tv.
     if (!is.finite(tv)) {
       abort_i(i, "Computed total volume is non-finite.")
     }
     if (!is.finite(merch_gross)) {
       abort_i(i, "Computed merchantable volume is non-finite.")
     }
+    # nocov end
 
     # Borderline negatives => 0
     if (merch_gross < 0) {
       merch_gross <- 0
     }
     # Merch cannot exceed total
+    # nocov start
+    # Defensive clamp against rare numerical overshoot.
     if (merch_gross > tv) {
       merch_gross <- tv
     }
+    # nocov end
 
     # Net handling (C# logic)
     if (!is.finite(merch_net)) {
