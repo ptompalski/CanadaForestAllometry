@@ -1,6 +1,6 @@
 testthat::test_that("inform_once respects quiet option", {
   old_quiet <- getOption("CanadaForestAllometry.quiet")
-  withr::defer(options(CanadaForestAllometry.quiet = old_quiet))
+  on.exit(options(CanadaForestAllometry.quiet = old_quiet), add = TRUE)
 
   id <- paste0("test_zzz_quiet_", as.integer(stats::runif(1, 1, 1e9)))
 
