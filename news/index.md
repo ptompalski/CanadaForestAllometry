@@ -1,5 +1,28 @@
 # Changelog
 
+## CanadaForestAllometry 0.8.0
+
+### New: Site index models
+
+- Added a suite of site index models under a unified interface:
+  - [`si_carmeanhahn1981()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.md)
+  - [`si_kerbowling1991()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_kerbowling1991.md)
+  - [`si_lundgrendolid1970()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_lundgrendolid1970.md)
+  - [`si_nigh2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000.md)
+    and
+    [`si_nigh2000_gi()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000_gi.md)
+  - [`si_nighcourtin1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nighcourtin1998.md)
+  - [`si_payandeh1974()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_payandeh1974.md)
+  - [`si_scottvoorhis1986()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_scottvoorhis1986.md)
+  - [`si_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_thrower1994.md)
+- Added support helpers used by selected SI models (`ytbh_*`).
+
+### Documentation and website
+
+- Added site index content to package documentation.
+- Updated pkgdown reference sections to group SI and related functions.
+- Updated README model overview to include site index functionality.
+
 ## CanadaForestAllometry 0.7.1
 
 ### New: Newfoundland and Labrador volume model (`vol_nl()`)

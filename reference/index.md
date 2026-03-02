@@ -1,27 +1,19 @@
 # Package index
 
-## All functions
+## Aboveground biomass
 
-- [`Ung2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/Ung2009.md)
-  : Ung2009 Growth and Yield Model
-- [`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/V2B.md)
-  : Convert volume to aboveground biomass components (Boudewyn et al.
-  2007)
+Functions for AGB estimation.
+
 - [`agb_component_proportions()`](https://ptompalski.github.io/CanadaForestAllometry/reference/agb_component_proportions.md)
   : Boudewyn biomass component proportions (Tables 6–7)
 - [`agb_lambert_ung()`](https://ptompalski.github.io/CanadaForestAllometry/reference/agb_lambert_ung.md)
   : Calculate tree-level AGB using Lambert & Ung national biomass
   equations
-- [`get_merch_criteria()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_merch_criteria.md)
-  : Get merchantability criteria for a jurisdiction/species (BEC-aware
-  for BC)
-- [`get_volume_params()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_volume_params.md)
-  : Get volume-model parameters from the CanadaForestAllometry registry
-- [`merchcrit`](https://ptompalski.github.io/CanadaForestAllometry/reference/merchcrit.md)
-  : Merchantability criteria
-- [`vol()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol.md)
-  : Calculate tree volume: choose best available model or run all
-  candidate models
+
+## Volume models
+
+Functions for volume estimation.
+
 - [`vol_nl()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_NL.md)
   : Estimate tree volume for Newfoundland
 - [`vol_fortin2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_fortin2007.md)
@@ -53,5 +45,74 @@
   : Canadian national taper volume model (Ung et al. 2013)
 - [`vol_zakrzewski2013()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_zakrzewski2013.md)
   : Estimate tree volume using Zakrzewski (2013) taper model (Ontario)
+- [`vol()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol.md)
+  : Calculate tree volume: choose best available model or run all
+  candidate models
 - [`volume_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/volume_model_registry.md)
   : Volume model registry
+- [`get_volume_params()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_volume_params.md)
+  : Get volume-model parameters from the CanadaForestAllometry registry
+
+## Site index models
+
+Functions for site index modeling.
+
+- [`si_carmeanhahn1981()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.md)
+  : Carmean and Hahn (1981) site index model
+- [`si_kerbowling1991()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_kerbowling1991.md)
+  : Ker and Bowling (1991) site index model
+- [`si_lundgrendolid1970()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_lundgrendolid1970.md)
+  : Lundgren and Dolid (1970) site index model
+- [`si_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_model_registry.md)
+  : Site-index model registry
+- [`si_nigh2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000.md)
+  : Nigh (2000) site index model for interior western redcedar (BC)
+- [`si_nigh2000_gi()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000_gi.md)
+  : Nigh (2000) growth-intercept site index model for interior western
+  redcedar
+- [`si_nighcourtin1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nighcourtin1998.md)
+  : Nigh and Courtin (1998) site index model for red alder (BC coast)
+- [`si_payandeh1974()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_payandeh1974.md)
+  : Payandeh (1974) site index model
+- [`si_scottvoorhis1986()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_scottvoorhis1986.md)
+  : Scott and Voorhis (1986) site index model
+- [`si_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_thrower1994.md)
+  : Thrower et al. (1994) site index models for BC interior species
+- [`ytbh_nigh2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh2000.md)
+  : Nigh (2000) years-to-breast-height model for interior western
+  redcedar
+- [`ytbh_nighcourtin1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nighcourtin1998.md)
+  : Nigh and Courtin (1998) years-to-breast-height model for red alder
+- [`ytbh_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_thrower1994.md)
+  : Thrower et al. (1994) years-to-breast-height models
+
+## Volume conversions
+
+Functions convert volume to biomass, total volume to merchantable, or
+calculate AGB component proportions.
+
+- [`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/V2B.md)
+  : Convert volume to aboveground biomass components (Boudewyn et al.
+  2007)
+- [`agb_component_proportions()`](https://ptompalski.github.io/CanadaForestAllometry/reference/agb_component_proportions.md)
+  : Boudewyn biomass component proportions (Tables 6–7)
+- [`vol_total_to_merchantable()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_total_to_merchantable.md)
+  : Convert total volume to merchantable volume (Boudewyn et al. 2007;
+  Appendix 6 / Table 14)
+
+## Growth and yield
+
+Growth and yield models.
+
+- [`Ung2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/Ung2009.md)
+  : Ung2009 Growth and Yield Model
+
+## Data and merchantability
+
+Datasets and merchantability criteria used by model wrappers.
+
+- [`merchcrit`](https://ptompalski.github.io/CanadaForestAllometry/reference/merchcrit.md)
+  : Merchantability criteria
+- [`get_merch_criteria()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_merch_criteria.md)
+  : Get merchantability criteria for a jurisdiction/species (BEC-aware
+  for BC)

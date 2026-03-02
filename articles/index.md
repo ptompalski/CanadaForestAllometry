@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Site Index
+  Models](https://ptompalski.github.io/CanadaForestAllometry/articles/Site-Index-Models.md):
 - [Tree Aboveground Biomass
   Models](https://ptompalski.github.io/CanadaForestAllometry/articles/Tree-Aboveground-Biomass-Models.md):
 - [Tree Volume
