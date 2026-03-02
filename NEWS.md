@@ -1,3 +1,25 @@
+# CanadaForestAllometry 0.8.0
+
+## New: Site index models
+
+- Added a suite of site index models under a unified interface:
+  - `si_carmeanhahn1981()`
+  - `si_kerbowling1991()`
+  - `si_lundgrendolid1970()`
+  - `si_nigh2000()` and `si_nigh2000_gi()`
+  - `si_nighcourtin1998()`
+  - `si_payandeh1974()`
+  - `si_scottvoorhis1986()`
+  - `si_thrower1994()`
+- Added support helpers used by selected SI models (`ytbh_*`).
+
+## Documentation and website
+
+- Added site index content to package documentation.
+- Updated pkgdown reference sections to group SI and related functions.
+- Updated README model overview to include site index functionality.
+
+
 # CanadaForestAllometry 0.7.1
 
 ## New: Newfoundland and Labrador volume model (`vol_nl()`)
