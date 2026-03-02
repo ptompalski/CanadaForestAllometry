@@ -10,3 +10,5 @@ inform_once <- function(..., .id) {
     .frequency_id = .id
   )
 }
+
+utils::globalVariables(c(".data", ".env"))

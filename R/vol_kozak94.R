@@ -357,7 +357,10 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
     # nocov end
 
     # merchantable + top
-    if (dsh < topdbh) {
+    # Treat near-threshold stump diameters as non-merchantable to avoid
+    # platform-dependent branch flips from tiny floating-point differences.
+    topdbh_tol_cm <- 0.05
+    if (dsh <= (topdbh + topdbh_tol_cm)) {
       v <- kozak_smalian(stumpht, HT, dsh, p, HT, dbhht, ff, bias_factor)
       # nocov start
       # Defensive-only: whole-stem-above-stump integration is expected finite
