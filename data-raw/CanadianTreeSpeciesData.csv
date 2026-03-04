@@ -1,0 +1,368 @@
+CommonNameEnglish,CommonNameFrench,ScientificName,Genus,Species,Var,NFI_code,ab_code,bc_code,nb_code,nt_code,on_code,ns_code,sk_code,yt_code,pe_code,qc_code,mb_code,nl_code,canfi_code
+amabilis fir,sapin gracieux,Abies amabilis,ABIE,AMA,NA,ABIE.AMA,NA,BA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,301
+balsam fir,sapin baumier,Abies balsamea,ABIE,BAL,NA,ABIE.BAL,FB,BB,BF,NA,BF,BF,BF,NA,BF,SB,BF,BF,302
+NA,NA,Abies firma,ABIE,FIR,NA,ABIE.FIR,NA,NA,JF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+grand fir,sapin grandissime,Abies grandis,ABIE,GRA,NA,ABIE.GRA,NA,BG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,303
+subalpine fir,sapin subalpin,Abies lasiocarpa,ABIE,LAS,NA,ABIE.LAS,FA,BL,NA,F,NA,NA,NA,F,NA,NA,NA,NA,304
+Shasta red fir,sapin rouge,Abies magnifica var. shastensis,ABIE,MAG,SHA,ABIE.MAG.SHA,NA,BM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,NA,ABIE,PIC,NA,ABIE.PIC,NA,NA,FS,NA,NA,NA,NA,NA,NA,SE,NA,NA,NA
+NA,NA,NA,ABIE,PIC,NA,ABIE.PIC,NA,NA,SF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+noble fir,sapin noble,Abies procera,ABIE,PRO,NA,ABIE.PRO,NA,BP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified fir,sapin non identifié,Abies spp.,ABIE,SPP,NA,ABIE.SPP,NA,B,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,300
+vine maple,érable circiné,Acer circinatum,ACER,CIR,NA,ACER.CIR,NA,MV,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1420
+Freeman maple,érable Autumn Blaze,Acer x freemanii (Acer rubrum × Acer saccharinum),ACER,FRE,NA,ACER.FRE,NA,NA,NA,NA,MF,NA,NA,NA,NA,NA,NA,NA,NA
+bigleaf maple,érable à grandes feuilles,Acer macrophyllum,ACER,MAC,NA,ACER.MAC,NA,MB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1403
+Manitoba maple (box elder),érable négondo (à Giguère),Acer negundo,ACER,NEG,NA,ACER.NEG,NA,ME,NA,NA,MM,NA,MM,NA,NA,NA,MM,NA,1404
+black maple,érable noir,Acer nigrum,ACER,NIG,NA,ACER.NIG,NA,NA,NA,NA,MB,NA,NA,NA,NA,EI,NA,NA,NA
+striped maple,érable de Pennsylvanie,Acer pensylvanicum,ACER,PEN,NA,ACER.PEN,NA,NA,NA,NA,MP,NA,NA,NA,NA,NA,NA,NA,1410
+Norway maple,érable de Norvège,Acer platanoides,ACER,PLA,NA,ACER.PLA,NA,MN,NA,NA,MN,NA,NA,NA,NA,NA,NA,NA,NA
+red maple,érable rouge,Acer rubrum,ACER,RUB,NA,ACER.RUB,NA,NA,RM,NA,MR,RM,NA,NA,RM,EO,NA,RM,1405
+sugar maple,érable à sucre,Acer saccharum,ACER,SAH,NA,ACER.SAH,NA,NA,SM,NA,MH,SM,NA,NA,SM,ES,NA,NA,1401
+silver maple,érable argenté,Acer saccharinum,ACER,SAC,NA,ACER.SAC,NA,NA,NA,NA,MS,NA,NA,NA,NA,EA,NA,NA,1406
+mountain maple,érable à épis,Acer spicatum,ACER,SPI,NA,ACER.SPI,NA,NA,NA,NA,MT,NA,NA,NA,NA,NA,NA,NA,1411
+unidentified maple,erable non identifié,Acer spp.,ACER,SPP,NA,ACER.SPP,NA,M,MA,NA,MX,NA,NA,NA,NA,ER,NA,NA,1400
+horsechestnut,marronier d'Inde,Aesculus hippocastanum,AESC,HIP,NA,AESC.HIP,NA,NA,NA,NA,HC,NA,NA,NA,NA,NA,NA,NA,NA
+mountain alder,aulne à feuilles minces,Alnus incana ssp. tenuifolia,ALNU,INC,TEN,ALNU.INC.TEN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1805
+mountain alder,aulne à feuilles minces,Alnus incana ssp. tenuifolia,ALNU,INC,TEN,ALNU.INC.TEN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1804
+red alder,aulne rouge,Alnus rubra,ALNU,RUB,NA,ALNU.RUB,NA,DR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1802
+unidentified alder,aulne non identifié,Alnus spp.,ALNU,SPP,NA,ALNU.SPP,NA,D,NA,AL,AL,NA,NA,NA,AL,NA,NA,NA,1800
+arbutus,arbousier d'Amérique,Arbutus menziesii,ARBU,MEN,NA,ARBU.MEN,NA,RA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3300
+pawpaw,asiminier trilobé,Asimina triloba,ASIM,TRI,NA,ASIM.TRI,NA,NA,NA,NA,PA,NA,NA,NA,NA,NA,NA,NA,3990
+yellow birch,bouleau jaune,Betula alleghaniensis,BETU,ALL,NA,BETU.ALL,NA,EY,YB,NA,BY,YB,NA,NA,YB,BJ,NA,YB,1301
+cherry birch,bouleau flexible,Betula lenta,BETU,LEN,NA,BETU.LEN,NA,NA,NA,NA,BC,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,Betula mandschurica var japonica,BETU,MAN,NA,BETU.MAN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,JB,NA
+Alaska paper birch,bouleau d'Alaska,Betula neoalaskana,BETU,NEO,NA,BETU.NEO,NA,EA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1305
+water birch,bouleau fontinal,Betula occidentalis,BETU,OCC,NA,BETU.OCC,NA,EW,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1314
+white birch,bouleau à papier (blanc),Betula papyrifera,BETU,PAP,NA,BETU.PAP,BW,EP,WB,BW,BW,WB,WB,W,WB,BP,WB,WB,1303
+white birch,bouleau à papier (blanc),Betula papyrifera,BETU,PAP,NA,BETU.PAP,BW,EP,WB,BW,BW,WB,WB,W,WB,BP,WB,WB,1308
+European white birch,bouleau verruqueux,Betula pendula,BETU,PEN,NA,BETU.PEN,NA,EE,EB,NA,BP,NA,NA,NA,NA,NA,NA,NA,NA
+gray birch,bouleau gris,Betula populifolia,BETU,POP,NA,BETU.POP,NA,NA,GB,NA,BG,GB,NA,NA,GB,BG,NA,NA,1304
+silver (downy) birch,bouleau pubescent,Betula pubescens,BETU,PUB,NA,BETU.PUB,NA,ES,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified birch,bouleau non identifié,Betula spp.,BETU,SPP,NA,BETU.SPP,NA,E,BI,NA,NA,NA,NA,NA,NA,NA,NA,NA,1300
+incense cedar,cèdre à encens,Calocedrus decurrens,CALO,DEC,NA,CALO.DEC,NA,OA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+blue-beech,charme de Caroline,Carpinus caroliniana,CARP,CAR,NA,CARP.CAR,NA,NA,NA,NA,BB,NA,NA,NA,NA,NA,NA,NA,1950
+bitternut hickory,caryer cordiforme,Carya cordiformis,CARY,COR,NA,CARY.COR,NA,NA,NA,NA,HB,NA,NA,NA,NA,CC,NA,NA,1601
+red hickory,caryer glabre,Carya glabra var. odorata,CARY,GLA,ODO,CARY.GLA.ODO,NA,NA,NA,NA,HP,NA,NA,NA,NA,NA,NA,NA,NA
+shellbark hickory,caryer lacinié,Carya liciniosa,CARY,LAC,NA,CARY.LAC,NA,NA,NA,NA,HL,NA,NA,NA,NA,NA,NA,NA,NA
+shagbark hickory,caryer ovale,Carya ovata,CARY,OVA,NA,CARY.OVA,NA,OI,NA,NA,HS,NA,NA,NA,NA,CF,NA,NA,NA
+unidentified hickory,caryer non identifié,Carya spp.,CARY,SPP,NA,CARY.SPP,NA,NA,NA,NA,HI,NA,NA,NA,NA,NA,NA,NA,NA
+mockernut,caryer blanc,Carya tomentosa,CARY,TOM,NA,CARY.TOM,NA,NA,NA,NA,HM,NA,NA,NA,NA,NA,NA,NA,NA
+American chestnut,châtaignier d’Amérique,Castanea dentata,CAST,DEN,NA,CAST.DEN,NA,NA,NA,NA,CD,NA,NA,NA,NA,NA,NA,NA,3980
+northern catalpa,catalpa à feuilles cordées,Catalpa speciosa,CATA,SPE,NA,CATA.SPE,NA,NA,NA,NA,CAT,NA,NA,NA,NA,NA,NA,NA,NA
+hackberry,micocoulier occidental,Celtis occidentalis,CELT,OCC,NA,CELT.OCC,NA,NA,NA,NA,HK,NA,NA,NA,NA,NA,HB,NA,NA
+redbud,gainier rouge,Cercis canadensis,CERC,CAN,NA,CERC.CAN,NA,NA,NA,NA,RED,NA,NA,NA,NA,NA,NA,NA,NA
+hawthorn,aubépine,Crataegus spp.,CRAT,SPP,NA,CRAT.SPP,NA,NA,NA,NA,HT,NA,NA,NA,NA,NA,NA,NA,3910
+yellow-cedar,chamaecyparis jaune,Chamaecyparis nootkatensis,CHAM,NOO,NA,CHAM.NOO,NA,YC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1001
+Pacific dogwood,cornouiller de Nuttall,Cornus nuttallii,CORN,NUT,NA,CORN.NUT,NA,GP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+American beech,hêtre à grandes feuilles,Fagus grandifolia,FAGU,GRA,NA,FAGU.GRA,NA,NA,BE,NA,BE,BE,NA,NA,BE,HG,NA,NA,2000
+white ash,frêne blanc,Fraxinus americana,FRAX,AME,NA,FRAX.AME,NA,OH,WA,NA,AW,NA,NA,NA,WA,FA,NA,NA,3401
+black ash,frêne noir,Fraxinus nigra,FRAX,NIG,NA,FRAX.NIG,NA,NA,BA,NA,AB,NA,NA,NA,NA,FO,NA,NA,3402
+red ash,frêne rouge,Fraxinus pennsylvanica,FRAX,PEN,NA,FRAX.PEN,NA,NA,NA,NA,AG,NA,GA,NA,NA,FP,NA,NA,3403
+red ash,frêne rouge,Fraxinus pennsylvanica,FRAX,PEN,NA,FRAX.PEN,NA,NA,NA,NA,AG,NA,GA,NA,NA,FP,NA,NA,3405
+NA,NA,Fraxinus profunda,FRAX,PRO,NA,FRAX.PRO,NA,NA,NA,NA,AP,NA,NA,NA,NA,NA,NA,NA,NA
+blue ash,frêne anguleux,Fraxinus quadrangulata,FRAX,QUA,NA,FRAX.QUA,NA,NA,NA,NA,AQ,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified ash,frêne non identifié,Fraxinus spp.,FRAX,SPP,NA,FRAX.SPP,NA,NA,AS,NA,AX,AS,NA,NA,NA,FR,AS,NA,3400
+honey-locust,févier épineux,Gleditsia triacanthos,GLED,TRI,NA,GLED.TRI,NA,NA,HL,NA,GT,NA,NA,NA,NA,NA,NA,NA,2900
+Kentucky coffetree,chicot févier,Gymnocladus dioicus,GYMN,DIO,NA,GYMN.DIO,NA,NA,NA,NA,KK,NA,NA,NA,NA,NA,NA,NA,NA
+witch-hazel,hamamélis de Virginie,Hamamelis virginiana,HAMA,VIR,NA,HAMA.VIR,NA,NA,NA,NA,HAZ,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,NA,HARD,INT,NA,HARD.INT,NA,NA,IH,NA,NA,IH,NA,NA,NA,FI,NA,NA,NA
+NA,NA,NA,HARD,MOI,NA,HARD.MOI,NA,NA,NA,NA,NA,NA,NA,NA,NA,FH,NA,NA,NA
+NA,NA,NA,HARD,NON,NA,HARD.NON,NA,NA,NC,NA,NA,NA,NA,NA,NA,FN,NA,NA,NA
+NA,NA,NA,HARD,TOL,NA,HARD.TOL,NA,NA,TH,NA,NA,TH,NA,NA,NA,FT,NA,NA,NA
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,XH,HW,NA,OH,OH,NA,NA,NA,FX,NA,NA,1500
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,XH,HW,NA,OH,OH,NA,NA,NA,FX,NA,NA,1550
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,ZH,OH,NA,NA,UH,NA,NA,NA,FZ,NA,NA,1500
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,ZH,OH,NA,NA,UH,NA,NA,NA,FZ,NA,NA,1550
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,NA,NA,NA,NA,H,NA,NA,NA,NA,NA,NA,1500
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,NA,NA,NA,NA,H,NA,NA,NA,NA,NA,NA,1550
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,NA,NA,NA,NA,HS,NA,NA,NA,NA,NA,NA,1500
+unidentified hardwood,feuillus non identifié,NA,GENH,SPP,NA,GENH.SPP,NA,NA,NA,NA,NA,HS,NA,NA,NA,NA,NA,NA,1550
+butternut,noyer cendré,Juglans cinerea,JUGL,CIN,NA,JUGL.CIN,NA,NA,NA,NA,BN,NA,NA,NA,BN,NC,NA,NA,1701
+black walnut,noyer noir,Juglans nigra,JUGL,NIG,NA,JUGL.NIG,NA,NA,NA,NA,WB,NA,NA,NA,NA,NN,NA,NA,1702
+Rocky mountain juniper,genévrier des Rocheuses,Juniperus scopulorum,JUNI,SCO,NA,JUNI.SCO,NA,JR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+European larch,mélèze d'Europe,Larix decidua,LARI,DEC,NA,LARI.DEC,NA,NA,EL,NA,LE,EL,NA,NA,EL,ME,NA,EL,601
+NA,NA,Larix x marschlinsii,LARI,MAR,NA,LARI.MAR,NA,NA,NA,NA,NA,XL,NA,NA,NA,MH,NA,NA,NA
+Japanese larch,mélèze du Japon,Larix kaempferi,LARI,KAE,NA,LARI.KAE,NA,NA,JL,NA,LJ,JL,NA,NA,NA,MJ,NA,JL,605
+Tamarack,mélèze laricin,Larix laricina,LARI,LAR,NA,LARI.LAR,LT,LT,TL,L,LA,TL,TL,L,LA,ML,TL,TL,602
+subalpine larch,mélèze subalpin,Larix lyallii,LARI,LYA,NA,LARI.LYA,LA,LA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,604
+Western larch,mélèze de l'Ouest,Larix occidentalis,LARI,OCC,NA,LARI.OCC,LW,LW,NA,NA,NA,WL,NA,NA,NA,NA,NA,NA,603
+Siberian larch,mélèze de Sibérie,Larix sibirica,LARI,SIB,NA,LARI.SIB,NA,LS,NA,NA,NA,NA,SL,NA,NA,NA,NA,NA,NA
+unidentified larch,mélèze non identifié,Larix spp.,LARI,SPP,NA,LARI.SPP,NA,L,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,600
+tulip-tree,tulipier de Virginie,Liriodendron tulipifera,LIRI,TUL,NA,LIRI.TUL,NA,NA,NA,NA,TP,NA,NA,NA,NA,NA,NA,NA,NA
+cucumber-tree,magnolia acuminé,Magnolia acuminata,MAGN,ACU,NA,MAGN.ACU,NA,NA,NA,NA,CT,NA,NA,NA,NA,NA,NA,NA,NA
+Pacific crab apple,pommier du Pacifique,Malus fusca,MALU,FUS,NA,MALU.FUS,NA,UP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3930
+NA,NA,Malus pumila,MALU,PUM,NA,MALU.PUM,NA,UA,NA,NA,NA,NA,NA,NA,MA,NA,NA,NA,NA
+unidentified apple,pommier non identifié,Malus spp.,MALU,SPP,NA,MALU.SPP,NA,U,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3930
+red mulberry,mûrier rouge,Morus rubra,MORU,RUB,NA,MORU.RUB,NA,NA,NA,NA,MO,NA,NA,NA,NA,NA,NA,NA,NA
+black-gum,nyssa sylvestre,Nyssa sylvatica,NYSS,SYL,NA,NYSS.SYL,NA,NA,NA,NA,GB,NA,NA,NA,NA,NA,NA,NA,NA
+ironwood (hop hornbeam),ostryer de Virginie,Ostrya virginiana,OSTR,VIR,NA,OSTR.VIR,NA,NA,I,NA,IW,IW,NA,NA,NA,OV,HH,NA,1900
+Norway spruce,épicéa commun,Picea abies,PICE,ABI,NA,PICE.ABI,NA,SN,NS,NA,SN,NS,NA,NA,NS,EV,NA,NA,103
+Norway spruce,épicéa commun,Picea abies,PICE,ABI,NA,PICE.ABI,NA,SA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,103
+Engelmann spruce,épinette d'Engelmann,Picea engelmannii,PICE,ENG,NA,PICE.ENG,SE,SE,NA,NA,NA,NA,NA,NA,NA,NA,NA,ES,104
+Engelmann x white,hybride épinette d'Engelmann et épinette blanche,Picea engelmannii x glauca,PICE,ENG,GLA,PICE.ENG.GLA,NA,SXW,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,104
+white spruce,épinette blanche,Picea glauca,PICE,GLA,NA,PICE.GLA,SW,SW,WS,SW,SW,WS,WS,SW,WS,EB,WS,WS,105
+NA,NA,Picea koyamai,PICE,KOY,NA,PICE.KOY,NA,NA,NA,NA,SK,NA,NA,NA,NA,NA,NA,NA,NA
+black spruce,épinette noire,Picea mariana,PICE,MAR,NA,PICE.MAR,SB,SB,BS,SB,SB,BS,BS,SB,BS,EN,BS,BS,101
+black spruce,épinette noire,Picea mariana,PICE,MAR,NA,PICE.MAR,SB,SB,BS,SB,SB,BS,BS,SB,BS,EN,BS,BS,107
+Colorado spruce,épinette du Colorado,Picea pungens,PICE,PUN,NA,PICE.PUN,NA,NA,NA,NA,SC,NA,NA,NA,NA,NA,NA,NA,NA
+red spruce,épinette rouge,Picea rubens,PICE,RUB,NA,PICE.RUB,NA,NA,RS,NA,SR,RS,NA,NA,RS,EU,NA,NA,102
+red spruce,épinette rouge,Picea rubens,PICE,RUB,NA,PICE.RUB,NA,NA,RS,NA,SR,RS,NA,NA,RS,EU,NA,NA,108
+Sitka spruce,épinette de Sitka,Picea sitchensis,PICE,SIT,NA,PICE.SIT,NA,SS,NA,NA,NA,SS,NA,NA,NA,NA,NA,SS,106
+NA,NA,Picea sitchensis xunknown,PICE,SIT,X##,PICE.SIT.X##,NA,SXS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,106
+NA,NA,Picea xunknown,PICE,HYB,NA,PICE.HYB,NA,SX,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,Picea xlutzii,PICE,LUT,X##,PICE.LUT.X##,NA,SXL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,111
+unidentified spruce,épinette non identifié,Picea spp.,PICE,SPP,NA,PICE.SPP,NA,S,SP,NA,SX,XS,NA,NA,NA,EP,NA,NA,100
+unidentified spruce,épinette non identifié,Picea spp.,PICE,SPP,NA,PICE.SPP,NA,S,SP,NA,SX,XS,NA,NA,NA,EP,NA,NA,109
+whitebark pine,pin à blanche écorce,Pinus albicaulis,PINU,ALB,NA,PINU.ALB,PA,PA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,206
+whitebark pine,pin à blanche écorce,Pinus albicaulis,PINU,ALB,NA,PINU.ALB,PA,PA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,217
+jack pine,pin gris,Pinus banksiana,PINU,BAN,NA,PINU.BAN,PJ,PJ,JP,PJ,PJ,JP,JP,NA,JP,PG,JP,JP,203
+shore pine,pin tordu,Pinus contorta var. contorta,PINU,CON,CON,PINU.CON.CON,NA,PLC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,204
+shore pine,pin tordu,Pinus contorta var. contorta,PINU,CON,CON,PINU.CON.CON,NA,PLC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,205
+lodgepole pine,pin tordu latifolié,Pinus contorta var. latifolia,PINU,CON,LAT,PINU.CON.LAT,NA,PLI,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,204
+lodgepole pine,pin tordu latifolié,Pinus contorta var. latifolia,PINU,CON,LAT,PINU.CON.LAT,NA,PLI,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,205
+lodgepole pine,pin tordu,Pinus contorta,PINU,CON,NA,PINU.CON,PL,PL,LP,PL,NA,NA,LP,P,LP,NA,LP,LP,204
+lodgepole pine,pin tordu,Pinus contorta,PINU,CON,NA,PINU.CON,PL,PL,LP,PL,NA,NA,LP,P,LP,NA,LP,LP,205
+limber pine,pin flexible,Pinus flexilis,PINU,FLE,NA,PINU.FLE,PF,PF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,213
+Western white pine,pin argenté,Pinus monticola,PINU,MON,NA,PINU.MON,NA,PW,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,201
+lodgepole x jack pine,pin tordu x pin gris,Pinus xmurraybanksiana,PINU,MUR,NA,PINU.MUR,NA,PXJ,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,216
+Austrian pine,pin noir d'Autriche,Pinus nigra,PINU,NIG,NA,PINU.NIG,NA,NA,AP,NA,PN,AP,NA,NA,AP,NA,NA,NA,NA
+Ponderosa pine,pin ponderosa,Pinus ponderosa,PINU,PON,NA,PINU.PON,NA,PY,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,208
+Monterey pine,pin de Monterey,Pinus radiata,PINU,RAD,NA,PINU.RAD,NA,PM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+red pine,pin rouge,Pinus resinosa,PINU,RES,NA,PINU.RES,NA,PR,RP,NA,PR,RP,RP,NA,RP,PR,RP,RP,209
+pitch pine,pin rigide,Pinus rigida,PINU,RIG,NA,PINU.RIG,NA,NA,NA,NA,PP,NA,NA,NA,NA,PC,NA,NA,210
+unidentified pine,pin non identifié,Pinus spp.,PINU,SPP,NA,PINU.SPP,P,P,PI,P,PX,NA,NA,NA,NA,PI,NA,NA,200
+eastern white pine,pin blanc,Pinus strobus,PINU,STR,NA,PINU.STR,NA,NA,WP,NA,PW,WP,NA,NA,WP,PB,WP,WP,202
+Scots pine,pin sylvestre,Pinus sylvestris,PINU,SYL,NA,PINU.SYL,NA,NA,PS,NA,PS,SP,SP,NA,SP,PS,SP,SP,211
+sycamore,platane occidental,Platanus occidentalis,PLAT,OCC,NA,PLAT.OCC,NA,NA,NA,NA,SY,NA,NA,NA,NA,NA,NA,NA,2700
+European white poplar,peuplier blanc,Populus alba,POPU,ALB,NA,POPU.ALB,NA,NA,NA,NA,PE,NA,NA,NA,NA,NA,NA,NA,NA
+balsam poplar,peuplier baumier,Populus balsamifera,POPU,BAL,NA,POPU.BAL,PB,AC,BP,PO,PB,BP,BP,B,NA,PA,BA,BP,1203
+balsam poplar,peuplier baumier,Populus balsamifera,POPU,BAL,NA,POPU.BAL,PB,AC,BP,PO,PB,BP,BP,B,NA,PA,BA,BP,1211
+black cottonwood,peuplier de l'Ouest,Populus trichocarpa,POPU,TRI,NA,POPU.TRI,NA,ACT,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1204
+NA,NA,Populus X canadensis,POPU,CAN,NA,POPU.CAN,NA,NA,NA,NA,PC,NA,NA,NA,NA,NA,NA,NA,NA
+eastern cottonwood,peuplier deltoïde,Populus deltoides,POPU,DEL,NA,POPU.DEL,NA,AD,NA,NA,PD,NA,NA,NA,NA,PL,CO,NA,1205
+southern (or plains) cottonwood,peuplier deltoïde de l'Ouest,Populus deltoides ssp. monilifera,POPU,DEL,MON,POPU.DEL.MON,NA,NA,NA,NA,NA,NA,PC,NA,NA,NA,NA,NA,1205
+largetooth aspen,peuplier à grandes dents,Populus grandidentata,POPU,GRA,NA,POPU.GRA,NA,NA,LA,NA,PL,NA,NA,NA,NA,PD,LA,NA,1206
+NA,NA,Populus xunknown,POPU,HYB,NA,POPU.HYB,NA,AX,NA,NA,PH,NA,NA,NA,NA,PH,NA,NA,NA
+Lombardy poplar,peuplier noir d'Italie,Populus nigra,POPU,NIG,NA,POPU.NIG,NA,NA,NA,NA,NA,NA,NA,NA,NA,PO,NA,NA,NA
+hybrid poplars,peuplier non identifié,Populus spp.,POPU,SPP,NA,POPU.SPP,A,A,PO,NA,PO,TA,NA,NA,PO,PE,NA,NA,1200
+unidentified poplar,peuplier non identifié,Populus spp.,POPU,SPP,NA,POPU.SPP,A,A,PO,NA,PO,TA,NA,NA,PO,PE,NA,NA,1200
+trembling aspen,peuplier faux-tremble,Populus tremuloides,POPU,TRE,NA,POPU.TRE,AW,AT,TA,A,PT,NA,TA,A,NA,PT,TA,TA,1201
+sweet cherry,cerisier sauvage,Prunus avium,PRUN,AVI,NA,PRUN.AVI,NA,VS,NA,NA,CM,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,Prunus cerasus,PRUN,CES,NA,PRUN.CES,NA,NA,NA,NA,CS,NA,NA,NA,NA,NA,NA,NA,NA
+bitter cherry,cerisier amer,Prunus emarginata,PRUN,EMA,NA,PRUN.EMA,NA,VB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2803
+pin cherry,cerisier de Pennsylvanie,Prunus pensylvanica,PRUN,PEN,NA,PRUN.PEN,NA,VP,NA,NA,CP,NA,NA,NA,PC,NA,NA,NA,2802
+black cherry,cerisier tardif,Prunus serotina,PRUN,SER,NA,PRUN.SER,NA,NA,NA,NA,CB,BC,NA,NA,NA,CT,NA,NA,2801
+unidentified cherry,prunier non identifié,Prunus spp.,PRUN,SPP,NA,PRUN.SPP,NA,V,NA,NA,CH,NA,NA,NA,NA,NA,NA,NA,NA
+choke cherry,cerisier de Virginie,Prunus virginiana,PRUN,VIR,NA,PRUN.VIR,NA,VV,NA,NA,CC,NA,NA,NA,NA,NA,NA,NA,2804
+Coastal Douglas-fir,Douglas vert,Pseudotsuga menziesii var. menziesii,PSEU,MEN,MEN,PSEU.MEN.MEN,NA,FDC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,500
+Interior Douglas-fir,Douglas bleu,Pseudotsuga menziesii var. glauca,PSEU,MEN,GLA,PSEU.MEN.GLA,NA,FDI,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,500
+Douglas-fir,Douglas vert,Pseudotsuga menziesii,PSEU,MEN,NA,PSEU.MEN,FD,FD,FD,NA,NA,DF,NA,NA,DF,NA,NA,NA,500
+white oak,chêne blanc,Quercus alba,QUER,ALB,NA,QUER.ALB,NA,QW,NA,NA,OW,NA,NA,NA,NA,CB,NA,NA,2101
+swamp white oak,chêne bicolore,Quercus bicolor,QUER,BIC,NA,QUER.BIC,NA,NA,NA,NA,OSW,NA,NA,NA,NA,CI,NA,NA,2102
+Garry oak,chêne de Garry,Quercus garryana,QUER,GAR,NA,QUER.GAR,NA,QG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2103
+bur oak,chêne à gros fruits,Quercus macrocarpa,QUER,MAC,NA,QUER.MAC,NA,NA,NA,NA,OB,NA,BO,NA,NA,CG,BO,NA,2104
+Chinquapin oak,chêne jaune,Quercus muehlenbergii,QUER,MUE,NA,QUER.MUE,NA,NA,NA,NA,OCH,NA,NA,NA,NA,NA,NA,NA,NA
+pin oak,chêne des marais,Quercus palustris,QUER,PAL,NA,QUER.PAL,NA,NA,NA,NA,OP,NA,NA,NA,NA,NA,NA,NA,NA
+red oak,chêne rouge,Quercus rubra,QUER,RUB,NA,QUER.RUB,NA,NA,NA,NA,OR,RO,NA,NA,RO,CR,NA,NA,2108
+Shumard oak,chêne de Shumard,Quercus shumardii,QUER,SHU,NA,QUER.SHU,NA,NA,NA,NA,OS,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified oak,chêne non identifié,Quercus spp.,QUER,SPP,NA,QUER.SPP,NA,Q,O,NA,OX,NA,NA,NA,NA,CH,NA,NA,2100
+unidentified oak,chêne non identifié,Quercus spp.,QUER,SPP,NA,QUER.SPP,NA,NA,OA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2100
+black oak,chêne noir,Quercus velutina,QUER,VEL,NA,QUER.VEL,NA,NA,NA,NA,OBL,NA,NA,NA,NA,NA,NA,NA,NA
+cascara buckthorn,nerprun cascara,Rhamnus purshiana,RHAM,PUR,NA,RHAM.PUR,NA,KC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+black locust,robinier faux-acacia,Robinia pseudoacacia,ROBI,PSE,NA,ROBI.PSE,NA,NA,BL,NA,LB,NA,NA,NA,NA,NA,NA,NA,2901
+unidentified robinia,robinier non identifié,Robinia spp.,ROBI,SPP,NA,ROBI.SPP,NA,NA,NA,NA,LO,NA,NA,NA,NA,NA,NA,NA,NA
+Bebb willow,saule de Bebb,Salix bebbiana,SALI,BEB,NA,SALI.BEB,NA,WB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3506
+Pacific willow,saule du Pacifique,Salix lucida ssp. lasiandra,SALI,LUC,LAS,SALI.LUC.LAS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Scouler willow,saule de Scouler,Salix scouleriana,SALI,SCO,NA,SALI.SCO,NA,WS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified willow,saule non identifié,Salix spp.,SALI,SPP,NA,SALI.SPP,NA,W,NA,SA,WI,WI,NA,NA,NA,NA,W,NA,3500
+unidentified willow,saule non identifié,Salix spp.,SALI,SPP,NA,SALI.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,WI,NA,3500
+Sassafras,sassafras officinale,Sassafras albidum,SASS,ALB,NA,SASS.ALB,NA,NA,NA,NA,SS,NA,NA,NA,NA,NA,NA,NA,2600
+unidentified softwood,conifères non identifié,NA,GENC,SPP,NA,GENC.SPP,NA,XC,OS,NA,OC,OS,NA,NA,NA,RX,NA,NA,1100
+unidentified softwood,conifères non identifié,NA,GENC,SPP,NA,GENC.SPP,NA,ZC,SW,NA,NA,US,NA,NA,NA,RZ,NA,NA,1100
+unidentified softwood,conifères non identifié,NA,GENC,SPP,NA,GENC.SPP,NA,NA,NA,NA,NA,S,NA,NA,NA,NA,NA,NA,1100
+unidentified softwood,conifères non identifié,NA,GENC,SPP,NA,GENC.SPP,NA,NA,NA,NA,NA,SH,NA,NA,NA,NA,NA,NA,1100
+European mountain-ash,sorbier des oiseleurs,Sorbus aucuparia,SORB,AUC,NA,SORB.AUC,NA,OD,NA,NA,EMA,NA,NA,NA,NA,NA,NA,NA,NA
+mountain-ash,sorbier,Sorbus spp.,SORB,SPP,NA,SORB.SPP,NA,NA,NA,NA,AM,NA,NA,NA,NA,NA,NA,NA,3960
+NA,NA,NA,UNKN,SPP,NA,UNKN.SPP,NA,X,MS,NA,NA,UC,NA,NA,NA,NA,NA,NA,1150
+NA,NA,NA,UNKN,SPP,NA,UNKN.SPP,NA,Z,NR,NA,NA,NA,NA,NA,NA,NA,NA,NA,1150
+western yew,if de l'Ouest,Taxus brevifolia,TAXU,BRE,NA,TAXU.BRE,NA,TW,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,901
+Eastern redcedar,genévrier de Virginie,Juniperus virginiana,JUNI,VIR,NA,JUNI.VIR,NA,NA,NA,NA,CR,NA,NA,NA,NA,NA,NA,NA,801
+eastern white-cedar,thuya occidental,Thuja occidentalis,THUJ,OCC,NA,THUJ.OCC,NA,NA,EC,NA,CW,EC,NA,NA,CE,TO,EC,NA,701
+western redcedar,thuya géant,Thuja plicata,THUJ,PLI,NA,THUJ.PLI,NA,CW,WC,NA,NA,NA,NA,NA,NA,NA,NA,NA,702
+Basswood,tilleul d'Amérique,Tilia americana,TILI,AME,NA,TILI.AME,NA,NA,NA,NA,BD,NA,NA,NA,NA,TA,B,NA,3000
+Basswood,tilleul d'Amérique,Tilia americana,TILI,AME,NA,TILI.AME,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,BD,NA,3000
+NA,NA,Tilia cordata,TILI,COR,NA,TILI.COR,NA,NA,NA,NA,LL,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,Tilia platyphyllos,TILI,PLA,NA,TILI.PLA,NA,NA,NA,NA,BL,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified linden,tilleul non identifié,Tilia spp.,TILI,SPP,NA,TILI.SPP,NA,NA,NA,NA,NA,NA,NA,NA,LI,NA,NA,NA,NA
+eastern hemlock,pruche du Canada,Tsuga canadensis,TSUG,CAN,NA,TSUG.CAN,NA,NA,EH,NA,HE,EH,NA,NA,HE,PU,NA,NA,401
+western hemlock,pruche de l'Ouest,Tsuga heterophylla,TSUG,HET,NA,TSUG.HET,NA,HW,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,402
+mountain hemlock,pruche subalpine,Tsuga mertensiana,TSUG,MER,NA,TSUG.MER,NA,HM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,403
+mountain hemlock,pruche subalpine,Tsuga mertensiana,TSUG,MER,NA,TSUG.MER,NA,HM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,404
+mountain x western hemlock hybrid,hybride pruche subalpine et pruche de l'Ouest,Tsuga mertensiana x heterophylla,TSUG,MER,HET,TSUG.MER.HET,NA,HXM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,403
+mountain x western hemlock hybrid,hybride pruche subalpine et pruche de l'Ouest,Tsuga mertensiana x heterophylla,TSUG,MER,HET,TSUG.MER.HET,NA,HXM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,404
+unidentified hemlock,pruche non identifié,Tsuga spp.,TSUG,SPP,NA,TSUG.SPP,NA,H,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,400
+NA,NA,Tsuga xunknown,TSUG,HYB,NA,TSUG.HYB,NA,HX,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+white elm,orme d'Amérique,Ulmus americana,ULMU,AME,NA,ULMU.AME,NA,NA,NA,NA,EW,WE,WE,NA,EM,OA,E,NA,2201
+white elm,orme d'Amérique,Ulmus americana,ULMU,AME,NA,ULMU.AME,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,EL,NA,2201
+Siberian elm,orme de Sibérie,Ulmus pumila,ULMU,PUM,NA,ULMU.PUM,NA,OE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+red elm,orme rouge,Ulmus rubra,ULMU,RUB,NA,ULMU.RUB,NA,NA,NA,NA,ER,NA,NA,NA,NA,OO,NA,NA,2202
+unidentified elm,orme non identifié,Ulmus spp.,ULMU,SPP,NA,ULMU.SPP,NA,NA,NA,NA,EX,NA,NA,NA,NA,OR,NA,NA,2200
+rock elm,orme liège,Ulmus thomasii,ULMU,THO,NA,ULMU.THO,NA,NA,NA,NA,EU,NA,NA,NA,NA,OT,NA,NA,2203
+white fir,sapin argenté,Abies concolor,ABIE,CON,NA,ABIE.CON,NA,BC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Douglas maple,érable nain,Acer glabrum var. douglasii,ACER,GLA,DOU,ACER.GLA.DOU,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+sycamore maple,érable sycomore,Acer pseudoplatanus,ACER,PSE,NA,ACER.PSE,NA,MS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Sitka alder,aulne de Sitka,Alnus viridis ssp. sinuata,ALNU,VIR,SIN,ALNU.VIR.SIN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1803
+NA,NA,Arbustus spp.,ARBU,SPP,NA,ARBU.SPP,NA,R,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3300
+Alaska x paper birch hybrid,x hybride du bouleau de l'Alaska,Betula xwinteri,BETU,WIN,NA,BETU.WIN,NA,EXP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Port-Orford-cedar,chamaecyparis de Lawson,Chamaecyparis lawsoniana,CHAM,LAW,NA,CHAM.LAW,NA,YP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Oregon ash,frêne de l'Orégon,Fraxinus latifolia,FRAX,LAT,NA,FRAX.LAT,NA,OG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+green ash,frêne vert,Fraxinus pennsylvanica var. subintegerrima,FRAX,PEN,SUB,FRAX.PEN.SUB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,GA,NA,3403
+green ash,frêne vert,Fraxinus pennsylvanica var. subintegerrima,FRAX,PEN,SUB,FRAX.PEN.SUB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,GA,NA,3405
+Pacific crab apple,pommier du Pacifique,Malus fusca,MALU,FUS,NA,MALU.FUS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3930
+sugar pine,pin à sucre,Pinus lambertiana,PINU,LAM,NA,PINU.LAM,NA,PS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+narrowleaf cottonwood,peuplier à feuilles étroites,Populus angustifolia,POPU,AGU,NA,POPU.AGU,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1214
+hybrid poplars,peuplier non identifié,Populus spp.,POPU,SPP,NA,POPU.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1200
+unidentified poplar,peuplier non identifié,Populus spp.,POPU,SPP,NA,POPU.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1200
+common pear,poirier commun,Pyrus communis,PYRU,COM,NA,PYRU.COM,NA,OF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+English oak,chêne pédonculé,Quercus robur,QUER,ROB,NA,QUER.ROB,NA,QE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+peachleaf willow,saule à feuilles de pêcher,Salix amygdaloides,SALI,AMY,NA,SALI.AMY,NA,WA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+pussy willow,saule discolore,Salix discolor,SALI,DIS,NA,SALI.DIS,NA,WD,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3508
+black willow,saule noir,Salix nigra,SALI,NIG,NA,SALI.NIG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3501
+Sitka willow,saule de Sitka,Salix sitchensis,SALI,SIT,NA,SALI.SIT,NA,WT,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+giant sequoia,séquoia géant,Sequoiadendron giganteum,SEQU,GIG,NA,SEQU.GIG,NA,OB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+coast redwood,séquoia toujours vert,Sequoia sempervirens,SEQU,SEM,NA,SEQU.SEM,NA,OC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Siberian elm,orme de Sibérie,Ulmus pumila,ULMU,PUM,NA,ULMU.PUM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Rocky Mountain alpine fir,sapin bifolié,Abies bifolia,ABIE,BIF,NA,ABIE.BIF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,308
+unidentified cypress,chamaecyparis non identifié,Chamaecyparis spp.,CHAM,SPP,NA,CHAM.SPP,NA,Y,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1000
+unidentified juniper,genévrier non identifié,Juniperus spp.,JUNI,SPP,NA,JUNI.SPP,NA,J,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified yew,if non identifié,Taxus spp.,TAXU,SPP,NA,TAXU.SPP,NA,T,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified thuja,thuja non identifié,Thuja spp.,THUJ,SPP,NA,THUJ.SPP,NA,C,NA,NA,CE,NA,NA,NA,NA,NA,NA,NA,700
+sugar maple,érable à sucre,Acer saccharum var. saccharum,ACER,SAH,SAC,ACER.SAH.SAC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1401
+Ohio buckeye,marronnier glabre,Aesculus glabra,AESC,GLA,NA,AESC.GLA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+gray alder,aulne rugueux,Alnus incana,ALNU,INC,NA,ALNU.INC,NA,DM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1805
+gray alder,aulne rugueux,Alnus incana,ALNU,INC,NA,ALNU.INC,NA,DM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1804
+speckled alder,aulne rugueux,Alnus incana ssp. rugosa,ALNU,INC,RUG,ALNU.INC.RUG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1805
+speckled alder,aulne rugueux,Alnus incana ssp. rugosa,ALNU,INC,RUG,ALNU.INC.RUG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1804
+speckled alder,aulne rugueux,Alnus rugosa,ALNU,RUG,NA,ALNU.RUG,NA,NA,AL,NA,NA,NA,NA,NA,NA,NA,NA,NA,1806
+Hazel alder,aulne blanc,Alnus serrulata,ALNU,SER,NA,ALNU.SER,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Sitka alder,aulne de Sitka,Alnus sinuata,ALNU,SIN,NA,ALNU.SIN,NA,DG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Siberian alder,aulne de Sibérie,Alnus viridis ssp. fruticosa,ALNU,VIR,FRU,ALNU.VIR.FRU,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1803
+Saskatoon-berry,amélanchier à feuilles d'aulne,Amelanchier alnifolia,AMEL,ALN,NA,AMEL.ALN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+downy serviceberry,amélanchier aborescent,Amelanchier arborea,AMEL,ARB,NA,AMEL.ARB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+mountain serviceberry,amélanchier de Bartram,Amelanchier bartramiana,AMEL,BAR,NA,AMEL.BAR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Pacific serviceberry,amélanchier de l'Ouest,Amelanchier florida,AMEL,FLO,NA,AMEL.FLO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+smooth juneberry,amélanchier glabre,Amelanchier laevis,AMEL,LAE,NA,AMEL.LAE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+roundleaf juneberry,amélanchier sanguin,Amelanchier sanguinea,AMEL,SAN,NA,AMEL.SAN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Gaspé serviceberry,amélanchier de Gaspésie,Amelanchier sanguinea,AMEL,SAN,GAS,AMEL.SAN.GAS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified serviceberry,amélanchier non identifié,Amelanchier spp.,AMEL,SPP,NA,AMEL.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified asimina,asiminier non identifié,Asimina,ASIM,SPP,NA,ASIM.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Alaska paper birch,bouleau d'Alaska,Betula alaskana,BETU,ALA,NA,BETU.ALA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1305
+blueleaf birch,bouleau bleu,Betula xcaerulea,BETU,CAE,NA,BETU.CAE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+mountain paper birch,bouleau à feuilles cordées,Betula cordifolia,BETU,COR,NA,BETU.COR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Kenai birch,bouleau Kenai,Betula kenaica,BETU,KEN,NA,BETU.KEN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Alaska paper birch,bouleau d'Alaska,Betula papyrifera var. neoalaskana,BETU,PAP,NEO,BETU.PAP.NEO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1303
+Alaska paper birch,bouleau d'Alaska,Betula papyrifera var. neoalaskana,BETU,PAP,NEO,BETU.PAP.NEO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1308
+white birch,bouleau à papier (blanc),Betula papyrifera var. papyrifera,BETU,PAP,PAP,BETU.PAP.PAP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1303
+white birch,bouleau à papier (blanc),Betula papyrifera var. papyrifera,BETU,PAP,PAP,BETU.PAP.PAP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1308
+unidentified birch,bouleau non identifié,Betula spp.,BETU,SPP,NA,BETU.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1300
+American hornbeam,charme de la Caroline de Virginie,Carpinus caroliniana ssp. virginiana,CARP,CAR,VIR,CARP.CAR.VIR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1950
+unidentified hornbeam,charme non identifié,Carpinus spp.,CARP,SPP,NA,CARP.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1950
+shagbark hickory,caryer ovale,Carya ovata var. ovata,CARY,OVA,OVA,CARY.OVA.OVA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified chestnut,châtaignier non identifié,Castanea spp.,CAST,SPP,NA,CAST.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified hackberry,micocoullier non identifié,Celtis spp.,CELT,SPP,NA,CELT.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+dwarf hackberry,micocoulier rabougri,Celtis tenuifolia,CELT,TEN,NA,CELT.TEN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+button-bush,céphalante occidental,Cephalanthus occidentalis,CEPH,OCC,NA,CEPH.OCC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+alternate-leaf dogwood,cornouiller à feuilles alternes,Cornus alternifolia,CORN,ALT,NA,CORN.ALT,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+eastern flowering dogwood,cornouiller fleuri,Cornus florida,CORN,FLO,NA,CORN.FLO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified dogwood,cornouiller non identifié,Cornus spp.,CORN,SPP,NA,CORN.SPP,NA,G,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+redosier dogwood,cornouiller stolonifère,Cornus stolonifera,CORN,STO,NA,CORN.STO,NA,NA,NA,CS,NA,NA,NA,NA,NA,NA,NA,NA,NA
+fireberry hawthorn,aubépine dorée,Crataegus chrysocarpa,CRAT,CHR,NA,CRAT.CHR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+dotted hawthorn,aubépine ponctuée,Crataegus punctata,CRAT,PUN,NA,CRAT.PUN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+silverberry,chalef argenté,Elaeagnus commutata,ELAE,COM,NA,ELAE.COM,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+burning-bush euonymus,fusain pourpre,Euonymus atropurpureus,EUON,ATR,NA,EUON.ATR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified beech,hêtre non identifié,Fagus spp.,FAGU,SPP,NA,FAGU.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+glossy buckthorn,nerprun bourdaine,Frangula alnus,FRAN,ALN,NA,FRAN.ALN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+northern red ash,frêne d'Austin,Fraxinus pennsylvanica var. austini,FRAX,PEN,AUS,FRAX.PEN.AUS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3403
+northern red ash,frêne d'Austin,Fraxinus pennsylvanica var. austini,FRAX,PEN,AUS,FRAX.PEN.AUS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3405
+unidentified holly,houx non identifié,Ilex spp.,ILEX,SPP,NA,ILEX.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+mountain holly,faux houx,Ilex mucronata,ILEX,MUC,NA,ILEX.MUC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+common winterberry,houx verticillé,Ilex verticillata,ILEX,VER,NA,ILEX.VER,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3920
+unidentified walnut,noyer non identifié,Juglans spp.,JUGL,SPP,NA,JUGL.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified liriodendron,tulipier de Virginie,Liriodendron spp.,LIRI,SPP,NA,LIRI.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+wild crab apple,pommier odorant,Malus coronaria,MALU,COR,NA,MALU.COR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3930
+Pacific bayberry,myrique du Pacifique,Myrica californica,MYRI,CAL,NA,MYRI.CAL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+mountain-holly,némopanthe mucroné,Nemopanthus mucronatus,NEMO,MUC,NA,NEMO.MUC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3940
+unidentified nemopanthus,Némopanthe mucroné,Nemopanthus spp.,NEMO,SPP,NA,NEMO.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+tupelo,nyssa,Nyssa spp.,NYSS,SPP,NA,NYSS.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified hop hornbeam,ostryer non identifié,Ostrya spp.,OSTR,SPP,NA,OSTR.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1900
+unidentified sycamore,platane non identifié,Platanus spp.,PLAT,SPP,NA,PLAT.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+balsam poplar,peuplier baumier,Populus balsamifera ssp balsamifera,POPU,BAL,BAL,POPU.BAL.BAL,NA,ACB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1203
+balsam poplar,peuplier baumier,Populus balsamifera ssp balsamifera,POPU,BAL,BAL,POPU.BAL.BAL,NA,ACB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1211
+eastern cottonwood,peuplier deltoïde,Populus deltoides ssp. deltoides,POPU,DEL,DEL,POPU.DEL.DEL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1205
+Jack's hybrid poplar,peuplier hybride de Jack,Populus xjackii,POPU,JAC,NA,POPU.JAC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Canada plum,prunier noir,Prunus nigra,PRUN,NIG,NA,PRUN.NIG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+choke cherry,cerisier de Virginie,Prunus virginiana var. virginiana,PRUN,VIR,VIR,PRUN.VIR.VIR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2804
+common hoptree,ptéléa trifolié,Ptelea trifoliata,PTEL,TRI,NA,PTEL.TRI,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+northern pin oak,chêne ellipsoïdal,Quercus ellipsoidalis,QUER,ELL,NA,QUER.ELL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+dwarf Chinquapin oak,chêne nain,Quercus prinoides,QUER,PRI,NA,QUER.PRI,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+glossy buckthorn,nerprun bourdaine,Rhamnus frangula,RHAM,FRA,NA,RHAM.FRA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified buckthorn,nerprun non identifié,Rhamnus spp.,RHAM,SPP,NA,RHAM.SPP,NA,K,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified sumac,sumac non identifié,Rhus spp.,RHUS,SPP,NA,RHUS.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+staghorn sumac,sumac vinaigrier,Rhus typhina,RHUS,TYP,NA,RHUS.TYP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+shining willow,saule brillant,Salix lucida,SALI,LUC,NA,SALI.LUC,NA,WP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+shining willow,saule brillant,Salix lucida ssp. lucida,SALI,LUC,LUC,SALI.LUC.LUC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Balsam willow,saule baumier,Salix pyrifolia,SALI,PYR,NA,SALI.PYR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+red-berry elder,sureau rouge du Pacifique,Sambucus callicarpa,SAMB,CAL,NA,SAMB.CAL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+american elder,sureau blanc,Sambucus canadensis,SAMB,CAN,NA,SAMB.CAN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+blue-berry elder,sureau bleu,Sambucus cerulea,SAMB,CER,NA,SAMB.CER,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+red elderberry,sureau rouge,Sambucus racemosa,SAMB,RAC,NA,SAMB.RAC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified sassafras,sassafras non identifié,Sassafras,SASS,SPP,NA,SASS.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+silver buffalo-berry,shépherdie argentée,Shepherdia argentea,SHEP,ARG,NA,SHEP.ARG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+American mountain-ash,sorbier d'Amérique,Sorbus americana,SORB,AME,NA,SORB.AME,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3961
+showy mountain-ash,sorbier des montagnes,Sorbus decora,SORB,DEC,NA,SORB.DEC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3962
+mountain-ash,sorbier,Sorbus spp.,SORB,SPP,NA,SORB.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3960
+poison-sumac,sumac à vernis,Toxicodendron vernix,TOXI,VER,NA,TOXI.VER,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+red elm,orme rouge,Ulmus rubra,ULMU,RUB,NA,ULMU.RUB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2202
+rock elm,orme liège,Ulmus thomasii,ULMU,THO,NA,ULMU.THO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2203
+Nannyberry,viorne flexible,Viburnum lentago,VIBU,LEN,NA,VIBU.LEN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Viburnum,viorne,Viburnum spp.,VIBU,SPP,NA,VIBU.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+common prickly-ash,clavalier d'Amérique,Zanthoxylum americanum,ZANT,AME,NA,ZANT.AME,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+red fir,sapin rouge,Abies magnifica,ABIE,MAG,NA,ABIE.MAG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Nordmann fir,sapin de Nordmann,Abies nordmanniana,ABIE,NOR,NA,ABIE.NOR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Spanish fir,sapin d'Espagne,Abies pinsapo,ABIE,PIN,NA,ABIE.PIN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Amur maple,érable ginnala,Acer ginnala,ACER,GIN,NA,ACER.GIN,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Japanese maple,érable palmé,Acer palmatum,ACER,PAL,NA,ACER.PAL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+red horsechestnut,marronnier rouge,Aesculus xcarnea,AESC,CAR,NA,AESC.CAR,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+ailanthus,ailante glanduleux,Ailanthus altissima,AILA,ALT,NA,AILA.ALT,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+European black alder,aulne glutineux,Alnus glutinosa,ALNU,GLU,NA,ALNU.GLU,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Japanese angelica-tree,angélique du Japon,Aralia elata,ARAL,ELA,NA,ARAL.ELA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+monkey puzzle,araucaria du Chili,Araucaria araucana,ARAU,ARA,NA,ARAU.ARA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Siberian pea-tree,caragana arborescent,Caragana arborescens,CARA,ARB,NA,CARA.ARB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Chinese chestnut,châtaignier de Chine,Castanea mollissima,CAST,MOL,NA,CAST.MOL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+southern catalpa,catalpa commun,Catalpa bignonioides,CATA,BIG,NA,CATA.BIG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Atlas cedar,cèdre de l'Atlas,Cedrus atlantica,CEDR,ATL,NA,CEDR.ATL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Deodar cedar,cèdre de l'Himalaya,Cedrus deodara,CEDR,DEO,NA,CEDR.DEO,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Cedar-of-Lebanon,cèdre du Liban,Cedrus libani,CEDR,LIB,NA,CEDR.LIB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Katsura-tree,cercidiphyllum du Japon,Cercidiphyllum japonicum,CERC,JAP,NA,CERC.JAP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Hinoki-cypress,chamaecyparis du Japon,Chamaecyparis obtusa,CHAM,OBT,NA,CHAM.OBT,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Sawara-cypress,chamaecyparis de Sawara,Chamaecyparis pisifera,CHAM,PIS,NA,CHAM.PIS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Yellow-wood,virgilier à bois jaune,Cladrastis lutea,CLAD,LUT,NA,CLAD.LUT,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Kousa dogwood,cornouiller de Kousa,Cornus kousa,CORN,KOU,NA,CORN.KOU,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Cornelian cherry,cornouiller mâle,Cornus mas,CORN,MAS,NA,CORN.MAS,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+European beech,hêtre commun,Fagus sylvatica,FAGU,SYL,NA,FAGU.SYL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+unidentified exotic,les espèces exotiques non identifié,Unidentify exotic,GENX,SPP,NA,GENX.SPP,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Ginkgo,ginkgo bilobé,Ginkgo biloba,GINK,BIL,NA,GINK.BIL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Lombardy poplar,peuplier noir d'Italie,Populus nigra,POPU,NIG,NA,POPU.NIG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Weeping willow,saule pleureur doré,Salix alba var. vitellina,SALI,ALB,VIT,SALI.ALB.VIT,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Common lilac,lilas commun,Syringa vulgaris,SYRI,VUL,NA,SYRI.VUL,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+English yew,if commun,Taxus baccata,TAXU,BAC,NA,TAXU.BAC,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+European cranberry viburnum,viorne obier,Viburnum opulus,VIBU,OPU,NA,VIBU.OPU,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,Pseudotsuga spp.,PSEU,SPP,NA,PSEU.SPP,NA,F,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,500
+NA,NA,Larix gmelinii,LARI,GEM,NA,LARI.GEM,NA,LD,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,Abies spp. (dead),ABIE,SPP,DEA,ABIE.SPP.DEA,NA,NA,DF,NA,NA,NA,NA,NA,NA,NA,NA,NA,300
+NA,NA,Picea spp. (dead),PICE,SPP,DEA,PICE.SPP.DEA,NA,NA,DS,NA,NA,NA,NA,NA,NA,NA,NA,NA,100
+NA,NA,Picea spp. (dead),PICE,SPP,DEA,PICE.SPP.DEA,NA,NA,DS,NA,NA,NA,NA,NA,NA,NA,NA,NA,109
+unidentified pine,pin non identifié,Pinus spp.,PINU,SPP,NA,PINU.SPP,NA,NA,DP,NA,NA,NA,NA,NA,NA,NA,NA,NA,200
+NA,NA,Betula grandulosa,BETU,GRA,NA,BETU.GRA,NA,EB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+NA,NA,Picea white x black,PICE,GLA,MAR,PICE.GLA.MAR,NA,SXB,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,105
+NA,NA,Picea engelmann x sitka,PICE,ENG,SIT,PICE.ENG.SIT,NA,SXE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,104

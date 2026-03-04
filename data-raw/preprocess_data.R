@@ -156,9 +156,9 @@ parameters_Kozak94 <-
 # translating species to NFI codes
 ON_species_dict <- read.csv("data-raw/ON_species_dict.csv")
 
-CanadianTreeSpecies <- read.csv(
-  'https://raw.githubusercontent.com/ptompalski/CanadianTreeSpecies/refs/heads/main/data-raw/CanadianTreeSpeciesData.csv'
-)
+CanadianTreeSpecies <- read.csv("data-raw/CanadianTreeSpeciesData.csv")
+# 'https://raw.githubusercontent.com/ptompalski/CanadianTreeSpecies/refs/heads/main/data-raw/CanadianTreeSpeciesData.csv'
+# )
 CanadianTreeSpecies_ON <- CanadianTreeSpecies %>%
   select(on_code, NFI_code) %>%
   filter(!is.na(on_code)) %>%
@@ -795,6 +795,11 @@ parameters_Thrower1994 <- read.csv("data-raw/Thrower1994_parameters.csv")
 parameters_Thrower1994 <- parameters_Thrower1994 %>%
   select(Species = nfi_species, model_form:source_short)
 
+## Huang et al 1994 (site index)
+parameters_Huang1994_si <- read.csv("data-raw/Huang1994_parameters.csv")
+parameters_Huang1994_si <- parameters_Huang1994_si %>%
+  select(Species = nfi_species, natural_regions:b5)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -819,7 +824,8 @@ internal_objs <- c(
   "parameters_KerBowling1991",
   "parameters_ScottVoorhis1986",
   "parameters_Nigh2000_gi",
-  "parameters_Thrower1994"
+  "parameters_Thrower1994",
+  "parameters_Huang1994_si"
 )
 
 # sanity check: make sure they exist before saving
