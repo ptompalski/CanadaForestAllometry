@@ -59,6 +59,8 @@ Functions for site index modeling.
 
 - [`si_carmeanhahn1981()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.md)
   : Carmean and Hahn (1981) site index model
+- [`si_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_huang1994.md)
+  : Huang et al. (1994) site index model for major Alberta tree species
 - [`si_kerbowling1991()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_kerbowling1991.md)
   : Ker and Bowling (1991) site index model
 - [`si_lundgrendolid1970()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_lundgrendolid1970.md)

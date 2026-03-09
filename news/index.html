@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +24,7 @@
     <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/ptompalski/CanadaForestAllometry"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -38,6 +37,24 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.1" id="canadaforestallometry-081">CanadaForestAllometry 0.8.1<a class="anchor" aria-label="anchor" href="#canadaforestallometry-081"></a></h2>
+<div class="section level3">
+<h3 id="site-index-updates-0-8-1">Site index updates<a class="anchor" aria-label="anchor" href="#site-index-updates-0-8-1"></a></h3>
+<ul><li>Added <code><a href="../reference/si_huang1994.html">si_huang1994()</a></code> (Huang et al. 1994) for Alberta species with support for:
+<ul><li>predicting <code>height</code> from <code>si</code>, and</li>
+<li>predicting <code>si</code> from <code>height</code>.</li>
+</ul></li>
+<li>Added species/subregion parameter handling for Huang 1994 SI coefficients in internal data.</li>
+<li>Improved <code>subregion</code> matching in <code><a href="../reference/si_huang1994.html">si_huang1994()</a></code>:
+<ul><li>accepts <code>"All"</code> (and aliases <code>"provincial"</code> / <code>"province"</code>),</li>
+<li>accepts exact grouped subregion strings, and</li>
+<li>accepts single Alberta subregion codes (e.g., <code>"ALP"</code>) by mapping to grouped parameter sets.</li>
+</ul></li>
+<li>Improved error messages to report missing species/subregion combinations and allowed subregion groups.</li>
+<li>Added tests for Huang 1994 SI behavior, table validation, input checks, and subregion matching edge cases.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.0" id="canadaforestallometry-080">CanadaForestAllometry 0.8.0<a class="anchor" aria-label="anchor" href="#canadaforestallometry-080"></a></h2>
 <div class="section level3">

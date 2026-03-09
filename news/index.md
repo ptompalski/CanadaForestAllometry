@@ -1,5 +1,27 @@
 # Changelog
 
+## CanadaForestAllometry 0.8.1
+
+### Site index updates
+
+- Added
+  [`si_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_huang1994.md)
+  (Huang et al. 1994) for Alberta species with support for:
+  - predicting `height` from `si`, and
+  - predicting `si` from `height`.
+- Added species/subregion parameter handling for Huang 1994 SI
+  coefficients in internal data.
+- Improved `subregion` matching in
+  [`si_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_huang1994.md):
+  - accepts `"All"` (and aliases `"provincial"` / `"province"`),
+  - accepts exact grouped subregion strings, and
+  - accepts single Alberta subregion codes (e.g., `"ALP"`) by mapping to
+    grouped parameter sets.
+- Improved error messages to report missing species/subregion
+  combinations and allowed subregion groups.
+- Added tests for Huang 1994 SI behavior, table validation, input
+  checks, and subregion matching edge cases.
+
 ## CanadaForestAllometry 0.8.0
 
 ### New: Site index models
