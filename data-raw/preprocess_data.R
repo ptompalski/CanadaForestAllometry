@@ -797,8 +797,53 @@ parameters_Thrower1994 <- parameters_Thrower1994 %>%
 
 ## Huang et al 1994 (site index)
 parameters_Huang1994_si <- read.csv("data-raw/Huang1994_parameters.csv")
+
+# Convert Huang SI natural-region groups from numeric IDs to Alberta letter codes
+# using the crosswalk embedded in parameters_HuangV (NaturalSubregionNum -> Code).
+huang_subregion_xwalk <- parameters_HuangV %>%
+  select(
+    NaturalSubregionNum = NaturalSubregionNum,
+    NaturalSubregionCode = NaturalSubregionCode
+  ) %>%
+  distinct() %>%
+  mutate(
+    NaturalSubregionNum = as.character(NaturalSubregionNum),
+    NaturalSubregionCode = as.character(NaturalSubregionCode)
+  )
+
+translate_huang_regions_to_codes <- function(x, xwalk) {
+  x_chr <- as.character(x)
+  x_trim <- stringr::str_squish(x_chr)
+
+  vapply(
+    x_trim,
+    FUN.VALUE = character(1),
+    FUN = function(one_region) {
+      if (toupper(one_region) == "ALL") {
+        return("All")
+      }
+
+      parts <- strsplit(one_region, "\\s*,\\s*")[[1]]
+      codes <- xwalk$NaturalSubregionCode[match(parts, xwalk$NaturalSubregionNum)]
+      if (any(is.na(codes))) {
+        stop(
+          "Unmapped Huang natural region ID(s): ",
+          paste(parts[is.na(codes)], collapse = ", ")
+        )
+      }
+      paste(codes, collapse = ", ")
+    }
+  )
+}
+
 parameters_Huang1994_si <- parameters_Huang1994_si %>%
-  select(Species = nfi_species, natural_regions:b5)
+  select(Species = nfi_species, natural_regions:b5) %>%
+  mutate(
+    natural_regions = translate_huang_regions_to_codes(
+      natural_regions,
+      xwalk = huang_subregion_xwalk
+    )
+  )
 
 # combine all into one ####
 

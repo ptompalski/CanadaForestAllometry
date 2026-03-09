@@ -3,7 +3,7 @@ testthat::test_that("si_huang1994 predicts height from si and returns single-col
     age = c(20, 35, 50),
     si = c(12, 16, 20),
     species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-    subregion = c("All", "6, 9, 11, 14", "9, 11")
+    subregion = c("All", "All", "All")
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -18,7 +18,7 @@ testthat::test_that("si_huang1994 predicts si from height and returns single-col
     age = c(20, 35, 50),
     si = c(12, 16, 20),
     species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-    subregion = c("All", "6, 9, 11, 14", "9, 11")
+    subregion = c("All", "All", "All")
   ) |>
     dplyr::pull(height)
 
@@ -26,7 +26,7 @@ testthat::test_that("si_huang1994 predicts si from height and returns single-col
     age = c(20, 35, 50),
     height = h_in,
     species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-    subregion = c("All", "6, 9, 11, 14", "9, 11")
+    subregion = c("All", "All", "All")
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -120,6 +120,17 @@ testthat::test_that("si_huang1994 input validation is informative", {
       subregion = "bogus"
     ),
     "No Huang1994 parameters found",
+    ignore.case = TRUE
+  )
+
+  testthat::expect_error(
+    CanadaForestAllometry::si_huang1994(
+      age = 20,
+      si = 12,
+      species = "PICE.GLA",
+      subregion = "bogus"
+    ),
+    "Allowed subregions by species",
     ignore.case = TRUE
   )
 

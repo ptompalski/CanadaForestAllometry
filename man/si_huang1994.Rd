@@ -60,8 +60,24 @@ si_huang1994(
   age = c(20, 35, 50),
   si = c(12, 16, 20),
   species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-  subregion = c("9, 11, 14", "6, 9, 11, 14", "9, 11")
+  subregion = c("LF", "UF", "CM")
 )
+
+# Pipe example: predict SI from a tibble of age/height/species inputs
+dplyr::tibble(
+  age = c(25, 35),
+  height = c(11, 16),
+  species = c("PICE.GLA", "ABIE.BAL")
+) |>
+  dplyr::mutate(
+    si = si_huang1994(
+      age = age,
+      height = height,
+      species = species,
+      subregion = "All"
+    )
+  ) |>
+  unnest(si)
 
 }
 \references{

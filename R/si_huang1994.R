@@ -52,8 +52,24 @@
 #'   age = c(20, 35, 50),
 #'   si = c(12, 16, 20),
 #'   species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-#'   subregion = c("9, 11, 14", "6, 9, 11, 14", "9, 11")
+#'   subregion = c("LF", "UF", "CM")
 #' )
+#'
+#' # Pipe example: predict SI from a tibble of age/height/species inputs
+#' dplyr::tibble(
+#'   age = c(25, 35),
+#'   height = c(11, 16),
+#'   species = c("PICE.GLA", "ABIE.BAL")
+#' ) |>
+#'   dplyr::mutate(
+#'     si = si_huang1994(
+#'       age = age,
+#'       height = height,
+#'       species = species,
+#'       subregion = "All"
+#'     )
+#'   ) |>
+#'   unnest(si)
 #'
 #' @export
 si_huang1994 <- function(
@@ -239,30 +255,72 @@ si_huang1994 <- function(
   subregion_std <- .huang1994_std_subregion(subregion)
   pars <- .huang1994_parameters()
 
-  out <- dplyr::tibble(
+  req_tbl <- dplyr::tibble(
+    .row_id = seq_len(n),
     age = as.numeric(age),
     x = as.numeric(x),
     Species = species_std,
     subregion_req = subregion_std
   ) |>
+    dplyr::rename(subregion_lookup = subregion_req)
+
+  out <- req_tbl |>
     dplyr::left_join(
       pars,
-      by = c("Species", "subregion_req")
+      by = c("Species", "subregion_lookup")
     )
+
+  ambig <- out |>
+    dplyr::filter(!is.na(.data$b0)) |>
+    dplyr::count(.data$.row_id, name = "n_matches") |>
+    dplyr::filter(.data$n_matches > 1L)
+  if (nrow(ambig) > 0L) {
+    cli::cli_abort(c(
+      "Ambiguous Huang1994 parameter match for one or more species/subregion inputs.",
+      "i" = "Use {.val All}, an exact grouped subregion string from parameter tables, or a single Alberta subregion code."
+    ))
+  }
 
   if (anyNA(out$b0)) {
     bad_rows <- out |>
       dplyr::filter(is.na(.data$b0)) |>
-      dplyr::distinct(.data$Species, .data$subregion_req)
+      dplyr::distinct(.data$Species, .data$subregion_lookup)
 
     bad_txt <- paste0(
       bad_rows$Species,
       " / ",
-      bad_rows$subregion_req,
+      bad_rows$subregion_lookup,
       collapse = ", "
     )
+
+    allowed_by_species <- bad_rows |>
+      dplyr::distinct(.data$Species) |>
+      dplyr::mutate(
+        allowed = vapply(
+          .data$Species,
+          FUN.VALUE = character(1),
+          FUN = function(sp) {
+            vals <- pars |>
+              dplyr::filter(.data$Species == sp) |>
+              dplyr::distinct(.data$subregion_group) |>
+              dplyr::pull(.data$subregion_group)
+            paste(sort(unique(vals)), collapse = " | ")
+          }
+        )
+      )
+    allowed_txt <- paste0(
+      allowed_by_species$Species,
+      ": ",
+      allowed_by_species$allowed,
+      collapse = " | "
+    )
+
     cli::cli_abort(
-      "No Huang1994 parameters found for species/subregion: {bad_txt}."
+      c(
+        "No Huang1994 parameters found for species/subregion: {bad_txt}.",
+        "i" = "Allowed subregions by species: {allowed_txt}",
+        "i" = "Aliases {.val provincial} and {.val province} are accepted as {.val All}."
+      )
     )
   }
 
@@ -277,7 +335,8 @@ si_huang1994 <- function(
     }
   }
 
-  out
+  out |>
+    dplyr::select(-.row_id)
 }
 
 
@@ -368,6 +427,23 @@ si_huang1994 <- function(
       subregion_req = .huang1994_std_subregion(.data$natural_regions)
     )
 
+  pars <- pars |>
+    dplyr::mutate(
+      subregion_group = .data$subregion_req,
+      subregion_lookup = lapply(
+        .data$subregion_req,
+        function(sr) {
+          if (identical(sr, "ALL")) {
+            return("ALL")
+          }
+          parts <- unlist(strsplit(sr, ",", fixed = TRUE), use.names = FALSE)
+          unique(c(sr, parts))
+        }
+      )
+    ) |>
+    tidyr::unnest_longer(subregion_lookup) |>
+    dplyr::distinct(.data$Species, .data$subregion_lookup, .keep_all = TRUE)
+
   req <- c(
     "Species",
     "natural_regions",
@@ -378,7 +454,9 @@ si_huang1994 <- function(
     "b3",
     "b4",
     "b5",
-    "subregion_req"
+    "subregion_req",
+    "subregion_group",
+    "subregion_lookup"
   )
   assert_required_cols(pars, req, object = "parameters_Huang1994_si")
 
