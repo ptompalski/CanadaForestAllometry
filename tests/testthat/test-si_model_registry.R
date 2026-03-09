@@ -11,8 +11,21 @@ testthat::test_that("si_model_registry has expected structure and key models", {
   testthat::expect_true(all(c(
     "nigh2000",
     "nighcourtin1998_si25",
-    "thrower1994"
+    "thrower1994",
+    "huang1994"
   ) %in% reg$model_id))
+})
+
+testthat::test_that("si_model_registry includes Huang1994 subregion metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  h <- reg |>
+    dplyr::filter(.data$model_id == "huang1994")
+
+  testthat::expect_equal(nrow(h), 1L)
+  testthat::expect_identical(h$subregion_type[[1]], "ab_natural_region_group")
+  testthat::expect_identical(h$subregion_arg[[1]], "subregion")
+  testthat::expect_identical(h$params_key[[1]], "parameters_Huang1994_si")
 })
 
 testthat::test_that("si_model_registry includes subregion metadata for BC-specific models", {
