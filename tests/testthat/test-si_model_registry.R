@@ -113,3 +113,26 @@ testthat::test_that("si_model_registry_species wraps get_params_tbl errors with 
     fixed = FALSE
   )
 })
+
+testthat::test_that("si_model_registry_species returns empty species when no source is provided", {
+  reg_none <- tibble::tibble(
+    model_id = "m_none",
+    params_key = NA_character_,
+    species_manual = list(NULL),
+    subregion_required = FALSE,
+    subregion_arg = NA_character_,
+    subregion_type = "none"
+  )
+
+  out <- testthat::with_mocked_bindings(
+    {
+      CanadaForestAllometry:::si_model_registry_species()
+    },
+    si_model_registry = function() reg_none,
+    .package = "CanadaForestAllometry"
+  )
+
+  testthat::expect_identical(out$species[[1]], character(0))
+  testthat::expect_identical(out$n_species[[1]], 0L)
+  testthat::expect_true(is.na(out$species_text[[1]]))
+})
