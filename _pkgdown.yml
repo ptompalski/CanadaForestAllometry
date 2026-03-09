@@ -2,6 +2,15 @@ url: https://ptompalski.github.io/CanadaForestAllometry/
 destination: "docs"
 template:
   bootstrap: 5
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/ptompalski/CanadaForestAllometry
+
 
 reference:
   - title: Aboveground biomass

@@ -11,8 +11,21 @@ testthat::test_that("si_model_registry has expected structure and key models", {
   testthat::expect_true(all(c(
     "nigh2000",
     "nighcourtin1998_si25",
-    "thrower1994"
+    "thrower1994",
+    "huang1994"
   ) %in% reg$model_id))
+})
+
+testthat::test_that("si_model_registry includes Huang1994 subregion metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  h <- reg |>
+    dplyr::filter(.data$model_id == "huang1994")
+
+  testthat::expect_equal(nrow(h), 1L)
+  testthat::expect_identical(h$subregion_type[[1]], "ab_natural_region_group")
+  testthat::expect_identical(h$subregion_arg[[1]], "subregion")
+  testthat::expect_identical(h$params_key[[1]], "parameters_Huang1994_si")
 })
 
 testthat::test_that("si_model_registry includes subregion metadata for BC-specific models", {
@@ -99,4 +112,27 @@ testthat::test_that("si_model_registry_species wraps get_params_tbl errors with 
     "Failed to build species list for model_id=model_x",
     fixed = FALSE
   )
+})
+
+testthat::test_that("si_model_registry_species returns empty species when no source is provided", {
+  reg_none <- tibble::tibble(
+    model_id = "m_none",
+    params_key = NA_character_,
+    species_manual = list(NULL),
+    subregion_required = FALSE,
+    subregion_arg = NA_character_,
+    subregion_type = "none"
+  )
+
+  out <- testthat::with_mocked_bindings(
+    {
+      CanadaForestAllometry:::si_model_registry_species()
+    },
+    si_model_registry = function() reg_none,
+    .package = "CanadaForestAllometry"
+  )
+
+  testthat::expect_identical(out$species[[1]], character(0))
+  testthat::expect_identical(out$n_species[[1]], 0L)
+  testthat::expect_true(is.na(out$species_text[[1]]))
 })
