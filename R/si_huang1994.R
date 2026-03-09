@@ -69,7 +69,7 @@
 #'       subregion = "All"
 #'     )
 #'   ) |>
-#'   unnest(si)
+#'   tidyr::unnest(si)
 #'
 #' @export
 si_huang1994 <- function(

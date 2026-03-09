@@ -77,7 +77,7 @@ dplyr::tibble(
       subregion = "All"
     )
   ) |>
-  unnest(si)
+  tidyr::unnest(si)
 
 }
 \references{

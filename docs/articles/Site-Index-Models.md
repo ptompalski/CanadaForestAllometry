@@ -11,6 +11,11 @@
   Species coverage: 11 species (ABIE.LAS, BETU.PAP, LARI.OCC, PICE.GLA,
   PINU.CON, PINU.MON, PINU.PON, POPU.TRE, PSEU.MEN, THUJ.PLI, TSUG.HET).
   Reference: Thrower et al. ([1994](#ref-Thrower1994)).
+- [`si_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_huang1994.md).
+  Huang et al. (1994) Alberta polymorphic site-index model set.
+  Coverage: AB. Species coverage: 8 species (ABIE.BAL, PICE.GLA,
+  PICE.MAR, PINU.BAN, PINU.CON, POPU.BAL, POPU.TRE, PSEU.MEN).
+  Reference: Huang et al. ([1994](#ref-Huang1994si)).
 - [`si_nigh2000_gi()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000_gi.md).
   Nigh (2000) growth-intercept site-index model for interior western
   redcedar. Coverage: BC. Species coverage: 1 species (THUJ.PLI).
@@ -54,6 +59,10 @@ Carmean, W.H., Hahn, J.T., 1981. Revised Site Index Curves for Balsam
 Fir and White Spruce in the Lake States. Research Note NC-269. St. Paul,
 MN: U.S. Dept. of Agriculture, Forest Service, North Central Forest
 Experiment Station 269. <https://doi.org/10.2737/NC-RN-269>
+
+Huang, S., Titus, S.J., Lakusta, T.W., 1994. Ecologically based site
+index curves and tables for major Alberta tree species. Tech. Report No.
+T307.
 
 Ker, M.F., Bowling, C., 1991. Polymorphic site index equations for four
 New Brunswick softwood species. Canadian Journal of Forest Research 21,
