@@ -294,3 +294,38 @@ testthat::test_that("internal Huang height solver defensive NaN guards are cover
   pars_bad_ratio <- dplyr::mutate(pars_ok, b3 = NA_real_)
   testthat::expect_true(is.nan(h_one(age = 25, si = 10, pars = pars_bad_ratio)))
 })
+
+testthat::test_that("internal Huang prepare catches ambiguous subregion matches", {
+  prepare_fn <- get(".huang1994_prepare", envir = asNamespace("CanadaForestAllometry"))
+
+  mock_pars_ambig <- tibble::tibble(
+    Species = c("PICE.GLA", "PICE.GLA"),
+    natural_regions = c("ALP,SA", "ALP,UF"),
+    base_age_bh = c(50, 50),
+    b0 = c(0.01, 0.02),
+    b1 = c(0.1, 0.1),
+    b2 = c(2, 2),
+    b3 = c(0.8, 0.8),
+    b4 = c(-0.2, -0.2),
+    b5 = c(0.3, 0.3),
+    subregion_req = c("ALP,SA", "ALP,UF"),
+    subregion_group = c("ALP,SA", "ALP,UF"),
+    subregion_lookup = c("ALP", "ALP")
+  )
+
+  testthat::expect_error(
+    testthat::with_mocked_bindings(
+      prepare_fn(
+        age = 20,
+        x = 15,
+        species = "PICE.GLA",
+        subregion = "ALP",
+        x_name = "si"
+      ),
+      .huang1994_parameters = function() mock_pars_ambig,
+      .package = "CanadaForestAllometry"
+    ),
+    "Ambiguous Huang1994 parameter match",
+    ignore.case = TRUE
+  )
+})
