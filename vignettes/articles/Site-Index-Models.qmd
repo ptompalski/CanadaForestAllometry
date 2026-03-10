@@ -188,7 +188,12 @@ for (i in seq_len(nrow(reg_fun))) {
     paste0(length(x$species[[1]]), " species (", paste(x$species[[1]], collapse = ", "), ")")
   }
 
-  cat("### `", x$engine, "()`\n\n", sep = "")
+  ref_fun_link <- paste0(
+    "[`", x$engine, "()`](../reference/", x$engine, ".html)"
+  )
+
+  cat("## `", x$engine, "()`\n\n", sep = "")
+  cat("- Function reference: ", ref_fun_link, "\n", sep = "")
   cat("- Description: ", x$description, "\n", sep = "")
   cat("- Coverage: ", coverage, "\n", sep = "")
   cat("- Species coverage: ", species_cov, "\n", sep = "")
@@ -211,7 +216,7 @@ for (i in seq_len(nrow(reg_fun))) {
   )
 
   p <- plot_out$plot +
-    ggplot2::ggtitle(paste0(x$engine, "()"))
+    patchwork::plot_annotation(title = paste0(x$engine, "()"))
 
   fig_dir <- knitr::opts_chunk$get("fig.path")
   dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)

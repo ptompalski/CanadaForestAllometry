@@ -779,6 +779,19 @@ parameters_KerBowling1991 <-
   parameters_KerBowling1991 %>%
   select(Species = nfi_species, b0:b4)
 
+## Cieszewski & Bella 1991 ####
+parameters_CieszewskiBella1991 <- read.csv(
+  "data-raw/CieszewskiBella1991_parameters.csv"
+)
+parameters_CieszewskiBella1991 <-
+  parameters_CieszewskiBella1991 %>%
+  select(
+    Species = nfi_species,
+    a,
+    b,
+    base_age_bh
+  )
+
 ## Scott & Voorhis
 parameters_ScottVoorhis1986 <- read.csv(
   "data-raw/ScottVoorhis1986_parameters.csv"
@@ -867,6 +880,7 @@ internal_objs <- c(
   "parameters_Payandeh1974",
   "parameters_LungrenDolid1970",
   "parameters_KerBowling1991",
+  "parameters_CieszewskiBella1991",
   "parameters_ScottVoorhis1986",
   "parameters_Nigh2000_gi",
   "parameters_Thrower1994",

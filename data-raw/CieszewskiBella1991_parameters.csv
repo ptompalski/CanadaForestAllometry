@@ -1,0 +1,5 @@
+species_common,nfi_species,model,a,b,base_age_bh,n_height_age_pairs,r2,se_m,source
+Lodgepole pine,PINU.CON,VASI,0.20372424,97.37473618,50,1163,0.97,0.84,"Cieszewski and Bella (1991), Table 4"
+White spruce,PICE.GLA,VASI,0.3235139,260.9162652,50,698,0.965,1.21,"Cieszewski and Bella (1991), Table 4"
+Black spruce,PICE.MAR,VASI,0.1992266,114.8730018,50,282,0.969,0.66,"Cieszewski and Bella (1991), Table 4"
+Trembling aspen,POPU.TRE,VASI,0.2644606,117.3695371,50,276,0.977,0.69,"Cieszewski and Bella (1991), Table 4"
