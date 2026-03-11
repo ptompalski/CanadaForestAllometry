@@ -17,3 +17,10 @@ testthat::test_that("inform_once respects quiet option", {
   )
   testthat::expect_lte(length(msgs_loud), 1L)
 })
+
+
+testthat::test_that("%||% returns lhs unless it is NULL", {
+  testthat::expect_identical(CanadaForestAllometry:::`%||%`("x", "y"), "x")
+  testthat::expect_identical(CanadaForestAllometry:::`%||%`(NULL, "y"), "y")
+  testthat::expect_identical(CanadaForestAllometry:::`%||%`(NA_character_, "y"), NA_character_)
+})

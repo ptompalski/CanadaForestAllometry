@@ -237,3 +237,22 @@ standardize_ecozone <- function(ecozone) {
   }
   get(name, envir = ns, inherits = FALSE)
 }
+
+
+# internal
+.get_package_data <- function(name) {
+  env <- new.env(parent = emptyenv())
+  utils::data(list = name, package = "CanadaForestAllometry", envir = env)
+
+  if (!exists(name, envir = env, inherits = FALSE)) {
+    cli::cli_abort(
+      c(
+        "Package dataset could not be loaded.",
+        "x" = paste0("Dataset `", name, "` is not available."),
+        "i" = "Rebuild and reinstall package data first."
+      )
+    )
+  }
+
+  get(name, envir = env, inherits = FALSE)
+}

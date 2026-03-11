@@ -156,13 +156,114 @@ parameters_Kozak94 <-
 # translating species to NFI codes
 ON_species_dict <- read.csv("data-raw/ON_species_dict.csv")
 
-CanadianTreeSpecies <- read.csv("data-raw/CanadianTreeSpeciesData.csv")
+CanadianTreeSpecies <- readr::read_csv(
+  "data-raw/CanadianTreeSpeciesData.csv",
+  na = c("", "NA"),
+  show_col_types = FALSE
+)
 # 'https://raw.githubusercontent.com/ptompalski/CanadianTreeSpecies/refs/heads/main/data-raw/CanadianTreeSpeciesData.csv'
 # )
-CanadianTreeSpecies_ON <- CanadianTreeSpecies %>%
-  select(on_code, NFI_code) %>%
-  filter(!is.na(on_code)) %>%
+
+species_dictionary <- CanadianTreeSpecies %>%
+  transmute(
+    NFI_code,
+    CommonNameEnglish,
+    CommonNameFrench,
+    ScientificName,
+    Genus,
+    Species,
+    Var
+  ) %>%
+  distinct() %>%
+  group_by(NFI_code) %>%
+  summarise(
+    CommonNameEnglish = str_c(
+      sort(unique(na.omit(CommonNameEnglish))),
+      collapse = " / "
+    ),
+    CommonNameFrench = str_c(
+      sort(unique(na.omit(CommonNameFrench))),
+      collapse = " / "
+    ),
+    ScientificName = str_c(
+      sort(unique(na.omit(ScientificName))),
+      collapse = " / "
+    ),
+    Genus = str_c(sort(unique(na.omit(Genus))), collapse = " / "),
+    Species = str_c(sort(unique(na.omit(Species))), collapse = " / "),
+    Var = str_c(sort(unique(na.omit(Var))), collapse = " / "),
+    .groups = "drop"
+  ) %>%
+  arrange(NFI_code)
+
+jurisdiction_code_cols <- c(
+  "ab_code",
+  "bc_code",
+  "nb_code",
+  "nt_code",
+  "on_code",
+  "ns_code",
+  "sk_code",
+  "yt_code",
+  "pe_code",
+  "qc_code",
+  "mb_code",
+  "nl_code"
+)
+
+species_code_lookup <- CanadianTreeSpecies %>%
+  transmute(
+    NFI_code,
+    canfi_code,
+    ab_code,
+    bc_code,
+    nb_code,
+    nt_code,
+    on_code,
+    ns_code,
+    sk_code,
+    yt_code,
+    pe_code,
+    qc_code,
+    mb_code,
+    nl_code
+  ) %>%
+  mutate(
+    canfi_code = as.character(canfi_code)
+  ) %>%
+  select(
+    NFI_code,
+    canfi_code,
+    all_of(jurisdiction_code_cols)
+  ) %>%
+  pivot_longer(
+    cols = c(canfi_code, all_of(jurisdiction_code_cols)),
+    names_to = "source_column",
+    values_to = "code",
+    values_drop_na = TRUE
+  ) %>%
+  mutate(
+    code = as.character(code),
+    code_system = case_when(
+      source_column == "canfi_code" ~ "canfi",
+      TRUE ~ "jurisdiction"
+    ),
+    jurisdiction = case_when(
+      code_system == "jurisdiction" ~ str_remove(source_column, "_code$"),
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  select(code_system, jurisdiction, code, NFI_code) %>%
+  distinct() %>%
+  arrange(code_system, jurisdiction, code, NFI_code)
+
+CanadianTreeSpecies_ON <- species_code_lookup %>%
+  filter(code_system == "jurisdiction", jurisdiction == "on") %>%
+  transmute(on_code = code, NFI_code) %>%
   distinct()
+
+# usethis::use_data(species_dictionary, overwrite = TRUE)
+# usethis::use_data(species_code_lookup, overwrite = TRUE)
 # CanadianTreeSpecies_ON
 
 ON_vol_coef <- read_csv(
@@ -837,7 +938,10 @@ translate_huang_regions_to_codes <- function(x, xwalk) {
       }
 
       parts <- strsplit(one_region, "\\s*,\\s*")[[1]]
-      codes <- xwalk$NaturalSubregionCode[match(parts, xwalk$NaturalSubregionNum)]
+      codes <- xwalk$NaturalSubregionCode[match(
+        parts,
+        xwalk$NaturalSubregionNum
+      )]
       if (any(is.na(codes))) {
         stop(
           "Unmapped Huang natural region ID(s): ",
