@@ -1,51 +1,93 @@
-#' Translate species codes across supported code systems
+#' Universal species translator across codes and names
 #'
-#' Translate species codes from NFI, CANFI, or jurisdiction-specific code
-#' systems into canonical NFI codes or species metadata stored in the package
-#' dictionary.
+#' Translate species identifiers across supported code systems and name fields.
+#' The function can translate among NFI, CANFI, and jurisdiction-specific
+#' species codes, and can also resolve scientific names, English common names,
+#' and French common names to NFI codes, CANFI codes, jurisdiction-specific
+#' codes, or supported name fields.
 #'
-#' @param code A character vector of species codes to translate.
-#' @param from Source code system: one of `"auto"`, `"nfi"`, `"canfi"`, or
-#'   `"jurisdiction"`.
+#' By default, translations return NFI codes, but the `to` argument can be used
+#' to return CANFI codes, jurisdiction-specific codes, English common names,
+#' French common names, or scientific names.
+#'
+#' When `from = "auto"`, the function tries to infer the input type from the
+#' supplied values. Numeric inputs are treated as CANFI codes, NFI-formatted
+#' values are treated as NFI codes, and other code-like inputs are treated as
+#' jurisdiction codes. For jurisdiction-style inputs, the full input vector is
+#' used to infer a single shared jurisdiction when possible. If the lookup does
+#' not support a unique interpretation, the function errors and asks the user
+#' to supply `from` or `jurisdiction` explicitly.
+#'
+#' @param code A character vector of species codes or names to translate.
+#' @param from Source code system or name field: one of `"auto"`, `"nfi"`,
+#'   `"canfi"`, `"jurisdiction"`, `"scientificname"`, `"englishname"`, or
+#'   `"frenchname"`.
 #' @param jurisdiction Jurisdiction for provincial or territorial codes. Required
-#'   when `from = "jurisdiction"`. May be length 1 or the same length as `code`.
-#' @param to Target field to return. Must be one of the columns in
-#'   `species_dictionary`. Defaults to `"NFI_code"`.
+#'   when `from = "jurisdiction"` and also when `to = "jurisdiction"` unless
+#'   `from = "auto"` successfully infers a single shared jurisdiction. May be
+#'   length 1 or the same length as `code`.
+#' @param to Target field to return: one of `"nfi"`, `"canfi"`,
+#'   `"jurisdiction"`, `"scientificname"`, `"englishname"`, or `"frenchname"`.
+#'   Defaults to `"nfi"`.
 #' @param multiple How to handle ambiguous matches: `"error"`, `"all"`, or
 #'   `"first"`.
 #' @param unmatched How to handle unmatched inputs: `"error"` or `"NA"`.
+#' @param verbose Logical. If `TRUE` and `from = "auto"`, report the inferred
+#'   input type once per function call. Defaults to `TRUE`.
 #'
 #' @return
 #' A character vector when `multiple` is `"error"` or `"first"`. A list of
 #' character vectors when `multiple = "all"`.
 #'
 #' @examples
-#' translate_species_code("ABIE.BAL", from = "nfi", to = "CommonNameEnglish")
-#' translate_species_code("ABIE.BAL", from = "nfi", to = "CommonNameFrench")
+#' # Translate NFI codes to English or French common names
+#' translate_species_code("ABIE.BAL", from = "nfi", to = "englishname")
+#' translate_species_code("ABIE.BAL", from = "nfi", to = "frenchname")
+#'
+#' # Translate NFI codes to CANFI or jurisdiction-specific codes
+#' translate_species_code("ABIE.BAL", from = "nfi", to = "canfi")
+#' translate_species_code("ABIE.BAL", from = "nfi", to = "jurisdiction", jurisdiction = "ON")
+#'
+#' # Translate from scientific, English, or French names
+#' translate_species_code("Picea mariana", from = "scientificname")
+#' translate_species_code("black spruce", from = "englishname")
+#' translate_species_code("epinette noire", from = "frenchname")
+#'
+#' # Translate from jurisdiction, CANFI, or auto-detected inputs
 #' translate_species_code("BF", from = "jurisdiction", jurisdiction = "ON")
 #' translate_species_code("302", from = "canfi")
 #' translate_species_code("302", from = "auto")
-#' translate_species_code("PICE.GLA", from = "auto", to = "ScientificName")
-#' translate_species_code(c("BF", "PJ", "SB"))
+#'
+#' # Translate between name fields
+#' translate_species_code("black spruce", from = "englishname", to = "frenchname")
+#' translate_species_code("Picea mariana", from = "scientificname", to = "englishname")
+#' translate_species_code("PICE.GLA", from = "auto", to = "scientificname")
+#'
+#' # Partial argument values also work via match.arg()
+#' # Here, `to = "e"` resolves to `englishname`
+#' translate_species_code(c("ABIE.BAL", "PICE.MAR", "PINU.CON"), to = "e")
+#'
+#' # Auto-detect a shared jurisdiction from a vector of input codes
+#' translate_species_code(c("BF", "PJ", "SB"), from = "auto")
 #' translate_species_code(
 #'   "SW",
 #'   from = "jurisdiction",
 #'   jurisdiction = "BC",
-#'   to = "ScientificName"
+#'   to = "scientificname"
 #' )
 #'
-#' # Ambiguous CANFI code: errors by default
+#' # Ambiguous CANFI code (several matches): errors by default
 #' try(
 #'   translate_species_code("104", from = "canfi")
 #' )
 #'
-#' # Return the first match
+#' # Several matches - return the first match
 #' translate_species_code("104", from = "canfi", multiple = "first")
 #'
-#' # Return all matches as a list
+#' # Several matches - return all matches as a list
 #' translate_species_code("104", from = "canfi", multiple = "all")
 #'
-#' # Vectorized input with mixed ambiguity handling
+#' # Vectorized input with several matches
 #' translate_species_code(
 #'   c("302", "104"),
 #'   from = "canfi",
@@ -61,15 +103,56 @@
 #' @export
 translate_species_code <- function(
   code,
-  from = c("auto", "nfi", "canfi", "jurisdiction"),
+  from = c(
+    "auto",
+    "nfi",
+    "canfi",
+    "jurisdiction",
+    "scientificname",
+    "englishname",
+    "frenchname"
+  ),
   jurisdiction = NULL,
-  to = "NFI_code",
+  to = c(
+    "nfi",
+    "canfi",
+    "jurisdiction",
+    "scientificname",
+    "englishname",
+    "frenchname"
+  ),
   multiple = c("error", "all", "first"),
-  unmatched = c("error", "NA")
+  unmatched = c("error", "NA"),
+  verbose = TRUE
 ) {
-  from <- match.arg(tolower(from), c("auto", "nfi", "canfi", "jurisdiction"))
+  from <- match.arg(
+    tolower(from),
+    c(
+      "auto",
+      "nfi",
+      "canfi",
+      "jurisdiction",
+      "scientificname",
+      "englishname",
+      "frenchname"
+    )
+  )
+  to <- match.arg(
+    tolower(to),
+    c(
+      "nfi",
+      "canfi",
+      "jurisdiction",
+      "scientificname",
+      "englishname",
+      "frenchname"
+    )
+  )
   multiple <- match.arg(tolower(multiple), c("error", "all", "first"))
   unmatched <- match.arg(tolower(unmatched), c("error", "na"))
+  if (!is.logical(verbose) || length(verbose) != 1L || is.na(verbose)) {
+    cli::cli_abort("{.arg verbose} must be a single TRUE or FALSE value.")
+  }
 
   if (!is.character(code)) {
     cli::cli_abort("{.arg code} must be a character vector.")
@@ -98,8 +181,6 @@ translate_species_code <- function(
     object = "species_code_lookup"
   )
 
-  assert_choice(to, "to", names(dictionary))
-
   if (identical(from, "auto")) {
     inferred <- .infer_species_code_input(
       code = code,
@@ -108,7 +189,32 @@ translate_species_code <- function(
     )
     from <- inferred$from
     jurisdiction <- inferred$jurisdiction
+    if (isTRUE(verbose)) {
+      msg <- if (identical(from, "jurisdiction")) {
+        paste0(
+          "Auto-detected input type: jurisdiction (",
+          jurisdiction[[1]],
+          ")"
+        )
+      } else {
+        paste0("Auto-detected input type: ", from)
+      }
+      cli::cli_inform(msg)
+    }
   }
+
+  name_from_map <- c(
+    scientificname = "ScientificName",
+    englishname = "CommonNameEnglish",
+    frenchname = "CommonNameFrench"
+  )
+  to_map <- c(
+    nfi = "NFI_code",
+    scientificname = "ScientificName",
+    englishname = "CommonNameEnglish",
+    frenchname = "CommonNameFrench"
+  )
+  to_resolved <- unname(to_map[[to]])
 
   if (from == "jurisdiction") {
     if (is.null(jurisdiction)) {
@@ -125,20 +231,33 @@ translate_species_code <- function(
       recycled$jurisdiction
     ))
   } else {
-    if (!is.null(jurisdiction)) {
+    if (!is.null(jurisdiction) && to != "jurisdiction") {
       cli::cli_abort(
-        "{.arg jurisdiction} must be NULL unless {.arg from} is {.val jurisdiction}."
+        "{.arg jurisdiction} must be NULL unless {.arg from} or {.arg to} is {.val jurisdiction}."
       )
     }
-    jurisdiction <- rep(NA_character_, length(code))
+    if (is.null(jurisdiction)) {
+      jurisdiction <- rep(NA_character_, length(code))
+    } else {
+      recycled <- assert_len_compat(code = code, jurisdiction = jurisdiction)
+      jurisdiction <- tolower(standardize_jurisdiction_code(
+        recycled$jurisdiction
+      ))
+    }
   }
 
-  code_std <- switch(
-    from,
-    nfi = standardize_species_code(code, keep_all = FALSE),
-    canfi = stringr::str_to_upper(stringr::str_trim(as.character(code))),
-    jurisdiction = stringr::str_to_upper(stringr::str_trim(as.character(code)))
-  )
+  code_std <- if (from %in% names(name_from_map)) {
+    .normalize_species_name(code)
+  } else {
+    switch(
+      from,
+      nfi = standardize_species_code(code, keep_all = FALSE),
+      canfi = stringr::str_to_upper(stringr::str_trim(as.character(code))),
+      jurisdiction = stringr::str_to_upper(stringr::str_trim(as.character(
+        code
+      )))
+    )
+  }
 
   key <- tibble::tibble(
     .row = seq_along(code_std),
@@ -150,6 +269,17 @@ translate_species_code <- function(
     key %>%
       dplyr::transmute(.row, NFI_code = code) %>%
       dplyr::left_join(dictionary, by = "NFI_code")
+  } else if (from %in% names(name_from_map)) {
+    from_col <- name_from_map[[from]]
+
+    key %>%
+      dplyr::rename(.name_key = code) %>%
+      dplyr::left_join(
+        dictionary %>%
+          dplyr::mutate(.name_key = .normalize_species_name(.data[[from_col]])),
+        by = ".name_key"
+      ) %>%
+      dplyr::arrange(.data$.row)
   } else {
     lookup_sub <- lookup %>%
       dplyr::filter(.data$code_system == from)
@@ -167,10 +297,44 @@ translate_species_code <- function(
   out <- vector("list", length(code_std))
 
   for (i in seq_along(out)) {
-    vals <- matches %>%
+    nfi_vals <- matches %>%
       dplyr::filter(.data$.row == i) %>%
-      dplyr::pull(!!rlang::sym(to)) %>%
+      dplyr::pull(.data$NFI_code) %>%
       unique()
+
+    vals <- if (to %in% names(to_map)) {
+      matches %>%
+        dplyr::filter(.data$.row == i) %>%
+        dplyr::pull(!!rlang::sym(to_resolved)) %>%
+        unique()
+    } else if (to == "canfi") {
+      lookup %>%
+        dplyr::filter(
+          .data$code_system == "canfi",
+          .data$NFI_code %in% nfi_vals
+        ) %>%
+        dplyr::pull(.data$code) %>%
+        unique()
+    } else {
+      if (is.na(jurisdiction[i])) {
+        cli::cli_abort(
+          c(
+            "Target jurisdiction is required.",
+            "x" = "{.arg jurisdiction} must be supplied when {.arg to} is {.val jurisdiction}.",
+            "i" = "Provide a jurisdiction explicitly, or use {.arg from = \"auto\"} with inputs that infer one."
+          )
+        )
+      }
+
+      lookup %>%
+        dplyr::filter(
+          .data$code_system == "jurisdiction",
+          .data$jurisdiction == jurisdiction[i],
+          .data$NFI_code %in% nfi_vals
+        ) %>%
+        dplyr::pull(.data$code) %>%
+        unique()
+    }
 
     vals <- vals[!is.na(vals)]
 
@@ -207,7 +371,7 @@ translate_species_code <- function(
           c(
             "Ambiguous species code.",
             "x" = paste0("Species code ", ctx, " maps to multiple values."),
-            "i" = paste0("Requested field: ", to),
+            "i" = paste0("Requested field: ", to_resolved),
             "i" = paste0("Matches: ", paste(vals, collapse = ", "))
           ),
           class = "ctae_ambiguous_species_code"
@@ -231,6 +395,16 @@ translate_species_code <- function(
   }
 
   unlist(out, use.names = FALSE)
+}
+
+
+# internal
+.normalize_species_name <- function(x) {
+  x |>
+    as.character() |>
+    stringr::str_squish() |>
+    stringi::stri_trans_general("Latin-ASCII") |>
+    stringr::str_to_lower()
 }
 
 

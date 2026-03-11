@@ -2,71 +2,116 @@
 % Please edit documentation in R/translate_species_code.R
 \name{translate_species_code}
 \alias{translate_species_code}
-\title{Translate species codes across supported code systems}
+\title{Universal species translator across codes and names}
 \usage{
 translate_species_code(
   code,
-  from = c("auto", "nfi", "canfi", "jurisdiction"),
+  from = c("auto", "nfi", "canfi", "jurisdiction", "scientificname", "englishname",
+    "frenchname"),
   jurisdiction = NULL,
-  to = "NFI_code",
+  to = c("nfi", "canfi", "jurisdiction", "scientificname", "englishname", "frenchname"),
   multiple = c("error", "all", "first"),
-  unmatched = c("error", "NA")
+  unmatched = c("error", "NA"),
+  verbose = TRUE
 )
 }
 \arguments{
-\item{code}{A character vector of species codes to translate.}
+\item{code}{A character vector of species codes or names to translate.}
 
-\item{from}{Source code system: one of `"auto"`, `"nfi"`, `"canfi"`, or
-`"jurisdiction"`.}
+\item{from}{Source code system or name field: one of `"auto"`, `"nfi"`,
+`"canfi"`, `"jurisdiction"`, `"scientificname"`, `"englishname"`, or
+`"frenchname"`.}
 
 \item{jurisdiction}{Jurisdiction for provincial or territorial codes. Required
-when `from = "jurisdiction"`. May be length 1 or the same length as `code`.}
+when `from = "jurisdiction"` and also when `to = "jurisdiction"` unless
+`from = "auto"` successfully infers a single shared jurisdiction. May be
+length 1 or the same length as `code`.}
 
-\item{to}{Target field to return. Must be one of the columns in
-`species_dictionary`. Defaults to `"NFI_code"`.}
+\item{to}{Target field to return: one of `"nfi"`, `"canfi"`,
+`"jurisdiction"`, `"scientificname"`, `"englishname"`, or `"frenchname"`.
+Defaults to `"nfi"`.}
 
 \item{multiple}{How to handle ambiguous matches: `"error"`, `"all"`, or
 `"first"`.}
 
 \item{unmatched}{How to handle unmatched inputs: `"error"` or `"NA"`.}
+
+\item{verbose}{Logical. If `TRUE` and `from = "auto"`, report the inferred
+input type once per function call. Defaults to `TRUE`.}
 }
 \value{
 A character vector when `multiple` is `"error"` or `"first"`. A list of
 character vectors when `multiple = "all"`.
 }
 \description{
-Translate species codes from NFI, CANFI, or jurisdiction-specific code
-systems into canonical NFI codes or species metadata stored in the package
-dictionary.
+Translate species identifiers across supported code systems and name fields.
+The function can translate among NFI, CANFI, and jurisdiction-specific
+species codes, and can also resolve scientific names, English common names,
+and French common names to NFI codes, CANFI codes, jurisdiction-specific
+codes, or supported name fields.
+}
+\details{
+By default, translations return NFI codes, but the `to` argument can be used
+to return CANFI codes, jurisdiction-specific codes, English common names,
+French common names, or scientific names.
+
+When `from = "auto"`, the function tries to infer the input type from the
+supplied values. Numeric inputs are treated as CANFI codes, NFI-formatted
+values are treated as NFI codes, and other code-like inputs are treated as
+jurisdiction codes. For jurisdiction-style inputs, the full input vector is
+used to infer a single shared jurisdiction when possible. If the lookup does
+not support a unique interpretation, the function errors and asks the user
+to supply `from` or `jurisdiction` explicitly.
 }
 \examples{
-translate_species_code("ABIE.BAL", from = "nfi", to = "CommonNameEnglish")
-translate_species_code("ABIE.BAL", from = "nfi", to = "CommonNameFrench")
+# Translate NFI codes to English or French common names
+translate_species_code("ABIE.BAL", from = "nfi", to = "englishname")
+translate_species_code("ABIE.BAL", from = "nfi", to = "frenchname")
+
+# Translate NFI codes to CANFI or jurisdiction-specific codes
+translate_species_code("ABIE.BAL", from = "nfi", to = "canfi")
+translate_species_code("ABIE.BAL", from = "nfi", to = "jurisdiction", jurisdiction = "ON")
+
+# Translate from scientific, English, or French names
+translate_species_code("Picea mariana", from = "scientificname")
+translate_species_code("black spruce", from = "englishname")
+translate_species_code("epinette noire", from = "frenchname")
+
+# Translate from jurisdiction, CANFI, or auto-detected inputs
 translate_species_code("BF", from = "jurisdiction", jurisdiction = "ON")
 translate_species_code("302", from = "canfi")
 translate_species_code("302", from = "auto")
-translate_species_code("PICE.GLA", from = "auto", to = "ScientificName")
+
+# Translate between name fields
+translate_species_code("black spruce", from = "englishname", to = "frenchname")
+translate_species_code("Picea mariana", from = "scientificname", to = "englishname")
+translate_species_code("PICE.GLA", from = "auto", to = "scientificname")
+
+# Partial argument values also work via match.arg()
+# Here, `to = "e"` resolves to `englishname`
+translate_species_code(c("ABIE.BAL", "PICE.MAR", "PINU.CON"), to = "e")
+
+# Auto-detect a shared jurisdiction from a vector of input codes
 translate_species_code(c("BF", "PJ", "SB"), from = "auto")
-translate_species_code(c("BF", "PJ"), from = "auto", jurisdiction = "ON")
 translate_species_code(
   "SW",
   from = "jurisdiction",
   jurisdiction = "BC",
-  to = "ScientificName"
+  to = "scientificname"
 )
 
-# Ambiguous CANFI code: errors by default
+# Ambiguous CANFI code (several matches): errors by default
 try(
   translate_species_code("104", from = "canfi")
 )
 
-# Return the first match
+# Several matches - return the first match
 translate_species_code("104", from = "canfi", multiple = "first")
 
-# Return all matches as a list
+# Several matches - return all matches as a list
 translate_species_code("104", from = "canfi", multiple = "all")
 
-# Vectorized input with mixed ambiguity handling
+# Vectorized input with several matches
 translate_species_code(
   c("302", "104"),
   from = "canfi",
