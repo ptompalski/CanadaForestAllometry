@@ -2,8 +2,10 @@
 
 ## Site index models included in the package
 
-#### `si_carmeanhahn1981()`
+### `si_carmeanhahn1981()`
 
+- Function reference:
+  [`si_carmeanhahn1981()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.md)
 - Description: Lake States site-index model for balsam fir and white
   spruce
 - Coverage: ON
@@ -12,8 +14,22 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_carmeanhahn1981.png)
 
-#### `si_huang1994()`
+### `si_cieszewskibella1991()`
 
+- Function reference:
+  [`si_cieszewskibella1991()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_cieszewskibella1991.md)
+- Description: Alberta polymorphic variable-age site-index model for
+  four major tree species
+- Coverage: AB
+- Species coverage: 4 species (PICE.GLA, PICE.MAR, PINU.CON, POPU.TRE)
+- Reference: Cieszewski and Bella ([1991](#ref-CieszewskiBella1991))
+
+![](Site-Index-Models_files/figure-html//si-curves-si_cieszewskibella1991.png)
+
+### `si_huang1994()`
+
+- Function reference:
+  [`si_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_huang1994.md)
 - Description: Huang et al. (1994) Alberta polymorphic site-index model
   set
 - Coverage: AB
@@ -23,8 +39,10 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_huang1994.png)
 
-#### `si_kerbowling1991()`
+### `si_kerbowling1991()`
 
+- Function reference:
+  [`si_kerbowling1991()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_kerbowling1991.md)
 - Description: New Brunswick polymorphic site-index model for softwoods
 - Coverage: NB
 - Species coverage: 4 species (ABIE.BAL, PICE.GLA, PICE.MAR, PINU.BAN)
@@ -32,8 +50,10 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_kerbowling1991.png)
 
-#### `si_lundgrendolid1970()`
+### `si_lundgrendolid1970()`
 
+- Function reference:
+  [`si_lundgrendolid1970()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_lundgrendolid1970.md)
 - Description: Lundgren and Dolid model (exponential monomolecular
   form); Lundgren and Dolid model (monomolecular form)
 - Coverage: ON
@@ -43,8 +63,10 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_lundgrendolid1970.png)
 
-#### `si_nigh2000()`
+### `si_nigh2000()`
 
+- Function reference:
+  [`si_nigh2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000.md)
 - Description: Nigh (2000) polymorphic site-index model for interior
   western redcedar
 - Coverage: BC
@@ -53,8 +75,10 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_nigh2000.png)
 
-#### `si_nigh2000_gi()`
+### `si_nigh2000_gi()`
 
+- Function reference:
+  [`si_nigh2000_gi()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000_gi.md)
 - Description: Nigh (2000) growth-intercept site-index model for
   interior western redcedar
 - Coverage: BC
@@ -63,8 +87,10 @@
 
 *No curve graphic shown for growth-intercept model.*
 
-#### `si_nighcourtin1998()`
+### `si_nighcourtin1998()`
 
+- Function reference:
+  [`si_nighcourtin1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nighcourtin1998.md)
 - Description: Nigh and Courtin (1998) red alder model, SI25 scale; Nigh
   and Courtin (1998) red alder model, SI50 scale
 - Coverage: BC
@@ -73,8 +99,10 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_nighcourtin1998.png)
 
-#### `si_payandeh1974()`
+### `si_payandeh1974()`
 
+- Function reference:
+  [`si_payandeh1974()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_payandeh1974.md)
 - Description: Payandeh (1974) nonlinear site-index equations
 - Coverage: Canada (all provinces/territories)
 - Species coverage: 9 species (ABIE.BAL, PICE.GLA, PICE.RUB, PICE.SIT,
@@ -83,8 +111,10 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_payandeh1974.png)
 
-#### `si_scottvoorhis1986()`
+### `si_scottvoorhis1986()`
 
+- Function reference:
+  [`si_scottvoorhis1986()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_scottvoorhis1986.md)
 - Description: Scott and Voorhis (1986) model with internal conversion
   to total age; Scott and Voorhis (1986) model using breast-height age
   directly
@@ -97,8 +127,10 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_scottvoorhis1986.png)
 
-#### `si_thrower1994()`
+### `si_thrower1994()`
 
+- Function reference:
+  [`si_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_thrower1994.md)
 - Description: Thrower et al. (1994) BC interior species model set
 - Coverage: BC
 - Species coverage: 11 species (ABIE.LAS, BETU.PAP, LARI.OCC, PICE.GLA,
@@ -113,6 +145,11 @@ Carmean, W.H., Hahn, J.T., 1981. Revised Site Index Curves for Balsam
 Fir and White Spruce in the Lake States. Research Note NC-269. St. Paul,
 MN: U.S. Dept. of Agriculture, Forest Service, North Central Forest
 Experiment Station 269. <https://doi.org/10.2737/NC-RN-269>
+
+Cieszewski, C.J., Bella, I.E., 1991. Polymorphic height and site index
+curves for the major tree species in alberta (No. 51), Forest management
+note. Forestry Canada, Northwest Region, Northern Forestry Centre,
+Edmonton, Alberta.
 
 Huang, S., Titus, S.J., Lakusta, T.W., 1994. Ecologically based site
 index curves and tables for major Alberta tree species. Tech. Report No.
