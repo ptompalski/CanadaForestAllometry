@@ -1,0 +1,14 @@
+meta <- utils::packageDescription("CanadaForestAllometry")
+
+utils::citHeader("To cite CanadaForestAllometry use:")
+
+utils::bibentry(
+  bibtype = "Manual",
+  title = "{CanadaForestAllometry}",
+  author = c(
+    utils::person("Piotr", "Tompalski")
+  ),
+  year = "2026",
+  note = paste("R package version", meta$Version),
+  url = "https://ptompalski.github.io/CanadaForestAllometry/"
+)

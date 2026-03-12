@@ -20,6 +20,12 @@ their original formulations, with transparent parameter tables,
 consistent inputs/outputs, and jurisdiction-appropriate assumptions
 (e.g. merchantability rules).
 
+Part of the package standardization is to use NFI species codes in all
+implemented models (e.g. `PICE.MAR` for black spruce). The package also
+includes `translate_species_code()`, which can translate among
+jurisdiction-specific codes, NFI and CANFI codes, common English and
+French names, and scientific names.
+
 ## Online documentation
 
 Full documentation is available at

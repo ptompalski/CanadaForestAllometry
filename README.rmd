@@ -35,6 +35,8 @@ knitr::opts_chunk$set(
 
 `CanadaForestAllometry` is an R package that brings together a collection of published allometric models developed for Canadian forests. The package provides a unified interface to estimate a range of tree- and stand-level attributes, based on models published in the Canadian forestry literature. The focus of `CanadaForestAllometry` is on standardization: models are implemented as faithfully as possible to their original formulations, with transparent parameter tables, consistent inputs/outputs, and jurisdiction-appropriate assumptions (e.g. merchantability rules).
 
+Part of the package standardization is to use NFI species codes in all implemented models (e.g. `PICE.MAR` for black spruce). The package also includes `translate_species_code()`, which can translate among jurisdiction-specific codes, NFI and CANFI codes, common English and French names, and scientific names.
+
 ## Online documentation
 
 Full documentation is available at https://ptompalski.github.io/CanadaForestAllometry/

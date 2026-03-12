@@ -6,6 +6,38 @@
 #' @format A data frame consisting of merchantability criteria.
 "merchcrit"
 
+#' Species dictionary for Canadian tree code systems
+#'
+#' A canonical species reference table derived from the raw cross-jurisdiction
+#' species coding source used by the package.
+#'
+#' @format A tibble with one row per canonical NFI species code and the
+#' following columns:
+#' \describe{
+#'   \item{NFI_code}{Canonical NFI species code.}
+#'   \item{CommonNameEnglish}{English common name, when available.}
+#'   \item{CommonNameFrench}{French common name, when available.}
+#'   \item{ScientificName}{Scientific name, when available.}
+#'   \item{Genus}{Four-letter NFI genus code.}
+#'   \item{Species}{Three-letter NFI species code or \code{"SPP"}.}
+#'   \item{Var}{Optional three-letter variety or subspecies code.}
+#' }
+"species_dictionary"
+
+#' Crosswalk among NFI, CANFI, and jurisdiction-specific species codes
+#'
+#' A normalized lookup table linking package species entries to the code systems
+#' used across Canadian jurisdictions and inventories.
+#'
+#' @format A tibble with the following columns:
+#' \describe{
+#'   \item{code_system}{Code system name: \code{"canfi"} or \code{"jurisdiction"}.}
+#'   \item{jurisdiction}{Jurisdiction identifier for provincial/territorial codes; \code{NA} for CANFI codes.}
+#'   \item{code}{The code value in the specified code system.}
+#'   \item{NFI_code}{Canonical NFI species code for the linked entry.}
+#' }
+"species_code_lookup"
+
 # #' Zakrzewski et al. (2013) taper/volume model parameters for Ontario
 # #'
 # #' Species-level coefficients for the mathematically tractable stem taper model

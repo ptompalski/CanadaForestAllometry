@@ -9,6 +9,7 @@ navbar:
   components:
     github:
       icon: fa-github
+      aria-label: GitHub repository
       href: https://github.com/ptompalski/CanadaForestAllometry
 
 
@@ -49,3 +50,10 @@ reference:
     contents:
       - merchcrit
       - get_merch_criteria
+
+  - title: Species codes and names
+    desc: Tools and datasets for translating species identifiers across code systems and names.
+    contents:
+      - translate_species_code
+      - species_dictionary
+      - species_code_lookup

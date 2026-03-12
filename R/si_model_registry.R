@@ -12,6 +12,7 @@ si_model_registry <- function() {
   tibble::tibble(
     model_id = c(
       "carmeanhahn1981",
+      "cieszewskibella1991",
       "kerbowling1991",
       "lundgrendolid1970_exponential_monomolecular",
       "lundgrendolid1970_monomolecular",
@@ -28,6 +29,7 @@ si_model_registry <- function() {
 
     reference = c(
       "@CarmeanHahn1981",
+      "@CieszewskiBella1991",
       "@KerBowling1991",
       "@LundgrenDolid1970",
       "@LundgrenDolid1970",
@@ -44,6 +46,7 @@ si_model_registry <- function() {
 
     engine = c(
       "si_carmeanhahn1981",
+      "si_cieszewskibella1991",
       "si_kerbowling1991",
       "si_lundgrendolid1970",
       "si_lundgrendolid1970",
@@ -60,6 +63,7 @@ si_model_registry <- function() {
 
     # fixed arguments used to distinguish model variants sharing one engine
     fixed_args = list(
+      list(),
       list(),
       list(),
       list(model = "exponential_monomolecular"),
@@ -81,6 +85,7 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       FALSE,
       FALSE,
       FALSE,
@@ -92,6 +97,7 @@ si_model_registry <- function() {
       TRUE
     ),
     requires_gi = c(
+      FALSE,
       FALSE,
       FALSE,
       FALSE,
@@ -121,9 +127,11 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE
     ),
     supports_predict_height = c(
+      TRUE,
       TRUE,
       TRUE,
       TRUE,
@@ -152,11 +160,13 @@ si_model_registry <- function() {
       "regional",
       "regional",
       "regional",
+      "regional",
       "regional"
     ),
 
     province_scope = list(
       c("ON"),
+      c("AB"),
       c("NB"),
       c("ON"),
       c("ON"),
@@ -173,6 +183,7 @@ si_model_registry <- function() {
 
     # subregion metadata (for geography-aware selection)
     subregion_type = c(
+      "none",
       "none",
       "none",
       "none",
@@ -200,9 +211,11 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       FALSE
     ),
     subregion_arg = c(
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -222,6 +235,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      NA_character_,
       c("BC_INTERIOR"),
       c("BC_INTERIOR"),
       c("BC_COAST"),
@@ -233,6 +247,7 @@ si_model_registry <- function() {
       c("BC_INTERIOR")
     ),
     subregion_desc = c(
+      "none",
       "none",
       "none",
       "none",
@@ -250,6 +265,7 @@ si_model_registry <- function() {
 
     description = c(
       "Lake States site-index model for balsam fir and white spruce",
+      "Alberta polymorphic variable-age site-index model for four major tree species",
       "New Brunswick polymorphic site-index model for softwoods",
       "Lundgren and Dolid model (exponential monomolecular form)",
       "Lundgren and Dolid model (monomolecular form)",
@@ -264,10 +280,11 @@ si_model_registry <- function() {
       "Thrower et al. (1994) BC interior species model set"
     ),
 
-    rank = c(70, 80, 60, 55, 90, 85, 85, 84, 88, 50, 65, 66, 90),
+    rank = c(70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 50, 65, 66, 90),
 
     params_key = c(
       NA_character_,
+      "parameters_CieszewskiBella1991",
       "parameters_KerBowling1991",
       "parameters_LungrenDolid1970",
       "parameters_LungrenDolid1970",
@@ -285,6 +302,7 @@ si_model_registry <- function() {
     # optional manual species list for engines not backed by a parameter table
     species_manual = list(
       c("ABIE.BAL", "PICE.GLA"),
+      NULL,
       NULL,
       NULL,
       NULL,

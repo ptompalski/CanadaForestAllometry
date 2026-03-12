@@ -1,3 +1,10 @@
+# CanadaForestAllometry 0.8.2
+
+## New features
+
+- Added `translate_species_code()`, a species translator for converting among NFI, CANFI, and jurisdiction-specific species codes, as well as English and French common names and scientific names.
+- Added `si_cieszewskibella1991()`, implementing the Cieszewski & Bella (1991) site index model.
+
 # CanadaForestAllometry 0.8.1
 
 ## Site index updates
@@ -148,4 +155,3 @@ These differences arise because earlier code paths applied the Table 6 proportio
 
 * Added test coverage for volume-related functions.
 * Improved error and warning messages .
-

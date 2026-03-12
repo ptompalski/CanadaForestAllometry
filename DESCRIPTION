@@ -2,7 +2,7 @@ Package: CanadaForestAllometry
 Type: Package
 Title: Allometric models for Canadian forest
 Description: Tools for estimating tree allometry, biomass, taper, and volume using published equations.
-Version: 0.8.1
+Version: 0.8.2
 Author: Authors@R: c(
     person(given = "Piotr", 
            family = "Tompalski",
@@ -16,7 +16,7 @@ Author: Authors@R: c(
     person(given = "Vinicius", 
            family = "Manvailer Goncalves",
            email = "vinicius.manvailergoncalves@nrcan-rncan.gc.ca", 
-           role = "aut"),
+           role = "ctb"),
     person("Margaret", "Penner", role = "ctb",
        comment = "Original R implementation of Zakrzewski & Penner (2013) taper model"),
     person("Mathieu", "Fortin", role = "ctb",
@@ -52,5 +52,7 @@ Suggests:
     patchwork,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://ptompalski.github.io/CanadaForestAllometry/
+URL: https://ptompalski.github.io/CanadaForestAllometry/,
+    https://github.com/ptompalski/CanadaForestAllometry
+BugReports: https://github.com/ptompalski/CanadaForestAllometry/issues
 Config/Needs/website: rmarkdown, quarto

@@ -46,3 +46,20 @@ testthat::test_that(".get_internal_data errors clearly for missing internal obje
     fixed = TRUE
   )
 })
+
+
+testthat::test_that(".get_package_data loads shipped package datasets", {
+  out <- CanadaForestAllometry:::.get_package_data("species_dictionary")
+  testthat::expect_s3_class(out, "tbl_df")
+  testthat::expect_true("NFI_code" %in% names(out))
+  testthat::expect_true(nrow(out) > 0)
+})
+
+
+testthat::test_that(".get_package_data errors clearly when dataset is unavailable", {
+  testthat::expect_error(
+    CanadaForestAllometry:::.get_package_data("definitely_not_a_dataset"),
+    "Dataset `definitely_not_a_dataset` is not available.",
+    fixed = TRUE
+  )
+})

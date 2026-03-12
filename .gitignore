@@ -9,3 +9,6 @@ readme.html
 **/.quarto/
 vignettes/.quarto/
 vignettes/.quarto/_freeze/
+tmp
+.tmp
+.tmp_r
