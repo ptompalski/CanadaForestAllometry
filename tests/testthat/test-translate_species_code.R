@@ -75,7 +75,7 @@ test_that("translate_species_code accepts friendly aliases in `to`", {
 
   expect_equal(
     translate_species_code("PICE.MAR", from = "nfi", to = "frenchname"),
-    "Ã©pinette noire"
+    "épinette noire"
   )
 
   expect_equal(

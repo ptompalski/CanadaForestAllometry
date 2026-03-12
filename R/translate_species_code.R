@@ -181,6 +181,22 @@ translate_species_code <- function(
     object = "species_code_lookup"
   )
 
+  lookup_jurisdiction <- as.character(lookup$jurisdiction)
+  has_jurisdiction <- !is.na(lookup_jurisdiction)
+  lookup_jurisdiction[has_jurisdiction] <- stringr::str_to_lower(
+    standardize_jurisdiction_code(lookup_jurisdiction[has_jurisdiction])
+  )
+
+  lookup <- lookup |>
+    dplyr::mutate(
+      code_system = stringr::str_to_lower(as.character(.data$code_system)),
+      jurisdiction = lookup_jurisdiction,
+      code = stringr::str_to_upper(stringr::str_trim(as.character(.data$code))),
+      NFI_code = stringr::str_to_upper(
+        stringr::str_trim(as.character(.data$NFI_code))
+      )
+    )
+
   if (identical(from, "auto")) {
     inferred <- .infer_species_code_input(
       code = code,
@@ -214,7 +230,7 @@ translate_species_code <- function(
     englishname = "CommonNameEnglish",
     frenchname = "CommonNameFrench"
   )
-  to_resolved <- unname(to_map[[to]])
+  to_resolved <- if (to %in% names(to_map)) unname(to_map[[to]]) else to
 
   if (from == "jurisdiction") {
     if (is.null(jurisdiction)) {
@@ -266,54 +282,54 @@ translate_species_code <- function(
   )
 
   matches <- if (from == "nfi") {
-    key %>%
-      dplyr::transmute(.row, NFI_code = code) %>%
+    key |>
+      dplyr::transmute(.row, jurisdiction, NFI_code = code) |>
       dplyr::left_join(dictionary, by = "NFI_code")
   } else if (from %in% names(name_from_map)) {
     from_col <- name_from_map[[from]]
 
-    key %>%
-      dplyr::rename(.name_key = code) %>%
+    key |>
+      dplyr::rename(.name_key = code) |>
       dplyr::left_join(
-        dictionary %>%
+        dictionary |>
           dplyr::mutate(.name_key = .normalize_species_name(.data[[from_col]])),
         by = ".name_key"
-      ) %>%
+      ) |>
       dplyr::arrange(.data$.row)
   } else {
-    lookup_sub <- lookup %>%
+    lookup_sub <- lookup |>
       dplyr::filter(.data$code_system == from)
 
     if (from == "jurisdiction") {
-      lookup_sub <- lookup_sub %>%
+      lookup_sub <- lookup_sub |>
         dplyr::filter(.data$jurisdiction %in% unique(jurisdiction))
     }
 
-    key %>%
-      dplyr::left_join(lookup_sub, by = c("code", "jurisdiction")) %>%
+    key |>
+      dplyr::left_join(lookup_sub, by = c("code", "jurisdiction")) |>
       dplyr::left_join(dictionary, by = "NFI_code")
   }
 
   out <- vector("list", length(code_std))
 
   for (i in seq_along(out)) {
-    nfi_vals <- matches %>%
-      dplyr::filter(.data$.row == i) %>%
-      dplyr::pull(.data$NFI_code) %>%
+    nfi_vals <- matches |>
+      dplyr::filter(.data$.row == i) |>
+      dplyr::pull(.data$NFI_code) |>
       unique()
 
     vals <- if (to %in% names(to_map)) {
-      matches %>%
-        dplyr::filter(.data$.row == i) %>%
-        dplyr::pull(!!rlang::sym(to_resolved)) %>%
+      matches |>
+        dplyr::filter(.data$.row == i) |>
+        dplyr::pull(!!rlang::sym(to_resolved)) |>
         unique()
     } else if (to == "canfi") {
-      lookup %>%
+      lookup |>
         dplyr::filter(
           .data$code_system == "canfi",
           .data$NFI_code %in% nfi_vals
-        ) %>%
-        dplyr::pull(.data$code) %>%
+        ) |>
+        dplyr::pull(.data$code) |>
         unique()
     } else {
       if (is.na(jurisdiction[i])) {
@@ -326,13 +342,29 @@ translate_species_code <- function(
         )
       }
 
-      lookup %>%
+      lookup |>
         dplyr::filter(
           .data$code_system == "jurisdiction",
-          .data$jurisdiction == jurisdiction[i],
-          .data$NFI_code %in% nfi_vals
-        ) %>%
-        dplyr::pull(.data$code) %>%
+          !is.na(.data$jurisdiction)
+        ) |>
+        dplyr::transmute(
+          jurisdiction = stringr::str_to_lower(
+            stringr::str_trim(as.character(.data$jurisdiction))
+          ),
+          NFI_code = stringr::str_to_upper(
+            stringr::str_trim(as.character(.data$NFI_code))
+          ),
+          code = stringr::str_to_upper(
+            stringr::str_trim(as.character(.data$code))
+          )
+        ) |>
+        dplyr::filter(
+          .data$jurisdiction == stringr::str_to_lower(.env$jurisdiction[i]),
+          .data$NFI_code %in% stringr::str_to_upper(
+            stringr::str_trim(as.character(.env$nfi_vals))
+          )
+        ) |>
+        dplyr::pull(.data$code) |>
         unique()
     }
 
@@ -459,14 +491,14 @@ translate_species_code <- function(
     return(list(from = "jurisdiction", jurisdiction = jurisdiction_std))
   }
 
-  juris_lookup <- lookup %>%
-    dplyr::filter(.data$code_system == "jurisdiction") %>%
+  juris_lookup <- lookup |>
+    dplyr::filter(.data$code_system == "jurisdiction") |>
     dplyr::mutate(code = stringr::str_to_upper(stringr::str_trim(.data$code)))
 
   possible_jurisdictions <- lapply(code_trim, function(one_code) {
-    juris_lookup %>%
-      dplyr::filter(.data$code == one_code) %>%
-      dplyr::pull(.data$jurisdiction) %>%
+    juris_lookup |>
+      dplyr::filter(.data$code == one_code) |>
+      dplyr::pull(.data$jurisdiction) |>
       unique()
   })
 

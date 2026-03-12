@@ -242,7 +242,14 @@ standardize_ecozone <- function(ecozone) {
 # internal
 .get_package_data <- function(name) {
   env <- new.env(parent = emptyenv())
-  utils::data(list = name, package = "CanadaForestAllometry", envir = env)
+  withCallingHandlers(
+    utils::data(list = name, package = "CanadaForestAllometry", envir = env),
+    warning = function(w) {
+      if (grepl("^data set '.*' not found$", conditionMessage(w))) {
+        rlang::cnd_muffle(w)
+      }
+    }
+  )
 
   if (!exists(name, envir = env, inherits = FALSE)) {
     cli::cli_abort(
