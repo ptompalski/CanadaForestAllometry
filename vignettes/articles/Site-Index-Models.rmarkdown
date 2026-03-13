@@ -1,0 +1,251 @@
+---
+title: "Site Index Models"
+bibliography: ../../REFERENCES.bib
+csl: ../../isprs-journal-of-photogrammetry-and-remote-sensing.csl
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+library(CanadaForestAllometry)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(patchwork)
+```
+
+
+
+# Site index models included in the package
+
+
+
+```{r}
+#| label: si-model-sections
+#| echo: false
+#| warning: false
+#| message: false
+#| results: asis
+
+plot_si_curves <- function(
+  model,
+  si_values = c(5, 10, 15, 20, 25),
+  age_min = 1,
+  age_max = 150,
+  age_by = 1,
+  subregion = "All",
+  fixed_args = NULL,
+  facet_ncol = 4
+) {
+  if (is.function(model)) {
+    model_fun <- model
+    model_name <- as.character(substitute(model))
+  } else if (is.character(model) && length(model) == 1L) {
+    model_name <- model
+    model_fun <- get(model_name, mode = "function")
+  } else {
+    stop("`model` must be a function or function name.")
+  }
+
+  reg <- CanadaForestAllometry:::si_model_registry_species()
+  reg_match <- reg |>
+    dplyr::filter(.data$engine == model_name)
+
+  if (nrow(reg_match) == 0L) {
+    stop(sprintf("No SI registry entry found for `%s`.", model_name))
+  }
+
+  row_use <- reg_match[1, , drop = FALSE]
+  species_vec <- unlist(row_use$species[[1]], use.names = FALSE)
+
+  if (!isTRUE(row_use$supports_predict_height[[1]])) {
+    p <- ggplot2::ggplot() +
+      ggplot2::annotate("text", x = 0.5, y = 0.5, label = "Height curve not available for this model") +
+      ggplot2::xlim(0, 1) +
+      ggplot2::ylim(0, 1) +
+      ggplot2::theme_void() +
+      ggplot2::ggtitle(paste0(model_name, "()"))
+    return(list(plot = p, n_rows = 1L, n_species = 0L))
+  }
+
+  row_fixed <- row_use$fixed_args[[1]]
+  if (is.null(row_fixed)) row_fixed <- list()
+  if (is.null(fixed_args)) fixed_args <- list()
+  call_fixed <- utils::modifyList(row_fixed, fixed_args)
+
+  ages <- seq(age_min, age_max, by = age_by)
+  grid <- tidyr::expand_grid(
+    species = species_vec,
+    si = si_values,
+    age = ages
+  )
+
+  pred_one <- function(age_i, si_i, sp_i) {
+    args <- c(
+      list(age = age_i, si = si_i),
+      if ("species" %in% names(formals(model_fun))) list(species = sp_i) else list(),
+      if ("subregion" %in% names(formals(model_fun))) list(subregion = subregion) else list(),
+      call_fixed
+    )
+    out <- tryCatch(do.call(model_fun, args), error = function(e) NULL)
+    if (is.null(out) || !"height" %in% names(out)) return(NA_real_)
+    as.numeric(out$height[[1]])
+  }
+
+  grid$height <- vapply(
+    seq_len(nrow(grid)),
+    function(i) pred_one(grid$age[[i]], grid$si[[i]], grid$species[[i]]),
+    numeric(1)
+  )
+
+  plot_data <- grid |>
+    dplyr::filter(is.finite(.data$height)) |>
+    dplyr::mutate(si = factor(.data$si, levels = sort(unique(si_values))))
+
+  label_data <- plot_data |>
+    dplyr::group_by(.data$species, .data$si) |>
+    dplyr::filter(.data$age == max(.data$age, na.rm = TRUE)) |>
+    dplyr::slice_tail(n = 1) |>
+    dplyr::ungroup()
+
+  n_species <- length(species_vec)
+  n_rows <- max(1L, ceiling(n_species / facet_ncol))
+  n_panels <- n_rows * facet_ncol
+
+  species_plots <- lapply(species_vec, function(sp) {
+    df_sp <- plot_data |>
+      dplyr::filter(.data$species == sp)
+    lab_sp <- label_data |>
+      dplyr::filter(.data$species == sp)
+
+    ggplot2::ggplot(
+      df_sp,
+      ggplot2::aes(x = .data$age, y = .data$height, group = .data$si)
+    ) +
+      ggplot2::geom_line(linewidth = 0.6, color = "black") +
+      ggplot2::geom_text(
+        data = lab_sp,
+        ggplot2::aes(label = .data$si),
+        size = 2.2,
+        hjust = -0.15,
+        color = "black"
+      ) +
+      ggplot2::scale_x_continuous(
+        limits = c(0, age_max),
+        breaks = seq(0, age_max, by = 25),
+        expand = ggplot2::expansion(mult = c(0, 0.08))
+      ) +
+      ggplot2::labs(
+        title = sp,
+        x = "Breast-height age (years)",
+        y = "Top height (m)"
+      ) +
+      ggplot2::theme_minimal(base_size = 10)
+  })
+
+  if (n_panels > n_species) {
+    species_plots <- c(
+      species_plots,
+      replicate(n_panels - n_species, patchwork::plot_spacer(), simplify = FALSE)
+    )
+  }
+
+  p <- patchwork::wrap_plots(species_plots, ncol = facet_ncol)
+
+  list(plot = p, n_rows = n_rows, n_species = n_species)
+}
+
+reg <- CanadaForestAllometry:::si_model_registry_species() |>
+  dplyr::arrange(dplyr::desc(rank), model_id)
+
+reg_fun <- reg |>
+  dplyr::group_by(engine) |>
+  dplyr::summarise(
+    rank = max(rank, na.rm = TRUE),
+    description = paste(unique(description), collapse = "; "),
+    reference = paste(unique(reference), collapse = "; "),
+    province_scope = list(sort(unique(unlist(province_scope)))),
+    species = list(sort(unique(unlist(species)))),
+    supports_predict_height = any(supports_predict_height),
+    .groups = "drop"
+  ) |>
+  dplyr::arrange(engine)
+
+for (i in seq_len(nrow(reg_fun))) {
+  x <- reg_fun[i, , drop = FALSE]
+
+  coverage <- if (any(x$province_scope[[1]] == "ALL")) {
+    "Canada (all provinces/territories)"
+  } else {
+    paste(x$province_scope[[1]], collapse = ", ")
+  }
+
+  species_cov <- if (length(x$species[[1]]) == 0L) {
+    "unknown"
+  } else {
+    paste0(length(x$species[[1]]), " species (", paste(x$species[[1]], collapse = ", "), ")")
+  }
+
+  ref_fun_link <- paste0(
+    "[`", x$engine, "()`](../reference/", x$engine, ".html)"
+  )
+
+  cat("## `", x$engine, "()`\n\n", sep = "")
+  cat("- Function reference: ", ref_fun_link, "\n", sep = "")
+  cat("- Description: ", x$description, "\n", sep = "")
+  cat("- Coverage: ", coverage, "\n", sep = "")
+  cat("- Species coverage: ", species_cov, "\n", sep = "")
+  cat("- Reference: ", x$reference, "\n\n", sep = "")
+
+  if (identical(x$engine[[1]], "si_nigh2000_gi")) {
+    cat("_No curve graphic shown for growth-intercept model._\n\n")
+    cat("\n\n")
+    next
+  }
+
+  plot_out <- plot_si_curves(
+    model = x$engine,
+    si_values = c(5, 10, 15, 20, 25),
+    age_min = 1,
+    age_max = 150,
+    age_by = 1,
+    subregion = "All",
+    facet_ncol = 4
+  )
+
+  p <- plot_out$plot +
+    patchwork::plot_annotation(title = paste0(x$engine, "()"))
+
+  fig_dir <- knitr::opts_chunk$get("fig.path")
+  dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
+  file_stub <- gsub("[^A-Za-z0-9_-]", "-", x$engine)
+  fig_file <- file.path(fig_dir, paste0("si-curves-", file_stub, ".png"))
+  fig_file_out <- gsub("\\\\", "/", fig_file)
+
+  row_height <- 2.3
+  fig_h <- max(2.8, row_height * plot_out$n_rows)
+
+  ggplot2::ggsave(
+    filename = fig_file,
+    plot = p,
+    width = 10,
+    height = fig_h,
+    dpi = 140,
+    bg = "white"
+  )
+
+  cat("![](", fig_file_out, ")\n\n", sep = "")
+  cat("\n\n")
+}
+```
+
+
+
+# References
+

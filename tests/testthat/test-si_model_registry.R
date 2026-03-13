@@ -11,9 +11,23 @@ testthat::test_that("si_model_registry has expected structure and key models", {
   testthat::expect_true(all(c(
     "nigh2000",
     "nighcourtin1998_si25",
+    "parresolvissage1998",
     "thrower1994",
     "huang1994"
   ) %in% reg$model_id))
+})
+
+testthat::test_that("si_model_registry includes ParresolVissage1998 metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  p <- reg |>
+    dplyr::filter(.data$model_id == "parresolvissage1998")
+
+  testthat::expect_equal(nrow(p), 1L)
+  testthat::expect_identical(p$engine[[1]], "si_parresolvissage1998")
+  testthat::expect_identical(p$reference[[1]], "@ParresolVissage1998")
+  testthat::expect_identical(p$species_manual[[1]], "PINU.STR")
+  testthat::expect_true(is.na(p$params_key[[1]]))
 })
 
 testthat::test_that("si_model_registry includes Huang1994 subregion metadata", {

@@ -21,12 +21,12 @@ si_model_registry <- function() {
       "nighcourtin1998_si25",
       "nighcourtin1998_si50",
       "huang1994",
+      "parresolvissage1998",
       "payandeh1974",
       "scottvoorhis1986_bh_age",
       "scottvoorhis1986_total_age",
       "thrower1994"
     ),
-
     reference = c(
       "@CarmeanHahn1981",
       "@CieszewskiBella1991",
@@ -38,12 +38,12 @@ si_model_registry <- function() {
       "@NighCourtin1998",
       "@NighCourtin1998",
       "@Huang1994si",
+      "@ParresolVissage1998",
       "@Payandeh1974",
       "@ScottVoorhis1986",
       "@ScottVoorhis1986",
       "@Thrower1994"
     ),
-
     engine = c(
       "si_carmeanhahn1981",
       "si_cieszewskibella1991",
@@ -55,13 +55,12 @@ si_model_registry <- function() {
       "si_nighcourtin1998",
       "si_nighcourtin1998",
       "si_huang1994",
+      "si_parresolvissage1998",
       "si_payandeh1974",
       "si_scottvoorhis1986",
       "si_scottvoorhis1986",
       "si_thrower1994"
     ),
-
-    # fixed arguments used to distinguish model variants sharing one engine
     fixed_args = list(
       list(),
       list(),
@@ -74,12 +73,11 @@ si_model_registry <- function() {
       list(si50 = TRUE),
       list(),
       list(),
+      list(),
       list(convert_to_total_age = FALSE),
       list(convert_to_total_age = TRUE),
       list()
     ),
-
-    # Inputs required by model interface
     requires_species = c(
       TRUE,
       TRUE,
@@ -91,6 +89,7 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       TRUE,
+      FALSE,
       TRUE,
       TRUE,
       TRUE,
@@ -110,11 +109,11 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       FALSE
     ),
-
-    # Model capabilities
     supports_predict_si = c(
+      TRUE,
       TRUE,
       TRUE,
       TRUE,
@@ -144,10 +143,11 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE
     ),
-
     scope = c(
+      "regional",
       "regional",
       "regional",
       "regional",
@@ -163,7 +163,6 @@ si_model_registry <- function() {
       "regional",
       "regional"
     ),
-
     province_scope = list(
       c("ON"),
       c("AB"),
@@ -175,13 +174,12 @@ si_model_registry <- function() {
       c("BC"),
       c("BC"),
       c("AB"),
+      c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("ALL"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("BC")
     ),
-
-    # subregion metadata (for geography-aware selection)
     subregion_type = c(
       "none",
       "none",
@@ -196,9 +194,11 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "bec_region"
     ),
     subregion_required = c(
+      FALSE,
       FALSE,
       FALSE,
       FALSE,
@@ -228,6 +228,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      NA_character_,
       NA_character_
     ),
     subregion_scope = list(
@@ -241,6 +242,7 @@ si_model_registry <- function() {
       c("BC_COAST"),
       c("BC_COAST"),
       c("AB"),
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -260,9 +262,9 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "BC interior"
     ),
-
     description = c(
       "Lake States site-index model for balsam fir and white spruce",
       "Alberta polymorphic variable-age site-index model for four major tree species",
@@ -274,14 +276,13 @@ si_model_registry <- function() {
       "Nigh and Courtin (1998) red alder model, SI25 scale",
       "Nigh and Courtin (1998) red alder model, SI50 scale",
       "Huang et al. (1994) Alberta polymorphic site-index model set",
+      "Parresol and Vissage (1998) base-age invariant eastern white pine model",
       "Payandeh (1974) nonlinear site-index equations",
       "Scott and Voorhis (1986) model using breast-height age directly",
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set"
     ),
-
-    rank = c(70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 50, 65, 66, 90),
-
+    rank = c(70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 68, 50, 65, 66, 90),
     params_key = c(
       NA_character_,
       "parameters_CieszewskiBella1991",
@@ -293,13 +294,12 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "parameters_Huang1994_si",
+      NA_character_,
       "parameters_Payandeh1974",
       "parameters_ScottVoorhis1986",
       "parameters_ScottVoorhis1986",
       "parameters_Thrower1994"
     ),
-
-    # optional manual species list for engines not backed by a parameter table
     species_manual = list(
       c("ABIE.BAL", "PICE.GLA"),
       NULL,
@@ -311,6 +311,7 @@ si_model_registry <- function() {
       c("ALNU.RUB"),
       c("ALNU.RUB"),
       NULL,
+      c("PINU.STR"),
       NULL,
       NULL,
       NULL,
