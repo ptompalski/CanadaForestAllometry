@@ -136,10 +136,14 @@ Functions for site index modeling.
   redcedar
 - [`si_nighcourtin1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nighcourtin1998.md)
   : Nigh and Courtin (1998) site index model for red alder (BC coast)
+- [`si_parresolvissage1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_parresolvissage1998.md)
+  : Parresol and Vissage (1998) site index model for eastern white pine
 - [`si_payandeh1974()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_payandeh1974.md)
   : Payandeh (1974) site index model
 - [`si_scottvoorhis1986()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_scottvoorhis1986.md)
   : Scott and Voorhis (1986) site index model
+- [`si_sharmaparton2019()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2019.md)
+  : Sharma and Parton (2019) site index model for white pine plantations
 - [`si_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_thrower1994.md)
   : Thrower et al. (1994) site index models for BC interior species
 - [`ytbh_nigh2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh2000.md)

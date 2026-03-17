@@ -99,6 +99,18 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_nighcourtin1998.png)
 
+### `si_parresolvissage1998()`
+
+- Function reference:
+  [`si_parresolvissage1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_parresolvissage1998.md)
+- Description: Parresol and Vissage (1998) base-age invariant eastern
+  white pine model
+- Coverage: NB, NL, NS, ON, PE, QC
+- Species coverage: 1 species (PINU.STR)
+- Reference: Parresol and Vissage ([1998](#ref-ParresolVissage1998))
+
+![](Site-Index-Models_files/figure-html//si-curves-si_parresolvissage1998.png)
+
 ### `si_payandeh1974()`
 
 - Function reference:
@@ -126,6 +138,18 @@
 - Reference: Scott and Voorhis ([1986](#ref-ScottVoorhis1986))
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_scottvoorhis1986.png)
+
+### `si_sharmaparton2019()`
+
+- Function reference:
+  [`si_sharmaparton2019()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2019.md)
+- Description: Sharma and Parton (2019) non-climate white pine
+  plantation model
+- Coverage: ON
+- Species coverage: 1 species (PINU.STR)
+- Reference: Sharma and Parton ([2019](#ref-SharmaParton2019))
+
+![](Site-Index-Models_files/figure-html//si-curves-si_sharmaparton2019.png)
 
 ### `si_thrower1994()`
 
@@ -172,6 +196,10 @@ Nigh, G.D., Courtin, P.J., 1998. Height models for Red Alder (Alnus
 rubra Bong.) in British Columbia. New Forests 16, 59–70.
 <https://doi.org/10.1023/A:1006561502635>
 
+Parresol, B.R., Vissage, J.S., 1998. White pine site index for the
+southern forest survey (No. Research Paper SRS-10). U.S. Department of
+Agriculture, Forest Service, Southern Research Station, Asheville, NC.
+
 Payandeh, B., 1974. Nonlinear site index equations for several major
 Canadian timber species. The Forestry Chronicle 50, 194–196.
 <https://doi.org/10.5558/tfc50194-5>
@@ -179,6 +207,10 @@ Canadian timber species. The Forestry Chronicle 50, 194–196.
 Scott, C.T., Voorhis, N.G., 1986. Northeastern Forest Survey Site Index
 Equations and Site Productivity Classes. Northern Journal of Applied
 Forestry 3, 144–148. <https://doi.org/10.1093/njaf/3.4.144>
+
+Sharma, M., Parton, J., 2019. Modelling the effects of climate on site
+productivity of white pine plantations. Canadian Journal of Forest
+Research 49, 1289–1297. <https://doi.org/10.1139/cjfr-2019-0165>
 
 Thrower, J.S., Nussbaum, A.F., Di Lucca, C.M., 1994. Site index curves
 and tables for british columbia: Interior species (No. Field Guide
