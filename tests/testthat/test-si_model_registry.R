@@ -12,6 +12,7 @@ testthat::test_that("si_model_registry has expected structure and key models", {
     "nigh2000",
     "nighcourtin1998_si25",
     "parresolvissage1998",
+    "sharma2015",
     "sharmareid2018",
     "sharma2022",
     "sharmaparton2019",
@@ -43,6 +44,20 @@ testthat::test_that("si_model_registry includes SharmaReid2018 metadata", {
   testthat::expect_equal(nrow(s), 1L)
   testthat::expect_identical(s$engine[[1]], "si_sharmareid2018")
   testthat::expect_identical(s$reference[[1]], "@SharmaReid2018")
+  testthat::expect_identical(s$species_manual[[1]], c("PINU.BAN", "PICE.MAR"))
+  testthat::expect_identical(s$province_scope[[1]], "ON")
+  testthat::expect_true(is.na(s$params_key[[1]]))
+})
+
+testthat::test_that("si_model_registry includes SharmaEtAl2015 metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "sharma2015")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_sharma2015")
+  testthat::expect_identical(s$reference[[1]], "@SharmaEtAl2015")
   testthat::expect_identical(s$species_manual[[1]], c("PINU.BAN", "PICE.MAR"))
   testthat::expect_identical(s$province_scope[[1]], "ON")
   testthat::expect_true(is.na(s$params_key[[1]]))

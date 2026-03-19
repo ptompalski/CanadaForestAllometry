@@ -87,7 +87,7 @@ si_sharmareid2018 <- function(age, height = NULL, si = NULL, species, base_age =
   )
 
   if (mode == "predict_height") {
-    h <- .sharmareid2018_height(
+    h <- .mcdill_amateis_height(
       age = df$age,
       si = df$si,
       base_age = df$base_age,
@@ -111,7 +111,7 @@ si_sharmareid2018 <- function(age, height = NULL, si = NULL, species, base_age =
     return(dplyr::tibble(height = h))
   }
 
-  si_est <- .sharmareid2018_si(
+  si_est <- .mcdill_amateis_si(
     age = df$age,
     height = df$height,
     base_age = df$base_age,
@@ -133,18 +133,6 @@ si_sharmareid2018 <- function(age, height = NULL, si = NULL, species, base_age =
   }
 
   dplyr::tibble(si = si_est)
-}
-
-
-# internal
-.sharmareid2018_height <- function(age, si, base_age, a0, a1) {
-  a0 / (1 - (1 - a0 / si) * (base_age / age)^a1)
-}
-
-
-# internal
-.sharmareid2018_si <- function(age, height, base_age, a0, a1) {
-  a0 / (1 - (1 - a0 / height) * (age / base_age)^a1)
 }
 
 

@@ -24,6 +24,7 @@ si_model_registry <- function() {
       "nighcourtin1998_si50",
       "huang1994",
       "sharmaparton2019",
+      "sharma2015",
       "parresolvissage1998",
       "payandeh1974",
       "sharmareid2018",
@@ -46,6 +47,7 @@ si_model_registry <- function() {
       "@NighCourtin1998",
       "@Huang1994si",
       "@SharmaParton2019",
+      "@SharmaEtAl2015",
       "@ParresolVissage1998",
       "@Payandeh1974",
       "@SharmaReid2018",
@@ -68,6 +70,7 @@ si_model_registry <- function() {
       "si_nighcourtin1998",
       "si_huang1994",
       "si_sharmaparton2019",
+      "si_sharma2015",
       "si_parresolvissage1998",
       "si_payandeh1974",
       "si_sharmareid2018",
@@ -77,6 +80,7 @@ si_model_registry <- function() {
       "si_thrower1994"
     ),
     fixed_args = list(
+      list(),
       list(),
       list(),
       list(),
@@ -117,6 +121,7 @@ si_model_registry <- function() {
       "breast_height_age",
       "breast_height_age",
       "breast_height_age",
+      "breast_height_age",
       "total_age",
       "breast_height_age"
     ),
@@ -134,6 +139,7 @@ si_model_registry <- function() {
       FALSE,
       TRUE,
       FALSE,
+      TRUE,
       FALSE,
       TRUE,
       TRUE,
@@ -143,6 +149,7 @@ si_model_registry <- function() {
       TRUE
     ),
     requires_gi = c(
+      FALSE,
       FALSE,
       FALSE,
       FALSE,
@@ -164,7 +171,7 @@ si_model_registry <- function() {
       FALSE,
       FALSE
     ),
-    supports_predict_si = rep(TRUE, 20),
+    supports_predict_si = rep(TRUE, 21),
     supports_predict_height = c(
       TRUE,
       TRUE,
@@ -185,9 +192,11 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE
     ),
     scope = c(
+      "regional",
       "regional",
       "regional",
       "regional",
@@ -223,6 +232,7 @@ si_model_registry <- function() {
       c("BC"),
       c("AB"),
       c("ON"),
+      c("ON"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("ALL"),
       c("ON"),
@@ -251,9 +261,11 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "bec_region"
     ),
     subregion_required = c(
+      FALSE,
       FALSE,
       FALSE,
       FALSE,
@@ -295,6 +307,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      NA_character_,
       NA_character_
     ),
     subregion_scope = list(
@@ -310,6 +323,7 @@ si_model_registry <- function() {
       c("BC_COAST"),
       c("BC_COAST"),
       c("AB"),
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -339,6 +353,7 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "BC interior"
     ),
     description = c(
@@ -355,6 +370,7 @@ si_model_registry <- function() {
       "Nigh and Courtin (1998) red alder model, SI50 scale",
       "Huang et al. (1994) Alberta polymorphic site-index model set",
       "Sharma and Parton (2019) non-climate white pine plantation model",
+      "Sharma et al. (2015) no-climate plantation model for jack pine and black spruce",
       "Parresol and Vissage (1998) base-age invariant eastern white pine model",
       "Payandeh (1974) nonlinear site-index equations",
       "Sharma and Reid (2018) fixed-effects natural-stand site-index model",
@@ -363,7 +379,7 @@ si_model_registry <- function() {
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set"
     ),
-    rank = c(72, 67, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 86, 68, 50, 89, 89, 65, 66, 90),
+    rank = c(72, 67, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 86, 88, 68, 50, 89, 89, 65, 66, 90),
     params_key = c(
       NA_character_,
       "parameters_Carmean1989",
@@ -377,6 +393,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "parameters_Huang1994_si",
+      NA_character_,
       NA_character_,
       NA_character_,
       "parameters_Payandeh1974",
@@ -412,6 +429,7 @@ si_model_registry <- function() {
       c("ALNU.RUB"),
       NULL,
       c("PINU.STR"),
+      c("PINU.BAN", "PICE.MAR"),
       c("PINU.STR"),
       NULL,
       c("PINU.BAN", "PICE.MAR"),

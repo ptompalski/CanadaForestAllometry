@@ -173,7 +173,7 @@ testthat::test_that("si_sharmaparton2019 catches non-finite and negative height 
         age = 20,
         si = 12
       ),
-      .sharmaparton2019_height = function(age, si, base_age) c(Inf),
+      .mcdill_amateis_height = function(age, si, base_age, a0, a1) c(Inf),
       .package = "CanadaForestAllometry"
     ),
     "Non-finite height prediction",
@@ -186,7 +186,7 @@ testthat::test_that("si_sharmaparton2019 catches non-finite and negative height 
         age = 20,
         si = 12
       ),
-      .sharmaparton2019_height = function(age, si, base_age) c(-1),
+      .mcdill_amateis_height = function(age, si, base_age, a0, a1) c(-1),
       .package = "CanadaForestAllometry"
     ),
     "Negative height prediction",
@@ -201,7 +201,7 @@ testthat::test_that("si_sharmaparton2019 catches non-finite and negative site-in
         age = 20,
         height = 10
       ),
-      .sharmaparton2019_si = function(age, height, base_age) c(Inf),
+      .mcdill_amateis_si = function(age, height, base_age, a0, a1) c(Inf),
       .package = "CanadaForestAllometry"
     ),
     "Non-finite site index prediction",
@@ -214,7 +214,7 @@ testthat::test_that("si_sharmaparton2019 catches non-finite and negative site-in
         age = 20,
         height = 10
       ),
-      .sharmaparton2019_si = function(age, height, base_age) c(-1),
+      .mcdill_amateis_si = function(age, height, base_age, a0, a1) c(-1),
       .package = "CanadaForestAllometry"
     ),
     "Negative site index prediction",

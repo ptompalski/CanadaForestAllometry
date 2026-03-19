@@ -154,7 +154,7 @@ testthat::test_that("si_sharmareid2018 catches non-finite and negative height pr
         si = 12,
         species = "PINU.BAN"
       ),
-      .sharmareid2018_height = function(age, si, base_age, a0, a1) c(Inf),
+      .mcdill_amateis_height = function(age, si, base_age, a0, a1) c(Inf),
       .package = "CanadaForestAllometry"
     ),
     "Non-finite height prediction",
@@ -168,7 +168,7 @@ testthat::test_that("si_sharmareid2018 catches non-finite and negative height pr
         si = 12,
         species = "PINU.BAN"
       ),
-      .sharmareid2018_height = function(age, si, base_age, a0, a1) c(-1),
+      .mcdill_amateis_height = function(age, si, base_age, a0, a1) c(-1),
       .package = "CanadaForestAllometry"
     ),
     "Negative height prediction",
@@ -184,7 +184,7 @@ testthat::test_that("si_sharmareid2018 catches non-finite and negative site-inde
         height = 10,
         species = "PINU.BAN"
       ),
-      .sharmareid2018_si = function(age, height, base_age, a0, a1) c(Inf),
+      .mcdill_amateis_si = function(age, height, base_age, a0, a1) c(Inf),
       .package = "CanadaForestAllometry"
     ),
     "Non-finite site index prediction",
@@ -198,7 +198,7 @@ testthat::test_that("si_sharmareid2018 catches non-finite and negative site-inde
         height = 10,
         species = "PINU.BAN"
       ),
-      .sharmareid2018_si = function(age, height, base_age, a0, a1) c(-1),
+      .mcdill_amateis_si = function(age, height, base_age, a0, a1) c(-1),
       .package = "CanadaForestAllometry"
     ),
     "Negative site index prediction",
