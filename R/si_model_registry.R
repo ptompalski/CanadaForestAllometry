@@ -26,6 +26,7 @@ si_model_registry <- function() {
       "sharmaparton2019",
       "parresolvissage1998",
       "payandeh1974",
+      "sharma2022",
       "scottvoorhis1986_bh_age",
       "scottvoorhis1986_total_age",
       "thrower1994"
@@ -46,6 +47,7 @@ si_model_registry <- function() {
       "@SharmaParton2019",
       "@ParresolVissage1998",
       "@Payandeh1974",
+      "@Sharma2022",
       "@ScottVoorhis1986",
       "@ScottVoorhis1986",
       "@Thrower1994"
@@ -66,6 +68,7 @@ si_model_registry <- function() {
       "si_sharmaparton2019",
       "si_parresolvissage1998",
       "si_payandeh1974",
+      "si_sharma2022",
       "si_scottvoorhis1986",
       "si_scottvoorhis1986",
       "si_thrower1994"
@@ -86,9 +89,31 @@ si_model_registry <- function() {
       list(),
       list(),
       list(),
+      list(),
       list(convert_to_total_age = FALSE),
       list(convert_to_total_age = TRUE),
       list()
+    ),
+    age_basis = c(
+      "total_age",
+      "total_age",
+      "total_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "breast_height_age",
+      "total_age",
+      "breast_height_age"
     ),
     requires_species = c(
       FALSE,
@@ -105,6 +130,7 @@ si_model_registry <- function() {
       TRUE,
       FALSE,
       FALSE,
+      TRUE,
       TRUE,
       TRUE,
       TRUE,
@@ -128,9 +154,11 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       FALSE
     ),
     supports_predict_si = c(
+      TRUE,
       TRUE,
       TRUE,
       TRUE,
@@ -168,9 +196,11 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE
     ),
     scope = c(
+      "regional",
       "regional",
       "regional",
       "regional",
@@ -206,6 +236,7 @@ si_model_registry <- function() {
       c("ON"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("ALL"),
+      c("ON"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("BC")
@@ -228,9 +259,11 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "bec_region"
     ),
     subregion_required = c(
+      FALSE,
       FALSE,
       FALSE,
       FALSE,
@@ -268,6 +301,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      NA_character_,
       NA_character_
     ),
     subregion_scope = list(
@@ -283,6 +317,7 @@ si_model_registry <- function() {
       c("BC_COAST"),
       c("BC_COAST"),
       c("AB"),
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -308,6 +343,7 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "BC interior"
     ),
     description = c(
@@ -326,11 +362,12 @@ si_model_registry <- function() {
       "Sharma and Parton (2019) non-climate white pine plantation model",
       "Parresol and Vissage (1998) base-age invariant eastern white pine model",
       "Payandeh (1974) nonlinear site-index equations",
+      "Sharma (2022) fixed-effects no-climate mixed-stand site-index model",
       "Scott and Voorhis (1986) model using breast-height age directly",
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set"
     ),
-    rank = c(72, 67, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 86, 68, 50, 65, 66, 90),
+    rank = c(72, 67, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 86, 68, 50, 89, 65, 66, 90),
     params_key = c(
       NA_character_,
       "parameters_Carmean1989",
@@ -347,6 +384,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "parameters_Payandeh1974",
+      NA_character_,
       "parameters_ScottVoorhis1986",
       "parameters_ScottVoorhis1986",
       "parameters_Thrower1994"
@@ -379,6 +417,7 @@ si_model_registry <- function() {
       c("PINU.STR"),
       c("PINU.STR"),
       NULL,
+      c("PICE.MAR", "POPU.TRE"),
       NULL,
       NULL,
       c(
