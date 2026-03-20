@@ -58,7 +58,15 @@ plot_si_curves <- function(
   }
 
   row_use <- reg_match[1, , drop = FALSE]
+
   species_vec <- unlist(row_use$species[[1]], use.names = FALSE)
+  age_basis <- row_use$age_basis[[1]]
+  x_axis_label <- switch(
+    age_basis,
+    total_age = "Total age (years)",
+    breast_height_age = "Breast-height age (years)",
+    "Age (years)"
+  )
 
   if (!isTRUE(row_use$supports_predict_height[[1]])) {
     p <- ggplot2::ggplot() +
@@ -139,7 +147,7 @@ plot_si_curves <- function(
       ) +
       ggplot2::labs(
         title = sp,
-        x = "Breast-height age (years)",
+        x = x_axis_label,
         y = "Top height (m)"
       ) +
       ggplot2::theme_minimal(base_size = 10)
@@ -158,14 +166,15 @@ plot_si_curves <- function(
 }
 
 reg <- CanadaForestAllometry:::si_model_registry_species() |>
-  dplyr::arrange(dplyr::desc(rank), model_id)
+  dplyr::arrange(model_id)
 
 reg_fun <- reg |>
   dplyr::group_by(engine) |>
   dplyr::summarise(
     rank = max(rank, na.rm = TRUE),
-    description = paste(unique(description), collapse = "; "),
-    reference = paste(unique(reference), collapse = "; "),
+    description = dplyr::first(description),
+    reference = dplyr::first(reference),
+    age_basis = dplyr::first(age_basis),
     province_scope = list(sort(unique(unlist(province_scope)))),
     species = list(sort(unique(unlist(species)))),
     supports_predict_height = any(supports_predict_height),
@@ -185,8 +194,20 @@ for (i in seq_len(nrow(reg_fun))) {
   species_cov <- if (length(x$species[[1]]) == 0L) {
     "unknown"
   } else {
-    paste0(length(x$species[[1]]), " species (", paste(x$species[[1]], collapse = ", "), ")")
+    paste(x$species[[1]], collapse = ", ")
   }
+
+  age_basis_text <- switch(
+    x$age_basis[[1]],
+    total_age = "Total age",
+    breast_height_age = "Breast-height age",
+    x$age_basis[[1]]
+  )
+
+  description_text <- paste(
+    sub("\\.*\\s*$", "", x$description[[1]]),
+    x$reference[[1]]
+  )
 
   ref_fun_link <- paste0(
     "[`", x$engine, "()`](../reference/", x$engine, ".html)"
@@ -194,10 +215,11 @@ for (i in seq_len(nrow(reg_fun))) {
 
   cat("## `", x$engine, "()`\n\n", sep = "")
   cat("- Function reference: ", ref_fun_link, "\n", sep = "")
-  cat("- Description: ", x$description, "\n", sep = "")
+  cat("- Description: ", description_text, "\n", sep = "")
+  cat("- Age type: ", age_basis_text, "\n", sep = "")
   cat("- Coverage: ", coverage, "\n", sep = "")
   cat("- Species coverage: ", species_cov, "\n", sep = "")
-  cat("- Reference: ", x$reference, "\n\n", sep = "")
+  cat("\n", sep = "")
 
   if (identical(x$engine[[1]], "si_nigh2000_gi")) {
     cat("_No curve graphic shown for growth-intercept model._\n\n")

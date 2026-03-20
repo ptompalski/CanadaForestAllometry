@@ -116,6 +116,12 @@ Functions for volume estimation.
 
 Functions for site index modeling.
 
+- [`si_buckman2006()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_buckman2006.md)
+  : Buckman et al. (2006) site index model for red pine
+- [`si_carmean1989()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean1989.md)
+  : Carmean et al. (1989) site index model
+- [`si_carmean1996()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean1996.md)
+  : Carmean (1996) site index models for northwest Ontario
 - [`si_carmeanhahn1981()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.md)
   : Carmean and Hahn (1981) site index model
 - [`si_cieszewskibella1991()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_cieszewskibella1991.md)
@@ -136,12 +142,34 @@ Functions for site index modeling.
   redcedar
 - [`si_nighcourtin1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nighcourtin1998.md)
   : Nigh and Courtin (1998) site index model for red alder (BC coast)
+- [`si_parresolvissage1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_parresolvissage1998.md)
+  : Parresol and Vissage (1998) site index model for eastern white pine
 - [`si_payandeh1974()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_payandeh1974.md)
   : Payandeh (1974) site index model
 - [`si_scottvoorhis1986()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_scottvoorhis1986.md)
   : Scott and Voorhis (1986) site index model
+- [`si_sharma2015()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2015.md)
+  : Sharma et al. (2015) site index model for plantation-grown jack pine
+  and black spruce
+- [`si_sharma2021()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2021.md)
+  : Sharma (2021) site index model for jack pine and black spruce in
+  mixed natural stands
+- [`si_sharma2022()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2022.md)
+  : Sharma (2022) site index model for black spruce and trembling aspen
+- [`si_sharmaparton2018a()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2018a.md)
+  : Sharma and Parton (2018) site index model for white spruce
+  plantations
+- [`si_sharmaparton2018b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2018b.md)
+  : Sharma and Parton (2018) site index model for red pine plantations
+- [`si_sharmaparton2019()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2019.md)
+  : Sharma and Parton (2019) site index model for white pine plantations
+- [`si_sharmareid2018()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmareid2018.md)
+  : Sharma and Reid (2018) site index model for natural jack pine and
+  black spruce
 - [`si_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_thrower1994.md)
   : Thrower et al. (1994) site index models for BC interior species
+- [`ytbh_carmean1989()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_carmean1989.md)
+  : Carmean et al. (1989) years-to-breast-height model
 - [`ytbh_nigh2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh2000.md)
   : Nigh (2000) years-to-breast-height model for interior western
   redcedar

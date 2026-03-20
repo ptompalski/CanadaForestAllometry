@@ -263,3 +263,15 @@ standardize_ecozone <- function(ecozone) {
 
   get(name, envir = env, inherits = FALSE)
 }
+
+
+# internal
+.mcdill_amateis_height <- function(age, si, base_age, a0, a1) {
+  a0 / (1 - (1 - a0 / si) * (base_age / age)^a1)
+}
+
+
+# internal
+.mcdill_amateis_si <- function(age, height, base_age, a0, a1) {
+  a0 / (1 - (1 - a0 / height) * (age / base_age)^a1)
+}

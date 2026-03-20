@@ -893,7 +893,7 @@ parameters_CieszewskiBella1991 <-
     base_age_bh
   )
 
-## Scott & Voorhis
+## Scott & Voorhis ####
 parameters_ScottVoorhis1986 <- read.csv(
   "data-raw/ScottVoorhis1986_parameters.csv"
 )
@@ -901,16 +901,85 @@ parameters_ScottVoorhis1986 <-
   parameters_ScottVoorhis1986 %>%
   select(Species = nfi_species, b1:b5)
 
-##  Nigh 2000 growth intercept (site index model is for a single species and can be hardcoded)
+##  Nigh 2000 growth intercept (site index model is for a single species and can be hardcoded) ####
 parameters_Nigh2000_gi <- read.csv("data-raw/nigh_2000_gi.csv")
 
-## Thrower 1994
+## Thrower 1994 #####
 parameters_Thrower1994 <- read.csv("data-raw/Thrower1994_parameters.csv")
 parameters_Thrower1994 <- parameters_Thrower1994 %>%
   select(Species = nfi_species, model_form:source_short)
 
-## Huang et al 1994 (site index)
+## Huang et al 1994 (site index) ####
 parameters_Huang1994_si <- read.csv("data-raw/Huang1994_parameters.csv")
+
+## Carmean et al. 1989 (site index) ####
+parameters_Carmean1989 <- readr::read_csv(
+  "data-raw/Carmean1989_parameters.csv",
+  show_col_types = FALSE
+) %>%
+  mutate(
+    figure_no = as.integer(figure_no),
+    years_to_bh = suppressWarnings(as.numeric(years_to_bh))
+  ) %>%
+  filter(figure_no %in% c(3, 6, 11, 13, 14, 34, 48, 51, 53, 57, 127)) %>%
+  mutate(
+    Species = case_when(
+      figure_no == 3 ~ "ACER.SAC",
+      figure_no == 6 ~ "BETU.ALL",
+      figure_no == 11 ~ "FAGU.GRA",
+      figure_no == 13 ~ "FRAX.AME",
+      figure_no == 14 ~ "FRAX.NIG",
+      figure_no == 34 ~ "PRUN.SER",
+      figure_no == 48 ~ "QUER.RUB",
+      figure_no == 51 ~ "TILI.AME",
+      figure_no == 53 ~ "ULMU.AME",
+      figure_no == 57 ~ "CHAM.THY",
+      figure_no == 127 ~ "TSUG.CAN",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  select(
+    Species,
+    figure_no,
+    height_b1:si_b5,
+    years_to_bh,
+    source
+  )
+
+## Carmean 1996 (site index) ####
+parameters_Carmean1996 <- readr::read_csv(
+  "data-raw/Carmean1996_parameters.csv",
+  show_col_types = FALSE
+) %>%
+  transmute(
+    Species = nfi_species,
+    species_code,
+    species_common,
+    figure_no = suppressWarnings(as.integer(figure_no)),
+    model_family,
+    si_base_age_bh = as.numeric(si_base_age_bh),
+    age_basis,
+    predict_si_method,
+    height_offset_m = as.numeric(height_offset_m),
+    source_length_factor = as.numeric(source_length_factor),
+    source_height_offset = as.numeric(source_height_offset),
+    source_si_offset = as.numeric(source_si_offset),
+    k_index_age = as.numeric(k_index_age),
+    h_a = as.numeric(h_a),
+    h_b = as.numeric(h_b),
+    h_c = as.numeric(h_c),
+    h_d = as.numeric(h_d),
+    h_e = as.numeric(h_e),
+    h_f = as.numeric(h_f),
+    si_a = as.numeric(si_a),
+    si_b = as.numeric(si_b),
+    si_c = as.numeric(si_c),
+    si_d = as.numeric(si_d),
+    si_e = as.numeric(si_e),
+    si_f = as.numeric(si_f),
+    source_short,
+    notes
+  )
 
 # Convert Huang SI natural-region groups from numeric IDs to Alberta letter codes
 # using the crosswalk embedded in parameters_HuangV (NaturalSubregionNum -> Code).
@@ -988,7 +1057,9 @@ internal_objs <- c(
   "parameters_ScottVoorhis1986",
   "parameters_Nigh2000_gi",
   "parameters_Thrower1994",
-  "parameters_Huang1994_si"
+  "parameters_Huang1994_si",
+  "parameters_Carmean1989",
+  "parameters_Carmean1996"
 )
 
 # sanity check: make sure they exist before saving

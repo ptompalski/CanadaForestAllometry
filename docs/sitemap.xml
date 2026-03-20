@@ -16,6 +16,9 @@
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/get_volume_params.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/index.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/merchcrit.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_buckman2006.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean1989.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean1996.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_cieszewskibella1991.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_huang1994.html</loc></url>
@@ -26,8 +29,16 @@
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh2000_gi.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_nighcourtin1998.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_parresolvissage1998.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_payandeh1974.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_scottvoorhis1986.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2015.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2021.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2022.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2018a.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2018b.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2019.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmareid2018.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/si_thrower1994.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/species_code_lookup.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/species_dictionary.html</loc></url>
@@ -51,6 +62,7 @@
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/vol_total_to_merchantable.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/vol_ung2013.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/vol_zakrzewski2013.html</loc></url>
+<url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_carmean1989.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh2000.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nighcourtin1998.html</loc></url>
 <url><loc>https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_thrower1994.html</loc></url>
