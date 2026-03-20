@@ -1,3 +1,20 @@
+# CanadaForestAllometry 0.8.3
+
+## Site index updates
+
+- Added site index model implementations used in Ontario for:
+  - `si_parresolvissage1998()` for Parresol & Vissage (1998)
+  - `si_sharmaparton2019()` for Sharma & Parton (2019)
+  - `si_buckman2006()` for Buckman et al. (2006)
+  - `si_sharmaparton2018a()` for Sharma & Parton (2018a)
+  - `si_sharmareid2018()` for Sharma and Reid (2018)
+  - `si_sharma2015()` for Sharma et al. (2015)
+  - `si_sharmaparton2018b()` for Sharma & Parton (2018b)
+  - `si_sharma2022()` for Sharma (2022)
+  - `si_carmean1996()` for Carmean (1996)
+  - `si_carmean1989()` for Carmean et al. (1989)
+
+
 # CanadaForestAllometry 0.8.2
 
 ## New features
