@@ -14,6 +14,13 @@
 #' \strong{Base-age note:} site index is defined as total height (m) at
 #' 50 years breast-height age.
 #'
+#' \strong{Forward/inverse consistency note:} for \code{PICE.MAR},
+#' \code{ABIE.BAL}, and \code{BETU.PAP}, the published site-index prediction
+#' equations used for `height -> si` are separate fitted equations from
+#' Appendix IV rather than exact algebraic inverses of the forward height-curve
+#' equations. As a result, predictions from `height -> si` may differ slightly
+#' from the input height even when `age = 50`.
+#'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{
 #'   \item If `height` is provided, the function predicts `si`.
