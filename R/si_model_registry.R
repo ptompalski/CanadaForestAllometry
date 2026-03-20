@@ -13,6 +13,7 @@ si_model_registry <- function() {
     model_id = c(
       "buckman2006",
       "carmean1989",
+      "carmean1996",
       "carmeanhahn1981",
       "cieszewskibella1991",
       "kerbowling1991",
@@ -39,6 +40,7 @@ si_model_registry <- function() {
     reference = c(
       "@Buckman2006",
       "@Carmean1989",
+      "@Carmean1996",
       "@CarmeanHahn1981",
       "@CieszewskiBella1991",
       "@KerBowling1991",
@@ -65,6 +67,7 @@ si_model_registry <- function() {
     engine = c(
       "si_buckman2006",
       "si_carmean1989",
+      "si_carmean1996",
       "si_carmeanhahn1981",
       "si_cieszewskibella1991",
       "si_kerbowling1991",
@@ -94,6 +97,7 @@ si_model_registry <- function() {
       list(),
       list(),
       list(),
+      list(),
       list(model = "exponential_monomolecular"),
       list(model = "monomolecular"),
       list(),
@@ -117,6 +121,7 @@ si_model_registry <- function() {
     age_basis = c(
       "total_age",
       "total_age",
+      "breast_height_age",
       "total_age",
       "breast_height_age",
       "breast_height_age",
@@ -142,6 +147,7 @@ si_model_registry <- function() {
     ),
     requires_species = c(
       FALSE,
+      TRUE,
       TRUE,
       TRUE,
       TRUE,
@@ -175,6 +181,7 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       TRUE,
       FALSE,
       FALSE,
@@ -192,8 +199,9 @@ si_model_registry <- function() {
       FALSE,
       FALSE
     ),
-    supports_predict_si = rep(TRUE, 24),
+    supports_predict_si = rep(TRUE, 25),
     supports_predict_height = c(
+      TRUE,
       TRUE,
       TRUE,
       TRUE,
@@ -219,10 +227,11 @@ si_model_registry <- function() {
       TRUE,
       TRUE
     ),
-    scope = rep("regional", 24),
+    scope = rep("regional", 25),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
+      c("ON"),
       c("ON"),
       c("AB"),
       c("NB"),
@@ -254,6 +263,7 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "bec_region",
       "bec_region",
       "bec_region",
@@ -272,8 +282,9 @@ si_model_registry <- function() {
       "none",
       "bec_region"
     ),
-    subregion_required = rep(FALSE, 24),
+    subregion_required = rep(FALSE, 25),
     subregion_arg = c(
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -307,6 +318,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      NA_character_,
       c("BC_INTERIOR"),
       c("BC_INTERIOR"),
       c("BC_COAST"),
@@ -326,6 +338,7 @@ si_model_registry <- function() {
       c("BC_INTERIOR")
     ),
     subregion_desc = c(
+      "none",
       "none",
       "none",
       "none",
@@ -354,6 +367,7 @@ si_model_registry <- function() {
     description = c(
       "Buckman et al. (2006) piecewise red pine site-index model",
       "Carmean et al. (1989) eastern species site-index model set",
+      "Carmean (1996) northwest Ontario site-index model set",
       "Lake States site-index model for balsam fir and white spruce",
       "Alberta polymorphic variable-age site-index model for four major tree species",
       "New Brunswick polymorphic site-index model for softwoods",
@@ -377,10 +391,11 @@ si_model_registry <- function() {
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set"
     ),
-    rank = c(72, 67, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 65, 66, 90),
+    rank = c(72, 67, 89, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 65, 66, 90),
     params_key = c(
       NA_character_,
       "parameters_Carmean1989",
+      "parameters_Carmean1996",
       NA_character_,
       "parameters_CieszewskiBella1991",
       "parameters_KerBowling1991",
@@ -419,6 +434,7 @@ si_model_registry <- function() {
         "CHAM.THY",
         "TSUG.CAN"
       ),
+      NULL,
       c("ABIE.BAL", "PICE.GLA"),
       NULL,
       NULL,
