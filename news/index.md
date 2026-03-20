@@ -1,5 +1,31 @@
 # Changelog
 
+## CanadaForestAllometry 0.8.3
+
+### Site index updates
+
+- Added site index model implementations used in Ontario for:
+  - [`si_parresolvissage1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_parresolvissage1998.md)
+    for Parresol & Vissage (1998)
+  - [`si_sharmaparton2019()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2019.md)
+    for Sharma & Parton (2019)
+  - [`si_buckman2006()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_buckman2006.md)
+    for Buckman et al. (2006)
+  - [`si_sharmaparton2018a()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2018a.md)
+    for Sharma & Parton (2018a)
+  - [`si_sharmareid2018()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmareid2018.md)
+    for Sharma and Reid (2018)
+  - [`si_sharma2015()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2015.md)
+    for Sharma et al. (2015)
+  - [`si_sharmaparton2018b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharmaparton2018b.md)
+    for Sharma & Parton (2018b)
+  - [`si_sharma2022()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2022.md)
+    for Sharma (2022)
+  - [`si_carmean1996()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean1996.md)
+    for Carmean (1996)
+  - [`si_carmean1989()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean1989.md)
+    for Carmean et al. (1989)
+
 ## CanadaForestAllometry 0.8.2
 
 ### New features
