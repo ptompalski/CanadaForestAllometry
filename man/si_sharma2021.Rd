@@ -1,0 +1,88 @@
+\name{si_sharma2021}
+\alias{si_sharma2021}
+\title{Sharma (2021) site index model for jack pine and black spruce in mixed natural stands}
+\usage{
+si_sharma2021(
+  age,
+  height = NULL,
+  si = NULL,
+  species,
+  base_age = 50,
+  total_height = TRUE
+)
+}
+\arguments{
+  \item{age}{Numeric vector. Breast-height age (years), with \code{age > 0}.}
+
+  \item{height}{Optional numeric vector. Stand height (m). If
+  \code{total_height = TRUE} (default), this is total height; otherwise it is
+  height above breast height. If provided, \code{si} is predicted.}
+
+  \item{si}{Optional numeric vector. Site index (m above breast height) at
+  \code{base_age} years breast-height age. If provided, \code{height} is predicted.}
+
+  \item{species}{Character vector of species codes (e.g., \code{"PINU.BAN"} or
+  \code{"PICE.MAR"}).}
+
+  \item{base_age}{Positive numeric scalar. Site-index base age (years at
+  breast height). Defaults to \code{50}.}
+
+  \item{total_height}{Logical scalar. If \code{TRUE} (default), interpret input
+  \code{height} as total height and return predicted \code{height} as total height. If
+  \code{FALSE}, use the source-paper scale of height above breast height.}
+}
+\value{
+A tibble with columns:
+\describe{
+  \item{height}{Predicted stand height (m), returned when input \code{si} is provided. This is total height when \code{total_height = TRUE}, otherwise height above breast height.}
+  \item{si}{Predicted site index (m above breast height), returned when input \code{height} is provided.}
+}
+}
+\description{
+Implementation of the fixed-effects non-climate McDill-Amateis dynamic
+height equation reported by Sharma (2021) for jack pine (\code{PINU.BAN})
+and black spruce (\code{PICE.MAR}) growing in natural-origin mixed stands
+in Ontario.
+}
+\details{
+\strong{Species coverage:} \code{PINU.BAN}, \code{PICE.MAR}.
+
+\strong{Geographic use:} northern Ontario natural-origin mixed stands.
+
+\strong{Age definition note:} \code{age} is breast-height age (years).
+
+\strong{Height definition note:} the source model uses heights above breast
+height (m), not total height. For consistency with other site-index
+functions in this package, this implementation defaults to using total
+height in the public API (\code{total_height = TRUE}) and converts internally by
+subtracting or adding 1.3 m as needed. Set \code{total_height = FALSE} to work on
+the source scale directly.
+
+\strong{Base-age note:} site index is defined at 50 years breast-height age.
+The underlying dynamic equation is written in paired-age form, so this
+implementation allows any positive \code{base_age}; the default remains
+\code{50} to match the source definition.
+
+Provide exactly one of \code{height} or \code{si}.
+}
+\references{
+Sharma, M. (2021). Climate effects on jack pine and black spruce
+productivity in natural origin mixed stands and site index conversion
+equations. Trees, Forests and People, 5, 100089.
+\url{https://doi.org/10.1016/j.tfp.2021.100089}
+}
+\examples{
+# Predict site index from age + height
+si_sharma2021(
+  age = c(60, 80),
+  height = c(16, 18),
+  species = c("PINU.BAN", "PICE.MAR")
+)
+
+# Predict height from age + site index
+si_sharma2021(
+  age = c(60, 80),
+  si = c(14, 13),
+  species = c("PINU.BAN", "PICE.MAR")
+)
+}

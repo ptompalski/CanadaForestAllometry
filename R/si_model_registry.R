@@ -23,6 +23,7 @@ si_model_registry <- function() {
       "nighcourtin1998_si25",
       "nighcourtin1998_si50",
       "huang1994",
+      "sharma2021",
       "sharmaparton2018a",
       "sharmaparton2018b",
       "sharmaparton2019",
@@ -48,6 +49,7 @@ si_model_registry <- function() {
       "@NighCourtin1998",
       "@NighCourtin1998",
       "@Huang1994si",
+      "@Sharma2021SI",
       "@SharmaParton2018a",
       "@SharmaParton2018b",
       "@SharmaParton2019",
@@ -73,6 +75,7 @@ si_model_registry <- function() {
       "si_nighcourtin1998",
       "si_nighcourtin1998",
       "si_huang1994",
+      "si_sharma2021",
       "si_sharmaparton2018a",
       "si_sharmaparton2018b",
       "si_sharmaparton2019",
@@ -148,6 +151,7 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       TRUE,
+      TRUE,
       FALSE,
       FALSE,
       FALSE,
@@ -183,9 +187,10 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       FALSE
     ),
-    supports_predict_si = rep(TRUE, 23),
+    supports_predict_si = rep(TRUE, 24),
     supports_predict_height = c(
       TRUE,
       TRUE,
@@ -209,9 +214,10 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE
     ),
-    scope = rep("regional", 23),
+    scope = rep("regional", 24),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
@@ -225,6 +231,7 @@ si_model_registry <- function() {
       c("BC"),
       c("BC"),
       c("AB"),
+      c("ON"),
       c("ON"),
       c("ON"),
       c("ON"),
@@ -260,9 +267,10 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "bec_region"
     ),
-    subregion_required = rep(FALSE, 23),
+    subregion_required = rep(FALSE, 24),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -276,6 +284,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "subregion",
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -311,6 +320,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      NA_character_,
       c("BC_INTERIOR")
     ),
     subregion_desc = c(
@@ -336,6 +346,7 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "BC interior"
     ),
     description = c(
@@ -351,6 +362,7 @@ si_model_registry <- function() {
       "Nigh and Courtin (1998) red alder model, SI25 scale",
       "Nigh and Courtin (1998) red alder model, SI50 scale",
       "Huang et al. (1994) Alberta polymorphic site-index model set",
+      "Sharma (2021) fixed-effects no-climate mixed-stand site-index model",
       "Sharma and Parton (2018) non-climate white spruce plantation model",
       "Sharma and Parton (2018) non-climate red pine plantation model",
       "Sharma and Parton (2019) non-climate white pine plantation model",
@@ -363,7 +375,7 @@ si_model_registry <- function() {
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set"
     ),
-    rank = c(72, 67, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 86, 86, 86, 88, 68, 50, 89, 89, 65, 66, 90),
+    rank = c(72, 67, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 65, 66, 90),
     params_key = c(
       NA_character_,
       "parameters_Carmean1989",
@@ -377,6 +389,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "parameters_Huang1994_si",
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -414,6 +427,7 @@ si_model_registry <- function() {
       c("ALNU.RUB"),
       c("ALNU.RUB"),
       NULL,
+      c("PINU.BAN", "PICE.MAR"),
       c("PICE.GLA"),
       c("PINU.RES"),
       c("PINU.STR"),
