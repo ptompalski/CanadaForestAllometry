@@ -109,6 +109,7 @@ si_model_registry <- function() {
       list(),
       list(),
       list(),
+      list(),
       list(convert_to_total_age = FALSE),
       list(convert_to_total_age = TRUE),
       list()
@@ -117,6 +118,7 @@ si_model_registry <- function() {
       "total_age",
       "total_age",
       "total_age",
+      "breast_height_age",
       "breast_height_age",
       "breast_height_age",
       "breast_height_age",
