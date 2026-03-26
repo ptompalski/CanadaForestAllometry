@@ -313,14 +313,19 @@ translate_species_code <- function(
   out <- vector("list", length(code_std))
 
   for (i in seq_along(out)) {
-    nfi_vals <- matches |>
-      dplyr::filter(.data$.row == i) |>
+    row_matches <- matches |>
+      dplyr::filter(.data$.row == i)
+
+    if (from == "jurisdiction") {
+      row_matches <- .collapse_jurisdiction_species_matches(row_matches)
+    }
+
+    nfi_vals <- row_matches |>
       dplyr::pull(.data$NFI_code) |>
       unique()
 
     vals <- if (to %in% names(to_map)) {
-      matches |>
-        dplyr::filter(.data$.row == i) |>
+      row_matches |>
         dplyr::pull(!!rlang::sym(to_resolved)) |>
         unique()
     } else if (to == "canfi") {
@@ -437,6 +442,39 @@ translate_species_code <- function(
     stringr::str_squish() |>
     stringi::stri_trans_general("Latin-ASCII") |>
     stringr::str_to_lower()
+}
+
+
+# internal
+.collapse_jurisdiction_species_matches <- function(tbl) {
+  if (!"NFI_code" %in% names(tbl) || nrow(tbl) <= 1L) {
+    return(tbl)
+  }
+
+  nfi_vals <- tbl |>
+    dplyr::pull(.data$NFI_code) |>
+    unique()
+
+  nfi_vals <- nfi_vals[!is.na(nfi_vals)]
+  if (length(nfi_vals) <= 1L) {
+    return(tbl)
+  }
+
+  child_vals <- vapply(
+    nfi_vals,
+    function(one_code) {
+      any(startsWith(nfi_vals, paste0(one_code, ".")))
+    },
+    logical(1)
+  )
+
+  parent_vals <- nfi_vals[child_vals]
+  if (length(parent_vals) == 0L) {
+    return(tbl)
+  }
+
+  tbl |>
+    dplyr::filter(is.na(.data$NFI_code) | .data$NFI_code %in% parent_vals)
 }
 
 

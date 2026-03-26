@@ -67,6 +67,42 @@ test_that("translate_species_code handles auto detection for real package data",
 })
 
 
+test_that("translate_species_code auto-detects Quebec three-letter codes", {
+  msgs <- testthat::capture_messages(
+    out_qc <- translate_species_code(
+      c("SAB", "EPN", "PIG"),
+      from = "auto"
+    )
+  )
+
+  expect_true(any(grepl("Auto-detected input type: jurisdiction (qc)", msgs, fixed = TRUE)))
+  expect_equal(out_qc, c("ABIE.BAL", "PICE.MAR", "PINU.BAN"))
+
+  expect_equal(
+    translate_species_code("SAB", from = "auto", to = "scientificname"),
+    "Abies balsamea"
+  )
+})
+
+
+test_that("translate_species_code collapses Quebec jurisdiction parent-child duplicates", {
+  expect_equal(
+    translate_species_code("PEB", from = "jurisdiction", jurisdiction = "QC"),
+    "POPU.BAL"
+  )
+
+  expect_equal(
+    translate_species_code("PED", from = "auto"),
+    "POPU.DEL"
+  )
+
+  expect_equal(
+    translate_species_code("PEB", from = "jurisdiction", jurisdiction = "QC", to = "englishname"),
+    "balsam poplar"
+  )
+})
+
+
 test_that("translate_species_code accepts friendly aliases in `to`", {
   expect_equal(
     translate_species_code("ABIE.BAL", from = "nfi", to = "englishname"),
