@@ -258,3 +258,24 @@ test_that("translate_species_code auto detection errors for mixed or non-unique 
     class = "ctae_ambiguous_species_source"
   )
 })
+
+
+test_that(".collapse_jurisdiction_species_matches returns early for trivial and non-nested matches", {
+  one_match <- tibble::tibble(NFI_code = "ABIE.BAL", code = "BF")
+  out_one <- CanadaForestAllometry:::.collapse_jurisdiction_species_matches(one_match)
+  expect_identical(out_one, one_match)
+
+  duplicated_single <- tibble::tibble(
+    NFI_code = c("ABIE.BAL", "ABIE.BAL", NA_character_),
+    code = c("BF", "BF", "BF")
+  )
+  out_dup <- CanadaForestAllometry:::.collapse_jurisdiction_species_matches(duplicated_single)
+  expect_identical(out_dup, duplicated_single)
+
+  unrelated <- tibble::tibble(
+    NFI_code = c("ABIE.BAL", "PICE.MAR"),
+    code = c("BF", "SB")
+  )
+  out_unrelated <- CanadaForestAllometry:::.collapse_jurisdiction_species_matches(unrelated)
+  expect_identical(out_unrelated, unrelated)
+})

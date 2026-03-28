@@ -11,6 +11,8 @@ testthat::test_that("si_model_registry has expected structure and key models", {
   testthat::expect_true(all(c(
     "nigh2000",
     "nighcourtin1998_si25",
+    "lafleche2013_potential",
+    "lafleche2013_observed",
     "parresolvissage1998",
     "sharma2015",
     "sharmareid2018",
@@ -36,6 +38,40 @@ testthat::test_that("si_model_registry includes Sharma2022 metadata", {
   testthat::expect_identical(s$species_manual[[1]], c("PICE.MAR", "POPU.TRE"))
   testthat::expect_identical(s$province_scope[[1]], "ON")
   testthat::expect_true(is.na(s$params_key[[1]]))
+})
+
+testthat::test_that("si_model_registry includes Lafleche2013 potential metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "lafleche2013_potential")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_lafleche2013")
+  testthat::expect_identical(s$reference[[1]], "@LaflecheEtAl2013")
+  testthat::expect_identical(s$fixed_args[[1]], list(curve_set = "potential"))
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_identical(s$supports_predict_si[[1]], FALSE)
+  testthat::expect_identical(s$supports_predict_height[[1]], TRUE)
+  testthat::expect_identical(s$subregion_type[[1]], "qc_ecological_subregion")
+  testthat::expect_identical(s$subregion_arg[[1]], "ecological_subregion")
+  testthat::expect_identical(s$params_key[[1]], "parameters_QC_IQS2013")
+})
+
+testthat::test_that("si_model_registry includes Lafleche2013 observed metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "lafleche2013_observed")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_lafleche2013")
+  testthat::expect_identical(s$reference[[1]], "@LaflecheEtAl2013")
+  testthat::expect_identical(s$fixed_args[[1]], list(curve_set = "observed"))
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_identical(s$supports_predict_si[[1]], FALSE)
+  testthat::expect_identical(s$supports_predict_height[[1]], TRUE)
+  testthat::expect_identical(s$params_key[[1]], "parameters_QC_IQS2013")
 })
 
 testthat::test_that("si_model_registry includes Sharma2021 metadata", {

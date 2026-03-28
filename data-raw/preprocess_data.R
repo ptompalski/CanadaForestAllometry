@@ -981,6 +981,55 @@ parameters_Carmean1996 <- readr::read_csv(
     notes
   )
 
+## Quebec ecological-site IQS parameters (Lafleche et al. 2013) ####
+parameters_QC_IQS2013 <- readr::read_csv(
+  "data-raw/qc_iqs_parameters_2013.csv",
+  show_col_types = FALSE
+) %>%
+  transmute(
+    curve_set,
+    species_qc,
+    Species = nfi_species,
+    region_ecologique,
+    subregion_ecologique = dplyr::na_if(subregion_ecologique, ""),
+    type_ecologique,
+    n_trees = as.integer(n_trees),
+    n_observations = as.integer(n_observations),
+    b1 = as.numeric(b1),
+    b2 = as.numeric(b2),
+    b3 = as.numeric(b3),
+    pseudo_r2 = as.numeric(pseudo_r2),
+    equation_used,
+    raw_pdf_row
+  )
+
+qc_iqs_ecological_keys_2013 <- readr::read_csv(
+  "data-raw/qc_iqs_ecological_keys_2013.csv",
+  show_col_types = FALSE
+) %>%
+  transmute(
+    region_ecologique,
+    region_description,
+    subregion_ecologique = dplyr::na_if(subregion_ecologique, ""),
+    type_ecologique
+  )
+
+qc_type_ecologique_definitions_2013 <- readr::read_csv(
+  "data-raw/qc_type_ecologique_definitions_2013.csv",
+  show_col_types = FALSE
+) %>%
+  transmute(
+    type_ecologique,
+    type_ecologique_description_fr,
+    type_ecologique_description_en
+  )
+
+qc_iqs_ecological_keys_2013 <- qc_iqs_ecological_keys_2013 %>%
+  left_join(
+    qc_type_ecologique_definitions_2013,
+    by = "type_ecologique"
+  )
+
 # Convert Huang SI natural-region groups from numeric IDs to Alberta letter codes
 # using the crosswalk embedded in parameters_HuangV (NaturalSubregionNum -> Code).
 huang_subregion_xwalk <- parameters_HuangV %>%
@@ -1059,7 +1108,9 @@ internal_objs <- c(
   "parameters_Thrower1994",
   "parameters_Huang1994_si",
   "parameters_Carmean1989",
-  "parameters_Carmean1996"
+  "parameters_Carmean1996",
+  "parameters_QC_IQS2013",
+  "qc_iqs_ecological_keys_2013"
 )
 
 # sanity check: make sure they exist before saving

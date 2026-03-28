@@ -33,6 +33,8 @@ si_model_registry <- function() {
       "payandeh1974",
       "sharmareid2018",
       "sharma2022",
+      "lafleche2013_potential",
+      "lafleche2013_observed",
       "scottvoorhis1986_bh_age",
       "scottvoorhis1986_total_age",
       "thrower1994"
@@ -60,6 +62,8 @@ si_model_registry <- function() {
       "@Payandeh1974",
       "@SharmaReid2018",
       "@Sharma2022",
+      "@LaflecheEtAl2013",
+      "@LaflecheEtAl2013",
       "@ScottVoorhis1986",
       "@ScottVoorhis1986",
       "@Thrower1994"
@@ -87,6 +91,8 @@ si_model_registry <- function() {
       "si_payandeh1974",
       "si_sharmareid2018",
       "si_sharma2022",
+      "si_lafleche2013",
+      "si_lafleche2013",
       "si_scottvoorhis1986",
       "si_scottvoorhis1986",
       "si_thrower1994"
@@ -114,6 +120,8 @@ si_model_registry <- function() {
       list(),
       list(),
       list(),
+      list(curve_set = "potential"),
+      list(curve_set = "observed"),
       list(convert_to_total_age = FALSE),
       list(convert_to_total_age = TRUE),
       list()
@@ -123,6 +131,8 @@ si_model_registry <- function() {
       "total_age",
       "breast_height_age",
       "total_age",
+      "breast_height_age",
+      "breast_height_age",
       "breast_height_age",
       "breast_height_age",
       "breast_height_age",
@@ -170,6 +180,8 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
+      TRUE,
       TRUE
     ),
     requires_gi = c(
@@ -197,9 +209,18 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
+      FALSE,
       FALSE
     ),
-    supports_predict_si = rep(TRUE, 25),
+    supports_predict_si = c(
+      rep(TRUE, 22),
+      FALSE,
+      FALSE,
+      TRUE,
+      TRUE,
+      TRUE
+    ),
     supports_predict_height = c(
       TRUE,
       TRUE,
@@ -225,9 +246,11 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
+      TRUE,
       TRUE
     ),
-    scope = rep("regional", 25),
+    scope = rep("regional", 27),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
@@ -251,6 +274,8 @@ si_model_registry <- function() {
       c("ALL"),
       c("ON"),
       c("ON"),
+      c("QC"),
+      c("QC"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("BC")
@@ -278,11 +303,13 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "qc_ecological_subregion",
+      "qc_ecological_subregion",
       "none",
       "none",
       "bec_region"
     ),
-    subregion_required = rep(FALSE, 25),
+    subregion_required = rep(FALSE, 27),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -306,6 +333,8 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      "ecological_subregion",
+      "ecological_subregion",
       NA_character_,
       NA_character_,
       NA_character_
@@ -333,6 +362,8 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      c("QC"),
+      c("QC"),
       NA_character_,
       NA_character_,
       c("BC_INTERIOR")
@@ -360,6 +391,8 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "Quebec ecological subregion",
+      "Quebec ecological subregion",
       "none",
       "none",
       "BC interior"
@@ -387,11 +420,13 @@ si_model_registry <- function() {
       "Payandeh (1974) nonlinear site-index equations",
       "Sharma and Reid (2018) fixed-effects natural-stand site-index model",
       "Sharma (2022) fixed-effects no-climate mixed-stand site-index model",
+      "Lafleche et al. (2013) Quebec ecological-site potential-height IQS curves",
+      "Lafleche et al. (2013) Quebec ecological-site observed-height IQS curves",
       "Scott and Voorhis (1986) model using breast-height age directly",
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set"
     ),
-    rank = c(72, 67, 89, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 65, 66, 90),
+    rank = c(72, 67, 89, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 87, 72, 65, 66, 90),
     params_key = c(
       NA_character_,
       "parameters_Carmean1989",
@@ -415,6 +450,8 @@ si_model_registry <- function() {
       "parameters_Payandeh1974",
       NA_character_,
       NA_character_,
+      "parameters_QC_IQS2013",
+      "parameters_QC_IQS2013",
       "parameters_ScottVoorhis1986",
       "parameters_ScottVoorhis1986",
       "parameters_Thrower1994"
@@ -454,6 +491,8 @@ si_model_registry <- function() {
       NULL,
       c("PINU.BAN", "PICE.MAR"),
       c("PICE.MAR", "POPU.TRE"),
+      NULL,
+      NULL,
       NULL,
       NULL,
       c(
