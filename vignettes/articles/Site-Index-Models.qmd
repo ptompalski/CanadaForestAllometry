@@ -165,22 +165,94 @@ plot_si_curves <- function(
   list(plot = p, n_rows = n_rows, n_species = n_species)
 }
 
+plot_lafleche_examples <- function(curve_set = c("potential"), facet_ncol = 4) {
+  curve_set <- match.arg(curve_set)
+
+  example_keys <- tibble::tribble(
+    ~species,     ~ecological_region, ~ecological_subregion, ~ecological_type, ~label,
+    "ABIE.BAL",   "3c",               NA_character_,         "MJ12",           "ABIE.BAL",
+    "PICE.GLA",   "2a",               NA_character_,         "MJ11",           "PICE.GLA",
+    "THUJ.OCC",   "4f",               NA_character_,         "RS12",           "THUJ.OCC",
+    "ABIE.BAL",   "5e",               "5eT",                 "MS22",           "ABIE.BAL (5eT)"
+  )
+
+  ages <- seq(1, 150, by = 1)
+  grid <- tidyr::expand_grid(example_id = seq_len(nrow(example_keys)), age = ages) |>
+    dplyr::left_join(
+      dplyr::mutate(example_keys, example_id = seq_len(dplyr::n())),
+      by = "example_id"
+    )
+
+  pred <- si_lafleche2013(
+    age = grid$age,
+    species = grid$species,
+    ecological_region = grid$ecological_region,
+    ecological_type = grid$ecological_type,
+    ecological_subregion = grid$ecological_subregion,
+    curve_set = curve_set
+  )
+
+  plot_data <- dplyr::bind_cols(grid, pred)
+  label_data <- plot_data |>
+    dplyr::group_by(.data$label) |>
+    dplyr::slice_max(.data$age, n = 1, with_ties = FALSE) |>
+    dplyr::ungroup()
+
+  species_plots <- lapply(example_keys$label, function(sp) {
+    df_sp <- plot_data |>
+      dplyr::filter(.data$label == sp)
+    lab_sp <- label_data |>
+      dplyr::filter(.data$label == sp)
+
+    ggplot2::ggplot(
+      df_sp,
+      ggplot2::aes(x = .data$age, y = .data$height)
+    ) +
+      ggplot2::geom_line(linewidth = 0.6, color = "black") +
+      ggplot2::geom_text(
+        data = lab_sp,
+        ggplot2::aes(label = sprintf("IQS %.2f", .data$si)),
+        size = 2.2,
+        hjust = -0.15,
+        color = "black"
+      ) +
+      ggplot2::scale_x_continuous(
+        limits = c(0, 150),
+        breaks = seq(0, 150, by = 25),
+        expand = ggplot2::expansion(mult = c(0, 0.08))
+      ) +
+      ggplot2::labs(
+        title = sp,
+        x = "Breast-height age (years)",
+        y = "Top height (m)"
+      ) +
+      ggplot2::theme_minimal(base_size = 10)
+  })
+
+  p <- patchwork::wrap_plots(species_plots, ncol = facet_ncol)
+
+  list(plot = p, n_rows = 1L, n_species = nrow(example_keys))
+}
+
 reg <- CanadaForestAllometry:::si_model_registry_species() |>
-  dplyr::arrange(model_id)
+  dplyr::filter(.data$model_id != "lafleche2013_observed") |>
+  dplyr::arrange(.data$model_id)
 
 reg_fun <- reg |>
-  dplyr::group_by(engine) |>
+  dplyr::group_by(.data$engine) |>
   dplyr::summarise(
-    rank = max(rank, na.rm = TRUE),
-    description = dplyr::first(description),
-    reference = dplyr::first(reference),
-    age_basis = dplyr::first(age_basis),
-    province_scope = list(sort(unique(unlist(province_scope)))),
-    species = list(sort(unique(unlist(species)))),
-    supports_predict_height = any(supports_predict_height),
+    model_id = dplyr::first(.data$model_id),
+    rank = max(.data$rank, na.rm = TRUE),
+    description = dplyr::first(.data$description),
+    reference = dplyr::first(.data$reference),
+    age_basis = dplyr::first(.data$age_basis),
+    province_scope = list(sort(unique(unlist(.data$province_scope)))),
+    species = list(sort(unique(unlist(.data$species)))),
+    fixed_args = list(.data$fixed_args[[1]]),
+    supports_predict_height = any(.data$supports_predict_height),
     .groups = "drop"
   ) |>
-  dplyr::arrange(engine)
+  dplyr::arrange(.data$engine)
 
 for (i in seq_len(nrow(reg_fun))) {
   x <- reg_fun[i, , drop = FALSE]
@@ -209,11 +281,9 @@ for (i in seq_len(nrow(reg_fun))) {
     x$reference[[1]]
   )
 
-  ref_fun_link <- paste0(
-    "[`", x$engine, "()`](../reference/", x$engine, ".html)"
-  )
+  ref_fun_link <- paste0("[`", x$engine, "()`](../reference/", x$engine, ".html)")
 
-  cat("## `", x$engine, "()`\n\n", sep = "")
+  cat("## `", x$engine[[1]], "()`\n\n", sep = "")
   cat("- Function reference: ", ref_fun_link, "\n", sep = "")
   cat("- Description: ", description_text, "\n", sep = "")
   cat("- Age type: ", age_basis_text, "\n", sep = "")
@@ -227,22 +297,33 @@ for (i in seq_len(nrow(reg_fun))) {
     next
   }
 
-  plot_out <- plot_si_curves(
-    model = x$engine,
-    si_values = c(5, 10, 15, 20, 25),
-    age_min = 1,
-    age_max = 150,
-    age_by = 1,
-    subregion = "All",
-    facet_ncol = 4
-  )
+  if (identical(x$engine[[1]], "si_lafleche2013")) {
+    cat(
+      "This model uses fixed ecological-site curves rather than arbitrary site-index levels. ",
+      "The figure below shows selected example combinations of species and ecological keys for the potential curve set.\n\n",
+      sep = ""
+    )
+
+    plot_out <- plot_lafleche_examples(curve_set = "potential", facet_ncol = 4)
+  } else {
+    plot_out <- plot_si_curves(
+      model = x$engine,
+      si_values = c(5, 10, 15, 20, 25),
+      age_min = 1,
+      age_max = 150,
+      age_by = 1,
+      subregion = "All",
+      fixed_args = x$fixed_args[[1]],
+      facet_ncol = 4
+    )
+  }
 
   p <- plot_out$plot +
-    patchwork::plot_annotation(title = paste0(x$engine, "()"))
+    patchwork::plot_annotation(title = paste0(x$engine[[1]], "()"))
 
   fig_dir <- knitr::opts_chunk$get("fig.path")
   dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
-  file_stub <- gsub("[^A-Za-z0-9_-]", "-", x$engine)
+  file_stub <- gsub("[^A-Za-z0-9_-]", "-", x$engine[[1]])
   fig_file <- file.path(fig_dir, paste0("si-curves-", file_stub, ".png"))
   fig_file_out <- gsub("\\\\", "/", fig_file)
 
