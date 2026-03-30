@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,12 @@
 </h1></div>
 <p><code>CanadaForestAllometry</code> is an R package that brings together a collection of published allometric models developed for Canadian forests. The package provides a unified interface to estimate a range of tree- and stand-level attributes, based on models published in the Canadian forestry literature. The focus of <code>CanadaForestAllometry</code> is on standardization: models are implemented as faithfully as possible to their original formulations, with transparent parameter tables, consistent inputs/outputs, and jurisdiction-appropriate assumptions (e.g. merchantability rules).</p>
 <p>Part of the package standardization is to use NFI species codes in all implemented models (e.g. <code>PICE.MAR</code> for black spruce). The package also includes <code><a href="reference/translate_species_code.html">translate_species_code()</a></code>, which can translate among jurisdiction-specific codes, NFI and CANFI codes, common English and French names, and scientific names.</p>
+<div class="section level2">
+<h2 id="development-status">Development status<a class="anchor" aria-label="anchor" href="#development-status"></a>
+</h2>
+<p><code>CanadaForestAllometry</code> is under active development. Package functions are tested, but not every published source provides reference values or worked examples that allow the implementation to be checked against expected numerical results. In those cases, models are implemented from the published equations and checked for internal consistency, input validation, and reproducibility, but external validation against benchmark results may still be limited by the available documentation.</p>
+<p>If a particular model is not yet implemented and you think it could be, please let me know!</p>
+</div>
 <div class="section level2">
 <h2 id="online-documentation">Online documentation<a class="anchor" aria-label="anchor" href="#online-documentation"></a>
 </h2>
