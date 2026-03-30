@@ -1,3 +1,13 @@
+# CanadaForestAllometry 0.8.4
+
+## Site index updates
+
+- Added Quebec plantation site-index implementations:
+  - `si_pregent2010()` for white spruce plantations
+  - `si_pregent2016()` for Norway spruce plantations
+  - `si_augerward2021()` for jack pine and black spruce plantations
+
+
 # CanadaForestAllometry 0.8.3
 
 ## Site index updates
