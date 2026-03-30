@@ -5,7 +5,8 @@ testthat::test_that("si_model_registry has expected structure and key models", {
   testthat::expect_true(all(
     c(
       "model_id", "engine", "rank", "subregion_type",
-      "subregion_scope", "subregion_required", "age_domain_max"
+      "subregion_scope", "subregion_required", "age_domain_max",
+      "plot_si_values"
     ) %in% names(reg)
   ))
   testthat::expect_true(all(c(
@@ -17,6 +18,7 @@ testthat::test_that("si_model_registry has expected structure and key models", {
     "sharma2015",
     "sharmareid2018",
     "sharma2022",
+    "augerward2021",
     "pregent2010",
     "pregent2016",
     "sharmaparton2018a",
@@ -26,6 +28,22 @@ testthat::test_that("si_model_registry has expected structure and key models", {
     "thrower1994",
     "huang1994"
   ) %in% reg$model_id))
+})
+
+testthat::test_that("si_model_registry includes AugerWard2021 metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "augerward2021")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_augerward2021")
+  testthat::expect_identical(s$reference[[1]], "@AugerWard2021")
+  testthat::expect_identical(s$species_manual[[1]], c("PINU.BAN", "PICE.MAR"))
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_true(is.na(s$params_key[[1]]))
+  testthat::expect_identical(s$age_domain_max[[1]], 100)
+  testthat::expect_identical(s$plot_si_values[[1]], c(4, 8, 12, 16))
 })
 
 testthat::test_that("si_model_registry includes Pregent2010 metadata", {
@@ -42,6 +60,7 @@ testthat::test_that("si_model_registry includes Pregent2010 metadata", {
   testthat::expect_identical(s$fixed_args[[1]], list(base_age = 50))
   testthat::expect_true(is.na(s$params_key[[1]]))
   testthat::expect_identical(s$age_domain_max[[1]], 60)
+  testthat::expect_identical(s$plot_si_values[[1]], c(4, 8, 12, 16))
 })
 
 testthat::test_that("si_model_registry includes Pregent2016 metadata", {
@@ -58,6 +77,7 @@ testthat::test_that("si_model_registry includes Pregent2016 metadata", {
   testthat::expect_identical(s$fixed_args[[1]], list(base_age = 50))
   testthat::expect_true(is.na(s$params_key[[1]]))
   testthat::expect_identical(s$age_domain_max[[1]], 70)
+  testthat::expect_identical(s$plot_si_values[[1]], c(4, 8, 12, 16))
 })
 
 testthat::test_that("si_model_registry includes Sharma2022 metadata", {

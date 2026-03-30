@@ -24,6 +24,7 @@ si_model_registry <- function() {
       "nighcourtin1998_si25",
       "nighcourtin1998_si50",
       "huang1994",
+      "augerward2021",
       "pregent2010",
       "pregent2016",
       "sharma2021",
@@ -55,6 +56,7 @@ si_model_registry <- function() {
       "@NighCourtin1998",
       "@NighCourtin1998",
       "@Huang1994si",
+      "@AugerWard2021",
       "@Pregent2010",
       "@Pregent2016",
       "@Sharma2021SI",
@@ -86,6 +88,7 @@ si_model_registry <- function() {
       "si_nighcourtin1998",
       "si_nighcourtin1998",
       "si_huang1994",
+      "si_augerward2021",
       "si_pregent2010",
       "si_pregent2016",
       "si_sharma2021",
@@ -117,6 +120,7 @@ si_model_registry <- function() {
       list(si50 = FALSE),
       list(si50 = TRUE),
       list(),
+      list(),
       list(base_age = 50),
       list(base_age = 50),
       list(),
@@ -134,36 +138,69 @@ si_model_registry <- function() {
       list(convert_to_total_age = TRUE),
       list()
     ),
+    plot_si_values = list(
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      c(4, 8, 12, 16),
+      c(4, 8, 12, 16),
+      c(4, 8, 12, 16),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL
+    ),
     age_basis = c(
-      "total_age",
-      "total_age",
-      "breast_height_age",
-      "total_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "breast_height_age",
-      "total_age",
-      "breast_height_age"
+      "total_age",          # buckman2006
+      "total_age",          # carmean1989
+      "breast_height_age",  # carmean1996
+      "total_age",          # carmeanhahn1981
+      "breast_height_age",  # cieszewskibella1991
+      "breast_height_age",  # kerbowling1991
+      "breast_height_age",  # lundgrendolid1970_exponential_monomolecular
+      "breast_height_age",  # lundgrendolid1970_monomolecular
+      "breast_height_age",  # nigh2000
+      "breast_height_age",  # nigh2000_gi
+      "breast_height_age",  # nighcourtin1998_si25
+      "breast_height_age",  # nighcourtin1998_si50
+      "breast_height_age",  # huang1994
+      "total_age",          # augerward2021
+      "breast_height_age",  # pregent2010
+      "breast_height_age",  # pregent2016
+      "breast_height_age",  # sharma2021
+      "breast_height_age",  # sharmaparton2018a
+      "breast_height_age",  # sharmaparton2018b
+      "breast_height_age",  # sharmaparton2019
+      "breast_height_age",  # sharma2015
+      "breast_height_age",  # parresolvissage1998
+      "breast_height_age",  # payandeh1974
+      "breast_height_age",  # sharmareid2018
+      "breast_height_age",  # sharma2022
+      "breast_height_age",  # lafleche2013_potential
+      "breast_height_age",  # lafleche2013_observed
+      "breast_height_age",  # scottvoorhis1986_bh_age
+      "total_age",          # scottvoorhis1986_total_age
+      "breast_height_age"   # thrower1994
     ),
     age_domain_max = c(
       NA_real_,
@@ -179,6 +216,7 @@ si_model_registry <- function() {
       NA_real_,
       NA_real_,
       NA_real_,
+      100,
       60,
       70,
       NA_real_,
@@ -197,35 +235,36 @@ si_model_registry <- function() {
       NA_real_
     ),
     requires_species = c(
-      FALSE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      TRUE,
-      FALSE,
-      FALSE,
-      TRUE,
-      FALSE,
-      FALSE,
-      FALSE,
-      TRUE,
-      FALSE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE
+      FALSE, # buckman2006
+      TRUE,  # carmean1989
+      TRUE,  # carmean1996
+      TRUE,  # carmeanhahn1981
+      TRUE,  # cieszewskibella1991
+      TRUE,  # kerbowling1991
+      TRUE,  # lundgrendolid1970_exponential_monomolecular
+      TRUE,  # lundgrendolid1970_monomolecular
+      FALSE, # nigh2000
+      FALSE, # nigh2000_gi
+      FALSE, # nighcourtin1998_si25
+      FALSE, # nighcourtin1998_si50
+      FALSE, # huang1994
+      TRUE,  # augerward2021
+      FALSE, # pregent2010
+      FALSE, # pregent2016
+      TRUE,  # sharma2021
+      FALSE, # sharmaparton2018a
+      FALSE, # sharmaparton2018b
+      FALSE, # sharmaparton2019
+      TRUE,  # sharma2015
+      FALSE, # parresolvissage1998
+      TRUE,  # payandeh1974
+      TRUE,  # sharmareid2018
+      TRUE,  # sharma2022
+      TRUE,  # lafleche2013_potential
+      TRUE,  # lafleche2013_observed
+      TRUE,  # scottvoorhis1986_bh_age
+      TRUE,  # scottvoorhis1986_total_age
+      TRUE   # thrower1994
     ),
     requires_gi = c(
       FALSE,
@@ -256,10 +295,11 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       FALSE
     ),
     supports_predict_si = c(
-      rep(TRUE, 24),
+      rep(TRUE, 25),
       FALSE,
       FALSE,
       TRUE,
@@ -295,9 +335,10 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE
     ),
-    scope = rep("regional", 29),
+    scope = rep("regional", 30),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
@@ -312,6 +353,7 @@ si_model_registry <- function() {
       c("BC"),
       c("BC"),
       c("AB"),
+      c("QC"),
       c("QC"),
       c("QC"),
       c("ON"),
@@ -354,13 +396,14 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "qc_ecological_subregion",
       "qc_ecological_subregion",
       "none",
       "none",
       "bec_region"
     ),
-    subregion_required = rep(FALSE, 29),
+    subregion_required = rep(FALSE, 30),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -375,6 +418,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "subregion",
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -417,6 +461,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
+      NA_character_,
       c("QC"),
       c("QC"),
       NA_character_,
@@ -448,6 +493,7 @@ si_model_registry <- function() {
       "none",
       "none",
       "none",
+      "none",
       "Quebec ecological subregion",
       "Quebec ecological subregion",
       "none",
@@ -468,6 +514,7 @@ si_model_registry <- function() {
       "Nigh and Courtin (1998) red alder model, SI25 scale",
       "Nigh and Courtin (1998) red alder model, SI50 scale",
       "Huang et al. (1994) Alberta polymorphic site-index model set",
+      "Auger and Ward (2021) Quebec plantation site-index model",
       "Prégent et al. (2010) white spruce plantation site-index model",
       "Prégent et al. (2016) Norway spruce plantation site-index model",
       "Sharma (2021) fixed-effects no-climate mixed-stand site-index model",
@@ -485,7 +532,7 @@ si_model_registry <- function() {
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set"
     ),
-    rank = c(72, 67, 89, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 88, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 87, 72, 65, 66, 90),
+    rank = c(72, 67, 89, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 88, 88, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 87, 72, 65, 66, 90),
     params_key = c(
       NA_character_,
       "parameters_Carmean1989",
@@ -500,6 +547,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "parameters_Huang1994_si",
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_,
@@ -543,6 +591,7 @@ si_model_registry <- function() {
       c("ALNU.RUB"),
       c("ALNU.RUB"),
       NULL,
+      c("PINU.BAN", "PICE.MAR"),
       c("PICE.GLA"),
       c("PICE.ABI"),
       c("PINU.BAN", "PICE.MAR"),

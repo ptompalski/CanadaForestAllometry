@@ -63,6 +63,7 @@ plot_si_curves <- function(
   species_vec <- unlist(row_use$species[[1]], use.names = FALSE)
   age_basis <- row_use$age_basis[[1]]
   age_domain_max <- row_use$age_domain_max[[1]]
+  plot_si_values <- row_use$plot_si_values[[1]]
   x_axis_label <- switch(
     age_basis,
     total_age = "Total age (years)",
@@ -87,6 +88,9 @@ plot_si_curves <- function(
 
   if (!is.na(age_domain_max)) {
     age_max <- min(age_max, age_domain_max)
+  }
+  if (!is.null(plot_si_values)) {
+    si_values <- plot_si_values
   }
 
   ages <- seq(age_min, age_max, by = age_by)
