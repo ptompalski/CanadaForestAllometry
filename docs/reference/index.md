@@ -57,6 +57,8 @@ Functions for volume estimation.
 
 Functions for site index modeling.
 
+- [`si_augerward2021()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_augerward2021.md)
+  : Auger and Ward (2021) site index model for Quebec plantations
 - [`si_buckman2006()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_buckman2006.md)
   : Buckman et al. (2006) site index model for red pine
 - [`si_carmean1989()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean1989.md)
@@ -72,6 +74,9 @@ Functions for site index modeling.
   : Huang et al. (1994) site index model for major Alberta tree species
 - [`si_kerbowling1991()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_kerbowling1991.md)
   : Ker and Bowling (1991) site index model
+- [`si_lafleche2013()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_lafleche2013.md)
+  : Lafleche et al. (2013) ecological-site IQS curves for southern
+  Quebec
 - [`si_lundgrendolid1970()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_lundgrendolid1970.md)
   : Lundgren and Dolid (1970) site index model
 - [`si_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_model_registry.md)
@@ -87,6 +92,10 @@ Functions for site index modeling.
   : Parresol and Vissage (1998) site index model for eastern white pine
 - [`si_payandeh1974()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_payandeh1974.md)
   : Payandeh (1974) site index model
+- [`si_pregent2010()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_pregent2010.md)
+  : Prégent et al. (2010) site index model for white spruce plantations
+- [`si_pregent2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_pregent2016.md)
+  : Prégent et al. (2016) site index model for Norway spruce plantations
 - [`si_scottvoorhis1986()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_scottvoorhis1986.md)
   : Scott and Voorhis (1986) site index model
 - [`si_sharma2015()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2015.md)

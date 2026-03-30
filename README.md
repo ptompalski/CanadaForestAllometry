@@ -26,6 +26,19 @@ includes `translate_species_code()`, which can translate among
 jurisdiction-specific codes, NFI and CANFI codes, common English and
 French names, and scientific names.
 
+## Development status
+
+`CanadaForestAllometry` is under active development. Package functions
+are tested, but not every published source provides reference values or
+worked examples that allow the implementation to be checked against
+expected numerical results. In those cases, models are implemented from
+the published equations and checked for internal consistency, input
+validation, and reproducibility, but external validation against
+benchmark results may still be limited by the available documentation.
+
+If a particular model is not yet implemented and you think it could be,
+please let me know!
+
 ## Online documentation
 
 Full documentation is available at

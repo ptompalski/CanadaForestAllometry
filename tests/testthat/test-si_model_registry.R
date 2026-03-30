@@ -5,16 +5,22 @@ testthat::test_that("si_model_registry has expected structure and key models", {
   testthat::expect_true(all(
     c(
       "model_id", "engine", "rank", "subregion_type",
-      "subregion_scope", "subregion_required"
+      "subregion_scope", "subregion_required", "age_domain_max",
+      "plot_si_values"
     ) %in% names(reg)
   ))
   testthat::expect_true(all(c(
     "nigh2000",
     "nighcourtin1998_si25",
+    "lafleche2013_potential",
+    "lafleche2013_observed",
     "parresolvissage1998",
     "sharma2015",
     "sharmareid2018",
     "sharma2022",
+    "augerward2021",
+    "pregent2010",
+    "pregent2016",
     "sharmaparton2018a",
     "sharmaparton2018b",
     "sharmaparton2019",
@@ -22,6 +28,56 @@ testthat::test_that("si_model_registry has expected structure and key models", {
     "thrower1994",
     "huang1994"
   ) %in% reg$model_id))
+})
+
+testthat::test_that("si_model_registry includes AugerWard2021 metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "augerward2021")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_augerward2021")
+  testthat::expect_identical(s$reference[[1]], "@AugerWard2021")
+  testthat::expect_identical(s$species_manual[[1]], c("PINU.BAN", "PICE.MAR"))
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_true(is.na(s$params_key[[1]]))
+  testthat::expect_identical(s$age_domain_max[[1]], 100)
+  testthat::expect_identical(s$plot_si_values[[1]], c(4, 8, 12, 16))
+})
+
+testthat::test_that("si_model_registry includes Pregent2010 metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "pregent2010")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_pregent2010")
+  testthat::expect_identical(s$reference[[1]], "@Pregent2010")
+  testthat::expect_identical(s$species_manual[[1]], "PICE.GLA")
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_identical(s$fixed_args[[1]], list(base_age = 50))
+  testthat::expect_true(is.na(s$params_key[[1]]))
+  testthat::expect_identical(s$age_domain_max[[1]], 60)
+  testthat::expect_identical(s$plot_si_values[[1]], c(4, 8, 12, 16))
+})
+
+testthat::test_that("si_model_registry includes Pregent2016 metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "pregent2016")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_pregent2016")
+  testthat::expect_identical(s$reference[[1]], "@Pregent2016")
+  testthat::expect_identical(s$species_manual[[1]], "PICE.ABI")
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_identical(s$fixed_args[[1]], list(base_age = 50))
+  testthat::expect_true(is.na(s$params_key[[1]]))
+  testthat::expect_identical(s$age_domain_max[[1]], 70)
+  testthat::expect_identical(s$plot_si_values[[1]], c(4, 8, 12, 16))
 })
 
 testthat::test_that("si_model_registry includes Sharma2022 metadata", {
@@ -36,6 +92,40 @@ testthat::test_that("si_model_registry includes Sharma2022 metadata", {
   testthat::expect_identical(s$species_manual[[1]], c("PICE.MAR", "POPU.TRE"))
   testthat::expect_identical(s$province_scope[[1]], "ON")
   testthat::expect_true(is.na(s$params_key[[1]]))
+})
+
+testthat::test_that("si_model_registry includes Lafleche2013 potential metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "lafleche2013_potential")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_lafleche2013")
+  testthat::expect_identical(s$reference[[1]], "@LaflecheEtAl2013")
+  testthat::expect_identical(s$fixed_args[[1]], list(curve_set = "potential"))
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_identical(s$supports_predict_si[[1]], FALSE)
+  testthat::expect_identical(s$supports_predict_height[[1]], TRUE)
+  testthat::expect_identical(s$subregion_type[[1]], "qc_ecological_subregion")
+  testthat::expect_identical(s$subregion_arg[[1]], "ecological_subregion")
+  testthat::expect_identical(s$params_key[[1]], "parameters_QC_IQS2013")
+})
+
+testthat::test_that("si_model_registry includes Lafleche2013 observed metadata", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  s <- reg |>
+    dplyr::filter(.data$model_id == "lafleche2013_observed")
+
+  testthat::expect_equal(nrow(s), 1L)
+  testthat::expect_identical(s$engine[[1]], "si_lafleche2013")
+  testthat::expect_identical(s$reference[[1]], "@LaflecheEtAl2013")
+  testthat::expect_identical(s$fixed_args[[1]], list(curve_set = "observed"))
+  testthat::expect_identical(s$province_scope[[1]], "QC")
+  testthat::expect_identical(s$supports_predict_si[[1]], FALSE)
+  testthat::expect_identical(s$supports_predict_height[[1]], TRUE)
+  testthat::expect_identical(s$params_key[[1]], "parameters_QC_IQS2013")
 })
 
 testthat::test_that("si_model_registry includes Sharma2021 metadata", {
@@ -156,6 +246,17 @@ testthat::test_that("si_model_registry includes subregion metadata for BC-specif
   testthat::expect_true(all(bc_focus$subregion_type == "bec_region"))
   testthat::expect_true(all(lengths(bc_focus$subregion_scope) >= 1L))
   testthat::expect_true(all(!bc_focus$subregion_required))
+})
+
+testthat::test_that("si_model_registry marks both NighCourtin1998 variants as supporting height prediction", {
+  reg <- CanadaForestAllometry::si_model_registry()
+
+  nc <- reg |>
+    dplyr::filter(.data$model_id %in% c("nighcourtin1998_si25", "nighcourtin1998_si50")) |>
+    dplyr::arrange(.data$model_id)
+
+  testthat::expect_equal(nrow(nc), 2L)
+  testthat::expect_true(all(nc$supports_predict_height))
 })
 
 testthat::test_that("si_model_registry_species returns species metadata", {

@@ -67,6 +67,42 @@ test_that("translate_species_code handles auto detection for real package data",
 })
 
 
+test_that("translate_species_code auto-detects Quebec three-letter codes", {
+  msgs <- testthat::capture_messages(
+    out_qc <- translate_species_code(
+      c("SAB", "EPN", "PIG"),
+      from = "auto"
+    )
+  )
+
+  expect_true(any(grepl("Auto-detected input type: jurisdiction (qc)", msgs, fixed = TRUE)))
+  expect_equal(out_qc, c("ABIE.BAL", "PICE.MAR", "PINU.BAN"))
+
+  expect_equal(
+    translate_species_code("SAB", from = "auto", to = "scientificname"),
+    "Abies balsamea"
+  )
+})
+
+
+test_that("translate_species_code collapses Quebec jurisdiction parent-child duplicates", {
+  expect_equal(
+    translate_species_code("PEB", from = "jurisdiction", jurisdiction = "QC"),
+    "POPU.BAL"
+  )
+
+  expect_equal(
+    translate_species_code("PED", from = "auto"),
+    "POPU.DEL"
+  )
+
+  expect_equal(
+    translate_species_code("PEB", from = "jurisdiction", jurisdiction = "QC", to = "englishname"),
+    "balsam poplar"
+  )
+})
+
+
 test_that("translate_species_code accepts friendly aliases in `to`", {
   expect_equal(
     translate_species_code("ABIE.BAL", from = "nfi", to = "englishname"),
@@ -221,4 +257,25 @@ test_that("translate_species_code auto detection errors for mixed or non-unique 
     translate_species_code(c("RM", "PJ"), from = "auto"),
     class = "ctae_ambiguous_species_source"
   )
+})
+
+
+test_that(".collapse_jurisdiction_species_matches returns early for trivial and non-nested matches", {
+  one_match <- tibble::tibble(NFI_code = "ABIE.BAL", code = "BF")
+  out_one <- CanadaForestAllometry:::.collapse_jurisdiction_species_matches(one_match)
+  expect_identical(out_one, one_match)
+
+  duplicated_single <- tibble::tibble(
+    NFI_code = c("ABIE.BAL", "ABIE.BAL", NA_character_),
+    code = c("BF", "BF", "BF")
+  )
+  out_dup <- CanadaForestAllometry:::.collapse_jurisdiction_species_matches(duplicated_single)
+  expect_identical(out_dup, duplicated_single)
+
+  unrelated <- tibble::tibble(
+    NFI_code = c("ABIE.BAL", "PICE.MAR"),
+    code = c("BF", "SB")
+  )
+  out_unrelated <- CanadaForestAllometry:::.collapse_jurisdiction_species_matches(unrelated)
+  expect_identical(out_unrelated, unrelated)
 })
