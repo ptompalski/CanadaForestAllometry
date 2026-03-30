@@ -58,9 +58,11 @@ plot_si_curves <- function(
   }
 
   row_use <- reg_match[1, , drop = FALSE]
+  supports_predict_height <- any(reg_match$supports_predict_height)
 
   species_vec <- unlist(row_use$species[[1]], use.names = FALSE)
   age_basis <- row_use$age_basis[[1]]
+  age_domain_max <- row_use$age_domain_max[[1]]
   x_axis_label <- switch(
     age_basis,
     total_age = "Total age (years)",
@@ -68,7 +70,7 @@ plot_si_curves <- function(
     "Age (years)"
   )
 
-  if (!isTRUE(row_use$supports_predict_height[[1]])) {
+  if (!isTRUE(supports_predict_height)) {
     p <- ggplot2::ggplot() +
       ggplot2::annotate("text", x = 0.5, y = 0.5, label = "Height curve not available for this model") +
       ggplot2::xlim(0, 1) +
@@ -82,6 +84,10 @@ plot_si_curves <- function(
   if (is.null(row_fixed)) row_fixed <- list()
   if (is.null(fixed_args)) fixed_args <- list()
   call_fixed <- utils::modifyList(row_fixed, fixed_args)
+
+  if (!is.na(age_domain_max)) {
+    age_max <- min(age_max, age_domain_max)
+  }
 
   ages <- seq(age_min, age_max, by = age_by)
   grid <- tidyr::expand_grid(
