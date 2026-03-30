@@ -2,6 +2,18 @@
 
 ## Site index models included in the package
 
+### `si_augerward2021()`
+
+- Function reference:
+  [`si_augerward2021()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_augerward2021.md)
+- Description: Auger and Ward (2021) Quebec plantation site-index model
+  Auger and Ward ([2021](#ref-AugerWard2021))
+- Age type: Total age
+- Coverage: QC
+- Species coverage: PICE.MAR, PINU.BAN
+
+![](Site-Index-Models_files/figure-html//si-curves-si_augerward2021.png)
+
 ### `si_buckman2006()`
 
 - Function reference:
@@ -90,6 +102,24 @@
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_kerbowling1991.png)
 
+### `si_lafleche2013()`
+
+- Function reference:
+  [`si_lafleche2013()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_lafleche2013.md)
+- Description: Lafleche et al. (2013) Quebec ecological-site
+  potential-height IQS curves Lafleche et al.
+  ([2013](#ref-LaflecheEtAl2013))
+- Age type: Breast-height age
+- Coverage: QC
+- Species coverage: ABIE.BAL, BETU.PAP, PICE.GLA, PICE.MAR, PICE.RUB,
+  PINU.BAN, PINU.STR, POPU.GRA, POPU.TRE, THUJ.OCC
+
+This model uses fixed ecological-site curves rather than arbitrary
+site-index levels. The figure below shows selected example combinations
+of species and ecological keys for the potential curve set.
+
+![](Site-Index-Models_files/figure-html//si-curves-si_lafleche2013.png)
+
 ### `si_lundgrendolid1970()`
 
 - Function reference:
@@ -164,6 +194,30 @@
   PINU.MON, PINU.PON, PSEU.MEN, TSUG.HET
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_payandeh1974.png)
+
+### `si_pregent2010()`
+
+- Function reference:
+  [`si_pregent2010()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_pregent2010.md)
+- Description: Prégent et al. (2010) white spruce plantation site-index
+  model Pregent et al. ([2010](#ref-Pregent2010))
+- Age type: Breast-height age
+- Coverage: QC
+- Species coverage: PICE.GLA
+
+![](Site-Index-Models_files/figure-html//si-curves-si_pregent2010.png)
+
+### `si_pregent2016()`
+
+- Function reference:
+  [`si_pregent2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_pregent2016.md)
+- Description: Prégent et al. (2016) Norway spruce plantation site-index
+  model Pregent and Auger ([2016](#ref-Pregent2016))
+- Age type: Breast-height age
+- Coverage: QC
+- Species coverage: PICE.ABI
+
+![](Site-Index-Models_files/figure-html//si-curves-si_pregent2016.png)
 
 ### `si_scottvoorhis1986()`
 
@@ -278,6 +332,10 @@
 
 ## References
 
+Auger, I., Ward, C., 2021. Tables de rendement pour les plantations
+d’epinette noire et les plantations de pin gris au quebec (No. SSS-06),
+Avis technique. Gouvernement du Quebec, Quebec.
+
 Buckmann, R.E., Bishaw, B., Hanson, T.J., Benford, F.A., 2006. Growth
 and yield of red pine in the lake states (No. NC-271), General technical
 report. U.S. Department of Agriculture, Forest Service.
@@ -310,6 +368,11 @@ Ker, M.F., Bowling, C., 1991. Polymorphic site index equations for four
 New Brunswick softwood species. Canadian Journal of Forest Research 21,
 728–732. <https://doi.org/10.1139/x91-103>
 
+Lafleche, V., Bernier, S., Saucier, J.-P., Gagne, C., 2013. Indices de
+qualite de station des principales essences commerciales en fonction des
+types ecologiques du quebec meridional. Ministere des Ressources
+naturelles, Direction des inventaires forestiers, Quebec.
+
 Lundgren, A.L., Dolid, W.A., 1970. Biological growth functions describe
 published site index curves for Lake States timber species. Research
 Paper NC-36. St. Paul, MN: U.S. Dept. of Agriculture, Forest Service,
@@ -330,6 +393,17 @@ Agriculture, Forest Service, Southern Research Station, Asheville, NC.
 Payandeh, B., 1974. Nonlinear site index equations for several major
 Canadian timber species. The Forestry Chronicle 50, 194–196.
 <https://doi.org/10.5558/tfc50194-5>
+
+Pregent, G., Auger, I., 2016. Tarif de cubage, tables de rendement et
+modeles de croissance pour les plantations d’epinette de norvege au
+quebec (No. 176), Memoire de recherche forestiere. Ministere des Forets,
+de la Faune et des Parcs, Direction de la recherche forestiere, Quebec.
+
+Pregent, G., Picher, G., Auger, I., 2010. Tarif de cubage, tables de
+rendement et modeles de croissance pour les plantations d’epinette
+blanche au quebec (No. 160), Memoire de recherche forestiere. Ministere
+des Ressources naturelles et de la Faune, Direction de la recherche
+forestiere, Quebec.
 
 Scott, C.T., Voorhis, N.G., 1986. Northeastern Forest Survey Site Index
 Equations and Site Productivity Classes. Northern Journal of Applied
