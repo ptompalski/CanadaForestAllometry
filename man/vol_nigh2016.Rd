@@ -47,6 +47,32 @@ where \eqn{V} is volume (m\eqn{^3}), \eqn{DBH} is in cm, and \eqn{H} is in m.
 Merchantable volume in Nigh (2016) is defined as total volume minus stump
 (0.3 m) and top volume above a 4 cm inside-bark diameter threshold (fixed
 definition in the original report).
+
+
+Nigh (2016) function parameters are available for the following species and
+\code{subregion} combinations:
+
+\tabular{ll}{
+Species \tab Supported \code{subregion} values\cr
+\code{ABIE.LAS} \tab AT, BWBS, ESSF, ICH, IDF, Interior, MS, SBS, SWB\cr
+\code{ABIE.SPP} \tab Coast, CWH, MH\cr
+\code{ACER.MAC} \tab Coast, CWH\cr
+\code{ALNU.RUB} \tab Coast, CWH\cr
+\code{BETU.PAP} \tab BWBS, ICH, IDF, Interior, SBS\cr
+\code{CHAM.NOO} \tab Coast\cr
+\code{LARI.SPP} \tab BWBS, ESSF, ICH, IDF, Interior, MS\cr
+\code{PICE.SIT} \tab Coast\cr
+\code{PICE.SPP} \tab Interior\cr
+\code{PINU.ALB} \tab ESSF, Interior\cr
+\code{PINU.CON} \tab Coast, Interior\cr
+\code{PINU.MON} \tab Coast, Interior\cr
+\code{PINU.PON} \tab Interior\cr
+\code{POPU.TRE} \tab BWBS, ICH, IDF, Interior, SBS\cr
+\code{POPU.TRI} \tab BWBS, Coast, CWH, ICH, IDF, Interior, SBS\cr
+\code{PSEU.MEN} \tab CDF, Coast, CWH, ESSF, ICH, IDF, Interior, MS, PP, SBS\cr
+\code{THUJ.PLI} \tab Coast, CWH, ESSF, ICH, IDF, Interior, MS\cr
+\code{TSUG.HET} \tab Coast, CWH, ESSF, ICH, IDF, Interior, MH, SBS\cr
+}
 }
 \examples{
 # Single tree, region coefficients

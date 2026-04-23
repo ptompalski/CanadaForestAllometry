@@ -24,3 +24,45 @@ using BEC-zone–specific parameter sets. Total volume is computed independent
 of merchantability; merchantable volume is set to 0 when DBH is below the
 jurisdictional minimum DBH criterion.
 }
+\details{
+Kozak (1994) function parameters are available for the following species and
+BEC-zone combinations:
+
+\tabular{ll}{
+Species \tab BEC zones\cr
+\code{ABIE.BAL} \tab AT, BWBS, CWH, ESSF, ICH, MH, MS, SBS, SWB\cr
+\code{ACER.MAC} \tab CWH\cr
+\code{ALNU.RUB} \tab CWH\cr
+\code{BETU.PAP} \tab BWBS, ICH, IDF, SBS\cr
+\code{CHAM.NOO} \tab CWH\cr
+\code{LARI.SPP} \tab BWBS, ESSF, ICH, IDF, MS\cr
+\code{PICE.SPP} \tab BWBS, CWH, ESSF, ICH, IDF, MS, SBPS, SBS, SWB\cr
+\code{PINU.ALB} \tab ESSF\cr
+\code{PINU.CON} \tab BWBS, CWH, ESSF, ICH, IDF, MS, SBPS, SBS, SWB\cr
+\code{PINU.MON} \tab CWH, ICH, IDF\cr
+\code{PINU.PON} \tab ICH, IDF, PP\cr
+\code{POPU.BAL} \tab BWBS, CWH, ICH, IDF, SBS\cr
+\code{POPU.TRE} \tab BWBS, ICH, IDF, SBS\cr
+\code{PSEU.MEN} \tab CWH, ESSF, ICH, IDF, MS, PP, SBS\cr
+\code{THUJ.PLI} \tab CWH, ESSF, ICH, IDF, MS\cr
+\code{TSUG.SPP} \tab CWH, ESSF, ICH, IDF, MH, SBS\cr
+}
+}
+\examples{
+# Single tree
+vol_kozak94(
+  DBH = 35,
+  height = 25,
+  species = "PSEU.MEN",
+  BEC_zone = "CWH"
+)
+
+# Multiple trees, vectorized
+vol_kozak94(
+  DBH = c(22, 30, 45),
+  height = c(18, 24, 33),
+  species = c("PSEU.MEN", "THUJ.PLI", "POPU.BAL"),
+  BEC_zone = c("CWH", "ICH", "SBS")
+)
+
+}
