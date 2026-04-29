@@ -1080,6 +1080,16 @@ parameters_Huang1994_si <- parameters_Huang1994_si %>%
     )
   )
 
+parameters_Huang2013_hd <- readr::read_csv(
+  "data-raw/parameters_Huang2013_hd.csv",
+  show_col_types = FALSE
+) %>%
+  mutate(
+    Species = standardize_species_code(Species, keep_all = FALSE),
+    model = as.integer(model),
+    Subregion = stringr::str_squish(as.character(Subregion))
+  )
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1107,6 +1117,7 @@ internal_objs <- c(
   "parameters_Nigh2000_gi",
   "parameters_Thrower1994",
   "parameters_Huang1994_si",
+  "parameters_Huang2013_hd",
   "parameters_Carmean1989",
   "parameters_Carmean1996",
   "parameters_QC_IQS2013",

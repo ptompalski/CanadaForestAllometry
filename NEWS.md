@@ -7,6 +7,10 @@
   - `si_pregent2016()` for Norway spruce plantations
   - `si_augerward2021()` for jack pine and black spruce plantations
 
+## Height-diameter updates
+
+- Added `hd_huang2013()` for fixed/population-average height-diameter predictions for major Alberta tree species.
+
 
 # CanadaForestAllometry 0.8.3
 
