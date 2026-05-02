@@ -11,6 +11,7 @@
 
 - Added `hd_huang2013()` for fixed/population-average height-diameter predictions for major Alberta tree species.
 - Added `hd_sharmaparton2007()` for fixed height-diameter predictions for eight Ontario boreal tree species using DBH and stand covariates.
+- Added `hd_rijal2012()` for fixed height-diameter predictions for 15 Acadian Region tree species using DBH, site, and competition covariates.
 
 
 # CanadaForestAllometry 0.8.3
