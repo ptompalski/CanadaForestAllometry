@@ -27,7 +27,7 @@ si_carmean1989(age, height = NULL, si = NULL, species)
 
 - species:
 
-  Character vector of species codes (e.g., \`"ACER.SAC"\`).
+  Character vector of species codes (e.g., \`"ACER.SAH"\`).
 
 ## Value
 
@@ -45,7 +45,7 @@ A tibble with columns:
 
 **Model scope (species coverage):** this implementation includes only
 selected Carmean et al. (1989) species that occur in Canada:
-`ACER.SAC, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER, QUER.RUB, TILI.AME, ULMU.AME, CHAM.THY, TSUG.CAN`.
+`ACER.SAH, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER, QUER.RUB, TILI.AME, ULMU.AME, CHAM.THY, TSUG.CAN`.
 
 **Geographic use:** use for eastern species only, and with caution
 outside the source curve domains.
@@ -80,25 +80,15 @@ Agriculture, Forest Service, Northern Research Station.
 si_carmean1989(
   age = c(30, 50, 60),
   height = c(12, 18, 20),
-  species = c("ACER.SAC", "BETU.ALL", "QUER.RUB")
+  species = c("ACER.SAH", "BETU.ALL", "QUER.RUB")
 )
-#> # A tibble: 3 × 1
-#>      si
-#>   <dbl>
-#> 1  17.8
-#> 2  17.9
-#> 3  18.0
+#> Error in .carmean1989_prepare(age = age, x = x, species = species, x_name = x_name): No Carmean1989 parameters found for species: ACER.SAH.
 
 # Predict height from age + site index
 si_carmean1989(
   age = c(30, 50, 60),
   si = c(18, 20, 22),
-  species = c("ACER.SAC", "BETU.ALL", "QUER.RUB")
+  species = c("ACER.SAH", "BETU.ALL", "QUER.RUB")
 )
-#> # A tibble: 3 × 1
-#>   height
-#>    <dbl>
-#> 1   12.2
-#> 2   20.1
-#> 3   24.1
+#> Error in .carmean1989_prepare(age = age, x = x, species = species, x_name = x_name): No Carmean1989 parameters found for species: ACER.SAH.
 ```

@@ -56,6 +56,7 @@ You can install the most recent version of the package by executing the
 code below:
 
 ``` r
+
 devtools::install_github("ptompalski/CanadaForestAllometry")
 library(CanadaForestAllometry)
 ```

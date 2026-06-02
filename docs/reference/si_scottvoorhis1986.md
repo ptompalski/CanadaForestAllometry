@@ -58,7 +58,7 @@ A tibble with columns:
 
 **Model scope (species coverage):** this implementation includes
 parameter sets for 19 species:
-`ABIE.BAL, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.ECH, PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, THUJ.OCC, ACER.SAC, BETU.ALL, BETU.PAP, FRAX.AME, LIQU.STY, LIRI.TUL, POPU.GRA, QUER.ALB`.
+`ABIE.BAL, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.ECH, PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, THUJ.OCC, ACER.SAH, BETU.ALL, BETU.PAP, FRAX.AME, LIQU.STY, LIRI.TUL, POPU.GRA, QUER.ALB`.
 
 **Geographic use (Canada):** the model is intended for northeastern
 forest conditions. In Canada, it is most defensible for

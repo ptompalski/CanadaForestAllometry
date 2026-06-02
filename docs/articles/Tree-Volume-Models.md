@@ -70,6 +70,7 @@ models are applicable for each tree based on:
 Example:
 
 ``` r
+
 trees <- tibble::tibble(
   DBH = c(18, 22, 30, 26, 20),
   height = c(15, 18, 22, 20, 20),

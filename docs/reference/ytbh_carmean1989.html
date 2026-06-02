@@ -9,7 +9,7 @@ Carmean et al. (1989)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@ Carmean et al. (1989).</p>
 
 
 <dt id="arg-species">species<a class="anchor" aria-label="anchor" href="#arg-species"></a></dt>
-<dd><p>Character vector of species codes (e.g., `"ACER.SAC"`).</p></dd>
+<dd><p>Character vector of species codes (e.g., `"ACER.SAH"`).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -73,7 +73,7 @@ Carmean et al. (1989).</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><strong>Model scope (species coverage):</strong> this implementation includes only
 selected Carmean et al. (1989) species that occur in Canada:
-<code>ACER.SAC, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER,
+<code>ACER.SAH, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER,
 QUER.RUB, TILI.AME, ULMU.AME, CHAM.THY, TSUG.CAN</code>.</p>
 <p>For most species, the source provides a fixed years-to-breast-height value
 in the figure caption. For Atlantic white-cedar (<code>CHAM.THY</code>), the
@@ -91,14 +91,9 @@ Agriculture, Forest Service, Northern Research Station.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">ytbh_carmean1989</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  si <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">20</span>, <span class="fl">22</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ACER.SAC"</span>, <span class="st">"CHAM.THY"</span>, <span class="st">"TSUG.CAN"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ACER.SAH"</span>, <span class="st">"CHAM.THY"</span>, <span class="st">"TSUG.CAN"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ytbh</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  4   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>  6.44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>  6   </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in ytbh_carmean1989(si = c(18, 20, 22), species = c("ACER.SAH",     "CHAM.THY", "TSUG.CAN")):</span> No Carmean1989 YTBH parameters found for species: ACER.SAH.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -199,7 +199,7 @@ of species and ecological keys for the potential curve set.
 
 - Function reference:
   [`si_pregent2010()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_pregent2010.md)
-- Description: Prégent et al. (2010) white spruce plantation site-index
+- Description: Pregent et al. (2010) white spruce plantation site-index
   model Pregent et al. ([2010](#ref-Pregent2010))
 - Age type: Breast-height age
 - Coverage: QC
@@ -211,7 +211,7 @@ of species and ecological keys for the potential curve set.
 
 - Function reference:
   [`si_pregent2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_pregent2016.md)
-- Description: Prégent et al. (2016) Norway spruce plantation site-index
+- Description: Pregent et al. (2016) Norway spruce plantation site-index
   model Pregent and Auger ([2016](#ref-Pregent2016))
 - Age type: Breast-height age
 - Coverage: QC

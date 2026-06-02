@@ -64,6 +64,31 @@ Merchantable volume in Nigh (2016) is defined as total volume minus
 stump (0.3 m) and top volume above a 4 cm inside-bark diameter threshold
 (fixed definition in the original report).
 
+Nigh (2016) function parameters are available for the following species
+and `subregion` combinations:
+
+|            |                                                        |
+|------------|--------------------------------------------------------|
+| Species    | Supported `subregion` values                           |
+| `ABIE.LAS` | AT, BWBS, ESSF, ICH, IDF, Interior, MS, SBS, SWB       |
+| `ABIE.SPP` | Coast, CWH, MH                                         |
+| `ACER.MAC` | Coast, CWH                                             |
+| `ALNU.RUB` | Coast, CWH                                             |
+| `BETU.PAP` | BWBS, ICH, IDF, Interior, SBS                          |
+| `CHAM.NOO` | Coast                                                  |
+| `LARI.SPP` | BWBS, ESSF, ICH, IDF, Interior, MS                     |
+| `PICE.SIT` | Coast                                                  |
+| `PICE.SPP` | Interior                                               |
+| `PINU.ALB` | ESSF, Interior                                         |
+| `PINU.CON` | Coast, Interior                                        |
+| `PINU.MON` | Coast, Interior                                        |
+| `PINU.PON` | Interior                                               |
+| `POPU.TRE` | BWBS, ICH, IDF, Interior, SBS                          |
+| `POPU.TRI` | BWBS, Coast, CWH, ICH, IDF, Interior, SBS              |
+| `PSEU.MEN` | CDF, Coast, CWH, ESSF, ICH, IDF, Interior, MS, PP, SBS |
+| `THUJ.PLI` | Coast, CWH, ESSF, ICH, IDF, Interior, MS               |
+| `TSUG.HET` | Coast, CWH, ESSF, ICH, IDF, Interior, MH, SBS          |
+
 ## Examples
 
 ``` r
