@@ -54,6 +54,7 @@ A tibble with AGB components: \`Bwood\`, \`Bbark\`, \`Bstem\`,
 ## Examples
 
 ``` r
+
 # Auto-selection (equation_set = "auto" by default):
 # height missing -> DBH-only equations
 agb_lambert_ung(

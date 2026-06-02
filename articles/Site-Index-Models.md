@@ -34,7 +34,7 @@
   set Carmean et al. ([1989](#ref-Carmean1989))
 - Age type: Total age
 - Coverage: NB, NL, NS, ON, PE, QC
-- Species coverage: ACER.SAC, BETU.ALL, CHAM.THY, FAGU.GRA, FRAX.AME,
+- Species coverage: ACER.SAH, BETU.ALL, CHAM.THY, FAGU.GRA, FRAX.AME,
   FRAX.NIG, PRUN.SER, QUER.RUB, TILI.AME, TSUG.CAN, ULMU.AME
 
 ![](Site-Index-Models_files/figure-html//si-curves-si_carmean1989.png)
@@ -227,7 +227,7 @@ of species and ecological keys for the potential curve set.
   directly Scott and Voorhis ([1986](#ref-ScottVoorhis1986))
 - Age type: Breast-height age
 - Coverage: NB, NL, NS, ON, PE, QC
-- Species coverage: ABIE.BAL, ACER.SAC, BETU.ALL, BETU.PAP, FRAX.AME,
+- Species coverage: ABIE.BAL, ACER.SAH, BETU.ALL, BETU.PAP, FRAX.AME,
   LIQU.STY, LIRI.TUL, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.ECH,
   PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, POPU.GRA, QUER.ALB, THUJ.OCC
 

@@ -23,6 +23,7 @@ otherwise, the DBH-only formulation is applied.
 ### Example:
 
 ``` r
+
  trees <- tibble::tibble(
   tree_id = 1:4,
   DBH = c(22, 30, 18, 35),
