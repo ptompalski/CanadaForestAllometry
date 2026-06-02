@@ -43,7 +43,7 @@ polymorphic site-index equation for northeastern species.
 \strong{Model scope (species coverage):} this implementation includes
 parameter sets for 19 species:
 \code{ABIE.BAL, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.ECH,
-PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, THUJ.OCC, ACER.SAC, BETU.ALL,
+PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, THUJ.OCC, ACER.SAH, BETU.ALL,
 BETU.PAP, FRAX.AME, LIQU.STY, LIRI.TUL, POPU.GRA, QUER.ALB}.
 
 \strong{Geographic use (Canada):} the model is intended for northeastern

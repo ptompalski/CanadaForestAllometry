@@ -101,6 +101,32 @@ testthat::test_that("ScottVoorhis1986 with total-age conversion matches source-f
   testthat::expect_equal(si_out$si[[1]], si_m, tolerance = 1e-8)
 })
 
+testthat::test_that("ScottVoorhis1986 sugar maple parameters use ACER.SAH", {
+  ns <- asNamespace("CanadaForestAllometry")
+  pars <- get("parameters_ScottVoorhis1986", envir = ns, inherits = FALSE) |>
+    dplyr::as_tibble()
+
+  testthat::expect_true("ACER.SAH" %in% pars$Species)
+  testthat::expect_false("ACER.SAC" %in% pars$Species)
+
+  out <- CanadaForestAllometry::si_scottvoorhis1986(
+    age = 50,
+    si = 20,
+    species = "ACER.SAH"
+  )
+  testthat::expect_true(is.finite(out$height[[1]]))
+
+  testthat::expect_error(
+    CanadaForestAllometry::si_scottvoorhis1986(
+      age = 50,
+      si = 20,
+      species = "ACER.SAC"
+    ),
+    "No ScottVoorhis1986 parameters found",
+    ignore.case = TRUE
+  )
+})
+
 testthat::test_that("si_scottvoorhis1986 input validation is informative", {
   testthat::expect_error(
     CanadaForestAllometry::si_scottvoorhis1986(

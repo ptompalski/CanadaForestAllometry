@@ -8,7 +8,7 @@ idx,qc_species_code,qc_group,is_conifer,nfi_species_code,species_fr,species_lati
 7,EPN,RES,True,PICE.MAR,Épinette noire,Picea mariana,-16.000108490313,0.51037282935719,-0.0034365415188
 8,EPR,RES,True,PICE.RUB,Épinette rouge,Picea rubens,-16.000108490313,0.50149352683151,-0.0021496320903
 9,ERR,FEU,False,ACER.RUB,Érable rouge,Acer rubrum,-16.000108490313,0.39550130519221,0.0
-10,ERS,FEU,False,ACER.SAC,Érable à sucre,Acer saccharum,-16.000108490313,0.40824752273542,0.0
+10,ERS,FEU,False,ACER.SAH,Érable à sucre,Acer saccharum,-16.000108490313,0.40824752273542,0.0
 11,FRA,FEU,False,FRAX.AME,Frêne d'Amérique,Fraxinus americana,-16.000108490313,0.38533308048495,0.0
 12,FRN,FEU,False,FRAX.NIG,Frêne noir,Fraxinus nigra,-16.000108490313,0.42945723078271,0.0
 13,HEG,FEU,False,FAGU.GRA,Hêtre à grandes feuilles,Fagus grandifolia,-16.000108490313,0.44056825352813,0.0

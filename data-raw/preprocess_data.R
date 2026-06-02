@@ -924,7 +924,7 @@ parameters_Carmean1989 <- readr::read_csv(
   filter(figure_no %in% c(3, 6, 11, 13, 14, 34, 48, 51, 53, 57, 127)) %>%
   mutate(
     Species = case_when(
-      figure_no == 3 ~ "ACER.SAC",
+      figure_no == 3 ~ "ACER.SAH",
       figure_no == 6 ~ "BETU.ALL",
       figure_no == 11 ~ "FAGU.GRA",
       figure_no == 13 ~ "FRAX.AME",

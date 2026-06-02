@@ -181,6 +181,23 @@ testthat::test_that("vol_fortin2007 matches manual calculations: hardwood vs con
   }
 })
 
+testthat::test_that("vol_fortin2007 maps Quebec sugar maple to ACER.SAH", {
+  skip_if_not(exists("parameters_fortin2007", inherits = TRUE))
+
+  testthat::expect_true("ACER.SAH" %in% parameters_fortin2007$Species)
+  testthat::expect_false("ACER.SAC" %in% parameters_fortin2007$Species)
+
+  out <- vol_fortin2007(DBH = 20, height = 20, species = "ACER.SAH")
+  testthat::expect_true(is.finite(out$vol_merchantable[[1]]))
+  testthat::expect_gt(out$vol_merchantable[[1]], 0)
+
+  testthat::expect_error(
+    vol_fortin2007(DBH = 20, height = 20, species = "ACER.SAC"),
+    "No parameters returned by get_volume_params|No Fortin2007 parameters",
+    ignore.case = TRUE
+  )
+})
+
 testthat::test_that("vol_fortin2007: errors when parameter table is empty or missing required columns", {
   ns <- asNamespace("CanadaForestAllometry")
 

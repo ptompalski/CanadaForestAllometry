@@ -1,7 +1,7 @@
 testthat::test_that("ytbh_carmean1989 predicts years-to-breast-height", {
   out <- CanadaForestAllometry::ytbh_carmean1989(
     si = c(18, 20, 22),
-    species = c("ACER.SAC", "CHAM.THY", "TSUG.CAN")
+    species = c("ACER.SAH", "CHAM.THY", "TSUG.CAN")
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -14,7 +14,7 @@ testthat::test_that("ytbh_carmean1989 predicts years-to-breast-height", {
 testthat::test_that("ytbh_carmean1989 returns fixed values for non-cedar species", {
   out <- CanadaForestAllometry::ytbh_carmean1989(
     si = c(12, 18, 24),
-    species = c("ACER.SAC", "BETU.ALL", "TSUG.CAN")
+    species = c("ACER.SAH", "BETU.ALL", "TSUG.CAN")
   )
 
   testthat::expect_equal(out$ytbh, c(4, 4, 6), tolerance = 1e-12)
@@ -46,7 +46,7 @@ testthat::test_that("ytbh_carmean1989 clamps Atlantic white-cedar outside table 
 testthat::test_that("ytbh_carmean1989 supports scalar recycling", {
   out <- CanadaForestAllometry::ytbh_carmean1989(
     si = c(12, 15, 18),
-    species = "ACER.SAC"
+    species = "ACER.SAH"
   )
 
   testthat::expect_equal(nrow(out), 3L)
@@ -66,7 +66,7 @@ testthat::test_that("ytbh_carmean1989 validates inputs", {
   testthat::expect_error(
     CanadaForestAllometry::ytbh_carmean1989(
       si = "10",
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "si.*numeric",
     ignore.case = TRUE
@@ -75,7 +75,7 @@ testthat::test_that("ytbh_carmean1989 validates inputs", {
   testthat::expect_error(
     CanadaForestAllometry::ytbh_carmean1989(
       si = c(10, 12),
-      species = c("ACER.SAC", "ACER.SAC", "ACER.SAC")
+      species = c("ACER.SAH", "ACER.SAH", "ACER.SAH")
     ),
     "length 1 or",
     ignore.case = TRUE
@@ -93,7 +93,7 @@ testthat::test_that("ytbh_carmean1989 validates inputs", {
   testthat::expect_error(
     CanadaForestAllometry::ytbh_carmean1989(
       si = 0,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "si.*> 0|si.*values > 0",
     ignore.case = TRUE
@@ -102,7 +102,7 @@ testthat::test_that("ytbh_carmean1989 validates inputs", {
 
 testthat::test_that("ytbh_carmean1989 catches missing years-to-bh values for non-cedar species", {
   mock_pars <- dplyr::tibble(
-    Species = c("ACER.SAC", "CHAM.THY"),
+    Species = c("ACER.SAH", "CHAM.THY"),
     years_to_bh = c(NA_real_, NA_real_)
   )
 
@@ -117,7 +117,7 @@ testthat::test_that("ytbh_carmean1989 catches missing years-to-bh values for non
   testthat::expect_error(
     CanadaForestAllometry::ytbh_carmean1989(
       si = 12,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "No Carmean1989 YTBH value available",
     ignore.case = TRUE
@@ -141,7 +141,7 @@ testthat::test_that("ytbh_carmean1989 reports missing parameter rows for valid s
   testthat::expect_error(
     CanadaForestAllometry::ytbh_carmean1989(
       si = 12,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "No Carmean1989 YTBH parameters found",
     ignore.case = TRUE
@@ -150,7 +150,7 @@ testthat::test_that("ytbh_carmean1989 reports missing parameter rows for valid s
 
 testthat::test_that("ytbh_carmean1989 catches non-finite outputs", {
   mock_inf <- dplyr::tibble(
-    Species = "ACER.SAC",
+    Species = "ACER.SAH",
     years_to_bh = Inf
   )
 
@@ -165,7 +165,7 @@ testthat::test_that("ytbh_carmean1989 catches non-finite outputs", {
   testthat::expect_error(
     CanadaForestAllometry::ytbh_carmean1989(
       si = 12,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "Non-finite years-to-breast-height prediction",
     ignore.case = TRUE
@@ -174,7 +174,7 @@ testthat::test_that("ytbh_carmean1989 catches non-finite outputs", {
 
 testthat::test_that("ytbh_carmean1989 catches negative outputs", {
   mock_neg <- dplyr::tibble(
-    Species = "ACER.SAC",
+    Species = "ACER.SAH",
     years_to_bh = -1
   )
 
@@ -189,7 +189,7 @@ testthat::test_that("ytbh_carmean1989 catches negative outputs", {
   testthat::expect_error(
     CanadaForestAllometry::ytbh_carmean1989(
       si = 12,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "Negative years-to-breast-height prediction",
     ignore.case = TRUE

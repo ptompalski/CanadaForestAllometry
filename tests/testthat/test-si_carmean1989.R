@@ -2,7 +2,7 @@ testthat::test_that("si_carmean1989 predicts height from si and returns single-c
   out <- CanadaForestAllometry::si_carmean1989(
     age = c(30, 50, 70),
     si = c(12, 16, 20),
-    species = c("ACER.SAC", "BETU.ALL", "TSUG.CAN")
+    species = c("ACER.SAH", "BETU.ALL", "TSUG.CAN")
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -16,7 +16,7 @@ testthat::test_that("si_carmean1989 predicts si from height and returns single-c
   out <- CanadaForestAllometry::si_carmean1989(
     age = c(30, 50, 70),
     height = c(8, 15, 22),
-    species = c("ACER.SAC", "BETU.ALL", "TSUG.CAN")
+    species = c("ACER.SAH", "BETU.ALL", "TSUG.CAN")
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -39,7 +39,7 @@ testthat::test_that("si_carmean1989 matches manual equation evaluation", {
   h_out <- CanadaForestAllometry::si_carmean1989(
     age = age,
     si = si_m,
-    species = "ACER.SAC"
+    species = "ACER.SAH"
   )
   testthat::expect_equal(h_out$height[[1]], h_m_expected, tolerance = 1e-10)
 
@@ -63,11 +63,37 @@ testthat::test_that("si_carmean1989 supports scalar recycling", {
   out <- CanadaForestAllometry::si_carmean1989(
     age = c(30, 40, 50),
     si = 18,
-    species = "ACER.SAC"
+    species = "ACER.SAH"
   )
 
   testthat::expect_equal(nrow(out), 3L)
   testthat::expect_named(out, "height")
+})
+
+testthat::test_that("Carmean1989 sugar maple parameters use ACER.SAH", {
+  ns <- asNamespace("CanadaForestAllometry")
+  pars <- get("parameters_Carmean1989", envir = ns, inherits = FALSE) |>
+    dplyr::as_tibble()
+
+  testthat::expect_true("ACER.SAH" %in% pars$Species)
+  testthat::expect_false("ACER.SAC" %in% pars$Species)
+
+  out <- CanadaForestAllometry::si_carmean1989(
+    age = 60,
+    si = 18,
+    species = "ACER.SAH"
+  )
+  testthat::expect_true(is.finite(out$height[[1]]))
+
+  testthat::expect_error(
+    CanadaForestAllometry::si_carmean1989(
+      age = 60,
+      si = 18,
+      species = "ACER.SAC"
+    ),
+    "No Carmean1989 parameters found",
+    ignore.case = TRUE
+  )
 })
 
 testthat::test_that("si_carmean1989 input validation is informative", {
@@ -75,7 +101,7 @@ testthat::test_that("si_carmean1989 input validation is informative", {
     CanadaForestAllometry::si_carmean1989(
       age = c(30, 40),
       si = c(15, 15, 15),
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "length 1 or",
     ignore.case = TRUE
@@ -85,7 +111,7 @@ testthat::test_that("si_carmean1989 input validation is informative", {
     CanadaForestAllometry::si_carmean1989(
       age = c(30, -1),
       height = c(10, 12),
-      species = c("ACER.SAC", "ACER.SAC")
+      species = c("ACER.SAH", "ACER.SAH")
     ),
     "age.*> 0",
     ignore.case = TRUE
@@ -106,7 +132,7 @@ testthat::test_that("si_carmean1989 input validation is informative", {
       age = 30,
       height = 10,
       si = 12,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "exactly one of `height` or `si`",
     ignore.case = TRUE
@@ -115,7 +141,7 @@ testthat::test_that("si_carmean1989 input validation is informative", {
   testthat::expect_error(
     CanadaForestAllometry::si_carmean1989(
       age = 30,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "exactly one of `height` or `si`",
     ignore.case = TRUE
@@ -137,7 +163,7 @@ testthat::test_that("si_carmean1989 validates zero-length and type inputs", {
     CanadaForestAllometry::si_carmean1989(
       age = "30",
       si = 12,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "age.*numeric",
     ignore.case = TRUE
@@ -147,7 +173,7 @@ testthat::test_that("si_carmean1989 validates zero-length and type inputs", {
     CanadaForestAllometry::si_carmean1989(
       age = 30,
       height = "10",
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "height.*numeric",
     ignore.case = TRUE
@@ -159,7 +185,7 @@ testthat::test_that("si_carmean1989 catches non-finite height predictions", {
     CanadaForestAllometry::si_carmean1989(
       age = 20,
       si = 1e308,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "Non-finite height prediction",
     ignore.case = TRUE
@@ -171,7 +197,7 @@ testthat::test_that("si_carmean1989 catches non-finite site-index predictions", 
     CanadaForestAllometry::si_carmean1989(
       age = 20,
       height = 1e308,
-      species = "ACER.SAC"
+      species = "ACER.SAH"
     ),
     "Non-finite site index prediction",
     ignore.case = TRUE

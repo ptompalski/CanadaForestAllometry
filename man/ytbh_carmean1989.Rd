@@ -9,7 +9,7 @@ ytbh_carmean1989(si, species)
 \arguments{
 \item{si}{Numeric vector. Site index (m, base age 50 years at total age).}
 
-\item{species}{Character vector of species codes (e.g., `"ACER.SAC"`).}
+\item{species}{Character vector of species codes (e.g., `"ACER.SAH"`).}
 }
 \value{
 A tibble with one column:
@@ -24,7 +24,7 @@ Carmean et al. (1989).
 \details{
 \strong{Model scope (species coverage):} this implementation includes only
 selected Carmean et al. (1989) species that occur in Canada:
-\code{ACER.SAC, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER,
+\code{ACER.SAH, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER,
 QUER.RUB, TILI.AME, ULMU.AME, CHAM.THY, TSUG.CAN}.
 
 For most species, the source provides a fixed years-to-breast-height value
@@ -35,7 +35,7 @@ linear interpolation between the tabulated values.
 \examples{
 ytbh_carmean1989(
   si = c(18, 20, 22),
-  species = c("ACER.SAC", "CHAM.THY", "TSUG.CAN")
+  species = c("ACER.SAH", "CHAM.THY", "TSUG.CAN")
 )
 
 }

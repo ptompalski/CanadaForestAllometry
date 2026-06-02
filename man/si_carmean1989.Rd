@@ -15,7 +15,7 @@ si_carmean1989(age, height = NULL, si = NULL, species)
 \item{si}{Optional numeric vector. Site index (m, base age 50 years at total
 age). If provided, `height` is predicted.}
 
-\item{species}{Character vector of species codes (e.g., `"ACER.SAC"`).}
+\item{species}{Character vector of species codes (e.g., `"ACER.SAH"`).}
 }
 \value{
 A tibble with columns:
@@ -31,7 +31,7 @@ site-index equations for eastern North American tree species
 \details{
 \strong{Model scope (species coverage):} this implementation includes only
 selected Carmean et al. (1989) species that occur in Canada:
-\code{ACER.SAC, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER,
+\code{ACER.SAH, BETU.ALL, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER,
 QUER.RUB, TILI.AME, ULMU.AME, CHAM.THY, TSUG.CAN}.
 
 \strong{Geographic use:} use for eastern species only, and with caution
@@ -58,14 +58,14 @@ the function converts internally.
 si_carmean1989(
   age = c(30, 50, 60),
   height = c(12, 18, 20),
-  species = c("ACER.SAC", "BETU.ALL", "QUER.RUB")
+  species = c("ACER.SAH", "BETU.ALL", "QUER.RUB")
 )
 
 # Predict height from age + site index
 si_carmean1989(
   age = c(30, 50, 60),
   si = c(18, 20, 22),
-  species = c("ACER.SAC", "BETU.ALL", "QUER.RUB")
+  species = c("ACER.SAH", "BETU.ALL", "QUER.RUB")
 )
 
 }

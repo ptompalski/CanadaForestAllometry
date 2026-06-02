@@ -568,7 +568,7 @@ si_model_registry <- function() {
     species_manual = list(
       c("PINU.RES"),
       c(
-        "ACER.SAC",
+        "ACER.SAH",
         "BETU.ALL",
         "FAGU.GRA",
         "FRAX.AME",
