@@ -1,3 +1,11 @@
+# CanadaForestAllometry 0.8.5
+
+## Bug fixes
+
+- Corrected sugar maple species-code mappings from `ACER.SAC` to `ACER.SAH` in Fortin et al. (2007), Scott and Voorhis (1986), and Carmean et al. (1989) parameter data.
+- Added regression tests to ensure sugar maple (`ACER.SAH`) and silver maple (`ACER.SAC`) remain distinct in affected model parameter tables.
+
+
 # CanadaForestAllometry 0.8.4
 
 ## Site index updates
@@ -6,6 +14,12 @@
   - `si_pregent2010()` for white spruce plantations
   - `si_pregent2016()` for Norway spruce plantations
   - `si_augerward2021()` for jack pine and black spruce plantations
+
+## Height-diameter updates
+
+- Added `hd_huang2013()` for fixed/population-average height-diameter predictions for major Alberta tree species.
+- Added `hd_sharmaparton2007()` for fixed height-diameter predictions for eight Ontario boreal tree species using DBH and stand covariates.
+- Added `hd_rijal2012()` for fixed height-diameter predictions for 15 Acadian Region tree species using DBH, site, and competition covariates.
 
 
 # CanadaForestAllometry 0.8.3

@@ -16,6 +16,7 @@
 ^vignettes/articles/\.quarto$
 ^vignettes/articles/*_files$
 ^sources$
+^tmp(/|$)
 ^REFERENCES\.bib$
 ^.*\.csl$
 ^vignettes/\.quarto$
