@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - Corrected sugar maple species-code mappings from `ACER.SAC` to `ACER.SAH` in Fortin et al. (2007), Scott and Voorhis (1986), and Carmean et al. (1989) parameter data.
+- Corrected Sharma (2021) sugar maple volume parameter mappings from `ACER.SAC` to `ACER.SAH`.
 - Added regression tests to ensure sugar maple (`ACER.SAH`) and silver maple (`ACER.SAC`) remain distinct in affected model parameter tables.
 
 

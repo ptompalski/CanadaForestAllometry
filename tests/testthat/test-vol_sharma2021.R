@@ -93,6 +93,41 @@ testthat::test_that("vol_sharma2021: unknown species produces an informative err
     ignore.case = TRUE
   )
 })
+
+testthat::test_that("vol_sharma2021: Sharma sugar maple parameters use ACER.SAH", {
+  skip_if_not(exists("parameters_Sharma2021", inherits = TRUE))
+
+  pars <- parameters_Sharma2021 |>
+    dplyr::filter(volume_type %in% c(
+      "total_inside_bark",
+      "total_outside_bark",
+      "merchantable_inside_bark"
+    ))
+
+  testthat::expect_true("ACER.SAH" %in% pars$Species)
+  testthat::expect_false("ACER.SAC" %in% pars$Species)
+
+  out <- CanadaForestAllometry::vol_sharma2021(
+    DBH = 20,
+    height = 20,
+    species = "ACER.SAH"
+  )
+  testthat::expect_true(is.finite(out$vol_total[[1]]))
+  testthat::expect_true(is.finite(out$vol_merchantable[[1]]))
+  testthat::expect_gt(out$vol_total[[1]], 0)
+  testthat::expect_gt(out$vol_merchantable[[1]], 0)
+
+  testthat::expect_error(
+    CanadaForestAllometry::vol_sharma2021(
+      DBH = 20,
+      height = 20,
+      species = "ACER.SAC"
+    ),
+    regexp = "missing parameter|no parameters|regional_sharma2021|species",
+    ignore.case = TRUE
+  )
+})
+
 testthat::test_that("vol_sharma2021: total volume is calculated for small trees (below minimum DBH)", {
   out <- CanadaForestAllometry::vol_sharma2021(
     DBH = c(2, 4, 6, 8),
