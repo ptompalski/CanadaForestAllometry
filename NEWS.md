@@ -12,6 +12,18 @@
   equals site index; si -> height -> si round-trip) plus a same-family
   plausibility check against `si_thrower1994` -- **no external source benchmark**.
 
+- Added `si_nigh2002()` for trembling aspen (`POPU.TRE`) in British Columbia,
+  implementing the logistic height-age (site index) model of Nigh, Krestov and
+  Klinka (2002). Predicts site height from breast-height age and site index, or
+  (by numerical inversion) site index from age and height. Provides both the
+  general **base model** and the **extended model** calibrated to six
+  biogeoclimatic zones via the `bec_zone` argument (`"BWBS"`, `"ICH"`, `"IDF"`,
+  `"MS"`, `"SBPS"`, `"SBS"`). Validation note: the source publishes no numeric
+  prediction grid or worked example, so the model is validated against its own
+  exact self-consistency (height at base age 50 equals site index; the
+  si -> height -> si round-trip) plus a monotonicity sanity check --
+  **no external source benchmark**.
+
 
 # CanadaForestAllometry 0.8.5
 

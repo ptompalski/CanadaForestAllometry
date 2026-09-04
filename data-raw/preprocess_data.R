@@ -923,6 +923,19 @@ parameters_HuGarcia2009 <- parameters_HuGarcia2009 %>%
     source_short
   )
 
+## Nigh et al. 2002 (trembling aspen height-age / site index, BC) ####
+parameters_Nigh2002 <- read.csv("data-raw/Nigh2002_parameters.csv")
+parameters_Nigh2002 <- parameters_Nigh2002 %>%
+  transmute(
+    Species = nfi_species,
+    model,
+    bec_zone = dplyr::na_if(as.character(bec_zone), ""),
+    a0 = as.numeric(a0),
+    a1 = as.numeric(a1),
+    a2 = as.numeric(a2),
+    source_short
+  )
+
 ## Huang et al 1994 (site index) ####
 parameters_Huang1994_si <- read.csv("data-raw/Huang1994_parameters.csv")
 
@@ -1121,6 +1134,7 @@ internal_objs <- c(
   "parameters_Nigh2000_gi",
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
+  "parameters_Nigh2002",
   "parameters_Huang1994_si",
   "parameters_Carmean1989",
   "parameters_Carmean1996",
