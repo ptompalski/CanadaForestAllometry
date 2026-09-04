@@ -936,6 +936,21 @@ parameters_Nigh2002 <- parameters_Nigh2002 %>%
     source_short
   )
 
+## Nigh et al. 2009 (paper birch height-age / site index, BC) ####
+# Model 1 (base) reproduces the SAS reference (SI_Nigh_2009 / HT_Nigh_2009);
+# Models 2 (operational) and 3 (zonal) are additional published variants.
+parameters_Nigh2009 <- read.csv("data-raw/Nigh2009_parameters.csv")
+parameters_Nigh2009 <- parameters_Nigh2009 %>%
+  transmute(
+    Species = nfi_species,
+    model,
+    bec_zone = dplyr::na_if(as.character(bec_zone), ""),
+    a0 = as.numeric(a0),
+    a1 = as.numeric(a1),
+    a2 = as.numeric(a2),
+    source_short
+  )
+
 ## Goudie 1984 (lodgepole pine / white spruce height-age, BC) ####
 # Coefficients follow the SAS reference implementation
 # (SK_SiteIndex_SAS_macros_with_BHAge_20220409.sas); pine uses the dry-site set.
@@ -1159,6 +1174,7 @@ internal_objs <- c(
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
   "parameters_Nigh2002",
+  "parameters_Nigh2009",
   "parameters_Goudie1984",
   "parameters_Cieszewski1993",
   "parameters_Huang1994_si",

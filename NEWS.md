@@ -2,6 +2,21 @@
 
 ## Site index updates
 
+- Added `si_nigh2009()` for paper birch (`BETU.PAP`) in British Columbia,
+  implementing the Nigh, Thomas, Yearsley & Wang (2009) log-logistic height-age /
+  site-index model; base age 50 (breast-height age). Predicts site height from
+  breast-height age and site index, or site index from age and height (solved
+  numerically, as the curve has no closed-form inverse in site index). Three
+  published variants are exposed via `model`: `1` (base, default), `2`
+  (operational, recommended when the biogeoclimatic zone is unknown), and `3`
+  (zonal, SBS vs. ICH/IDF via `bec_zone`). **Model 1 follows the NRCan SAS
+  reference macros** (`%SI_Nigh_2009` / `%HT_Nigh_2009`); Models 2 and 3 are
+  additional variants from the paper and go beyond the SAS reference. Validation:
+  **Tier-1 fidelity** for Model 1 against the SAS macros (re-derived independently
+  as an external reference), plus self-consistency (height at base age 50 equals
+  site index; si -> height -> si round-trip). **Models 2 and 3 ship with no source
+  numeric benchmark table** and rely on plausibility checks only.
+
 - Added `si_goudie1984()` for lodgepole pine (`PINU.CON`) and white spruce
   (`PICE.GLA`) in British Columbia, implementing the Goudie (1984) logistic
   (Monserud/Dahms) height-age / site-index curves; base age 50 (breast-height
