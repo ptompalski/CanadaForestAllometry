@@ -909,6 +909,20 @@ parameters_Thrower1994 <- read.csv("data-raw/Thrower1994_parameters.csv")
 parameters_Thrower1994 <- parameters_Thrower1994 %>%
   select(Species = nfi_species, model_form:source_short)
 
+## Hu & Garcia 2009 (interior spruce site index) ####
+parameters_HuGarcia2009 <- read.csv("data-raw/HuGarcia2009_parameters.csv")
+parameters_HuGarcia2009 <- parameters_HuGarcia2009 %>%
+  select(
+    Species = nfi_species,
+    a_coef,
+    a_exp,
+    c,
+    h0,
+    t0,
+    base_age,
+    source_short
+  )
+
 ## Huang et al 1994 (site index) ####
 parameters_Huang1994_si <- read.csv("data-raw/Huang1994_parameters.csv")
 
@@ -1106,6 +1120,7 @@ internal_objs <- c(
   "parameters_ScottVoorhis1986",
   "parameters_Nigh2000_gi",
   "parameters_Thrower1994",
+  "parameters_HuGarcia2009",
   "parameters_Huang1994_si",
   "parameters_Carmean1989",
   "parameters_Carmean1996",

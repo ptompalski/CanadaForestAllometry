@@ -1,3 +1,18 @@
+# CanadaForestAllometry 0.8.6
+
+## Site index updates
+
+- Added `si_hugarcia2009()` for interior spruce (`PICE.GLA`, `PICE.ENG`) in the
+  Sub-Boreal Spruce biogeoclimatic zone of British Columbia, implementing the
+  polymorphic Bertalanffy--Richards height-growth and site-index model of Hu and
+  García (2009). Predicts top height from breast-height age and site index, or
+  site index from age and height, solving the site parameter numerically.
+  Validation note: the source publishes no numeric prediction grid, so the model
+  is validated against its own exact self-consistency (height at base age 50
+  equals site index; si -> height -> si round-trip) plus a same-family
+  plausibility check against `si_thrower1994` -- **no external source benchmark**.
+
+
 # CanadaForestAllometry 0.8.5
 
 ## Bug fixes

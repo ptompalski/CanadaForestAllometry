@@ -40,7 +40,8 @@ si_model_registry <- function() {
       "lafleche2013_observed",
       "scottvoorhis1986_bh_age",
       "scottvoorhis1986_total_age",
-      "thrower1994"
+      "thrower1994",
+      "hugarcia2009"
     ),
     reference = c(
       "@Buckman2006",
@@ -72,7 +73,8 @@ si_model_registry <- function() {
       "@LaflecheEtAl2013",
       "@ScottVoorhis1986",
       "@ScottVoorhis1986",
-      "@Thrower1994"
+      "@Thrower1994",
+      "@HuGarcia2009"
     ),
     engine = c(
       "si_buckman2006",
@@ -104,7 +106,8 @@ si_model_registry <- function() {
       "si_lafleche2013",
       "si_scottvoorhis1986",
       "si_scottvoorhis1986",
-      "si_thrower1994"
+      "si_thrower1994",
+      "si_hugarcia2009"
     ),
     fixed_args = list(
       list(),
@@ -136,6 +139,7 @@ si_model_registry <- function() {
       list(curve_set = "observed"),
       list(convert_to_total_age = FALSE),
       list(convert_to_total_age = TRUE),
+      list(),
       list()
     ),
     plot_si_values = list(
@@ -168,39 +172,41 @@ si_model_registry <- function() {
       NULL,
       NULL,
       NULL,
+      NULL,
       NULL
     ),
     age_basis = c(
-      "total_age",          # buckman2006
-      "total_age",          # carmean1989
-      "breast_height_age",  # carmean1996
-      "total_age",          # carmeanhahn1981
-      "breast_height_age",  # cieszewskibella1991
-      "breast_height_age",  # kerbowling1991
-      "breast_height_age",  # lundgrendolid1970_exponential_monomolecular
-      "breast_height_age",  # lundgrendolid1970_monomolecular
-      "breast_height_age",  # nigh2000
-      "breast_height_age",  # nigh2000_gi
-      "breast_height_age",  # nighcourtin1998_si25
-      "breast_height_age",  # nighcourtin1998_si50
-      "breast_height_age",  # huang1994
-      "total_age",          # augerward2021
-      "breast_height_age",  # pregent2010
-      "breast_height_age",  # pregent2016
-      "breast_height_age",  # sharma2021
-      "breast_height_age",  # sharmaparton2018a
-      "breast_height_age",  # sharmaparton2018b
-      "breast_height_age",  # sharmaparton2019
-      "breast_height_age",  # sharma2015
-      "breast_height_age",  # parresolvissage1998
-      "breast_height_age",  # payandeh1974
-      "breast_height_age",  # sharmareid2018
-      "breast_height_age",  # sharma2022
-      "breast_height_age",  # lafleche2013_potential
-      "breast_height_age",  # lafleche2013_observed
-      "breast_height_age",  # scottvoorhis1986_bh_age
-      "total_age",          # scottvoorhis1986_total_age
-      "breast_height_age"   # thrower1994
+      "total_age", # buckman2006
+      "total_age", # carmean1989
+      "breast_height_age", # carmean1996
+      "total_age", # carmeanhahn1981
+      "breast_height_age", # cieszewskibella1991
+      "breast_height_age", # kerbowling1991
+      "breast_height_age", # lundgrendolid1970_exponential_monomolecular
+      "breast_height_age", # lundgrendolid1970_monomolecular
+      "breast_height_age", # nigh2000
+      "breast_height_age", # nigh2000_gi
+      "breast_height_age", # nighcourtin1998_si25
+      "breast_height_age", # nighcourtin1998_si50
+      "breast_height_age", # huang1994
+      "total_age", # augerward2021
+      "breast_height_age", # pregent2010
+      "breast_height_age", # pregent2016
+      "breast_height_age", # sharma2021
+      "breast_height_age", # sharmaparton2018a
+      "breast_height_age", # sharmaparton2018b
+      "breast_height_age", # sharmaparton2019
+      "breast_height_age", # sharma2015
+      "breast_height_age", # parresolvissage1998
+      "breast_height_age", # payandeh1974
+      "breast_height_age", # sharmareid2018
+      "breast_height_age", # sharma2022
+      "breast_height_age", # lafleche2013_potential
+      "breast_height_age", # lafleche2013_observed
+      "breast_height_age", # scottvoorhis1986_bh_age
+      "total_age", # scottvoorhis1986_total_age
+      "breast_height_age", # thrower1994
+      "breast_height_age" # hugarcia2009
     ),
     age_domain_max = c(
       NA_real_,
@@ -232,39 +238,41 @@ si_model_registry <- function() {
       NA_real_,
       NA_real_,
       NA_real_,
+      NA_real_,
       NA_real_
     ),
     requires_species = c(
       FALSE, # buckman2006
-      TRUE,  # carmean1989
-      TRUE,  # carmean1996
-      TRUE,  # carmeanhahn1981
-      TRUE,  # cieszewskibella1991
-      TRUE,  # kerbowling1991
-      TRUE,  # lundgrendolid1970_exponential_monomolecular
-      TRUE,  # lundgrendolid1970_monomolecular
+      TRUE, # carmean1989
+      TRUE, # carmean1996
+      TRUE, # carmeanhahn1981
+      TRUE, # cieszewskibella1991
+      TRUE, # kerbowling1991
+      TRUE, # lundgrendolid1970_exponential_monomolecular
+      TRUE, # lundgrendolid1970_monomolecular
       FALSE, # nigh2000
       FALSE, # nigh2000_gi
       FALSE, # nighcourtin1998_si25
       FALSE, # nighcourtin1998_si50
       FALSE, # huang1994
-      TRUE,  # augerward2021
+      TRUE, # augerward2021
       FALSE, # pregent2010
       FALSE, # pregent2016
-      TRUE,  # sharma2021
+      TRUE, # sharma2021
       FALSE, # sharmaparton2018a
       FALSE, # sharmaparton2018b
       FALSE, # sharmaparton2019
-      TRUE,  # sharma2015
+      TRUE, # sharma2015
       FALSE, # parresolvissage1998
-      TRUE,  # payandeh1974
-      TRUE,  # sharmareid2018
-      TRUE,  # sharma2022
-      TRUE,  # lafleche2013_potential
-      TRUE,  # lafleche2013_observed
-      TRUE,  # scottvoorhis1986_bh_age
-      TRUE,  # scottvoorhis1986_total_age
-      TRUE   # thrower1994
+      TRUE, # payandeh1974
+      TRUE, # sharmareid2018
+      TRUE, # sharma2022
+      TRUE, # lafleche2013_potential
+      TRUE, # lafleche2013_observed
+      TRUE, # scottvoorhis1986_bh_age
+      TRUE, # scottvoorhis1986_total_age
+      TRUE, # thrower1994
+      TRUE # hugarcia2009
     ),
     requires_gi = c(
       FALSE,
@@ -296,12 +304,14 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       FALSE
     ),
     supports_predict_si = c(
       rep(TRUE, 25),
       FALSE,
       FALSE,
+      TRUE,
       TRUE,
       TRUE,
       TRUE
@@ -336,9 +346,10 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE
     ),
-    scope = rep("regional", 30),
+    scope = rep("regional", 31),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
@@ -369,6 +380,7 @@ si_model_registry <- function() {
       c("QC"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("NB", "NS", "PE", "NL", "QC", "ON"),
+      c("BC"),
       c("BC")
     ),
     subregion_type = c(
@@ -401,9 +413,10 @@ si_model_registry <- function() {
       "qc_ecological_subregion",
       "none",
       "none",
+      "bec_region",
       "bec_region"
     ),
-    subregion_required = rep(FALSE, 30),
+    subregion_required = rep(FALSE, 31),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -432,6 +445,7 @@ si_model_registry <- function() {
       NA_character_,
       "ecological_subregion",
       "ecological_subregion",
+      NA_character_,
       NA_character_,
       NA_character_,
       NA_character_
@@ -466,6 +480,7 @@ si_model_registry <- function() {
       c("QC"),
       NA_character_,
       NA_character_,
+      c("BC_INTERIOR"),
       c("BC_INTERIOR")
     ),
     subregion_desc = c(
@@ -498,6 +513,7 @@ si_model_registry <- function() {
       "Quebec ecological subregion",
       "none",
       "none",
+      "BC interior",
       "BC interior"
     ),
     description = c(
@@ -530,9 +546,42 @@ si_model_registry <- function() {
       "Lafleche et al. (2013) Quebec ecological-site observed-height IQS curves",
       "Scott and Voorhis (1986) model using breast-height age directly",
       "Scott and Voorhis (1986) model with internal conversion to total age",
-      "Thrower et al. (1994) BC interior species model set"
+      "Thrower et al. (1994) BC interior species model set",
+      "Hu and Garcia (2009) interior spruce height-growth and site-index model (BC SBS zone)"
     ),
-    rank = c(72, 67, 89, 70, 87, 80, 60, 55, 90, 85, 85, 84, 88, 88, 88, 88, 89, 86, 86, 86, 88, 68, 50, 89, 89, 87, 72, 65, 66, 90),
+    rank = c(
+      72,
+      67,
+      89,
+      70,
+      87,
+      80,
+      60,
+      55,
+      90,
+      85,
+      85,
+      84,
+      88,
+      88,
+      88,
+      88,
+      89,
+      86,
+      86,
+      86,
+      88,
+      68,
+      50,
+      89,
+      89,
+      87,
+      72,
+      65,
+      66,
+      90,
+      88
+    ),
     params_key = c(
       NA_character_,
       "parameters_Carmean1989",
@@ -563,7 +612,8 @@ si_model_registry <- function() {
       "parameters_QC_IQS2013",
       "parameters_ScottVoorhis1986",
       "parameters_ScottVoorhis1986",
-      "parameters_Thrower1994"
+      "parameters_Thrower1994",
+      "parameters_HuGarcia2009"
     ),
     species_manual = list(
       c("PINU.RES"),
@@ -619,7 +669,8 @@ si_model_registry <- function() {
         "LARI.OCC",
         "POPU.TRE",
         "BETU.PAP"
-      )
+      ),
+      c("PICE.GLA", "PICE.ENG")
     )
   )
 }
