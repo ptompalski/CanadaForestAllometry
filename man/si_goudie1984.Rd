@@ -41,21 +41,19 @@ curve is conditioned so that `height = si` at BHA 50.
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
 \strong{Implementation basis (differs from the original publication):} the
-coefficients and functional form here follow the SAS reference
-implementation (`SK_SiteIndex_SAS_macros_with_BHAge_20220409.sas`), not the
-equations as originally printed in Goudie (1984). Two differences from the
-paper are carried over from that reference:
+coefficients and functional form here incorporate two later modifications,
+not the equations as originally printed in Goudie (1984):
 \itemize{
-  \item \strong{Half-year age shift.} The SAS macro applies a 2004
-    modification that subtracts 0.5 year from both the age and the base age
-    inside the logistic (using \eqn{\ln(\mathrm{BHA} - 0.5)} and
-    \eqn{\ln(49.5)}), so that height equals 1.3 m at BHA 0.5 years. The
-    original paper uses \eqn{\ln(\mathrm{BHA})} and \eqn{\ln(50)}.
+  \item \strong{Half-year age shift.} A 2004 modification subtracts 0.5 year
+    from both the age and the base age inside the logistic (using
+    \eqn{\ln(\mathrm{BHA} - 0.5)} and \eqn{\ln(49.5)}), so that height equals
+    1.3 m at BHA 0.5 years. The original paper uses \eqn{\ln(\mathrm{BHA})}
+    and \eqn{\ln(50)}.
   \item \strong{Lodgepole pine: dry-site coefficients only.} Goudie (1984)
     eq. 7 gives habitat-specific pine coefficients (dry vs. wet site). This
-    implementation follows the SAS reference in using only the \emph{dry-site}
-    coefficients, which the author recommends when no ecological information
-    is available. There is no habitat argument; white spruce is unaffected.
+    implementation uses only the \emph{dry-site} coefficients, which the
+    author recommends when no ecological information is available. There is
+    no habitat argument; white spruce is unaffected.
 }
 
 The height-age curve is

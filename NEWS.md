@@ -2,89 +2,12 @@
 
 ## Site index updates
 
-- Added `si_carmean2006()` for black spruce (`PICE.MAR`) and trembling aspen
-  (`POPU.TRE`) in northwest Ontario, implementing the Carmean, Hazenberg &
-  Deschamps (2006) Newnham (1988) constrained polymorphic height-age /
-  site-index model; base age 50 (breast-height age). Predicts site height from
-  breast-height age and site index, or site index from age and height (solved
-  numerically, as the curve has no closed-form inverse in site index).
-  Validation: **Tier-1 fidelity for trembling aspen** against an independent
-  SAS implementation of the same model (`%SI_Carmean_2006` / `%HT_Carmean_2006`),
-  which confirms the aspen coefficients digit-for-digit. **Black spruce ships
-  with no source numeric benchmark** (no reference table in the paper and no
-  independent implementation) and relies on plausibility checks against other
-  black-spruce SI curves plus self-consistency (height at base age 50 equals
-  site index). The published PDF renders equations 1 and 2 as low-quality
-  raster images; the black-spruce exponent `b2` is degraded in the source and
-  transcribed as its best reading (0.1136) — treat black-spruce coefficients as
-  provisional.
-
-- Added `si_nigh2009()` for paper birch (`BETU.PAP`) in British Columbia,
-  implementing the Nigh, Thomas, Yearsley & Wang (2009) log-logistic height-age /
-  site-index model; base age 50 (breast-height age). Predicts site height from
-  breast-height age and site index, or site index from age and height (solved
-  numerically, as the curve has no closed-form inverse in site index). Three
-  published variants are exposed via `model`: `1` (base, default), `2`
-  (operational, recommended when the biogeoclimatic zone is unknown), and `3`
-  (zonal, SBS vs. ICH/IDF via `bec_zone`). **Model 1 follows the NRCan SAS
-  reference macros** (`%SI_Nigh_2009` / `%HT_Nigh_2009`); Models 2 and 3 are
-  additional variants from the paper and go beyond the SAS reference. Validation:
-  **Tier-1 fidelity** for Model 1 against the SAS macros (re-derived independently
-  as an external reference), plus self-consistency (height at base age 50 equals
-  site index; si -> height -> si round-trip). **Models 2 and 3 ship with no source
-  numeric benchmark table** and rely on plausibility checks only.
-
-- Added `si_goudie1984()` for lodgepole pine (`PINU.CON`) and white spruce
-  (`PICE.GLA`) in British Columbia, implementing the Goudie (1984) logistic
-  (Monserud/Dahms) height-age / site-index curves; base age 50 (breast-height
-  age). Predicts site height from breast-height age and site index, or site
-  index from age and height (solved numerically, as the curve has no closed-form
-  inverse in site index). **Implementation follows the NRCan SAS reference macros**
-  (`%HT_Goudie_1984`/`%SI_Goudie_1984`) rather than the equations as originally
-  printed in Goudie (1984): the SAS form applies a 2004 half-year age shift
-  (`ln(BHA - 0.5)`, `ln(49.5)`) so height equals 1.3 m at BHA 0.5, and for
-  lodgepole pine uses only the **dry-site** habitat coefficients (recommended
-  when no ecological information is available; no habitat argument is exposed).
-  Validation: **Tier-1 fidelity** against the SAS macros (reproduced
-  independently as an external reference), plus self-consistency (height at base
-  age 50 equals site index; si -> height -> si round-trip).
-
-- Added `si_cieszewski1993()` for eleven Saskatchewan timber species
-  (`ABIE.BAL`, `POPU.BAL`, `PICE.MAR`, `PINU.BAN`, `PINU.CON`, `ACER.NEG`,
-  `POPU.TRE`, `LARI.LAR`, `BETU.PAP`, `ULMU.AME`, `PICE.GLA`), implementing the
-  preliminary variable-age height-growth / site-index model of Cieszewski, Bella
-  and Yeung (1993) -- a simplified form of the Cieszewski and Bella (1989)
-  polymorphic model, base age 50 (breast-height age). Predicts site height from
-  breast-height age and site index, or site index from age and height; both
-  directions are closed form. Coefficients were transcribed from the report's
-  per-species figures (a scanned, image-only PDF) and cross-checked
-  digit-for-digit against the companion NRCan SAS macros
-  (`%HT_Ciesz_1993`/`%SI_Ciesz_1993`). Validation: **Tier-1 fidelity** against
-  those SAS macros (reproduced independently as an external reference
-  implementation), plus exact self-consistency (height at base age 50 equals site
-  index; si -> height -> si round-trip).
-
-- Added `si_hugarcia2009()` for interior spruce (`PICE.GLA`, `PICE.ENG`) in the
-  Sub-Boreal Spruce biogeoclimatic zone of British Columbia, implementing the
-  polymorphic Bertalanffy--Richards height-growth and site-index model of Hu and
-  García (2009). Predicts top height from breast-height age and site index, or
-  site index from age and height, solving the site parameter numerically.
-  Validation note: the source publishes no numeric prediction grid, so the model
-  is validated against its own exact self-consistency (height at base age 50
-  equals site index; si -> height -> si round-trip) plus a same-family
-  plausibility check against `si_thrower1994` -- **no external source benchmark**.
-
-- Added `si_nigh2002()` for trembling aspen (`POPU.TRE`) in British Columbia,
-  implementing the logistic height-age (site index) model of Nigh, Krestov and
-  Klinka (2002). Predicts site height from breast-height age and site index, or
-  (by numerical inversion) site index from age and height. Provides both the
-  general **base model** and the **extended model** calibrated to six
-  biogeoclimatic zones via the `bec_zone` argument (`"BWBS"`, `"ICH"`, `"IDF"`,
-  `"MS"`, `"SBPS"`, `"SBS"`). Validation note: the source publishes no numeric
-  prediction grid or worked example, so the model is validated against its own
-  exact self-consistency (height at base age 50 equals site index; the
-  si -> height -> si round-trip) plus a monotonicity sanity check --
-  **no external source benchmark**.
+- Added `si_carmean2006()` for black spruce (`PICE.MAR`) and trembling aspen (`POPU.TRE`) in northwest Ontario, implementing the Carmean, Hazenberg & Deschamps (2006) constrained polymorphic height-age / site-index model.
+- Added `si_nigh2009()` for paper birch (`BETU.PAP`) in British Columbia, implementing the Nigh, Thomas, Yearsley & Wang (2009) log-logistic height-age / site-index model, with base, operational, and zonal variants selectable via `model`.
+- Added `si_goudie1984()` for lodgepole pine (`PINU.CON`) and white spruce (`PICE.GLA`) in British Columbia, implementing the Goudie (1984) logistic height-age / site-index curves.
+- Added `si_cieszewski1993()` for eleven Saskatchewan timber species, implementing the preliminary variable-age height-growth / site-index model of Cieszewski, Bella and Yeung (1993).
+- Added `si_hugarcia2009()` for interior spruce (`PICE.GLA`, `PICE.ENG`) in the Sub-Boreal Spruce zone of British Columbia, implementing the polymorphic Bertalanffy--Richards model of Hu and García (2009).
+- Added `si_nigh2002()` for trembling aspen (`POPU.TRE`) in British Columbia, implementing the logistic height-age / site-index model of Nigh, Krestov and Klinka (2002), with base and biogeoclimatic-zone-calibrated variants via `bec_zone`.
 
 
 # CanadaForestAllometry 0.8.5

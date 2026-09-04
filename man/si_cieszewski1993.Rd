@@ -46,8 +46,7 @@ post-breast-height growth.
 
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
-The height-growth form (their eq. 2, restated by the report's own SAS/FORTRAN
-code) is
+The height-growth form (their eq. 2) is
 \deqn{H = 1.3 + \frac{h_x + d + r}{2 + \dfrac{4 b / t^{a}}{h_x - d + r}}, \quad
   r = \sqrt{(h_x - d)^2 + \frac{4 b\, h_x}{t_r^{a}}}, \quad d = \frac{b}{50^{a}},}
 where \eqn{h_x = SI - 1.3} is the reference height above breast height at the

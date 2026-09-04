@@ -20,8 +20,7 @@
 #'
 #' \strong{Base-age note:} site index is site height at breast-height age 50.
 #'
-#' The height-growth form (their eq. 2, restated by the report's own SAS/FORTRAN
-#' code) is
+#' The height-growth form (their eq. 2) is
 #' \deqn{H = 1.3 + \frac{h_x + d + r}{2 + \dfrac{4 b / t^{a}}{h_x - d + r}}, \quad
 #'   r = \sqrt{(h_x - d)^2 + \frac{4 b\, h_x}{t_r^{a}}}, \quad d = \frac{b}{50^{a}},}
 #' where \eqn{h_x = SI - 1.3} is the reference height above breast height at the
@@ -172,7 +171,7 @@ si_cieszewski1993 <- function(age, height = NULL, si = NULL, species) {
 # internal
 # Site height at breast-height age `age` given site index (height at base age
 # `base_age` = 50). Vectorized; a/b/base_age are per-row parameter vectors.
-# Restates the report's SAS/FORTRAN code for eq. 2.
+# Implements eq. 2.
 .cieszewski1993_height <- function(age, si, a, b, base_age) {
   hx <- si - 1.3
   d <- b / base_age^a

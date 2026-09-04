@@ -48,14 +48,10 @@ with reduced precision.
 
 \strong{Source legibility caveat:} the published PDF renders equations 1 and
 2 (p. 7) as low-quality raster images, and the printed coefficient exponents
-are partly degraded. The trembling aspen coefficients
-(\eqn{b_1 = 4.36}, \eqn{b_2 = 0.6654}, \eqn{b_3 = 1.2137},
-\eqn{b_4 = -0.0761}) were confirmed digit-for-digit against an independent
-SAS implementation of the same model. For black spruce no independent
-implementation was available; the exponent \eqn{b_2} could not be read
-unambiguously from the source raster and is transcribed as its best reading,
-\eqn{0.1136}. Treat the black spruce coefficients (in particular \eqn{b_2})
-as provisional.
+are partly degraded. For black spruce the exponent \eqn{b_2} could not be
+read unambiguously from the source raster and is transcribed as its best
+reading, \eqn{0.1136}. Treat the black spruce coefficients (in particular
+\eqn{b_2}) as provisional.
 
 The model form is
 \deqn{\hat{H} = 1.3 + b_1 (S - 1.3)^{b_2}

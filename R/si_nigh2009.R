@@ -19,9 +19,7 @@
 #'        {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2 \ln(SI - 1.3)}}}
 #' differing only in their coefficients:
 #' \describe{
-#'   \item{`model = 1`}{Base log-logistic fit (Table 2). This reproduces the
-#'     Saskatchewan SAS reference implementation (`SI_Nigh_2009` /
-#'     `HT_Nigh_2009`). Default.}
+#'   \item{`model = 1`}{Base log-logistic fit (Table 2). Default.}
 #'   \item{`model = 2`}{Operational form of the mixed model. Recommended by the
 #'     authors when the biogeoclimatic zone is unknown or is not ICH/IDF/SBS.}
 #'   \item{`model = 3`}{Zonal indicator-variable model. Only \eqn{a_1} carries a
@@ -62,7 +60,7 @@
 #' 83(3): 253--261. \doi{10.3955/046.083.0308}
 #'
 #' @examples
-#' # Base model (SAS reference): predict height from age + site index
+#' # Base model: predict height from age + site index
 #' si_nigh2009(age = c(25, 50, 80), si = c(12, 18, 24))
 #'
 #' # Base model: predict site index from age + height
@@ -75,8 +73,13 @@
 #' si_nigh2009(age = 60, si = 18, model = 3, bec_zone = "SBS")
 #'
 #' @export
-si_nigh2009 <- function(age, height = NULL, si = NULL, model = 1,
-                        bec_zone = NULL) {
+si_nigh2009 <- function(
+  age,
+  height = NULL,
+  si = NULL,
+  model = 1,
+  bec_zone = NULL
+) {
   if (xor(is.null(height), is.null(si)) == FALSE) {
     cli::cli_abort("Provide exactly one of {.arg height} or {.arg si}.")
   }
