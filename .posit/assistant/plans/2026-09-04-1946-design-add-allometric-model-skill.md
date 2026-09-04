@@ -71,6 +71,7 @@ Templates: **family-specific**, treated as scaffolding to adapt, not fill-in mol
   SKILL.md                          # the workflow the agent follows
   references/
     extraction-rules.md             # digit-for-digit copying, flag-don't-guess, units, OCR fallback
+    feasibility-triage.md           # Stage 0.5 go/no-go gate before extraction
     params-csv-convention.md        # how data-raw CSVs map to sysdata + get_*_params
     validation-tiers.md             # fidelity vs plausibility, tolerances, flagging
     registry-and-wiring.md          # registry cols, preprocess_data, REFERENCES.bib, NEWS

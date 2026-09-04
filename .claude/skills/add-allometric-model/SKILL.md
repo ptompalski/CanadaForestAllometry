@@ -27,27 +27,59 @@ conventions this skill assumes.
 ## Overview
 
 ```
-Stage 0  Intake        confirm function name + model family
-Stage 1  Extraction    read source -> model-spec.md + candidate params CSV
+Stage 0    Intake       confirm the source document + model family
+Stage 0.5  Triage       fast skim: CAN this be built from this document?
+                        verdict GO / GO WITH GAPS / NO-GO; on GO, name the function
+                        ==> consult user if not GO
+Stage 1    Extraction   read source -> model-spec.md + candidate params CSV
                         + benchmark plan   ==> STOP, human verifies numbers
-Stage 2  Implement     params -> sysdata; R function; registry; tests; docs; NEWS
+Stage 2    Implement    params -> sysdata; R function; registry; tests; docs; NEWS
 ```
 
-Do **not** proceed from Stage 1 to Stage 2 until the user has approved the
-extracted parameters and equations.
+Do **not** proceed from Stage 0.5 to Stage 1 unless the verdict is GO (or the user
+accepts documented gaps). Do **not** proceed from Stage 1 to Stage 2 until the user
+has approved the extracted parameters and equations.
 
 ## Stage 0 — Intake
 
 1. Confirm the source document is in `sources/` (already gitignored, and already
    contains per-family subfolders: `site_index/`, `volume_models/`,
    `biomass_equations/`, `height-diameter/`). If the user has not placed it, ask.
-2. Decide the **family** and function name using the `AGENTS.md` naming pattern
-   `prefix_<author><year>`:
-   - `vol_`   tree volume (total / merchantable)
-   - `si_`    site index / productivity
-   - `agb_`   aboveground biomass
-   - `ytbh_`  year-to-breast-height age helper
-3. State the target function name (e.g. `si_nigh2016`) and confirm with the user.
+2. Identify the **family** (`vol_` / `si_` / `agb_` / `ytbh_`). This is enough to
+   begin triage; defer committing to a function name until feasibility is confirmed.
+
+## Stage 0.5 — Feasibility triage (then name, or consult if not GO)
+
+Before investing in full extraction, do a **fast skim** to decide whether the model
+can be faithfully implemented *from this document*. This is a go/no-go check, not
+extraction — keep it shallow and cheap. See `references/feasibility-triage.md`.
+
+Confirm, at a glance:
+
+1. **Equations present** — the model form(s), and both directions if the model is
+   invertible (e.g. height↔SI).
+2. **Parameters present and complete** — coefficient tables actually appear *in this
+   document* (not "see [other report]"), covering the species/regions claimed.
+3. **Units + variable definitions** are stated.
+4. **Age basis / base age** given (SI models).
+5. **Validation feasible** — a worked example / reference table (fidelity), or a
+   viable same-family plausibility fallback.
+6. **Legibility** — text vs. scanned; tables readable when rendered (see the
+   extraction pipeline).
+
+Emit a verdict with a one-line justification each:
+
+- **GO** — everything needed is present and legible. **Now name the function**
+  using the `AGENTS.md` pattern `prefix_<author><year>` (e.g. `si_nigh2016`),
+  confirming the citation from the rendered text (filenames can be wrong), then
+  proceed to Stage 1.
+- **GO WITH GAPS** — implementable but something is missing (e.g. a companion
+  parameter report, no fidelity benchmark). List the gaps and **consult the user**
+  on how to resolve them before naming the function or proceeding.
+- **NO-GO** — cannot be faithfully implemented from this document (e.g. parameters
+  not published here, model form incomplete). Explain why and **stop**.
+
+Only a clean GO proceeds automatically.
 
 ## Stage 1 — Extraction (then STOP)
 
