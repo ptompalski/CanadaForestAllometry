@@ -936,6 +936,19 @@ parameters_Nigh2002 <- parameters_Nigh2002 %>%
     source_short
   )
 
+## Goudie 1984 (lodgepole pine / white spruce height-age, BC) ####
+# Coefficients follow the SAS reference implementation
+# (SK_SiteIndex_SAS_macros_with_BHAge_20220409.sas); pine uses the dry-site set.
+parameters_Goudie1984 <- read.csv("data-raw/Goudie1984_parameters.csv")
+parameters_Goudie1984 <- parameters_Goudie1984 %>%
+  transmute(
+    Species,
+    index_age = as.numeric(index_age),
+    b1 = as.numeric(b1),
+    b2 = as.numeric(b2),
+    b3 = as.numeric(b3)
+  )
+
 ## Cieszewski, Bella & Yeung 1993 (Saskatchewan variable-age site index) ####
 parameters_Cieszewski1993 <- read.csv("data-raw/Cieszewski1993_parameters.csv")
 parameters_Cieszewski1993 <- parameters_Cieszewski1993 %>%
@@ -1146,6 +1159,7 @@ internal_objs <- c(
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
   "parameters_Nigh2002",
+  "parameters_Goudie1984",
   "parameters_Cieszewski1993",
   "parameters_Huang1994_si",
   "parameters_Carmean1989",

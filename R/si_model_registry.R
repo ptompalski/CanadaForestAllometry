@@ -43,7 +43,8 @@ si_model_registry <- function() {
       "thrower1994",
       "hugarcia2009",
       "nigh2002",
-      "cieszewski1993"
+      "cieszewski1993",
+      "goudie1984"
     ),
     reference = c(
       "@Buckman2006",
@@ -78,7 +79,8 @@ si_model_registry <- function() {
       "@Thrower1994",
       "@HuGarcia2009",
       "@Nigh2002",
-      "@Cieszewski1993"
+      "@Cieszewski1993",
+      "@Goudie1984"
     ),
     engine = c(
       "si_buckman2006",
@@ -113,7 +115,8 @@ si_model_registry <- function() {
       "si_thrower1994",
       "si_hugarcia2009",
       "si_nigh2002",
-      "si_cieszewski1993"
+      "si_cieszewski1993",
+      "si_goudie1984"
     ),
     fixed_args = list(
       list(),
@@ -148,7 +151,8 @@ si_model_registry <- function() {
       list(),
       list(),
       list(), # hugarcia2009, nigh2002 fixed_args
-      list() # cieszewski1993
+      list(), # cieszewski1993
+      list() # goudie1984
     ),
     plot_si_values = list(
       NULL,
@@ -167,6 +171,7 @@ si_model_registry <- function() {
       c(4, 8, 12, 16),
       c(4, 8, 12, 16),
       c(4, 8, 12, 16),
+      NULL,
       NULL,
       NULL,
       NULL,
@@ -218,7 +223,8 @@ si_model_registry <- function() {
       "breast_height_age", # thrower1994
       "breast_height_age", # hugarcia2009
       "breast_height_age", # nigh2002
-      "breast_height_age" # cieszewski1993
+      "breast_height_age", # cieszewski1993
+      "breast_height_age" # goudie1984
     ),
     age_domain_max = c(
       NA_real_,
@@ -253,7 +259,8 @@ si_model_registry <- function() {
       NA_real_,
       NA_real_,
       NA_real_,
-      NA_real_
+      NA_real_,
+      140 # goudie1984
     ),
     requires_species = c(
       FALSE, # buckman2006
@@ -288,7 +295,8 @@ si_model_registry <- function() {
       TRUE, # thrower1994
       TRUE, # hugarcia2009
       FALSE, # nigh2002 (single species, no species arg)
-      TRUE # cieszewski1993
+      TRUE, # cieszewski1993
+      TRUE # goudie1984
     ),
     requires_gi = c(
       FALSE,
@@ -323,6 +331,7 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
+      FALSE,
       FALSE
     ),
     supports_predict_si = c(
@@ -334,7 +343,8 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
-      TRUE # cieszewski1993
+      TRUE, # cieszewski1993
+      TRUE # goudie1984
     ),
     supports_predict_height = c(
       TRUE,
@@ -369,9 +379,10 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
-      TRUE # cieszewski1993
+      TRUE,
+      TRUE # cieszewski1993 (+ goudie1984)
     ),
-    scope = rep("regional", 33),
+    scope = rep("regional", 34),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
@@ -405,7 +416,8 @@ si_model_registry <- function() {
       c("BC"),
       c("BC"),
       c("BC"),
-      c("SK")
+      c("SK"),
+      c("BC")
     ),
     subregion_type = c(
       "none",
@@ -440,9 +452,10 @@ si_model_registry <- function() {
       "bec_region", # thrower1994
       "bec_region", # hugarcia2009
       "bec_region", # nigh2002
-      "none" # cieszewski1993
+      "none", # cieszewski1993
+      "none" # goudie1984
     ),
-    subregion_required = rep(FALSE, 33),
+    subregion_required = rep(FALSE, 34),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -476,6 +489,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       "bec_zone",
+      NA_character_,
       NA_character_
     ),
     subregion_scope = list(
@@ -511,6 +525,7 @@ si_model_registry <- function() {
       c("BC_INTERIOR"),
       c("BC_INTERIOR"),
       c("BWBS", "ICH", "IDF", "MS", "SBPS", "SBS"),
+      NA_character_,
       NA_character_
     ),
     subregion_desc = c(
@@ -546,7 +561,8 @@ si_model_registry <- function() {
       "BC interior", # thrower1994
       "BC interior", # hugarcia2009
       "BC biogeoclimatic zone (extended model)", # nigh2002
-      "none" # cieszewski1993
+      "none", # cieszewski1993
+      "none" # goudie1984
     ),
     description = c(
       "Buckman et al. (2006) piecewise red pine site-index model",
@@ -581,7 +597,8 @@ si_model_registry <- function() {
       "Thrower et al. (1994) BC interior species model set",
       "Hu and Garcia (2009) interior spruce height-growth and site-index model (BC SBS zone)",
       "Nigh et al. (2002) trembling aspen height-age (site index) model for British Columbia",
-      "Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species"
+      "Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species",
+      "Goudie (1984) logistic height-age (site-index) model for lodgepole pine and white spruce in British Columbia (SAS-reference implementation; pine dry-site coefficients)"
     ),
     rank = c(
       72,
@@ -616,7 +633,8 @@ si_model_registry <- function() {
       90,
       88,
       86,
-      64
+      64,
+      66
     ),
     params_key = c(
       NA_character_,
@@ -651,7 +669,8 @@ si_model_registry <- function() {
       "parameters_Thrower1994",
       "parameters_HuGarcia2009",
       "parameters_Nigh2002",
-      "parameters_Cieszewski1993"
+      "parameters_Cieszewski1993",
+      "parameters_Goudie1984"
     ),
     species_manual = list(
       c("PINU.RES"),
@@ -722,7 +741,8 @@ si_model_registry <- function() {
         "BETU.PAP",
         "ULMU.AME",
         "PICE.GLA"
-      )
+      ),
+      c("PINU.CON", "PICE.GLA")
     )
   )
 }

@@ -2,6 +2,21 @@
 
 ## Site index updates
 
+- Added `si_goudie1984()` for lodgepole pine (`PINU.CON`) and white spruce
+  (`PICE.GLA`) in British Columbia, implementing the Goudie (1984) logistic
+  (Monserud/Dahms) height-age / site-index curves; base age 50 (breast-height
+  age). Predicts site height from breast-height age and site index, or site
+  index from age and height (solved numerically, as the curve has no closed-form
+  inverse in site index). **Implementation follows the NRCan SAS reference macros**
+  (`%HT_Goudie_1984`/`%SI_Goudie_1984`) rather than the equations as originally
+  printed in Goudie (1984): the SAS form applies a 2004 half-year age shift
+  (`ln(BHA - 0.5)`, `ln(49.5)`) so height equals 1.3 m at BHA 0.5, and for
+  lodgepole pine uses only the **dry-site** habitat coefficients (recommended
+  when no ecological information is available; no habitat argument is exposed).
+  Validation: **Tier-1 fidelity** against the SAS macros (reproduced
+  independently as an external reference), plus self-consistency (height at base
+  age 50 equals site index; si -> height -> si round-trip).
+
 - Added `si_cieszewski1993()` for eleven Saskatchewan timber species
   (`ABIE.BAL`, `POPU.BAL`, `PICE.MAR`, `PINU.BAN`, `PINU.CON`, `ACER.NEG`,
   `POPU.TRE`, `LARI.LAR`, `BETU.PAP`, `ULMU.AME`, `PICE.GLA`), implementing the

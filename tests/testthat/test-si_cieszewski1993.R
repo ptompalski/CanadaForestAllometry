@@ -96,20 +96,98 @@ test_that("si_cieszewski1993 covers all eleven species", {
 # --- Validation tier 1 (fidelity vs. external SAS reference implementation) ---
 # The report publishes no per-species prediction table, but the companion NRCan
 # SAS macros (%HT_Ciesz_1993, %SI_Ciesz_1993) implement the exact model with the
-# same coefficients. The committed comparison grid
-# (tmp/generate_si_cieszewski1993_comparison_values.R) stores those SAS outputs,
-# reproduced independently. A faithful implementation must match them.
+# same coefficients. The reference arithmetic is ported here independently (not
+# by calling the package) and the grid is built in-test, so the check is
+# self-contained (no tmp/ read, no readr dependency). The committed generator
+# tmp/generate_si_cieszewski1993_comparison_values.R writes the same values.
+
+# Per-species (a, b), transcribed from the report figures and cross-checked
+# digit-for-digit against the SAS macros.
+.ciesz1993_coef <- function() {
+  data.frame(
+    species = c(
+      "ABIE.BAL",
+      "POPU.BAL",
+      "PICE.MAR",
+      "PINU.BAN",
+      "PINU.CON",
+      "ACER.NEG",
+      "POPU.TRE",
+      "LARI.LAR",
+      "BETU.PAP",
+      "ULMU.AME",
+      "PICE.GLA"
+    ),
+    a = c(
+      1.521895,
+      1.102700,
+      1.219256,
+      1.1872291,
+      1.181603,
+      1.212285,
+      1.185685,
+      1.391959,
+      1.244998,
+      1.211183,
+      1.379241
+    ),
+    b = c(
+      7439.124,
+      1350.794,
+      2301.082,
+      1358.819,
+      1293.847,
+      2079.223,
+      1360.651,
+      1974.462,
+      1697.311,
+      1450.524,
+      4915.689
+    ),
+    stringsAsFactors = FALSE
+  )
+}
+
+# SAS %HT_Ciesz_1993: site height at breast-height age from site index (base 50).
+.ciesz1993_sas_ht <- function(bhage, si, a, b) {
+  Tr <- 50
+  hx <- si - 1.3
+  hxroot <- sqrt((hx - b / Tr^a)^2 + 4 * b * hx / Tr^a)
+  1.3 +
+    (hx + b / Tr^a + hxroot) /
+      (2 + (4 * b / bhage^a) / ((hx - b / Tr^a) + hxroot))
+}
+
+# SAS %SI_Ciesz_1993: site index (base 50) from an observed (bhage, height).
+.ciesz1993_sas_si <- function(bhage, height, a, b) {
+  Tr <- 50
+  hxs <- height - 1.3
+  d <- b / Tr^a
+  cc <- (hxs - d)^2 + 4 * b * hxs / bhage^a
+  hxroots <- hxs + cc^0.5
+  (d + hxroots) / (2 + (4 * b / Tr^a) / (hxroots - d)) + 1.3
+}
+
+.ciesz1993_ref_grid <- function() {
+  merge(
+    expand.grid(
+      species = .ciesz1993_coef()$species,
+      age = c(15, 25, 50, 80, 120),
+      si = c(8, 12, 16, 20),
+      KEEP.OUT.ATTRS = FALSE,
+      stringsAsFactors = FALSE
+    ),
+    .ciesz1993_coef(),
+    by = "species"
+  ) |>
+    within({
+      height_sas <- .ciesz1993_sas_ht(age, si, a, b)
+      si_recovered_sas <- .ciesz1993_sas_si(age, height_sas, a, b)
+    })
+}
 
 test_that("si_cieszewski1993 matches the SAS macro reference (HT_Ciesz_1993)", {
-  ref <- readr::read_csv(
-    testthat::test_path(
-      "..",
-      "..",
-      "tmp",
-      "si_cieszewski1993_comparison_values.csv"
-    ),
-    show_col_types = FALSE
-  )
+  ref <- .ciesz1993_ref_grid()
 
   height <- mapply(
     function(a, s, sp) si_cieszewski1993(age = a, si = s, species = sp)$height,
@@ -121,15 +199,7 @@ test_that("si_cieszewski1993 matches the SAS macro reference (HT_Ciesz_1993)", {
 })
 
 test_that("si_cieszewski1993 matches the SAS macro reference (SI_Ciesz_1993)", {
-  ref <- readr::read_csv(
-    testthat::test_path(
-      "..",
-      "..",
-      "tmp",
-      "si_cieszewski1993_comparison_values.csv"
-    ),
-    show_col_types = FALSE
-  )
+  ref <- .ciesz1993_ref_grid()
 
   si_est <- mapply(
     function(a, h, sp) {
