@@ -2,6 +2,23 @@
 
 ## Site index updates
 
+- Added `si_carmean2006()` for black spruce (`PICE.MAR`) and trembling aspen
+  (`POPU.TRE`) in northwest Ontario, implementing the Carmean, Hazenberg &
+  Deschamps (2006) Newnham (1988) constrained polymorphic height-age /
+  site-index model; base age 50 (breast-height age). Predicts site height from
+  breast-height age and site index, or site index from age and height (solved
+  numerically, as the curve has no closed-form inverse in site index).
+  Validation: **Tier-1 fidelity for trembling aspen** against an independent
+  SAS implementation of the same model (`%SI_Carmean_2006` / `%HT_Carmean_2006`),
+  which confirms the aspen coefficients digit-for-digit. **Black spruce ships
+  with no source numeric benchmark** (no reference table in the paper and no
+  independent implementation) and relies on plausibility checks against other
+  black-spruce SI curves plus self-consistency (height at base age 50 equals
+  site index). The published PDF renders equations 1 and 2 as low-quality
+  raster images; the black-spruce exponent `b2` is degraded in the source and
+  transcribed as its best reading (0.1136) — treat black-spruce coefficients as
+  provisional.
+
 - Added `si_nigh2009()` for paper birch (`BETU.PAP`) in British Columbia,
   implementing the Nigh, Thomas, Yearsley & Wang (2009) log-logistic height-age /
   site-index model; base age 50 (breast-height age). Predicts site height from

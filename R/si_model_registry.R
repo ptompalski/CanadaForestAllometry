@@ -45,7 +45,8 @@ si_model_registry <- function() {
       "nigh2002",
       "cieszewski1993",
       "goudie1984",
-      "nigh2009"
+      "nigh2009",
+      "carmean2006"
     ),
     reference = c(
       "@Buckman2006",
@@ -82,7 +83,8 @@ si_model_registry <- function() {
       "@Nigh2002",
       "@Cieszewski1993",
       "@Goudie1984",
-      "@Nigh2009"
+      "@Nigh2009",
+      "@Carmean2006"
     ),
     engine = c(
       "si_buckman2006",
@@ -119,7 +121,8 @@ si_model_registry <- function() {
       "si_nigh2002",
       "si_cieszewski1993",
       "si_goudie1984",
-      "si_nigh2009"
+      "si_nigh2009",
+      "si_carmean2006"
     ),
     fixed_args = list(
       list(),
@@ -156,7 +159,8 @@ si_model_registry <- function() {
       list(), # hugarcia2009, nigh2002 fixed_args
       list(), # cieszewski1993
       list(), # goudie1984
-      list() # nigh2009
+      list(), # nigh2009
+      list() # carmean2006
     ),
     plot_si_values = list(
       NULL,
@@ -175,6 +179,7 @@ si_model_registry <- function() {
       c(4, 8, 12, 16),
       c(4, 8, 12, 16),
       c(4, 8, 12, 16),
+      NULL,
       NULL,
       NULL,
       NULL,
@@ -230,7 +235,8 @@ si_model_registry <- function() {
       "breast_height_age", # nigh2002
       "breast_height_age", # cieszewski1993
       "breast_height_age", # goudie1984
-      "breast_height_age" # nigh2009
+      "breast_height_age", # nigh2009
+      "breast_height_age" # carmean2006
     ),
     age_domain_max = c(
       NA_real_,
@@ -267,7 +273,8 @@ si_model_registry <- function() {
       NA_real_,
       NA_real_,
       140, # goudie1984
-      NA_real_ # nigh2009
+      NA_real_, # nigh2009
+      100 # carmean2006
     ),
     requires_species = c(
       FALSE, # buckman2006
@@ -304,7 +311,8 @@ si_model_registry <- function() {
       FALSE, # nigh2002 (single species, no species arg)
       TRUE, # cieszewski1993
       TRUE, # goudie1984
-      FALSE # nigh2009 (single species, no species arg)
+      FALSE, # nigh2009 (single species, no species arg)
+      TRUE # carmean2006
     ),
     requires_gi = c(
       FALSE,
@@ -317,6 +325,7 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       TRUE,
+      FALSE,
       FALSE,
       FALSE,
       FALSE,
@@ -354,7 +363,8 @@ si_model_registry <- function() {
       TRUE,
       TRUE, # cieszewski1993
       TRUE, # goudie1984
-      TRUE # nigh2009
+      TRUE, # nigh2009
+      TRUE # carmean2006
     ),
     supports_predict_height = c(
       TRUE,
@@ -391,9 +401,10 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE, # cieszewski1993 (+ goudie1984)
-      TRUE # nigh2009
+      TRUE, # nigh2009
+      TRUE # carmean2006
     ),
-    scope = rep("regional", 35),
+    scope = rep("regional", 36),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
@@ -429,7 +440,8 @@ si_model_registry <- function() {
       c("BC"),
       c("SK"),
       c("BC"),
-      c("BC")
+      c("BC"),
+      c("ON")
     ),
     subregion_type = c(
       "none",
@@ -466,9 +478,10 @@ si_model_registry <- function() {
       "bec_region", # nigh2002
       "none", # cieszewski1993
       "none", # goudie1984
-      "bec_region" # nigh2009 (zonal model 3)
+      "bec_region", # nigh2009 (zonal model 3)
+      "none" # carmean2006
     ),
-    subregion_required = rep(FALSE, 35),
+    subregion_required = rep(FALSE, 36),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -504,7 +517,8 @@ si_model_registry <- function() {
       "bec_zone",
       NA_character_,
       NA_character_,
-      "bec_zone"
+      "bec_zone",
+      NA_character_
     ),
     subregion_scope = list(
       NA_character_,
@@ -541,7 +555,8 @@ si_model_registry <- function() {
       c("BWBS", "ICH", "IDF", "MS", "SBPS", "SBS"),
       NA_character_,
       NA_character_,
-      c("ICH", "IDF", "SBS")
+      c("ICH", "IDF", "SBS"),
+      NA_character_
     ),
     subregion_desc = c(
       "none",
@@ -578,7 +593,8 @@ si_model_registry <- function() {
       "BC biogeoclimatic zone (extended model)", # nigh2002
       "none", # cieszewski1993
       "none", # goudie1984
-      "BC biogeoclimatic zone (zonal model 3)" # nigh2009
+      "BC biogeoclimatic zone (zonal model 3)", # nigh2009
+      "none" # carmean2006
     ),
     description = c(
       "Buckman et al. (2006) piecewise red pine site-index model",
@@ -615,7 +631,8 @@ si_model_registry <- function() {
       "Nigh et al. (2002) trembling aspen height-age (site index) model for British Columbia",
       "Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species",
       "Goudie (1984) logistic height-age (site-index) model for lodgepole pine and white spruce in British Columbia (SAS-reference implementation; pine dry-site coefficients)",
-      "Nigh et al. (2009) paper birch log-logistic height-age (site index) model for British Columbia (base, operational, and zonal variants)"
+      "Nigh et al. (2009) paper birch log-logistic height-age (site index) model for British Columbia (base, operational, and zonal variants)",
+      "Carmean, Hazenberg and Deschamps (2006) polymorphic (Newnham) site-index model for black spruce and trembling aspen in northwest Ontario"
     ),
     rank = c(
       72,
@@ -652,7 +669,8 @@ si_model_registry <- function() {
       86,
       64,
       66,
-      86
+      86,
+      66
     ),
     params_key = c(
       NA_character_,
@@ -689,7 +707,8 @@ si_model_registry <- function() {
       "parameters_Nigh2002",
       "parameters_Cieszewski1993",
       "parameters_Goudie1984",
-      "parameters_Nigh2009"
+      "parameters_Nigh2009",
+      "parameters_Carmean2006"
     ),
     species_manual = list(
       c("PINU.RES"),
@@ -762,7 +781,8 @@ si_model_registry <- function() {
         "PICE.GLA"
       ),
       c("PINU.CON", "PICE.GLA"),
-      c("BETU.PAP")
+      c("BETU.PAP"),
+      c("PICE.MAR", "POPU.TRE")
     )
   )
 }

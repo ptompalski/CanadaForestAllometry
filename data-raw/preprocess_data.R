@@ -936,6 +936,22 @@ parameters_Nigh2002 <- parameters_Nigh2002 %>%
     source_short
   )
 
+## Carmean et al. 2006 (black spruce & trembling aspen, NW Ontario) ####
+# Newnham (1988) constrained polymorphic SI model. Aspen coefficients confirmed
+# against an independent SAS implementation; black spruce b2 is a best reading
+# of a degraded exponent in the published PDF (no independent implementation).
+parameters_Carmean2006 <- read.csv("data-raw/Carmean2006_parameters.csv")
+parameters_Carmean2006 <- parameters_Carmean2006 %>%
+  transmute(
+    Species = nfi_species,
+    b1 = as.numeric(b1),
+    b2 = as.numeric(b2),
+    b3 = as.numeric(b3),
+    b4 = as.numeric(b4),
+    base_age = as.numeric(base_age),
+    source_short
+  )
+
 ## Nigh et al. 2009 (paper birch height-age / site index, BC) ####
 # Model 1 (base) reproduces the SAS reference (SI_Nigh_2009 / HT_Nigh_2009);
 # Models 2 (operational) and 3 (zonal) are additional published variants.
@@ -1180,6 +1196,7 @@ internal_objs <- c(
   "parameters_Huang1994_si",
   "parameters_Carmean1989",
   "parameters_Carmean1996",
+  "parameters_Carmean2006",
   "parameters_QC_IQS2013",
   "qc_iqs_ecological_keys_2013"
 )
