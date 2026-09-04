@@ -134,21 +134,38 @@ Follow `references/registry-and-wiring.md` for exact wiring details.
    Add a `REFERENCES.bib` entry keyed to match the registry `reference` column.
 4. **Comparison values.** Write `tmp/generate_<fn>_comparison_values.R` from
    `assets/comparison-generator-template.R` and generate the CSV.
-5. **Tests.** Write `tests/testthat/test-<fn>.R` from `assets/test-template.R`:
-   structural + input-validation tests **plus** the applicable validation tier
-   (fidelity vs plausibility — never conflate them; see `references/validation-tiers.md`).
-6. **Verify.** `devtools::document()`, `devtools::test()`, and targeted
-   `devtools::check()` if warranted.
-7. **NEWS.** Update `NEWS.md`. If the model shipped with only a plausibility check,
-   flag "no source benchmark" in NEWS and the model spec.
-8. **Report.** Summarize what was implemented, which validation tier applied, and
-   any flagged/uncertain parameters for the user's final review.
+5. **Compare against existing similar functions.** Always compare the new model
+   against the closest already-implemented same-family function(s) for overlapping
+   species/regions, and **report any discrepancies** to the user — magnitude,
+   direction, and where they diverge (see `references/validation-tiers.md`). Do this
+   even when a fidelity benchmark exists; it is a cross-check, not a substitute.
+6. **Tests (target 100% coverage).** Write `tests/testthat/test-<fn>.R` from
+   `assets/test-template.R`: structural + input-validation tests **plus** the
+   applicable validation tier (fidelity vs plausibility — never conflate them; see
+   `references/validation-tiers.md`). Aim for **100% line coverage** of the new
+   function and its internal helpers. Check with
+   `covr::function_coverage()` / `covr::file_coverage()`; add tests for every branch
+   (each error path, each species/variant, both prediction directions). If a line is
+   genuinely unreachable, mark it `# nocov` with a one-line reason rather than leaving
+   it uncovered.
+7. **Verify.** `devtools::document()`, `devtools::test()`, confirm coverage of the
+   new file is 100%, and run targeted `devtools::check()` if warranted.
+8. **NEWS.** Add a **single brief sentence** to `NEWS.md` under the current dev
+   version. If the model shipped with only a plausibility check, note "no source
+   benchmark" in the model spec (keep the NEWS line itself to one sentence).
+9. **Report.** Summarize what was implemented, which validation tier applied, the
+   comparison against existing functions (including any discrepancies), the coverage
+   result, and any flagged/uncertain parameters for the user's final review.
 
 ## Guardrails
 
 - Never paraphrase or "clean up" a coefficient; copy exactly, cite its location,
   flag anything uncertain rather than guessing.
 - Never present a plausibility check as proof of fidelity.
+- Target 100% test coverage of every implemented function and its helpers.
+- Always cross-check a new model against similar existing functions and report
+  discrepancies, even when a fidelity benchmark exists.
+- Keep `NEWS.md` entries to a single brief sentence.
 - Preserve the public API and return-type conventions (snake_case tibble outputs).
 - Never hand-edit `man/*.Rd` or `R/sysdata.rda`; rebuild via `preprocess_data.R`.
 - Respect the existing lean dependency set; justify any addition.

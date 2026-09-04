@@ -38,8 +38,12 @@ If the model belongs in a family vignette, mention it in the relevant
 
 ## NEWS.md
 
-Add a bullet under the current development version describing the new model. If it
-shipped with only a plausibility check (no source benchmark), say so explicitly.
+Add a **single brief sentence** under the current development version naming the new
+model. Keep it to one sentence; do not enumerate parameters, species, or validation
+details there (record those in the model spec instead). If the model shipped with
+only a plausibility check, note "no source benchmark" in the model spec — not NEWS.
+
+Example: `* Added \`si_nigh2002\`, a site index model for interior BC lodgepole pine.`
 
 ## Documentation build
 
@@ -51,7 +55,9 @@ block. Never edit `man/*.Rd` by hand.
 - [ ] `source("data-raw/preprocess_data.R")` run, R restarted, `load_all()` clean
 - [ ] `devtools::document()` regenerates docs without warnings
 - [ ] `devtools::test()` passes, including the new test file
+- [ ] Coverage of the new `R/<fn>.R` is 100% (`covr::file_coverage()`); unreachable lines marked `# nocov`
+- [ ] New model compared against similar existing function(s); discrepancies reported
 - [ ] Registry row present and internally consistent
 - [ ] `REFERENCES.bib` entry added
-- [ ] `NEWS.md` updated (with validation-tier note)
+- [ ] `NEWS.md` updated with a single brief sentence
 - [ ] `devtools::check()` run if the change is substantial

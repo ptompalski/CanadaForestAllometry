@@ -50,6 +50,21 @@ tolerance (e.g. ±15–25%, chosen with judgment) and consistent monotonic behav
 2. **Label tests clearly.** Name and comment plausibility tests as sanity checks, not
    fidelity tests.
 3. **Flag Tier-2-only models.** If a model ships with only a plausibility check, state
-   "no source benchmark" in both the model spec and the `NEWS.md` entry, so future
-   maintainers know its validation is weaker.
+   "no source benchmark" in the model spec so future maintainers know its validation
+   is weaker (keep the `NEWS.md` line itself to a single sentence).
 4. **Report the tier** to the user when summarizing the completed implementation.
+5. **Always cross-check against existing similar functions — even under Tier 1.**
+   Independent of which tier you test with, compare the new model to the closest
+   already-implemented same-family function(s) for overlapping species/regions and
+   **report discrepancies** (magnitude, direction, where they diverge). A fidelity
+   test proves faithfulness to the source; the cross-check catches cases where the
+   source itself, or your reading of it, disagrees with the rest of the package. The
+   two are complementary — do both.
+
+## Coverage
+
+Target **100% line coverage** of the new function and its internal helpers. Add a
+test for every branch: each error/validation path, each species or model variant,
+and both prediction directions (e.g. height→si and si→height). Verify with
+`covr::file_coverage("R/<fn>.R", "tests/testthat/test-<fn>.R")`. Mark any genuinely
+unreachable line `# nocov` with a one-line reason rather than leaving it uncovered.

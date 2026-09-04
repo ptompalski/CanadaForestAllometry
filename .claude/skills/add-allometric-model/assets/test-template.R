@@ -1,5 +1,8 @@
 # tests/testthat/test-<fn_name>.R
 # testthat 3e. Adapt to the model's inputs/outputs.
+# Target 100% coverage: exercise every branch below — each error path, each
+# species/variant, and both prediction directions. Check with
+# covr::file_coverage("R/<fn_name>.R", "tests/testthat/test-<fn_name>.R").
 
 test_that("<fn_name> returns a well-formed tibble", {
   out <- <fn_name>(<minimal valid inputs>)
@@ -36,7 +39,7 @@ test_that("<fn_name> matches published reference values (Author Year, Table X)",
 
 # TIER 2 (plausibility) -- ONLY when no source reference values exist.
 # This is a SANITY CHECK, not proof of fidelity. Flag the model "no source
-# benchmark" in NEWS.md and the model spec.
+# benchmark" in the model spec.
 test_that("<fn_name> is plausible vs. existing same-family models (sanity check)", {
   new <- <fn_name>(<inputs>)
   ref <- <existing_same_family_fn>(<comparable inputs>)
@@ -44,4 +47,12 @@ test_that("<fn_name> is plausible vs. existing same-family models (sanity check)
   expect_true(all(abs(new$<col> - ref$<col>) / ref$<col> < 0.25))
   # monotonic behavior expected by the model
   # expect_true(all(diff(<fn_name>(age = sort(ages), ...)$<col>) >= 0))
+})
+
+# --- Cross-check vs. existing similar functions: ALWAYS include, even under Tier 1.
+# This complements the fidelity test; report any discrepancies to the user.
+test_that("<fn_name> is consistent with existing same-family models", {
+  new <- <fn_name>(<comparable inputs>)
+  ref <- <existing_same_family_fn>(<comparable inputs>)
+  expect_true(all(abs(new$<col> - ref$<col>) / ref$<col> < 0.25))
 })
