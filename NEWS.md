@@ -2,6 +2,21 @@
 
 ## Site index updates
 
+- Added `si_cieszewski1993()` for eleven Saskatchewan timber species
+  (`ABIE.BAL`, `POPU.BAL`, `PICE.MAR`, `PINU.BAN`, `PINU.CON`, `ACER.NEG`,
+  `POPU.TRE`, `LARI.LAR`, `BETU.PAP`, `ULMU.AME`, `PICE.GLA`), implementing the
+  preliminary variable-age height-growth / site-index model of Cieszewski, Bella
+  and Yeung (1993) -- a simplified form of the Cieszewski and Bella (1989)
+  polymorphic model, base age 50 (breast-height age). Predicts site height from
+  breast-height age and site index, or site index from age and height; both
+  directions are closed form. Coefficients were transcribed from the report's
+  per-species figures (a scanned, image-only PDF) and cross-checked
+  digit-for-digit against the companion NRCan SAS macros
+  (`%HT_Ciesz_1993`/`%SI_Ciesz_1993`). Validation: **Tier-1 fidelity** against
+  those SAS macros (reproduced independently as an external reference
+  implementation), plus exact self-consistency (height at base age 50 equals site
+  index; si -> height -> si round-trip).
+
 - Added `si_hugarcia2009()` for interior spruce (`PICE.GLA`, `PICE.ENG`) in the
   Sub-Boreal Spruce biogeoclimatic zone of British Columbia, implementing the
   polymorphic Bertalanffy--Richards height-growth and site-index model of Hu and

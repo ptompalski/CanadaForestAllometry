@@ -936,6 +936,17 @@ parameters_Nigh2002 <- parameters_Nigh2002 %>%
     source_short
   )
 
+## Cieszewski, Bella & Yeung 1993 (Saskatchewan variable-age site index) ####
+parameters_Cieszewski1993 <- read.csv("data-raw/Cieszewski1993_parameters.csv")
+parameters_Cieszewski1993 <- parameters_Cieszewski1993 %>%
+  transmute(
+    Species = nfi_species,
+    a = as.numeric(a),
+    b = as.numeric(b),
+    base_age = 50,
+    source_short
+  )
+
 ## Huang et al 1994 (site index) ####
 parameters_Huang1994_si <- read.csv("data-raw/Huang1994_parameters.csv")
 
@@ -1135,6 +1146,7 @@ internal_objs <- c(
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
   "parameters_Nigh2002",
+  "parameters_Cieszewski1993",
   "parameters_Huang1994_si",
   "parameters_Carmean1989",
   "parameters_Carmean1996",
