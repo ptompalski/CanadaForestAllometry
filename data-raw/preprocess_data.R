@@ -983,6 +983,22 @@ parameters_Nigh2009 <- parameters_Nigh2009 %>%
     source_short
   )
 
+## Nigh 2004 (juvenile height-age / site index, BC lodgepole pine + interior spruce) ####
+# Two species (lodgepole pine PINU.CON, interior spruce modelled as white spruce
+# PICE.GLA). Province-wide row (bec_zone = "PROV", model 3, Table 2) plus seven
+# BC biogeoclimatic zones whose a1-a4 are resolved from eqs. 5/6 (Table 3).
+parameters_Nigh2004 <- read.csv("data-raw/Nigh2004_parameters.csv")
+parameters_Nigh2004 <- parameters_Nigh2004 %>%
+  transmute(
+    Species = nfi_species,
+    bec_zone = as.character(bec_zone),
+    a1 = as.numeric(a1),
+    a2 = as.numeric(a2),
+    a3 = as.numeric(a3),
+    a4 = as.numeric(a4),
+    source_short
+  )
+
 ## Nigh 2017 (lodgepole pine g-GADA height-age / site index, BC) ####
 # Single species (lodgepole pine, PINU.CON). One global parameter set (Table 2,
 # g-GADA block) plus the SI->beta0 cubic (Discussion, p. 18) for base age 50.
@@ -1224,6 +1240,7 @@ internal_objs <- c(
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
   "parameters_Nigh2002",
+  "parameters_Nigh2004",
   "parameters_Nigh2009",
   "parameters_Nigh2017",
   "parameters_Goudie1984",
