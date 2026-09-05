@@ -2,6 +2,7 @@
 
 ## Site index updates
 
+- Added `si_batho2014()` for lodgepole pine (`PINU.CON`) in the Sub-Boreal Spruce zone of British Columbia, implementing the Batho and García (2014) polymorphic Bertalanffy--Richards height-age / site-index model (no source benchmark).
 - Added `si_nigh2017()` for lodgepole pine (`PINU.CON`) in British Columbia, implementing the Nigh (2017) grounded-GADA (Chapman-Richards) height-age / site-index model.
 - Added `si_carmean2001()` for jack pine (`PINU.BAN`) in northern Ontario, implementing the Carmean, Niznowski & Hazenberg (2001) constrained polymorphic (Newnham) height-age / site-index model.
 - Added `si_carmean2006()` for black spruce (`PICE.MAR`) and trembling aspen (`POPU.TRE`) in northwest Ontario, implementing the Carmean, Hazenberg & Deschamps (2006) constrained polymorphic height-age / site-index model.
