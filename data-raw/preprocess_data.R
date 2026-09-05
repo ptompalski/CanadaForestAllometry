@@ -983,6 +983,24 @@ parameters_Nigh2009 <- parameters_Nigh2009 %>%
     source_short
   )
 
+## Nigh 2017 (lodgepole pine g-GADA height-age / site index, BC) ####
+# Single species (lodgepole pine, PINU.CON). One global parameter set (Table 2,
+# g-GADA block) plus the SI->beta0 cubic (Discussion, p. 18) for base age 50.
+parameters_Nigh2017 <- read.csv("data-raw/Nigh2017_parameters.csv")
+parameters_Nigh2017 <- parameters_Nigh2017 %>%
+  transmute(
+    Species = nfi_species,
+    b10 = as.numeric(b10),
+    b11 = as.numeric(b11),
+    b20 = as.numeric(b20),
+    b21 = as.numeric(b21),
+    si_b0_c0 = as.numeric(si_b0_c0),
+    si_b0_c1 = as.numeric(si_b0_c1),
+    si_b0_c2 = as.numeric(si_b0_c2),
+    si_b0_c3 = as.numeric(si_b0_c3),
+    source_short
+  )
+
 ## Goudie 1984 (lodgepole pine / white spruce height-age, BC) ####
 # Coefficients follow the SAS reference implementation
 # (SK_SiteIndex_SAS_macros_with_BHAge_20220409.sas); pine uses the dry-site set.
@@ -1207,6 +1225,7 @@ internal_objs <- c(
   "parameters_HuGarcia2009",
   "parameters_Nigh2002",
   "parameters_Nigh2009",
+  "parameters_Nigh2017",
   "parameters_Goudie1984",
   "parameters_Cieszewski1993",
   "parameters_Huang1994_si",
