@@ -1,5 +1,9 @@
 # CanadaForestAllometry 0.8.6
 
+## Years-to-breast-height updates
+
+- Added `ytbh_nigh2015()` for Engelmann spruce (`PICE.ENG`) in the ESSF biogeoclimatic zone of British Columbia, implementing the Nigh (2015) years-to-breast-height model (no source benchmark).
+
 ## Site index updates
 
 - Added `si_batho2014()` for lodgepole pine (`PINU.CON`) in the Sub-Boreal Spruce zone of British Columbia, implementing the Batho and García (2014) polymorphic Bertalanffy--Richards height-age / site-index model (no source benchmark).
