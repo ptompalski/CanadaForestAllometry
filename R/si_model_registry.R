@@ -42,6 +42,7 @@ si_model_registry <- function() {
       "scottvoorhis1986_total_age",
       "thrower1994",
       "hugarcia2009",
+      "nigh1997",
       "nigh2002",
       "cieszewski1993",
       "goudie1984",
@@ -84,6 +85,7 @@ si_model_registry <- function() {
       "@ScottVoorhis1986",
       "@Thrower1994",
       "@HuGarcia2009",
+      "@Nigh1997",
       "@Nigh2002",
       "@Cieszewski1993",
       "@Goudie1984",
@@ -126,6 +128,7 @@ si_model_registry <- function() {
       "si_scottvoorhis1986",
       "si_thrower1994",
       "si_hugarcia2009",
+      "si_nigh1997",
       "si_nigh2002",
       "si_cieszewski1993",
       "si_goudie1984",
@@ -167,8 +170,9 @@ si_model_registry <- function() {
       list(convert_to_total_age = FALSE),
       list(convert_to_total_age = TRUE),
       list(),
-      list(),
-      list(), # hugarcia2009, nigh2002 fixed_args
+      list(), # hugarcia2009
+      list(), # nigh1997
+      list(), # nigh2002 fixed_args
       list(), # cieszewski1993
       list(), # goudie1984
       list(), # nigh2004
@@ -212,6 +216,7 @@ si_model_registry <- function() {
       NULL,
       NULL,
       NULL,
+      NULL, # nigh1997
       NULL,
       NULL,
       NULL,
@@ -252,6 +257,7 @@ si_model_registry <- function() {
       "total_age", # scottvoorhis1986_total_age
       "breast_height_age", # thrower1994
       "breast_height_age", # hugarcia2009
+      "breast_height_age", # nigh1997
       "breast_height_age", # nigh2002
       "breast_height_age", # cieszewski1993
       "breast_height_age", # goudie1984
@@ -295,6 +301,7 @@ si_model_registry <- function() {
       NA_real_,
       NA_real_,
       NA_real_,
+      NA_real_, # nigh1997
       NA_real_,
       140, # goudie1984
       20, # nigh2004 (juvenile model)
@@ -336,6 +343,7 @@ si_model_registry <- function() {
       TRUE, # scottvoorhis1986_total_age
       TRUE, # thrower1994
       TRUE, # hugarcia2009
+      FALSE, # nigh1997 (single species, no species arg)
       FALSE, # nigh2002 (single species, no species arg)
       TRUE, # cieszewski1993
       TRUE, # goudie1984
@@ -386,7 +394,8 @@ si_model_registry <- function() {
       FALSE,
       FALSE,
       FALSE,
-      FALSE
+      FALSE,
+      FALSE # nigh1997 (added; extends list to 41)
     ),
     supports_predict_si = c(
       rep(TRUE, 25),
@@ -396,7 +405,8 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
-      TRUE,
+      TRUE, # nigh1997
+      TRUE, # nigh2002
       TRUE, # cieszewski1993
       TRUE, # goudie1984
       TRUE, # nigh2004
@@ -440,6 +450,7 @@ si_model_registry <- function() {
       TRUE,
       TRUE,
       TRUE,
+      TRUE,
       TRUE, # cieszewski1993 (+ goudie1984)
       TRUE, # nigh2004
       TRUE, # nigh2009
@@ -448,7 +459,7 @@ si_model_registry <- function() {
       TRUE, # nigh2017
       TRUE # batho2014
     ),
-    scope = rep("regional", 40),
+    scope = rep("regional", 41),
     province_scope = list(
       c("ON"),
       c("ON", "QC", "NB", "NS", "PE", "NL"),
@@ -481,6 +492,7 @@ si_model_registry <- function() {
       c("NB", "NS", "PE", "NL", "QC", "ON"),
       c("BC"),
       c("BC"),
+      c("BC"), # nigh1997
       c("BC"),
       c("SK"),
       c("BC"),
@@ -523,6 +535,7 @@ si_model_registry <- function() {
       "none",
       "bec_region", # thrower1994
       "bec_region", # hugarcia2009
+      "none", # nigh1997
       "bec_region", # nigh2002
       "none", # cieszewski1993
       "none", # goudie1984
@@ -533,7 +546,7 @@ si_model_registry <- function() {
       "none", # nigh2017
       "none" # batho2014
     ),
-    subregion_required = rep(FALSE, 40),
+    subregion_required = rep(FALSE, 41),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -565,12 +578,13 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
-      NA_character_,
+      NA_character_, # hugarcia2009
+      NA_character_, # nigh1997
       "bec_zone",
       NA_character_,
       NA_character_,
-      "bec_zone",
-      "bec_zone",
+      "bec_zone", # nigh2004
+      "bec_zone", # nigh2009
       NA_character_,
       NA_character_,
       NA_character_,
@@ -608,6 +622,7 @@ si_model_registry <- function() {
       NA_character_,
       c("BC_INTERIOR"),
       c("BC_INTERIOR"),
+      NA_character_, # nigh1997
       c("BWBS", "ICH", "IDF", "MS", "SBPS", "SBS"),
       NA_character_,
       NA_character_,
@@ -650,6 +665,7 @@ si_model_registry <- function() {
       "none",
       "BC interior", # thrower1994
       "BC interior", # hugarcia2009
+      "none", # nigh1997
       "BC biogeoclimatic zone (extended model)", # nigh2002
       "none", # cieszewski1993
       "none", # goudie1984
@@ -692,6 +708,7 @@ si_model_registry <- function() {
       "Scott and Voorhis (1986) model with internal conversion to total age",
       "Thrower et al. (1994) BC interior species model set",
       "Hu and Garcia (2009) interior spruce height-growth and site-index model (BC SBS zone)",
+      "Nigh (1997) logistic height-age (site index) model for Sitka spruce in coastal British Columbia",
       "Nigh et al. (2002) trembling aspen height-age (site index) model for British Columbia",
       "Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species",
       "Goudie (1984) logistic height-age (site-index) model for lodgepole pine and white spruce in British Columbia (SAS-reference implementation; pine dry-site coefficients)",
@@ -733,6 +750,7 @@ si_model_registry <- function() {
       65,
       66,
       90,
+      88,
       88,
       86,
       64,
@@ -776,6 +794,7 @@ si_model_registry <- function() {
       "parameters_ScottVoorhis1986",
       "parameters_Thrower1994",
       "parameters_HuGarcia2009",
+      "parameters_Nigh1997",
       "parameters_Nigh2002",
       "parameters_Cieszewski1993",
       "parameters_Goudie1984",
@@ -842,6 +861,7 @@ si_model_registry <- function() {
         "BETU.PAP"
       ),
       c("PICE.GLA", "PICE.ENG"),
+      c("PICE.SIT"),
       c("POPU.TRE"),
       c(
         "ABIE.BAL",

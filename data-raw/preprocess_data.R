@@ -936,6 +936,18 @@ parameters_Nigh2002 <- parameters_Nigh2002 %>%
     source_short
   )
 
+## Nigh 1997 (Sitka spruce height-age / site index, coastal BC) ####
+parameters_Nigh1997 <- read.csv("data-raw/Nigh1997_parameters.csv")
+parameters_Nigh1997 <- parameters_Nigh1997 %>%
+  transmute(
+    Species = nfi_species,
+    model,
+    a0 = as.numeric(a0),
+    a1 = as.numeric(a1),
+    a2 = as.numeric(a2),
+    source_short
+  )
+
 ## Carmean et al. 2006 (black spruce & trembling aspen, NW Ontario) ####
 # Newnham (1988) constrained polymorphic SI model. Aspen coefficients confirmed
 # against an independent SAS implementation; black spruce b2 is a best reading
@@ -1239,6 +1251,7 @@ internal_objs <- c(
   "parameters_Nigh2000_gi",
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
+  "parameters_Nigh1997",
   "parameters_Nigh2002",
   "parameters_Nigh2004",
   "parameters_Nigh2009",

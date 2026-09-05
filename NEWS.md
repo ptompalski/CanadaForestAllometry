@@ -15,6 +15,7 @@
 - Added `si_goudie1984()` for lodgepole pine (`PINU.CON`) and white spruce (`PICE.GLA`) in British Columbia, implementing the Goudie (1984) logistic height-age / site-index curves.
 - Added `si_cieszewski1993()` for eleven Saskatchewan timber species, implementing the preliminary variable-age height-growth / site-index model of Cieszewski, Bella and Yeung (1993).
 - Added `si_hugarcia2009()` for interior spruce (`PICE.GLA`, `PICE.ENG`) in the Sub-Boreal Spruce zone of British Columbia, implementing the polymorphic Bertalanffy--Richards model of Hu and García (2009).
+- Added `si_nigh1997()` for Sitka spruce (`PICE.SIT`) in coastal British Columbia, implementing the Nigh (1997) logistic height-age / site-index model (no source benchmark).
 - Added `si_nigh2002()` for trembling aspen (`POPU.TRE`) in British Columbia, implementing the logistic height-age / site-index model of Nigh, Krestov and Klinka (2002), with base and biogeoclimatic-zone-calibrated variants via `bec_zone`.
 
 

@@ -110,18 +110,38 @@ test_that("out-of-domain site index (<= 1.3 m) yields a non-finite error", {
 })
 
 test_that("comparison-value fixture reproduces current outputs", {
-  ref <- utils::read.csv(
-    testthat::test_path(
-      "..",
-      "..",
-      "tmp",
-      "si_batho2014_comparison_values.csv"
-    ),
+  # The committed comparison-value generator
+  # (tmp/generate_si_batho2014_comparison_values.R) writes a CSV under tmp/, but
+  # tmp/ is .Rbuildignore'd and absent from installed-package check/coverage
+  # runs. The reference grid is therefore inlined here so the test is portable:
+  # for every (age, si) it confirms predict -> invert recovers the original si,
+  # and that height == si exactly at base age 50.
+  ref <- expand.grid(
+    species = "PINU.CON",
+    age = c(10, 20, 30, 50, 80, 120),
+    si = c(8, 12, 16, 20, 24),
+    KEEP.OUT.ATTRS = FALSE,
     stringsAsFactors = FALSE
   )
-  ok <- ref[ref$status == "ok", ]
-  got <- si_batho2014(age = ok$age, si = ok$si, species = ok$species)$height
-  expect_equal(got, ok$height, tolerance = 1e-8)
+
+  height <- si_batho2014(
+    age = ref$age,
+    si = ref$si,
+    species = ref$species
+  )$height
+  expect_true(all(is.finite(height)))
+
+  # Exact-at-base-age identity: height == si at age 50.
+  at50 <- ref$age == 50
+  expect_equal(height[at50], ref$si[at50], tolerance = 1e-8)
+
+  # Predict -> invert round-trip recovers site index.
+  si_rec <- si_batho2014(
+    age = ref$age,
+    height = height,
+    species = ref$species
+  )$si
+  expect_equal(si_rec, ref$si, tolerance = 1e-6)
 })
 
 # --- Tier 2 plausibility cross-check vs an existing same-species BC model. ---
