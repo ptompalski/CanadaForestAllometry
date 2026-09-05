@@ -948,6 +948,19 @@ parameters_Nigh1997 <- parameters_Nigh1997 %>%
     source_short
   )
 
+## Nigh 1998 growth intercept (interior western hemlock, single species) ####
+# eq. 4: SI = 1.3 + exp(b1_log) * GI^b2, with per-BHA coefficients (Table 3).
+# b1 was fitted on the log scale (Ratkowsky transformation) and stored as b1_log.
+parameters_Nigh1998_gi <- read.csv(
+  "data-raw/Nigh1998_growthintercept_parameters.csv"
+)
+parameters_Nigh1998_gi <- parameters_Nigh1998_gi %>%
+  transmute(
+    bha = as.integer(bha),
+    b1_log = as.numeric(b1_log),
+    b2 = as.numeric(b2)
+  )
+
 ## Carmean et al. 2006 (black spruce & trembling aspen, NW Ontario) ####
 # Newnham (1988) constrained polymorphic SI model. Aspen coefficients confirmed
 # against an independent SAS implementation; black spruce b2 is a best reading
@@ -1249,6 +1262,7 @@ internal_objs <- c(
   "parameters_CieszewskiBella1991",
   "parameters_ScottVoorhis1986",
   "parameters_Nigh2000_gi",
+  "parameters_Nigh1998_gi",
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
   "parameters_Nigh1997",
