@@ -1,5 +1,10 @@
 # CanadaForestAllometry 0.8.6
 
+## Internal changes
+
+- Moved the `si_carmeanhahn1981()`, `si_augerward2021()`, `si_sharma2022()`, `si_nigh1998()`, `si_buckman2006()`, and `si_batho2014()` model coefficients from inline tibbles/constant lists into the compiled internal parameter data, for consistency with the rest of the site-index family.
+- Consolidated the shared Carmean constrained-polymorphic (Newnham) height and site-index solver used by `si_carmean2001()` and `si_carmean2006()` into common internal helpers; model outputs are unchanged.
+
 ## Years-to-breast-height updates
 
 - Added `ytbh_nigh1998()` for western hemlock (`TSUG.HET`) in the interior of British Columbia, implementing the Nigh (1998) years-to-breast-height model (invertible for site index).

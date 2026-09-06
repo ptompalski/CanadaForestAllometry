@@ -1268,6 +1268,81 @@ parameters_Huang1994_si <- parameters_Huang1994_si %>%
     )
   )
 
+## Carmean & Hahn 1981 (balsam fir & white spruce, Lake States) ####
+parameters_CarmeanHahn1981 <- read.csv(
+  "data-raw/CarmeanHahn1981_parameters.csv"
+)
+parameters_CarmeanHahn1981 <- parameters_CarmeanHahn1981 %>%
+  transmute(
+    Species = nfi_species,
+    height_b1 = as.numeric(height_b1),
+    height_b2 = as.numeric(height_b2),
+    height_b3 = as.numeric(height_b3),
+    height_b4 = as.numeric(height_b4),
+    height_b5 = as.numeric(height_b5),
+    si_b1 = as.numeric(si_b1),
+    si_b2 = as.numeric(si_b2),
+    si_b3 = as.numeric(si_b3),
+    si_b4 = as.numeric(si_b4),
+    si_b5 = as.numeric(si_b5)
+  )
+
+## Auger & Ward 2021 (QC black spruce & jack pine plantations) ####
+parameters_AugerWard2021 <- read.csv("data-raw/AugerWard2021_parameters.csv")
+parameters_AugerWard2021 <- parameters_AugerWard2021 %>%
+  transmute(
+    Species = nfi_species,
+    beta0 = as.numeric(beta0),
+    beta2 = as.numeric(beta2),
+    form = as.character(form)
+  )
+
+## Sharma 2022 (ON black spruce & trembling aspen, McDill-Amateis) ####
+parameters_Sharma2022 <- read.csv("data-raw/Sharma2022_parameters.csv")
+parameters_Sharma2022 <- parameters_Sharma2022 %>%
+  transmute(
+    Species = nfi_species,
+    a0 = as.numeric(a0),
+    a1 = as.numeric(a1)
+  )
+
+## Nigh 1998 (interior western hemlock height-bha, single global coef set) ####
+# eq. 6 log-logistic height-age model; one coefficient row (Table 2).
+parameters_Nigh1998_ht <- read.csv(
+  "data-raw/Nigh1998_heightbha_parameters.csv"
+)
+parameters_Nigh1998_ht <- parameters_Nigh1998_ht %>%
+  transmute(
+    b0 = as.numeric(b0),
+    b1 = as.numeric(b1),
+    b2 = as.numeric(b2)
+  )
+
+## Buckman et al 2006 (red pine, single global constant set) ####
+# Constrained Buckman refit (A,B,C) plus younger-age polynomial (k,m).
+parameters_Buckman2006 <- read.csv("data-raw/Buckman2006_parameters.csv")
+parameters_Buckman2006 <- parameters_Buckman2006 %>%
+  transmute(
+    k = as.numeric(k),
+    m = as.numeric(m),
+    A = as.numeric(A),
+    B = as.numeric(B),
+    C = as.numeric(C)
+  )
+
+## Batho & Garcia 2014 (lodgepole pine, single global constant set) ####
+# Bertalanffy-Richards "Power combined" fit constants (Eqs. 3-6).
+parameters_Batho2014 <- read.csv("data-raw/Batho2014_parameters.csv")
+parameters_Batho2014 <- parameters_Batho2014 %>%
+  transmute(
+    a_coef = as.numeric(a_coef),
+    a_exp = as.numeric(a_exp),
+    c = as.numeric(c),
+    h0 = as.numeric(h0),
+    t0 = as.numeric(t0),
+    base_age = as.numeric(base_age)
+  )
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1311,7 +1386,13 @@ internal_objs <- c(
   "parameters_Carmean2001",
   "parameters_Goelz1992",
   "parameters_QC_IQS2013",
-  "qc_iqs_ecological_keys_2013"
+  "qc_iqs_ecological_keys_2013",
+  "parameters_CarmeanHahn1981",
+  "parameters_AugerWard2021",
+  "parameters_Sharma2022",
+  "parameters_Nigh1998_ht",
+  "parameters_Buckman2006",
+  "parameters_Batho2014"
 )
 
 # sanity check: make sure they exist before saving

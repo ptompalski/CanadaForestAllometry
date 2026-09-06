@@ -116,7 +116,14 @@ si_nigh1998 <- function(age, height = NULL, si = NULL) {
 # internal
 # Fitted height-bha coefficients (Nigh 1998, Table 2 / eq. 6).
 .nigh1998_coef <- function() {
-  list(b0 = 8.998, b1 = -1.434, b2 = -1.051)
+  pars <- .get_internal_data("parameters_Nigh1998_ht") |>
+    dplyr::as_tibble()
+  assert_required_cols(
+    pars,
+    c("b0", "b1", "b2"),
+    object = "parameters_Nigh1998_ht"
+  )
+  list(b0 = pars$b0[[1]], b1 = pars$b1[[1]], b2 = pars$b2[[1]])
 }
 
 

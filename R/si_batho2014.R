@@ -143,13 +143,20 @@ si_batho2014 <- function(age, height = NULL, si = NULL, species) {
 # ---- global model constants (Batho and García 2014, Eqs. 3--6) ----
 # Verified digit-for-digit against a 300-dpi render of p. 985.
 .batho2014_constants <- function() {
+  pars <- .get_internal_data("parameters_Batho2014") |>
+    dplyr::as_tibble()
+  assert_required_cols(
+    pars,
+    c("a_coef", "a_exp", "c", "h0", "t0", "base_age"),
+    object = "parameters_Batho2014"
+  )
   list(
-    a_coef = 12313, # a_q scale (Eq. 4)
-    a_exp = 1.645, # a_q exponent on q (Eq. 4)
-    c = 0.8297, # shape exponent (Eqs. 3--6)
-    h0 = 1.3, # top height at t0
-    t0 = 0.5, # reference breast-height age
-    base_age = 50 # site-index base age (breast-height)
+    a_coef = pars$a_coef[[1]], # a_q scale (Eq. 4)
+    a_exp = pars$a_exp[[1]], # a_q exponent on q (Eq. 4)
+    c = pars$c[[1]], # shape exponent (Eqs. 3--6)
+    h0 = pars$h0[[1]], # top height at t0
+    t0 = pars$t0[[1]], # reference breast-height age
+    base_age = pars$base_age[[1]] # site-index base age (breast-height)
   )
 }
 
