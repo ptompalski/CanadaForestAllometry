@@ -1010,6 +1010,20 @@ parameters_Carmean2001 <- parameters_Carmean2001 %>%
     source_short
   )
 
+## Goelz & Burk 1992 (base-age invariant jack pine SI, north central Ontario) ####
+# Chapman-Richards difference equation (eq. 16); parameters b1-b4 from Table 2.
+parameters_Goelz1992 <- read.csv("data-raw/Goelz1992_parameters.csv")
+parameters_Goelz1992 <- parameters_Goelz1992 %>%
+  transmute(
+    Species = nfi_species,
+    b1 = as.numeric(b1),
+    b2 = as.numeric(b2),
+    b3 = as.numeric(b3),
+    b4 = as.numeric(b4),
+    base_age = as.numeric(base_age),
+    source_short
+  )
+
 ## Nigh et al. 2009 (paper birch height-age / site index, BC) ####
 # Model 1 (base) reproduces the SAS reference (SI_Nigh_2009 / HT_Nigh_2009);
 # Models 2 (operational) and 3 (zonal) are additional published variants.
@@ -1295,6 +1309,7 @@ internal_objs <- c(
   "parameters_Carmean1996",
   "parameters_Carmean2006",
   "parameters_Carmean2001",
+  "parameters_Goelz1992",
   "parameters_QC_IQS2013",
   "qc_iqs_ecological_keys_2013"
 )
