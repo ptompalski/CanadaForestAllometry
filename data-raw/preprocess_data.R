@@ -923,6 +923,23 @@ parameters_HuGarcia2009 <- parameters_HuGarcia2009 %>%
     source_short
   )
 
+## Alemdag 1991 (national white spruce site index / height growth) ####
+parameters_Alemdag1991 <- read.csv("data-raw/Alemdag1991_parameters.csv")
+parameters_Alemdag1991 <- parameters_Alemdag1991 %>%
+  select(
+    Species = nfi_species,
+    c1,
+    c2,
+    c4,
+    c5,
+    b1,
+    b2,
+    b4,
+    b5,
+    base_age,
+    source_short
+  )
+
 ## Nigh et al. 2002 (trembling aspen height-age / site index, BC) ####
 parameters_Nigh2002 <- read.csv("data-raw/Nigh2002_parameters.csv")
 parameters_Nigh2002 <- parameters_Nigh2002 %>%
@@ -1265,6 +1282,7 @@ internal_objs <- c(
   "parameters_Nigh1998_gi",
   "parameters_Thrower1994",
   "parameters_HuGarcia2009",
+  "parameters_Alemdag1991",
   "parameters_Nigh1997",
   "parameters_Nigh2002",
   "parameters_Nigh2004",

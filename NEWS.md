@@ -7,6 +7,7 @@
 
 ## Site index updates
 
+- Added `si_alemdag1991()` for white spruce (`PICE.GLA`), implementing the Alemdag (1991) national (Canada-wide) modified Chapman--Richards site-index and height-growth model for natural stands (no source benchmark).
 - Added `si_nigh1998()` and `si_nigh1998_gi()` for western hemlock (`TSUG.HET`) in the interior of British Columbia, implementing the Nigh (1998) log-logistic height-age and growth-intercept site-index models.
 
 - Added `si_batho2014()` for lodgepole pine (`PINU.CON`) in the Sub-Boreal Spruce zone of British Columbia, implementing the Batho and García (2014) polymorphic Bertalanffy--Richards height-age / site-index model (no source benchmark).
