@@ -1,3 +1,9 @@
+# CanadaForestAllometry 0.8.7
+
+## DBH–height models
+
+- Added `hd_model_registry()`, `get_hd_model_info()` and `find_hd_models()` as the discovery interface for the new DBH–height (`hd_*()`) model family (no models registered yet).
+
 # CanadaForestAllometry 0.8.6
 
 ## Site index updates

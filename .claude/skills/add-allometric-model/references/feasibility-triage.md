@@ -27,6 +27,20 @@ the parameters live in a companion report or the tables are unreadable.
 | Validation | A worked example / reference table (fidelity), OR a viable same-family plausibility comparison exists |
 | Legibility | Text-based, or scanned but tables readable when rendered |
 
+### Additional checks for DBH–height (`hd_`) models
+
+| Check | What "pass" looks like |
+|-------|------------------------|
+| Direction | Predicts **height from DBH**. A regression of DBH on height (e.g. Alberta T/606–T/608) is **NO-GO** for `hd_` — never invert it. |
+| Height convention | Total height vs height above breast height stated; breast-height offset (1.3 vs 1.37 m) identifiable in the model form |
+| Units | DBH (cm vs mm) and height (m) units stated |
+| Extra predictors defined | Every predictor beyond DBH (`BA`, `TPH`, `HDOM`, `QMD`, `BAL`, `CCF`, `si`, region/class codes, climate) has a computation rule: tree-size threshold, all-species vs species-specific, top-height definition, plot size where relevant |
+| Fit type | Fixed-effects (OLS/NLS) vs mixed model is clear; for mixed models, which coefficients the source recommends for prediction without local data (fixed fit vs mixed fixed effects with u = 0) |
+| Applicability ranges | Data ranges per species (DBH, height, stand variables) located, or noted as absent |
+
+If a predictor's definition cannot be pinned down, the verdict is at best
+**GO WITH GAPS** — do not guess a definition or substitute a proxy.
+
 ## Verdict
 
 Emit exactly one, each item with a one-line justification:

@@ -4,7 +4,7 @@ description: >-
   Implement a new allometric model in the CanadaForestAllometry R package from a
   source publication (PDF/report describing the model form and parameters). Use
   when adding a new volume (vol_), site index (si_), aboveground biomass (agb_),
-  or year-to-breast-height (ytbh_) model, extracting equations and coefficients
+  year-to-breast-height (ytbh_), or DBH–height (hd_) model, extracting equations and coefficients
   from a source document, or wiring a new model into the package's params tables,
   registries, tests, and docs. Staged workflow: extract and STOP for human review
   of parameters before writing any R code.
@@ -45,8 +45,10 @@ has approved the extracted parameters and equations.
 1. Confirm the source document is in `sources/` (already gitignored, and already
    contains per-family subfolders: `site_index/`, `volume_models/`,
    `biomass_equations/`, `height-diameter/`). If the user has not placed it, ask.
-2. Identify the **family** (`vol_` / `si_` / `agb_` / `ytbh_`). This is enough to
-   begin triage; defer committing to a function name until feasibility is confirmed.
+2. Identify the **family** (`vol_` / `si_` / `agb_` / `ytbh_` / `hd_`). This is
+   enough to begin triage; defer committing to a function name until feasibility
+   is confirmed. `hd_` = height predicted from DBH (plus optional tree/plot
+   predictors); a model predicting DBH from height is **not** an `hd_` model.
 
 ## Stage 0.5 — Feasibility triage (then name, or consult if not GO)
 
@@ -61,7 +63,10 @@ Confirm, at a glance:
 2. **Parameters present and complete** — coefficient tables actually appear *in this
    document* (not "see [other report]"), covering the species/regions claimed.
 3. **Units + variable definitions** are stated.
-4. **Age basis / base age** given (SI models).
+4. **Age basis / base age** given (SI models) / **height convention and
+   predictor definitions** given (HD models: total vs above-breast-height
+   height, 1.3 vs 1.37 m offset, and how every extra predictor such as `BA`,
+   `TPH`, `HDOM` was computed).
 5. **Validation feasible** — a worked example / reference table (fidelity), or a
    viable same-family plausibility fallback.
 6. **Legibility** — text vs. scanned; tables readable when rendered (see the
@@ -102,7 +107,10 @@ Produce, **without writing any R model code**:
    tree is gitignored, so a spec placed there would not be tracked.)
    Capture every equation (both directions if the model is invertible), the exact
    model form, variable definitions with **units**, age basis / base age, domain of
-   applicability, species coverage, and per-species notes.
+   applicability, species coverage, and per-species notes. For `hd_` models also
+   fill the HD section (height convention, predictor table with verbatim
+   definitions, random-effects structure, coefficients recommended for
+   population prediction, back-transformation).
 
 2. **Candidate parameters CSV** in the `data-raw/` convention
    (see `references/params-csv-convention.md`). Copy every coefficient
@@ -125,12 +133,15 @@ Follow `references/registry-and-wiring.md` for exact wiring details.
    `data-raw/preprocess_data.R`, run `source("data-raw/preprocess_data.R")`,
    then **restart R** and `devtools::load_all()`. Never hand-edit `R/sysdata.rda`.
 2. **Function.** Write `R/<fn>.R` from the appropriate family template in `assets/`
-   (`function-template-si.R`, `function-template-vol.R`, or
-   `function-template-generic.R`). Templates are **scaffolding to adapt**, not molds
+   (`function-template-si.R`, `function-template-vol.R`, `function-template-hd.R`,
+   or `function-template-generic.R`). Templates are **scaffolding to adapt**, not molds
    to force the model into. Full roxygen block; vectorized with length-recycling and
    explicit `cli::cli_abort`/`rlang::abort`; standardized species/jurisdiction codes;
    snake_case tibble output.
-3. **Register.** Add a row to `R/si_model_registry.R` or `R/volume_model_registry.R`.
+3. **Register.** Add a row to `R/si_model_registry.R` or `R/volume_model_registry.R`;
+   for `hd_` models add a `.hd_registry_row()` to `.hd_model_definitions()` **and**
+   the model's predictor rows to `.hd_model_predictors()` in
+   `R/hd_model_registry.R`.
    Add a `REFERENCES.bib` entry keyed to match the registry `reference` column.
 4. **Comparison values.** Write `tmp/generate_<fn>_comparison_values.R` from
    `assets/comparison-generator-template.R` and generate the CSV.
