@@ -32,7 +32,22 @@
     "FEM 249:187-198, p. 188; p. 190",
     "sharmaparton2007", "TPH", "plot", "stems/ha", TRUE,
     "Number of stems (N/ha), calculated from the trees with DBH greater than or equal to 2.5 cm.",
-    "FEM 249:187-198, p. 188"
+    "FEM 249:187-198, p. 188",
+    "eslamdoust2026_m4", "DBH", "tree", "cm", TRUE,
+    "DBH_ij is diameter at breast height (cm) of jth tree in ith plot.",
+    "FST 22:217-230, p. 220 (eq. 4)",
+    "eslamdoust2026_m5", "DBH", "tree", "cm", TRUE,
+    "DBH_ij is diameter at breast height (cm) of jth tree in ith plot.",
+    "FST 22:217-230, p. 220 (eq. 5)",
+    "eslamdoust2026_m5", "HDOM", "plot", "m", TRUE,
+    "Stand height (SHT): mean height of dominant and co-dominant trees; species basis not stated.",
+    "FST 22:217-230, p. 219; Table 5 (p. 225)",
+    "eslamdoust2026_m5", "BA", "plot", "m2/ha", TRUE,
+    "Stand basal area (BAH, m2/ha) of the plot; minimum DBH and species basis not stated.",
+    "FST 22:217-230, p. 219; p. 220",
+    "eslamdoust2026_m5", "TPH", "plot", "stems/ha", TRUE,
+    "Number of trees per hectare (n/ha) with DBH >= 2.5 cm of the plot.",
+    "FST 22:217-230, p. 220 (eq. 5)"
   )
 }
 
@@ -125,6 +140,30 @@
       description = "Northern Ontario boreal population DBH-height models with dominant height, basal area and stems/ha (Method 2 fixed effects, Table 6).",
       calibration_published = TRUE,
       params_key = "parameters_hd_SharmaParton2007"
+    ),
+    .hd_registry_row(
+      model_id = "eslamdoust2026_m4",
+      engine = "hd_eslamdoust2026",
+      reference = "@Eslamdoust2026",
+      scope = "provincial",
+      province_scope = "ON",
+      stand_origin = "natural",
+      equation_family = "chapman_richards",
+      description = "Ontario boreal/GLSL population DBH-height models, DBH only (M4 fixed effects, Table 4); used when HDOM, BA and TPH are not supplied.",
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Eslamdoust2026"
+    ),
+    .hd_registry_row(
+      model_id = "eslamdoust2026_m5",
+      engine = "hd_eslamdoust2026",
+      reference = "@Eslamdoust2026",
+      scope = "provincial",
+      province_scope = "ON",
+      stand_origin = "natural",
+      equation_family = "chapman_richards_stand",
+      description = "Ontario boreal/GLSL population DBH-height models with stand height, basal area and stems/ha (M5 fixed effects, Table 5); used when HDOM, BA and TPH are supplied.",
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Eslamdoust2026"
     )
   )
 }

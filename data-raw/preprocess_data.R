@@ -1482,6 +1482,41 @@ stopifnot(
   ])
 )
 
+## Eslamdoust et al. 2026 DBH-height models, Ontario GLSL / hardwoods ####
+# Mixed-model fixed effects (u = 0) for M4 (Eq. 4, Table 4) and M5 (Eq. 5,
+# Table 5), p. 225; a0-a4 keep the source symbols per variant (M4: a1 rate,
+# a2 shape; M5: a2 rate, a3 TPH/BA exponent, a4 shape). a3 = 0 "ns" for
+# LARI.LAR and TILI.AME (M5). LARI.LAR M5 a2 is a maintainer correction of a
+# suspected misprint (printed 0.9793 -> 0.09793; see
+# data-raw/Eslamdoust2026_model-spec.md). Per-species ranges from Table 1
+# (stand ranges on M5 rows only).
+parameters_hd_Eslamdoust2026 <- read.csv(
+  "data-raw/Eslamdoust2026_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    a0, a1, a2, a3, a4, a3_ns = as.logical(a3_ns), sigma2_e, sigma2_u,
+    DBH_min, DBH_max, height_min, height_max,
+    HDOM_min, HDOM_max, BA_min, BA_max, TPH_min, TPH_max,
+    n_plots = as.integer(n_plots), n_trees = as.integer(n_trees)
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_Eslamdoust2026) == 16L,
+  !anyDuplicated(parameters_hd_Eslamdoust2026[c("Species", "variant")]),
+  all(table(parameters_hd_Eslamdoust2026$variant) == 8L),
+  with(
+    parameters_hd_Eslamdoust2026,
+    !anyNA(cbind(a0, a1, a2, DBH_min, DBH_max)) &&
+      !anyNA(cbind(a3, a4, HDOM_min, BA_min, TPH_min)[variant == "m5", ]) &&
+      all(is.na(cbind(a3, a4))[variant == "m4", ])
+  )
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1537,7 +1572,8 @@ internal_objs <- c(
   "parameters_Batho2014",
   "parameters_hd_Huang2016",
   "hd_huang2016_natural_subregions",
-  "parameters_hd_SharmaParton2007"
+  "parameters_hd_SharmaParton2007",
+  "parameters_hd_Eslamdoust2026"
 )
 
 # sanity check: make sure they exist before saving
