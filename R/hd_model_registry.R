@@ -143,7 +143,22 @@
     "For. Chron. 78:530-538, p. 532; Table 2 (p. 533)",
     "zhang2002_overall", "DBH", "tree", "cm", TRUE,
     "DBH is tree diameter at breast height (cm); outside bark, measured 1.3 m above ground.",
-    "For. Chron. 78:530-538, p. 532 (eq. [1]); p. 530"
+    "For. Chron. 78:530-538, p. 532 (eq. [1]); p. 530",
+    "temesgen2004_m2", "DBH", "tree", "cm", TRUE,
+    "D is the observed diameter outside bark at breast height in centimetres.",
+    "EJFR 123:45-51, p. 46 (Model 2); Table 5 (p. 51)",
+    "temesgen2004_m7", "DBH", "tree", "cm", TRUE,
+    "D is the observed diameter outside bark at breast height in centimetres.",
+    "EJFR 123:45-51, p. 47 (Model 7); Table 4 (p. 50)",
+    "temesgen2004_m7", "BAL", "tree", "m2/ha", TRUE,
+    "BAL is the basal area in larger trees (m2/ha); species basis and minimum DBH not stated.",
+    "EJFR 123:45-51, p. 47 (Model 7); Table 4 (p. 50)",
+    "temesgen2004_m7", "TPH", "plot", "stems/ha", TRUE,
+    "SPH is number of trees per hectare; minimum DBH not stated (trees < 2.0 cm DBH not recorded).",
+    "EJFR 123:45-51, p. 47 (Model 7); p. 46",
+    "temesgen2004_m7", "BA", "plot", "m2/ha", TRUE,
+    "BA is basal area per hectare (m2/ha); minimum DBH not stated.",
+    "EJFR 123:45-51, p. 47 (Model 7); Table 4 (p. 50)"
   )
 }
 
@@ -411,6 +426,30 @@
       description = "Ontario jack pine DBH-height model fitted to all data (Overall, Table 2); used when neither ecoregion nor forest_region is supplied.",
       calibration_published = FALSE,
       params_key = "parameters_hd_Zhang2002"
+    ),
+    .hd_registry_row(
+      model_id = "temesgen2004_m2",
+      engine = "hd_temesgen2004",
+      reference = "@Temesgen2004",
+      scope = "regional",
+      province_scope = "BC",
+      stand_origin = "natural",
+      equation_family = "weibull",
+      description = "Interior BC (IDF zone) complex-stand DBH-height models, DBH only (Model 2, Table 5); used when BAL, TPH and BA are not supplied.",
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Temesgen2004"
+    ),
+    .hd_registry_row(
+      model_id = "temesgen2004_m7",
+      engine = "hd_temesgen2004",
+      reference = "@Temesgen2004",
+      scope = "regional",
+      province_scope = "BC",
+      stand_origin = "natural",
+      equation_family = "weibull_stand",
+      description = "Interior BC (IDF zone) complex-stand DBH-height models with basal area in larger trees, stems/ha and basal area (Model 7, Table 4); used when BAL, TPH and BA are supplied.",
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Temesgen2004"
     )
   )
 }

@@ -1797,6 +1797,40 @@ stopifnot(
   )
 )
 
+## Temesgen & von Gadow 2004 DBH-height models, BC interior (IDF) ####
+# H = 1.3 + a * (1 - exp(-b * DBH^c)); Model 2 (Table 5, p. 51): a = a1,
+# c = a5. Model 7 (Table 4, p. 50): a = a1 + a2*BAL + a3*SPH + a4*BA,
+# c = a5 + a6*BAL. NA = term dropped as non-significant (0 in code). Exponent
+# sign corrected (printed exp(+b*D^c)). "Spruce" mapped to PICE.ENG, PICE.GLA
+# and PICE.ENG.GLA. Per-species ranges from Table 1 (p. 50). See
+# data-raw/Temesgen2004_model-spec.md.
+parameters_hd_Temesgen2004 <- read.csv(
+  "data-raw/Temesgen2004_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    a1, a2, a3, a4, b, a5, a6, rmse,
+    DBH_min, DBH_max, height_min, height_max,
+    n_trees = as.integer(n_trees)
+  ) %>%
+  arrange(variant, Species)
+
+stopifnot(
+  nrow(parameters_hd_Temesgen2004) == 20L,
+  !anyDuplicated(parameters_hd_Temesgen2004[c("Species", "variant")]),
+  all(table(parameters_hd_Temesgen2004$variant)[c("m2", "m7")] == 10L),
+  with(
+    parameters_hd_Temesgen2004,
+    !anyNA(cbind(a1, b, a5, DBH_min, DBH_max)) &&
+      all(a1 > 0 & b > 0 & a5 > 0) &&
+      all(is.na(cbind(a2, a3, a4, a6)[variant == "m2", ]))
+  )
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1860,7 +1894,8 @@ internal_objs <- c(
   "parameters_hd_Auger2016",
   "parameters_hd_Auger2016_classes",
   "parameters_hd_Auger2025",
-  "parameters_hd_Zhang2002"
+  "parameters_hd_Zhang2002",
+  "parameters_hd_Temesgen2004"
 )
 
 # sanity check: make sure they exist before saving

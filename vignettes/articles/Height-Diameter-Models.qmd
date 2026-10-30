@@ -82,6 +82,7 @@ The registry has one row per model **variant**. Some functions implement
 several variants: `hd_eslamdoust2026()` chooses M4 (DBH only) or M5 (with
 stand variables) from the predictors you supply, `hd_huang2009()` likewise
 chooses model 9, 10 or 11 from whether `HTOP` and `BA` are given,
+`hd_temesgen2004()` uses Model 7 only when `BAL`, `TPH` and `BA` are given,
 `hd_zhang2002()` uses the
 ecoregion, forest-region or Ontario-wide fit depending on which region you
 give, and `hd_auger2025()` uses an explicit `variant` argument because its
@@ -483,6 +484,36 @@ grid$height <- hd_zhang2002(
   ecoregion = grid$ecoregion, forest_region = grid$forest_region
 )$height
 plot_hd_curves(grid, colour = "set", colour_lab = "Parameter set")
+```
+
+## `hd_temesgen2004()`
+
+Interior British Columbia, Interior Douglas-fir zone [@Temesgen2004]. Model 2
+(DBH only) and Model 7 for a mid-sized tree in a plot with `BA` = 25 m²/ha
+and `TPH` = 800 stems/ha, with `BAL` = 10 m²/ha. Curves are limited to the
+fitting DBH range of each species. The source "spruce" (Engelmann and white
+spruce) is shown once, as `PICE.ENG`.
+
+```{r}
+#| label: fig-temesgen2004
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(8) + 0.5
+dbh_max <- CanadaForestAllometry:::get_params_tbl("parameters_hd_Temesgen2004") |>
+  dplyr::filter(.data$variant == "m2", !.data$Species %in% c("PICE.GLA", "PICE.ENG.GLA")) |>
+  dplyr::select("Species", "DBH_max")
+grid <- tidyr::expand_grid(species = dbh_max$Species, DBH = seq(2, 105, by = 1)) |>
+  dplyr::left_join(dbh_max, by = c(species = "Species")) |>
+  dplyr::filter(.data$DBH <= .data$DBH_max)
+m2 <- dplyr::mutate(grid, model = "2", height = hd_temesgen2004(DBH, species)$height)
+m7 <- dplyr::mutate(
+  grid,
+  model = "7",
+  height = hd_temesgen2004(DBH, species, BAL = 10, TPH = 800, BA = 25)$height
+)
+plot_hd_curves(dplyr::bind_rows(m2, m7), colour = "model", colour_lab = "Model")
 ```
 
 ## `hd_auger2016()`
