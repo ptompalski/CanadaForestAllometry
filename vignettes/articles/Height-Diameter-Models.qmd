@@ -1,0 +1,455 @@
+---
+title: "DBH–Height Models"
+bibliography: ../../REFERENCES.bib
+csl: ../../elsevier-harvard.csl
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+library(CanadaForestAllometry)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+DBH–height (`hd_*()`) models predict **total tree height (m)** from diameter at
+breast height (DBH, cm, measured at 1.3 m). They are typically used to fill in
+heights of trees that were not measured, before applying a volume or biomass
+model that requires height.
+
+Many published DBH–height models need more than DBH: stand-level predictors
+such as basal area, stems per hectare or dominant height, climate normals, or
+ecological classification codes. Each source also defines these predictors
+differently (size thresholds, all-species vs species-specific totals,
+dominant-height definitions). For this reason:
+
+- each model is a separate function whose arguments are exactly the
+  predictors that model uses;
+- there is **no automatic model selection** (unlike `vol()`): you choose the
+  model, and a missing required predictor is an error, never replaced by a
+  proxy;
+- a registry and two helper functions let you find which models suit your
+  data, and what each predictor means in the source publication.
+
+# DBH–height models included in the package
+
+```{r}
+#| label: hd-model-list
+#| echo: false
+#| results: asis
+reg <- CanadaForestAllometry:::hd_model_registry_species()
+
+fmt_args <- function(x) {
+  if (length(x) == 0L) "—" else paste0("`", x, "`", collapse = ", ")
+}
+
+reg_fun <- reg |>
+  dplyr::group_by(.data$engine) |>
+  dplyr::summarise(
+    reference = dplyr::first(.data$reference),
+    province_scope = paste(sort(unique(unlist(.data$province_scope))), collapse = ", "),
+    stand_origin = dplyr::first(.data$stand_origin),
+    variants = paste0("`", .data$model_id, "`", collapse = ", "),
+    n_species = max(.data$n_species),
+    .groups = "drop"
+  )
+
+origin_text <- c(
+  natural = "natural stands",
+  plantation = "plantations",
+  both = "natural stands and plantations"
+)
+
+for (i in seq_len(nrow(reg_fun))) {
+  x <- reg_fun[i, ]
+  cat(
+    "- [`", x$engine, "()`](../reference/", x$engine, ".html) [", x$reference, "]. ",
+    "Coverage: ", x$province_scope, ", ", origin_text[[x$stand_origin]], ". ",
+    x$n_species, " species. Model ID(s): ", x$variants, ".\n",
+    sep = ""
+  )
+}
+```
+
+The registry has one row per model **variant**. Some functions implement
+several variants: `hd_eslamdoust2026()` chooses M4 (DBH only) or M5 (with
+stand variables) from the predictors you supply, and `hd_auger2025()` uses an
+explicit `variant` argument because its variants need different inputs.
+
+```{r}
+#| label: hd-registry-table
+#| echo: false
+reg |>
+  dplyr::transmute(
+    `Model ID` = paste0("`", .data$model_id, "`"),
+    Function = paste0("`", .data$engine, "()`"),
+    Jurisdiction = vapply(.data$province_scope, paste, character(1), collapse = ", "),
+    Origin = .data$stand_origin,
+    `Required predictors` = vapply(.data$required_predictors, fmt_args, character(1)),
+    `Optional predictors` = vapply(.data$optional_predictors, fmt_args, character(1)),
+    Species = .data$n_species
+  ) |>
+  knitr::kable()
+```
+
+# Finding a model for your data
+
+`hd_model_registry()` returns the full metadata table (model form, region
+argument, whether calibration information is published, etc.):
+
+```{r}
+hd_model_registry() |>
+  dplyr::select(model_id, engine, province_scope, equation_family, required_predictors)
+```
+
+`find_hd_models()` filters the registry by jurisdiction and species, and
+reports which required predictors each candidate needs that you do not have.
+Models with missing predictors are kept as "near misses", so you can see what
+extra data would make them usable:
+
+```{r}
+find_hd_models(
+  jurisdiction = "ON",
+  species = "PICE.MAR",
+  available = c("DBH", "BA", "TPH")
+) |>
+  dplyr::select(model_id, usable, missing_predictors)
+```
+
+Here `hd_sharmaparton2007()` covers black spruce in Ontario but also needs
+dominant height (`HDOM`). Names in `available` are the `hd_*()` argument names
+and are case-sensitive.
+
+`get_hd_model_info()` returns the registry entry of one model, its species
+coverage, and its predictor table:
+
+```{r}
+info <- get_hd_model_info("sharmaparton2007")
+info$species
+info$predictors
+```
+
+# Predictors
+
+Predictor arguments follow a shared vocabulary, with upper-case acronyms and
+lower-case words. A shared name is used only when the source's quantity fits
+it; the exact definition (size threshold, species basis, dominant-height
+definition) is **model-specific** and is given in each function's help page
+and in the table below.
+
+| Argument | Level | Units | Meaning |
+|---|---|---|---|
+| `DBH` | tree | cm | Diameter at breast height (1.3 m) |
+| `species` | tree | NFI code | Species code, e.g. `PICE.MAR` |
+| `BA` | plot | m²/ha | Stand basal area |
+| `TPH` | plot | stems/ha | Stand density |
+| `HDOM` | plot | m | Dominant (or dominant and codominant) height |
+| `QMD` | plot | cm | Quadratic mean DBH |
+| region / classification | plot | code | Model-specific names, e.g. `natural_subregion` (AB), `SDOM`, `MP`, `VP` (QC) |
+
+Plot-level predictors can be given as a single value (recycled to all trees)
+or as one value per tree. The package does not compute stand variables from
+tree lists, because each source defines them differently: compute `BA`,
+`TPH`, `HDOM`, etc. following the definition of the model you use.
+
+Predictor definitions for every implemented model, as given in the source
+publication (with page or table):
+
+```{r}
+#| label: hd-predictor-table
+#| echo: false
+purrr::map(
+  hd_model_registry()$model_id,
+  function(id) {
+    get_hd_model_info(id)$predictors |>
+      dplyr::mutate(model_id = id, .before = 1)
+  }
+) |>
+  purrr::list_rbind() |>
+  dplyr::transmute(
+    `Model ID` = paste0("`", .data$model_id, "`"),
+    Argument = paste0("`", .data$arg, "`"),
+    Level = .data$level,
+    Units = .data$units,
+    Required = ifelse(.data$required, "yes", "no"),
+    Definition = .data$definition,
+    Source = .data$source_locator
+  ) |>
+  knitr::kable()
+```
+
+For `hd_auger2016()`, the optional predictors are required only for the
+species whose model uses them; see `?hd_auger2016` and the source for the
+per-species predictor sets.
+
+# Using the models
+
+All `hd_*()` functions are vectorized, return a tibble with a `height` column
+(m), and can be used directly inside `dplyr::mutate()`:
+
+```{r}
+#| message: false
+trees <- tibble::tibble(
+  plot = c(1, 1, 1, 2, 2),
+  DBH = c(12, 25, 18, 30, 9),
+  species = c("PICE.MAR", "PINU.BAN", "POPU.TRE", "PICE.GLA", "ABIE.BAL"),
+  HDOM = c(16, 16, 16, 22, 22),
+  BA = c(30, 30, 30, 18, 18),
+  TPH = c(3000, 3000, 3000, 1200, 1200)
+)
+
+trees |>
+  dplyr::mutate(hd_sharmaparton2007(DBH, species, HDOM = HDOM, BA = BA, TPH = TPH))
+```
+
+A model using DBH only:
+
+```{r}
+#| message: false
+trees |>
+  dplyr::mutate(hd_huang2016(DBH, species))
+```
+
+## Variants
+
+When a source defines a hierarchy of models, the variant is chosen from the
+inputs you supply and reported once per session with a message. For example,
+`hd_huang2016()` uses the provincial models unless `natural_subregion` is
+given, and `hd_eslamdoust2026()` uses M5 only when `HDOM`, `BA` and `TPH` are
+all supplied (supplying only some of them is an error). Set
+`keep_model_id = TRUE` to return the variant used for each tree:
+
+```{r}
+hd_eslamdoust2026(
+  DBH = c(15, 30),
+  species = c("ACER.SAH", "PINU.STR"),
+  HDOM = 22, BA = 30, TPH = 1200,
+  keep_model_id = TRUE
+)
+```
+
+When variants need different inputs, the variant is chosen explicitly:
+
+```{r}
+hd_auger2025(
+  DBH = c(6, 9, 12),
+  species = "PICE.MAR",
+  variant = "dominant",
+  HDOM = 9, dominant_DBH = 11
+)
+```
+
+## Missing values and applicability limits
+
+Rows with `NA` in a required input return `NA` height (no error), so the
+functions can be applied to tree lists with incomplete data. Inputs outside
+the range of the source's fitting data are still computed, and a single
+warning lists the affected rows:
+
+```{r}
+hd_sharmaparton2007(
+  DBH = c(20, NA, 80),
+  species = "PICE.MAR",
+  HDOM = 20, BA = 25, TPH = 2500
+)
+```
+
+# Population-level vs calibrated prediction
+
+Most DBH–height models are fitted as mixed-effects models with plot-level
+random effects. The `hd_*()` functions return **population-level**
+predictions: the fixed effects recommended by the source for trees in plots
+without height measurements, with random effects set to zero. For nonlinear
+mixed models this is the curve of a "typical" plot with the supplied
+predictors, not the mean over plots.
+
+If some trees in a plot have measured heights, a model can be **calibrated**
+to that plot by predicting its random effects from the measured heights. This
+usually improves predictions considerably, but it is not implemented yet. The
+`calibration_published` column of `hd_model_registry()` indicates whether the
+source publishes the variance components needed for it:
+
+```{r}
+hd_model_registry() |>
+  dplyr::select(model_id, prediction_types, calibration_published)
+```
+
+# Model curves
+
+The figures below show population-level DBH–height curves for each model and
+species. For models with stand-level predictors, curves are shown for the
+reference plot values stated with each figure; heights for other plots can
+differ substantially. Curves are drawn over a common DBH range and may extend
+beyond the fitting data of a species.
+
+```{r}
+#| label: hd-curve-helper
+#| echo: false
+plot_hd_curves <- function(data, colour = NULL, colour_lab = NULL, ncol = 4) {
+  p <- ggplot2::ggplot(
+    data,
+    ggplot2::aes(x = .data$DBH, y = .data$height)
+  )
+  if (is.null(colour)) {
+    p <- p + ggplot2::geom_line(linewidth = 0.6)
+  } else {
+    p <- p +
+      ggplot2::geom_line(
+        ggplot2::aes(colour = factor(.data[[colour]])),
+        linewidth = 0.6
+      ) +
+      ggplot2::labs(colour = colour_lab)
+  }
+  p +
+    ggplot2::facet_wrap(ggplot2::vars(.data$species), ncol = ncol) +
+    ggplot2::labs(x = "DBH (cm)", y = "Height (m)") +
+    ggplot2::theme_minimal(base_size = 10) +
+    ggplot2::theme(legend.position = "bottom")
+}
+
+hd_species <- function(model_id) get_hd_model_info(model_id)$species
+
+fig_height <- function(n_species, ncol = 4) 1.0 + 2.0 * ceiling(n_species / ncol)
+```
+
+## `hd_huang2016()`
+
+Alberta [@Huang2016hd]. Provincial models (no `natural_subregion`).
+
+```{r}
+#| label: fig-huang2016
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("huang2016")))
+grid <- tidyr::expand_grid(species = hd_species("huang2016"), DBH = seq(1, 60, by = 1))
+grid$height <- hd_huang2016(grid$DBH, grid$species)$height
+plot_hd_curves(grid)
+```
+
+## `hd_sharmaparton2007()`
+
+Northern Ontario boreal [@SharmaParton2007]. `BA` = 25 m²/ha and
+`TPH` = 2,500 stems/ha, for several dominant heights (`HDOM`), as in Fig. 2 of
+the source.
+
+```{r}
+#| label: fig-sharmaparton2007
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("sharmaparton2007"))) + 0.5
+grid <- tidyr::expand_grid(
+  species = hd_species("sharmaparton2007"),
+  HDOM = c(10, 15, 20, 25),
+  DBH = seq(1, 60, by = 1)
+)
+grid$height <- hd_sharmaparton2007(
+  grid$DBH, grid$species, HDOM = grid$HDOM, BA = 25, TPH = 2500
+)$height
+plot_hd_curves(grid, colour = "HDOM", colour_lab = "HDOM (m)")
+```
+
+## `hd_eslamdoust2026()`
+
+Ontario boreal and Great Lakes–St. Lawrence forests [@Eslamdoust2026]. M4
+(DBH only) and M5 with `HDOM` = 20 m, `BA` = 25 m²/ha and
+`TPH` = 1,500 stems/ha.
+
+```{r}
+#| label: fig-eslamdoust2026
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("eslamdoust2026_m4"))) + 0.5
+grid <- tidyr::expand_grid(
+  species = hd_species("eslamdoust2026_m4"),
+  DBH = seq(1, 60, by = 1)
+)
+m4 <- dplyr::mutate(grid, model = "M4", height = hd_eslamdoust2026(DBH, species)$height)
+m5 <- dplyr::mutate(
+  grid,
+  model = "M5",
+  height = hd_eslamdoust2026(DBH, species, HDOM = 20, BA = 25, TPH = 1500)$height
+)
+plot_hd_curves(dplyr::bind_rows(m4, m5), colour = "model", colour_lab = "Model")
+```
+
+## `hd_auger2016()`
+
+Québec, 27 species [@Auger2016]. Reference plot: `BA` = 20 m²/ha,
+`QMD` = 20 cm, `SDOM` = `"4est"`, `MP` = `"2"`, `VP` = `"MS2"`,
+`TMOY` = 2 °C, `PTOT` = 1,000 mm, `altitude` = 300 m, `disturbance` =
+`"none"` (each species uses only the predictors in its model). The source
+advises against use for trees with DBH < 9 cm, so curves start at 9 cm.
+
+```{r}
+#| label: fig-auger2016
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("auger2016")), ncol = 5)
+grid <- tidyr::expand_grid(species = hd_species("auger2016"), DBH = seq(9, 60, by = 1))
+grid$height <- hd_auger2016(
+  grid$DBH, grid$species,
+  BA = 20, QMD = 20, SDOM = "4est", MP = "2", VP = "MS2",
+  TMOY = 2, PTOT = 1000, altitude = 300, disturbance = "none"
+)$height
+plot_hd_curves(grid, ncol = 5)
+```
+
+## `hd_auger2025()`
+
+Québec black spruce and jack pine **plantations** [@Auger2025]. The three
+variants: DBH only, plot mean DBH (`mean_DBH` = 12 cm), and dominant height
+and DBH (`HDOM` = 12 m, `dominant_DBH` = 16 cm). Curves are limited to the
+calibration DBH range of each species.
+
+```{r}
+#| label: fig-auger2025
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 8
+#| fig-height: 3.8
+dbh_max <- CanadaForestAllometry:::get_params_tbl("parameters_hd_Auger2025") |>
+  dplyr::filter(.data$variant == "dbh") |>
+  dplyr::select("Species", "DBH_max")
+grid <- tidyr::expand_grid(species = dbh_max$Species, DBH = seq(0.5, 40, by = 0.5)) |>
+  dplyr::left_join(dbh_max, by = c(species = "Species")) |>
+  dplyr::filter(.data$DBH <= .data$DBH_max)
+v_dbh <- dplyr::mutate(
+  grid,
+  variant = "dbh",
+  height = hd_auger2025(DBH, species)$height
+)
+v_mean <- dplyr::mutate(
+  grid,
+  variant = "plot_mean_dbh",
+  height = hd_auger2025(DBH, species, variant = "plot_mean_dbh", mean_DBH = 12)$height
+)
+v_dom <- dplyr::mutate(
+  grid,
+  variant = "dominant",
+  height = hd_auger2025(
+    DBH, species, variant = "dominant", HDOM = 12, dominant_DBH = 16
+  )$height
+)
+plot_hd_curves(
+  dplyr::bind_rows(v_dbh, v_mean, v_dom),
+  colour = "variant", colour_lab = "Variant", ncol = 2
+)
+```
+
+# References
