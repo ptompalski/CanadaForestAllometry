@@ -1831,6 +1831,48 @@ stopifnot(
   )
 )
 
+## Staudhammer & LeMay 2000 DBH-height models, BC coast (UBC MKRF) ####
+# H = 1.3 + E1 * (1 - exp(E2 * DBH^E3)). Variant "dbh" = eq 2 (Table 5,
+# p. 308): Ek = ek_0. Variant "density" = parameter prediction, Ek = ek_0 +
+# ek_TPH*TSTEMSHA + ek_BA*TBAHA (eq 2a, alder) or ek_0 + ek_rel*REL_dbh +
+# ek_rel2*REL_dbh^2 (eq 2b, cedar, Douglas-fir, hemlock). NA = term not in
+# the model (0 in code). CW eq 2b e2_rel2 = 0.01551 is a correction of the
+# printed 0.1551 (which gives negative heights). Source "D" (Alnus rubra +
+# A. tenuifolia) mapped to ALNU.RUB only. Ranges from Table 1 (p. 304). See
+# data-raw/StaudhammerLeMay2000_model-spec.md.
+parameters_hd_StaudhammerLeMay2000 <- read.csv(
+  "data-raw/StaudhammerLeMay2000_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    e1_0, e1_TPH, e1_BA, e1_rel, e1_rel2,
+    e2_0, e2_TPH, e2_BA, e2_rel, e2_rel2,
+    e3_0, e3_TPH, e3_BA, e3_rel, e3_rel2,
+    rmse,
+    DBH_min, DBH_max, height_min, height_max,
+    TPH_min, TPH_max, BA_min, BA_max, rel_DBH_min, rel_DBH_max,
+    n_trees = as.integer(n_trees)
+  ) %>%
+  arrange(variant, Species)
+
+stopifnot(
+  nrow(parameters_hd_StaudhammerLeMay2000) == 8L,
+  !anyDuplicated(parameters_hd_StaudhammerLeMay2000[c("Species", "variant")]),
+  all(table(parameters_hd_StaudhammerLeMay2000$variant)[c("dbh", "density")] == 4L),
+  with(
+    parameters_hd_StaudhammerLeMay2000,
+    !anyNA(cbind(e1_0, e2_0, e3_0, DBH_min, DBH_max)) &&
+      all(e1_0[variant == "dbh"] > 0 & e2_0[variant == "dbh"] < 0) &&
+      all(is.na(cbind(e1_TPH, e1_rel, e2_TPH, e2_rel, e3_TPH, e3_rel)[variant == "dbh", ])) &&
+      identical(!is.na(e1_TPH), variant == "density" & Species == "ALNU.RUB") &&
+      identical(!is.na(e1_rel), variant == "density" & Species != "ALNU.RUB")
+  )
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1895,7 +1937,8 @@ internal_objs <- c(
   "parameters_hd_Auger2016_classes",
   "parameters_hd_Auger2025",
   "parameters_hd_Zhang2002",
-  "parameters_hd_Temesgen2004"
+  "parameters_hd_Temesgen2004",
+  "parameters_hd_StaudhammerLeMay2000"
 )
 
 # sanity check: make sure they exist before saving

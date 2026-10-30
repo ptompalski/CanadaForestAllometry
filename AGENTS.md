@@ -53,7 +53,7 @@ Internal per-element helpers use a leading dot / `_one` suffix (e.g.
 
 **Argument naming rule (package-wide):** acronyms upper case, words lower case —
 `DBH` (cm), `BA` (m²/ha), `TPH` (stems/ha), `HDOM` (m), `HTOP` (m, top height), `QMD` (cm), `DMEAN`
-(cm), `DDOM` (cm), `BAL` (m²/ha), climate `MAT` (°C), `MAP` (mm), `GDD`;
+(cm), `DDOM` (cm), `DMAX` (cm, plot maximum DBH), `BAL` (m²/ha), climate `MAT` (°C), `MAP` (mm), `GDD`;
 `height`, `age`, `species`, `jurisdiction`, `elevation`. Exception: site index
 is `si` (m). Tree- vs plot-level is stated in each `@param`, not encoded in
 case. Do not use source-language symbols (e.g. `TMOY`, `SDOM`) as argument

@@ -39,6 +39,7 @@ Function arguments now follow one package-wide naming scheme (see `AGENTS.md`). 
 - Added `hd_huang1994()`, the Huang, Titus, Lakusta & Held (1994; T/291) ecologically based DBH–height models for major Alberta tree species, provincial or by natural-region group, including softwood (`"CONIF"`) and hardwood (`"DECID"`) group models (no source benchmark).
 - Added `hd_huang2016b()`, the Huang & Yang (2016; T/610) expanded Alberta DBH–height models using species-specific basal area and dominant/co-dominant height (balsam fir excluded because of a source error).
 - Added `hd_temesgen2004()`, the Temesgen & von Gadow (2004) DBH–height models for eight interior British Columbia species, from DBH only or with basal area in larger trees, stems/ha and basal area.
+- Added `hd_staudhammerlemay2000()`, the Staudhammer & LeMay (2000) DBH–height models for four coastal British Columbia species, from DBH only or with stand density.
 - Added the "DBH–Height Models" article: registry overview, discovery helpers, predictor definitions, population-level vs calibrated prediction, and model curves.
 
 # CanadaForestAllometry 0.8.6

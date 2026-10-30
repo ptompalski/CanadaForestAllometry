@@ -516,6 +516,46 @@ m7 <- dplyr::mutate(
 plot_hd_curves(dplyr::bind_rows(m2, m7), colour = "model", colour_lab = "Model")
 ```
 
+## `hd_staudhammerlemay2000()`
+
+Coastal British Columbia, UBC Malcolm Knapp Research Forest (CWH zone)
+[@StaudhammerLeMay2000]. Variant `"dbh"` (eq. 2) and variant `"density"`
+for a plot with a maximum DBH (`DMAX`) of 100 cm (eq. 2b: western redcedar,
+Douglas-fir, western hemlock). For red alder, eq. 2a is shown with `TPH` =
+3,371 stems/ha and `BA` = 30.7 m²/ha (the means of the alder data). Curves are
+limited to the fitting DBH range of each species. Within a plot, the eq. 2b
+heights level off and decline slightly for the plot's largest trees. The
+western redcedar eq. 2b coefficient uses a corrected value (see the help page).
+
+```{r}
+#| label: fig-staudhammerlemay2000
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(4) + 0.5
+dbh_max <- CanadaForestAllometry:::get_params_tbl("parameters_hd_StaudhammerLeMay2000") |>
+  dplyr::filter(.data$variant == "dbh") |>
+  dplyr::select("Species", "DBH_max")
+grid <- tidyr::expand_grid(species = dbh_max$Species, DBH = seq(12, 100, by = 1)) |>
+  dplyr::left_join(dbh_max, by = c(species = "Species")) |>
+  dplyr::filter(.data$DBH <= .data$DBH_max)
+v_dbh <- dplyr::mutate(
+  grid,
+  variant = "dbh",
+  height = hd_staudhammerlemay2000(DBH, species)$height
+)
+v_den <- dplyr::mutate(
+  grid,
+  variant = "density",
+  height = hd_staudhammerlemay2000(
+    DBH, species,
+    variant = "density", TPH = 3371, BA = 30.73, DMAX = 100
+  )$height
+)
+plot_hd_curves(dplyr::bind_rows(v_dbh, v_den), colour = "variant", colour_lab = "Variant")
+```
+
 ## `hd_auger2016()`
 
 Québec, 27 species [@Auger2016]. Reference plot: `BA` = 20 m²/ha,

@@ -158,7 +158,22 @@
     "EJFR 123:45-51, p. 47 (Model 7); p. 46",
     "temesgen2004_m7", "BA", "plot", "m2/ha", TRUE,
     "BA is basal area per hectare (m2/ha); minimum DBH not stated.",
-    "EJFR 123:45-51, p. 47 (Model 7); Table 4 (p. 50)"
+    "EJFR 123:45-51, p. 47 (Model 7); Table 4 (p. 50)",
+    "staudhammerlemay2000_dbh", "DBH", "tree", "cm", TRUE,
+    "dbh (cm), recorded for all trees above 2 cm dbh.",
+    "For. Chron. 76:303-309, p. 304; eq. [2] (p. 305); Table 5 (p. 308)",
+    "staudhammerlemay2000_density", "DBH", "tree", "cm", TRUE,
+    "dbh (cm), recorded for all trees above 2 cm dbh.",
+    "For. Chron. 76:303-309, p. 304; eqs. [2a]-[2b] (p. 305); Table 5 (p. 308)",
+    "staudhammerlemay2000_density", "TPH", "plot", "stems/ha", FALSE,
+    "TSTEMSHA: stems per hectare for all species combined (trees > 2 cm dbh; live/dead basis not stated). Required for red alder (eq. 2a).",
+    "For. Chron. 76:303-309, p. 304; Table 5 (p. 308)",
+    "staudhammerlemay2000_density", "BA", "plot", "m2/ha", FALSE,
+    "TBAHA: basal area per hectare for all species combined (trees > 2 cm dbh; live/dead basis not stated). Required for red alder (eq. 2a).",
+    "For. Chron. 76:303-309, p. 304; Table 5 (p. 308)",
+    "staudhammerlemay2000_density", "DMAX", "plot", "cm", FALSE,
+    "Maximum dbh of all species on the plot, used for REL_dbh = 'dbh divided by the maximum dbh for all species'. Required for western redcedar, Douglas-fir and western hemlock (eq. 2b).",
+    "For. Chron. 76:303-309, p. 304; Table 1 (p. 304); Table 5 (p. 308)"
   )
 }
 
@@ -450,6 +465,32 @@
       description = "Interior BC (IDF zone) complex-stand DBH-height models with basal area in larger trees, stems/ha and basal area (Model 7, Table 4); used when BAL, TPH and BA are supplied.",
       calibration_published = FALSE,
       params_key = "parameters_hd_Temesgen2004"
+    ),
+    .hd_registry_row(
+      model_id = "staudhammerlemay2000_dbh",
+      engine = "hd_staudhammerlemay2000",
+      reference = "@StaudhammerLeMay2000",
+      scope = "regional",
+      province_scope = "BC",
+      stand_origin = "both",
+      equation_family = "weibull",
+      description = "Coastal BC (UBC Malcolm Knapp Research Forest, CWH zone) DBH-height models for western redcedar, red alder, Douglas-fir and western hemlock, DBH only (eq. 2, Table 5).",
+      fixed_args = list(variant = "dbh"),
+      calibration_published = FALSE,
+      params_key = "parameters_hd_StaudhammerLeMay2000"
+    ),
+    .hd_registry_row(
+      model_id = "staudhammerlemay2000_density",
+      engine = "hd_staudhammerlemay2000",
+      reference = "@StaudhammerLeMay2000",
+      scope = "regional",
+      province_scope = "BC",
+      stand_origin = "both",
+      equation_family = "weibull_parameter_prediction",
+      description = "Coastal BC (UBC Malcolm Knapp Research Forest) DBH-height models with stand density: stems/ha and basal area for red alder (eq. 2a), relative DBH for western redcedar, Douglas-fir and western hemlock (eq. 2b; Table 5).",
+      fixed_args = list(variant = "density"),
+      calibration_published = FALSE,
+      params_key = "parameters_hd_StaudhammerLeMay2000"
     )
   )
 }
