@@ -47,7 +47,37 @@
     "FST 22:217-230, p. 219; p. 220",
     "eslamdoust2026_m5", "TPH", "plot", "stems/ha", TRUE,
     "Number of trees per hectare (n/ha) with DBH >= 2.5 cm of the plot.",
-    "FST 22:217-230, p. 220 (eq. 5)"
+    "FST 22:217-230, p. 220 (eq. 5)",
+    "auger2016", "DBH", "tree", "cm", TRUE,
+    "DHP (diam\u00e8tre \u00e0 hauteur de poitrine, 1.3 m) de l'arbre (cm).",
+    "NRF 146, p. 4 (eq. [1])",
+    "auger2016", "BA", "plot", "m2/ha", TRUE,
+    "ST: surface terri\u00e8re marchande dans la placette (m2/ha; trees with DBH > 9 cm, all species).",
+    "NRF 146, p. 4; Tableau 3 (p. 6)",
+    "auger2016", "QMD", "plot", "cm", FALSE,
+    "DHP moyen quadratique des arbres de la placette (cm); used as RDHP = DBH / QMD. Required for 21 species.",
+    "NRF 146, Tableau 3 (p. 6); Tableau 5 (pp. 10-11)",
+    "auger2016", "SDOM", "plot", "code ('1', '2est' ... '6ouest')", FALSE,
+    "Sous-domaine bioclimatique (11 classes). Required for 11 species.",
+    "NRF 146, Tableau 3 (p. 6); Annexe 3",
+    "auger2016", "MP", "plot", "code (0-9)", FALSE,
+    "Milieu physique (10 classes; MRN 2013). Required for 10 species.",
+    "NRF 146, Tableau 3 (p. 6); Annexe 2",
+    "auger2016", "VP", "plot", "code (e.g. 'RS2')", FALSE,
+    "V\u00e9g\u00e9tation potentielle (three-character code). Required for 15 species.",
+    "NRF 146, Tableau 3 (p. 6); Annexe 4",
+    "auger2016", "TMOY", "plot", "degC", FALSE,
+    "Temp\u00e9rature annuelle moyenne sur la p\u00e9riode 1981-2010 (\u00b0C). Required for 7 species.",
+    "NRF 146, Tableau 3 (p. 6)",
+    "auger2016", "PTOT", "plot", "mm", FALSE,
+    "Pr\u00e9cipitations totales annuelles sur la p\u00e9riode 1981-2010 (mm). Required for 10 species.",
+    "NRF 146, Tableau 3 (p. 6)",
+    "auger2016", "altitude", "plot", "m", FALSE,
+    "Altitude (m). Required for 4 species.",
+    "NRF 146, Tableau 3 (p. 6)",
+    "auger2016", "disturbance", "plot", "code (anthropique/naturelle/aucune)", FALSE,
+    "Occurrence d'une perturbation l\u00e9g\u00e8re (3 classes): anthropique, naturelle, aucune; English 'anthropogenic', 'natural', 'none' accepted. Required for 5 species.",
+    "NRF 146, Tableau 3 (p. 6); Annexe 2"
   )
 }
 
@@ -164,6 +194,19 @@
       description = "Ontario boreal/GLSL population DBH-height models with stand height, basal area and stems/ha (M5 fixed effects, Table 5); used when HDOM, BA and TPH are supplied.",
       calibration_published = TRUE,
       params_key = "parameters_hd_Eslamdoust2026"
+    ),
+    .hd_registry_row(
+      model_id = "auger2016",
+      engine = "hd_auger2016",
+      reference = "@Auger2016",
+      scope = "provincial",
+      province_scope = "QC",
+      stand_origin = "natural",
+      equation_family = "log_quadratic",
+      description = "Quebec population DBH-height models for 27 species with basal area and species-specific relative DBH, climate, altitude and ecological-classification effects (NRF 146, Annexes 1-4).",
+      region_arg = "SDOM",
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Auger2016"
     )
   )
 }

@@ -1517,6 +1517,57 @@ stopifnot(
   )
 )
 
+## Auger 2016 DBH-height model, Quebec (NRF 146) ####
+# Eq. [1] fixed effects (b_is = 0). Continuous effects and variance components
+# from Annexe 1 (pp. 22-23); empty = term absent for the species (BOG has no
+# LDHP^2 term). Ranges from Tableau 1 (p. 3) and Tableau 2 (p. 4). Class
+# effects (all interacting with ln(DBH + 1)) from Annexes 2-4 (MP, PERT pp.
+# 24-25; SDOM pp. 26-27; VP pp. 28-31), long format; a class absent for a
+# species was not represented in its fitting data. See
+# data-raw/Auger2016_model-spec.md.
+parameters_hd_Auger2016 <- read.csv(
+  "data-raw/Auger2016_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    b_ldhp, b_ldhp2, b_st, b_rdhp, b_alt, b_ptot, b_tmoy,
+    uses_SDOM = as.logical(uses_sdom), uses_MP = as.logical(uses_mp),
+    uses_VP = as.logical(uses_vp), uses_PERT = as.logical(uses_pert),
+    sd_plot, rho_plot, sd_resid,
+    DBH_min, DBH_max, height_min, height_max, RDHP_min, RDHP_max,
+    BA_min, BA_max, altitude_min, altitude_max,
+    TMOY_min, TMOY_max, PTOT_min, PTOT_max,
+    n_trees = as.integer(n_trees), n_plots = as.integer(n_plots)
+  ) %>%
+  arrange(Species)
+
+parameters_hd_Auger2016_classes <- read.csv(
+  "data-raw/Auger2016_hd_class_effects.csv",
+  colClasses = c(class = "character")
+) %>%
+  as_tibble() %>%
+  transmute(Species = nfi_species, variable, class, estimate) %>%
+  arrange(Species, variable, class)
+
+stopifnot(
+  nrow(parameters_hd_Auger2016) == 27L,
+  !anyDuplicated(parameters_hd_Auger2016$Species),
+  with(parameters_hd_Auger2016, !anyNA(cbind(b_ldhp, b_st, DBH_min, DBH_max, BA_min, BA_max))),
+  sum(is.na(parameters_hd_Auger2016$b_ldhp2)) == 1L,
+  nrow(parameters_hd_Auger2016_classes) == 585L,
+  !anyDuplicated(parameters_hd_Auger2016_classes[c("Species", "variable", "class")]),
+  all(parameters_hd_Auger2016_classes$variable %in% c("SDOM", "MP", "VP", "PERT")),
+  # class tables present exactly for the species flagged as using them
+  all(vapply(c("SDOM", "MP", "VP", "PERT"), function(v) {
+    setequal(
+      unique(parameters_hd_Auger2016_classes$Species[parameters_hd_Auger2016_classes$variable == v]),
+      parameters_hd_Auger2016$Species[parameters_hd_Auger2016[[paste0("uses_", v)]]]
+    )
+  }, logical(1)))
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1573,7 +1624,9 @@ internal_objs <- c(
   "parameters_hd_Huang2016",
   "hd_huang2016_natural_subregions",
   "parameters_hd_SharmaParton2007",
-  "parameters_hd_Eslamdoust2026"
+  "parameters_hd_Eslamdoust2026",
+  "parameters_hd_Auger2016",
+  "parameters_hd_Auger2016_classes"
 )
 
 # sanity check: make sure they exist before saving
