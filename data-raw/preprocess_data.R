@@ -1453,6 +1453,42 @@ stopifnot(
   all(huang2016_hd_species_map$species_key %in% parameters_hd_Huang2016$species_key)
 )
 
+## Huang & Yang 2016 (T/610) expanded DBH-height models, Alberta ####
+# Base (population) models [1]-[2] with species-specific BA and HDC (Table A1);
+# mixed-model fixed effects + variance components kept for future calibration
+# only; ranges from Table 2. Species mapped per Table 1 (same as T/609, so the
+# T/609 species map is reused). The FB base column of Table A1 duplicates SB
+# (source error; Table 5 shows FB fit statistics differ), so FB rows
+# (base_status = "excluded_source_error") and FA (mapped to FB) are dropped.
+parameters_hd_Huang2016b <- read.csv("data-raw/Huang2016b_hd_parameters.csv") %>%
+  as_tibble() %>%
+  filter(base_status == "ok") %>%
+  rename(species_group = species_src) %>%
+  inner_join(
+    huang2016_hd_species_map,
+    by = "species_group",
+    relationship = "one-to-many"
+  ) %>%
+  transmute(
+    Species, species_key, source_species, species_group,
+    model_eq = as.integer(model_eq),
+    b1, b2, b3, b4, b5,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, HDOM_min, HDOM_max,
+    n_trees = as.integer(n_trees), n_plots = as.integer(n_plots),
+    mixed_eq = as.integer(mixed_eq), re_params,
+    mixed_b1, mixed_b2, mixed_b3, mixed_b4, mixed_b5,
+    var_u1, cov_u1_u2, var_u2, cov_u1_u3, cov_u2_u3, var_u3, sigma2
+  ) %>%
+  arrange(species_key)
+
+stopifnot(
+  !anyDuplicated(parameters_hd_Huang2016b$species_key),
+  nrow(parameters_hd_Huang2016b) == 17L, # 16 mapped species - FB/FA + 3 groups
+  !any(c("ABIE.BAL", "ABIE.LAS") %in% parameters_hd_Huang2016b$Species),
+  !anyNA(parameters_hd_Huang2016b[c("b1", "b2", "b3", "b4", "b5")])
+)
+
 ## Sharma & Parton 2007 DBH-height models, Ontario boreal ####
 # Eq. 6/8 coefficients for Method 1 (fixed-effects) and Method 2 (mixed,
 # plot-x-species random asymptote; used for population prediction with u = 0),
@@ -1731,6 +1767,7 @@ internal_objs <- c(
   "parameters_Batho2014",
   "parameters_hd_Huang2016",
   "hd_huang2016_natural_subregions",
+  "parameters_hd_Huang2016b",
   "parameters_hd_SharmaParton2007",
   "parameters_hd_Eslamdoust2026",
   "parameters_hd_Huang2009",

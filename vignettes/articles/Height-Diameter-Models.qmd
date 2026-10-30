@@ -345,6 +345,28 @@ grid$height <- hd_huang2016(grid$DBH, grid$species)$height
 plot_hd_curves(grid)
 ```
 
+## `hd_huang2016b()`
+
+Alberta expanded models [@Huang2016hdExpanded]. Species-specific `BA` =
+25 m²/ha, for several species-specific dominant/co-dominant heights (`HDOM`).
+Balsam fir is not available (source error in Table A1).
+
+```{r}
+#| label: fig-huang2016b
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("huang2016b"))) + 0.5
+grid <- tidyr::expand_grid(
+  species = hd_species("huang2016b"),
+  HDOM = c(10, 15, 20, 25),
+  DBH = seq(1, 60, by = 1)
+)
+grid$height <- hd_huang2016b(grid$DBH, grid$species, HDOM = grid$HDOM, BA = 25)$height
+plot_hd_curves(grid, colour = "HDOM", colour_lab = "HDOM (m)")
+```
+
 ## `hd_sharmaparton2007()`
 
 Northern Ontario boreal [@SharmaParton2007]. `BA` = 25 m²/ha and
