@@ -15,6 +15,12 @@
 .hd_model_predictors <- function() {
   tibble::tribble(
     ~model_id, ~arg, ~level, ~units, ~required, ~definition, ~source_locator,
+    "huang1994", "DBH", "tree", "cm", TRUE,
+    "D: diameter (cm) at breast height (1.3 m), outside bark.",
+    "T/291 p. 2",
+    "huang1994", "natural_subregion", "plot", "code (1-21 or e.g. 'CM')", FALSE,
+    "Alberta natural region (1994 regions 1-20 = 2006 natural subregion codes; 21 uses region 6); selects the natural-region-group model. NULL = provincial model.",
+    "T/291 Table 1 (p. 5); App. 2 (p. 25)",
     "huang2016", "DBH", "tree", "cm", TRUE,
     "Tree diameter (cm) measured at a breast height of 1.3 m above the ground.",
     "T/609 p. 6 (eqs. [1]-[2])",
@@ -206,6 +212,19 @@
 # One `.hd_registry_row()` per model variant.
 .hd_model_definitions <- function() {
   list(
+    .hd_registry_row(
+      model_id = "huang1994",
+      engine = "hd_huang1994",
+      reference = "@Huang1994hd",
+      scope = "provincial",
+      province_scope = "AB",
+      stand_origin = "natural",
+      equation_family = "chapman_richards",
+      description = "Alberta T/291 ecologically based DBH-height models (weighted NLS); provincial (Table 2) or natural-region-group (Table 1) variants, incl. softwood/hardwood group models.",
+      region_arg = "natural_subregion",
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Huang1994"
+    ),
     .hd_registry_row(
       model_id = "huang2016",
       engine = "hd_huang2016",

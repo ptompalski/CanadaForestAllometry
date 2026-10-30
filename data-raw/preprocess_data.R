@@ -1453,6 +1453,91 @@ stopifnot(
   all(huang2016_hd_species_map$species_key %in% parameters_hd_Huang2016$species_key)
 )
 
+## Huang, Titus, Lakusta & Held 1994 (T/291) DBH-height models, Alberta ####
+# Weighted-NLS Chapman-Richards fits: provincial (Table 2 = Table 6) and by
+# natural-region group (Table 1 = Table 5); ranges from Table 3 (provincial,
+# by species; repeated on regional rows). Expanded to one row per NFI species
+# x natural subregion; provincial rows have natural_subregion = NA. The 1994
+# natural regions 1-20 share the 2006 subregion codes in
+# hd_huang2016_natural_subregions, except that 1994 region 6 (Boreal
+# Highlands) is now split into 6 (LBH) and 21 (UBH); code 21 inherits the
+# region-6 rows. Regions 17-20 (grassland) have no regional rows. Fb and Fa
+# share one set; the Softwood/Hardwood groups (regional only) have
+# Species = NA and species_key = "CONIF"/"DECID".
+huang1994_hd_species_map <- read.csv("data-raw/Huang1994_hd_species_map.csv") %>%
+  transmute(
+    Species = nfi_species,
+    species_key = nfi_species,
+    source_species = species_code_src,
+    species_group = species_group_src
+  ) %>%
+  bind_rows(tibble(
+    Species = NA_character_,
+    species_key = c("CONIF", "DECID"),
+    source_species = c("Softwood group", "Hardwood group"),
+    species_group = c("SOFTWOOD", "HARDWOOD")
+  ))
+
+parameters_hd_Huang1994 <- read.csv("data-raw/Huang1994_hd_parameters.csv") %>%
+  as_tibble() %>%
+  mutate(
+    subregion_group = if_else(
+      variant == "provincial",
+      "provincial",
+      str_replace_all(
+        str_replace_all(region_group_src, " to ", "-"),
+        ",\\s*",
+        ","
+      )
+    ),
+    natural_subregion = if_else(
+      natural_subregion_codes == "ALL",
+      NA_character_,
+      natural_subregion_codes
+    )
+  ) %>%
+  separate_longer_delim(natural_subregion, delim = ";") %>%
+  mutate(natural_subregion = as.integer(natural_subregion))
+
+parameters_hd_Huang1994 <- parameters_hd_Huang1994 %>%
+  bind_rows(
+    parameters_hd_Huang1994 %>%
+      filter(natural_subregion == 6L) %>%
+      mutate(natural_subregion = 21L)
+  ) %>%
+  rename(species_group = species_group_src) %>%
+  select(-species_src) %>%
+  inner_join(
+    huang1994_hd_species_map,
+    by = "species_group",
+    relationship = "many-to-many"
+  ) %>%
+  transmute(
+    Species, species_key, source_species, species_group,
+    subregion_group, natural_subregion,
+    a, b, c,
+    DBH_min, DBH_max, height_min, height_max,
+    n = as.integer(n), r2, mse
+  ) %>%
+  arrange(species_key, is.na(natural_subregion), natural_subregion)
+
+stopifnot(
+  # every regional species covers subregions 1-16 and 21 exactly once
+  parameters_hd_Huang1994 %>%
+    filter(!is.na(natural_subregion)) %>%
+    count(species_key) %>%
+    pull(n) %>%
+    unique() == 17L,
+  setequal(
+    na.omit(parameters_hd_Huang1994$natural_subregion),
+    c(1:16, 21L)
+  ),
+  !anyDuplicated(parameters_hd_Huang1994[c("species_key", "natural_subregion")]),
+  all(huang1994_hd_species_map$species_key %in% parameters_hd_Huang1994$species_key),
+  sum(is.na(parameters_hd_Huang1994$natural_subregion)) == 12L, # 11 sets, Fb/Fa x2
+  !anyNA(parameters_hd_Huang1994[c("a", "b", "c")])
+)
+
 ## Huang & Yang 2016 (T/610) expanded DBH-height models, Alberta ####
 # Base (population) models [1]-[2] with species-specific BA and HDC (Table A1);
 # mixed-model fixed effects + variance components kept for future calibration
@@ -1767,6 +1852,7 @@ internal_objs <- c(
   "parameters_Batho2014",
   "parameters_hd_Huang2016",
   "hd_huang2016_natural_subregions",
+  "parameters_hd_Huang1994",
   "parameters_hd_Huang2016b",
   "parameters_hd_SharmaParton2007",
   "parameters_hd_Eslamdoust2026",

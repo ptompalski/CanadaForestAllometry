@@ -329,6 +329,25 @@ hd_species <- function(model_id) get_hd_model_info(model_id)$species
 fig_height <- function(n_species, ncol = 4) 1.0 + 2.0 * ceiling(n_species / ncol)
 ```
 
+## `hd_huang1994()`
+
+Alberta ecologically based models [@Huang1994hd]. Provincial models (no
+`natural_subregion`). With `natural_subregion`, six species and the softwood
+(`"CONIF"`) and hardwood (`"DECID"`) groups use natural-region-group models;
+the grassland regions (17–20) fall back to the provincial models.
+
+```{r}
+#| label: fig-huang1994
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("huang1994")))
+grid <- tidyr::expand_grid(species = hd_species("huang1994"), DBH = seq(1, 60, by = 1))
+grid$height <- hd_huang1994(grid$DBH, grid$species)$height
+plot_hd_curves(grid)
+```
+
 ## `hd_huang2016()`
 
 Alberta [@Huang2016hd]. Provincial models (no `natural_subregion`).

@@ -1,0 +1,13 @@
+species_common,species_code_src,species_scientific,species_group_src,nfi_species,source
+White spruce,Sw,Picea glauca (Moench) Voss,SW,PICE.GLA,Appendix 3 p.26 (PDF p34)
+Tamarack,Lt,Larix laricina (Du Roi) K. Koch,LT,LARI.LAR,Appendix 3 p.26 (PDF p34)
+Engelmann spruce,Se,Picea engelmannii Parry ex Engelm.,SE,PICE.ENG,Appendix 3 p.26 (PDF p34)
+Lodgepole pine,Pl,Pinus contorta var. latifolia Engelm.,PL,PINU.CON,Appendix 3 p.26 (PDF p34)
+Jack pine,Pj,Pinus banksiana Lamb.,PJ,PINU.BAN,Appendix 3 p.26 (PDF p34)
+Aspen,Aw,Populus tremuloides Michx.,AW,POPU.TRE,Appendix 3 p.26 (PDF p34)
+White birch,Bw,Betula papyrifera Marsh.,BW,BETU.PAP,Appendix 3 p.26 (PDF p34)
+Balsam poplar,Pb,Populus balsamifera L.,PB,POPU.BAL,Appendix 3 p.26 (PDF p34)
+Black spruce,Sb,Picea mariana (Mill.) B.S.P.,SB,PICE.MAR,Appendix 3 p.26 (PDF p34)
+Balsam fir,Fb,Abies balsamea (L.) Mill.,FB_FA,ABIE.BAL,Appendix 3 p.26 (PDF p34); combined with Fa in Tables 1-3
+Alpine fir,Fa,Abies lasiocarpa (Hook.) Nutt.,FB_FA,ABIE.LAS,Appendix 3 p.26 (PDF p34); combined with Fb in Tables 1-3
+Douglas-fir,Fd,Pseudotsuga menziesii (Mirb.) Franco,FD,PSEU.MEN,Appendix 3 p.26 (PDF p34)
