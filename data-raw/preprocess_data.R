@@ -1369,6 +1369,90 @@ parameters_Batho2014 <- parameters_Batho2014 %>%
     base_age = as.numeric(base_age)
   )
 
+## Huang, Yang & Aitkin 2016 (T/609) DBH-height models, Alberta ####
+# Base (population) models: Table 4; mixed-model fixed effects + variance
+# components (Table 5) kept for future calibration only; ranges from Table 3.
+# Expanded to one row per NFI species x natural subregion (1-21); provincial
+# rows have natural_subregion = NA. Species mapped per Table 1 (e.g. PW -> PL).
+# Combined groups (Decid/Conif/All) have Species = NA and are selected through
+# species_key = "DECID"/"CONIF"/"ALL".
+hd_huang2016_natural_subregions <- read.csv(
+  "data-raw/Huang2016_hd_natural_subregions.csv"
+) %>%
+  transmute(
+    code_numeric = as.integer(code_numeric),
+    code_character = as.character(code_character),
+    natural_subregion = as.character(natural_subregion),
+    natural_region = as.character(natural_region)
+  ) %>%
+  arrange(code_numeric)
+
+huang2016_hd_species_map <- read.csv("data-raw/Huang2016_hd_species_map.csv") %>%
+  transmute(
+    Species = nfi_species,
+    species_key = nfi_species,
+    source_species = species_code_src,
+    species_group = species_group_src
+  ) %>%
+  bind_rows(tibble(
+    Species = NA_character_,
+    species_key = c("DECID", "CONIF", "ALL"),
+    source_species = c("Decid", "Conif", "All"),
+    species_group = c("Decid", "Conif", "All")
+  ))
+
+parameters_hd_Huang2016 <- read.csv("data-raw/Huang2016_hd_parameters.csv") %>%
+  as_tibble() %>%
+  mutate(
+    subregion_group = if_else(
+      subregion_group_src == "Provincial",
+      "provincial",
+      str_replace_all(
+        str_replace_all(subregion_group_src, " to ", "-"),
+        ",\\s*",
+        ","
+      )
+    ),
+    natural_subregion = if_else(
+      natural_subregion_codes == "ALL",
+      NA_character_,
+      natural_subregion_codes
+    )
+  ) %>%
+  separate_longer_delim(natural_subregion, delim = ";") %>%
+  mutate(natural_subregion = as.integer(natural_subregion)) %>%
+  rename(species_group = species_src) %>%
+  inner_join(
+    huang2016_hd_species_map,
+    by = "species_group",
+    relationship = "many-to-many"
+  ) %>%
+  transmute(
+    Species, species_key, source_species, species_group,
+    model_eq = as.integer(model_eq),
+    subregion_group, natural_subregion,
+    b1, b2, b3,
+    DBH_min, DBH_max, height_min, height_max,
+    n_trees = as.integer(n_trees), n_plots = as.integer(n_plots),
+    mixed_b1, mixed_b2, mixed_b3, var_u1, cov_u1_u2, var_u2, sigma2
+  ) %>%
+  arrange(species_key, is.na(natural_subregion), natural_subregion)
+
+stopifnot(
+  # every subregion-group species covers all 21 subregions exactly once
+  parameters_hd_Huang2016 %>%
+    filter(!is.na(natural_subregion)) %>%
+    count(species_key) %>%
+    pull(n) %>%
+    unique() == 21L,
+  !anyDuplicated(parameters_hd_Huang2016[c("species_key", "natural_subregion")]),
+  setequal(
+    na.omit(parameters_hd_Huang2016$natural_subregion),
+    hd_huang2016_natural_subregions$code_numeric
+  ),
+  all(huang2016_hd_species_map$species_key %in% parameters_hd_Huang2016$species_key)
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1421,7 +1505,9 @@ internal_objs <- c(
   "parameters_Sharma2022",
   "parameters_Nigh1998_ht",
   "parameters_Buckman2006",
-  "parameters_Batho2014"
+  "parameters_Batho2014",
+  "parameters_hd_Huang2016",
+  "hd_huang2016_natural_subregions"
 )
 
 # sanity check: make sure they exist before saving

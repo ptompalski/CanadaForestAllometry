@@ -13,14 +13,14 @@
 
 # internal
 .hd_model_predictors <- function() {
-  tibble::tibble(
-    model_id = character(),
-    arg = character(),
-    level = character(),
-    units = character(),
-    required = logical(),
-    definition = character(),
-    source_locator = character()
+  tibble::tribble(
+    ~model_id, ~arg, ~level, ~units, ~required, ~definition, ~source_locator,
+    "huang2016", "DBH", "tree", "cm", TRUE,
+    "Tree diameter (cm) measured at a breast height of 1.3 m above the ground.",
+    "T/609 p. 6 (eqs. [1]-[2])",
+    "huang2016", "natural_subregion", "plot", "code (1-21 or e.g. 'CM')", FALSE,
+    "Alberta 2006 natural subregion (Natural Regions Committee 2006); selects the natural-subregion-group model. NULL = provincial model.",
+    "T/609 Table 2 (p. 2); Table 4 (p. 7)"
   )
 }
 
@@ -86,9 +86,23 @@
 }
 
 # internal
-# One `.hd_registry_row()` per model variant. Empty until the first hd_ model.
+# One `.hd_registry_row()` per model variant.
 .hd_model_definitions <- function() {
-  list()
+  list(
+    .hd_registry_row(
+      model_id = "huang2016",
+      engine = "hd_huang2016",
+      reference = "@Huang2016hd",
+      scope = "provincial",
+      province_scope = "AB",
+      stand_origin = "natural",
+      equation_family = "chapman_richards; log_logistic",
+      description = "Alberta T/609 population DBH-height models (base fits, Table 4); provincial or natural-subregion-group variants.",
+      region_arg = "natural_subregion",
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Huang2016"
+    )
+  )
 }
 
 #' DBH–height model registry
