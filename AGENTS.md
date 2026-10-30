@@ -52,7 +52,7 @@ Internal per-element helpers use a leading dot / `_one` suffix (e.g.
 `.thrower1994_height_one`).
 
 **Argument naming rule (package-wide):** acronyms upper case, words lower case —
-`DBH` (cm), `BA` (m²/ha), `TPH` (stems/ha), `HDOM` (m), `QMD` (cm), `DMEAN`
+`DBH` (cm), `BA` (m²/ha), `TPH` (stems/ha), `HDOM` (m), `HTOP` (m, top height), `QMD` (cm), `DMEAN`
 (cm), `DDOM` (cm), `BAL` (m²/ha), climate `MAT` (°C), `MAP` (mm), `GDD`;
 `height`, `age`, `species`, `jurisdiction`, `elevation`. Exception: site index
 is `si` (m). Tree- vs plot-level is stated in each `@param`, not encoded in

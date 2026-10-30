@@ -80,7 +80,9 @@ for (i in seq_len(nrow(reg_fun))) {
 
 The registry has one row per model **variant**. Some functions implement
 several variants: `hd_eslamdoust2026()` chooses M4 (DBH only) or M5 (with
-stand variables) from the predictors you supply, `hd_zhang2002()` uses the
+stand variables) from the predictors you supply, `hd_huang2009()` likewise
+chooses model 9, 10 or 11 from whether `HTOP` and `BA` are given,
+`hd_zhang2002()` uses the
 ecoregion, forest-region or Ontario-wide fit depending on which region you
 give, and `hd_auger2025()` uses an explicit `variant` argument because its
 variants need different inputs.
@@ -153,6 +155,7 @@ and in the table below.
 | `BA` | plot | m²/ha | Stand basal area |
 | `TPH` | plot | stems/ha | Stand density |
 | `HDOM` | plot | m | Dominant (or dominant and codominant) height |
+| `HTOP` | plot | m | Top height: mean height of the largest-DBH trees (e.g. 100/ha) |
 | `QMD` | plot | cm | Quadratic mean DBH |
 | `DMEAN` | plot | cm | Arithmetic mean DBH |
 | `DDOM` | plot | cm | Mean DBH of the dominant trees |
@@ -390,6 +393,30 @@ m5 <- dplyr::mutate(
   height = hd_eslamdoust2026(DBH, species, HDOM = 20, BA = 25, TPH = 1500)$height
 )
 plot_hd_curves(dplyr::bind_rows(m4, m5), colour = "model", colour_lab = "Model")
+```
+
+## `hd_huang2009()`
+
+Alberta black spruce, fitted in the Lower Foothills [@Huang2009hd]. Model 9
+(DBH only), model 10 with top height (`HTOP` = 16 m) and model 11 with top
+height and basal area (`HTOP` = 16 m, `BA` = 15 m²/ha), roughly the means of
+the fitting data. Curves are limited to the fitting DBH range (up to 39.4 cm).
+
+```{r}
+#| label: fig-huang2009
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 5
+#| fig-height: 3.5
+grid <- tibble::tibble(species = "PICE.MAR", DBH = seq(1.3, 39.4, by = 0.5))
+grid <- dplyr::bind_rows(
+  dplyr::mutate(grid, model = "9", height = hd_huang2009(DBH, species)$height),
+  dplyr::mutate(grid, model = "10", height = hd_huang2009(DBH, species, HTOP = 16)$height),
+  dplyr::mutate(grid, model = "11", height = hd_huang2009(DBH, species, HTOP = 16, BA = 15)$height)
+)
+grid$model <- factor(grid$model, levels = c("9", "10", "11"))
+plot_hd_curves(grid, colour = "model", colour_lab = "Model")
 ```
 
 ## `hd_zhang2002()`

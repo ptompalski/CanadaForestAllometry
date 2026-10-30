@@ -1517,6 +1517,38 @@ stopifnot(
   )
 )
 
+## Huang, Meng & Yang 2009 DBH-height models, Alberta black spruce ####
+# NLMM (FO) fixed effects (b = 0) for eqs. (9)-(11), Table 2 p.13; variance
+# components transcribed but unused. HTOP = top height (100 largest-DBH
+# trees/ha). Ranges from Table 1 p.12 (fitting data). See
+# data-raw/Huang2009_hd_model-spec.md.
+parameters_hd_Huang2009 <- read.csv(
+  "data-raw/Huang2009_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    beta1, beta2, beta3, beta4, beta5,
+    var_b1, cov_b1_b2, var_b2, sigma2,
+    DBH_min, DBH_max, height_min, height_max,
+    HTOP_min, HTOP_max, BA_min, BA_max,
+    n_plots = as.integer(n_plots), n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(variant)
+
+stopifnot(
+  nrow(parameters_hd_Huang2009) == 3L,
+  identical(parameters_hd_Huang2009$variant, c("m10", "m11", "m9")),
+  with(
+    parameters_hd_Huang2009,
+    !anyNA(cbind(beta1, beta2, beta3, DBH_min, DBH_max, sigma2)) &&
+      identical(is.na(beta4), variant == "m9") &&
+      identical(is.na(beta5), variant != "m11")
+  )
+)
+
 ## Auger 2016 DBH-height model, Quebec (NRF 146) ####
 # Eq. [1] fixed effects (b_is = 0). Continuous effects and variance components
 # from Annexe 1 (pp. 22-23); empty = term absent for the species (BOG has no
@@ -1701,6 +1733,7 @@ internal_objs <- c(
   "hd_huang2016_natural_subregions",
   "parameters_hd_SharmaParton2007",
   "parameters_hd_Eslamdoust2026",
+  "parameters_hd_Huang2009",
   "parameters_hd_Auger2016",
   "parameters_hd_Auger2016_classes",
   "parameters_hd_Auger2025",

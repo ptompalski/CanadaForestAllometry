@@ -35,6 +35,7 @@ Function arguments now follow one package-wide naming scheme (see `AGENTS.md`). 
 - Added `hd_auger2016()`, the Auger (2016; NRF 146) population DBH–height models for 27 Québec species with basal area and species-specific relative DBH, climate, altitude and ecological-classification effects (validated against the published worked example and effect sizes, and CFSForestTools for the 10 species it implements as published).
 - Added `hd_auger2025()`, the Auger, DeBlois & Lambert (2025; SSS-10) DBH–height models for black spruce and jack pine plantations in Québec, from DBH only, plot mean DBH, or dominant height and DBH (no source benchmark).
 - Added `hd_zhang2002()`, the Zhang et al. (2002) Ontario jack pine DBH–height models by ecoregion, forest region or province-wide (no source benchmark).
+- Added `hd_huang2009()`, the Huang, Meng & Yang (2009) Alberta black spruce DBH–height models from DBH only, or with top height (`HTOP`) and basal area.
 - Added the "DBH–Height Models" article: registry overview, discovery helpers, predictor definitions, population-level vs calibrated prediction, and model curves.
 
 # CanadaForestAllometry 0.8.6
