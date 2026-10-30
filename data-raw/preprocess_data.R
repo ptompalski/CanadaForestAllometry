@@ -1568,6 +1568,44 @@ stopifnot(
   }, logical(1)))
 )
 
+## Auger, DeBlois & Lambert 2025 DBH-height models, Quebec plantations ####
+# SSS-10 (MRNF Quebec). Jack pine (PIG) and black spruce (EPN) plantations.
+# Variant "dbh": Korf, eq. 10 (Tableau 3, p. 11). Variant "plot_mean_dbh":
+# eq. 11 (PIG, Chapman-Richards) / eq. 12 (EPN, Hossfeld II) on mean plot DBH
+# (Tableau 7, p. 14). Variant "dominant": eq. 13 (PIG) / eq. 14 (EPN) on
+# dominant height and dominant DBH (Tableau 9, p. 17). Empty coefficient =
+# term absent. Ranges from Tableau 1 (p. 4, calibration data). See
+# data-raw/Auger2025_model-spec.md.
+parameters_hd_Auger2025 <- read.csv(
+  "data-raw/Auger2025_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant, equation,
+    a1, a2, a3, a10, a11, a20, a21, a22,
+    DBH_min, DBH_max, height_min, height_max,
+    mean_DBH_min, mean_DBH_max, dominant_DBH_min, dominant_DBH_max,
+    HDOM_min, HDOM_max
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_Auger2025) == 6L,
+  !anyDuplicated(parameters_hd_Auger2025[c("Species", "variant")]),
+  setequal(parameters_hd_Auger2025$Species, c("PICE.MAR", "PINU.BAN")),
+  all(table(parameters_hd_Auger2025$variant) == 2L),
+  all(parameters_hd_Auger2025$equation %in% c("korf", "chapman_richards", "hossfeld_ii")),
+  with(
+    parameters_hd_Auger2025,
+    !anyNA(cbind(a3, DBH_min, DBH_max)) &&
+      !anyNA(cbind(a1, a2)[variant == "dbh", ]) &&
+      !anyNA(cbind(a10, a11, a20, a21, mean_DBH_min, mean_DBH_max)[variant == "plot_mean_dbh", ]) &&
+      !anyNA(cbind(a10, a11, a20, a22, HDOM_min, HDOM_max, dominant_DBH_min, dominant_DBH_max)[variant == "dominant", ])
+  )
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1626,7 +1664,8 @@ internal_objs <- c(
   "parameters_hd_SharmaParton2007",
   "parameters_hd_Eslamdoust2026",
   "parameters_hd_Auger2016",
-  "parameters_hd_Auger2016_classes"
+  "parameters_hd_Auger2016_classes",
+  "parameters_hd_Auger2025"
 )
 
 # sanity check: make sure they exist before saving

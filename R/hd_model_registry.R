@@ -77,7 +77,25 @@
     "NRF 146, Tableau 3 (p. 6)",
     "auger2016", "disturbance", "plot", "code (anthropique/naturelle/aucune)", FALSE,
     "Occurrence d'une perturbation l\u00e9g\u00e8re (3 classes): anthropique, naturelle, aucune; English 'anthropogenic', 'natural', 'none' accepted. Required for 5 species.",
-    "NRF 146, Tableau 3 (p. 6); Annexe 2"
+    "NRF 146, Tableau 3 (p. 6); Annexe 2",
+    "auger2025_dbh", "DBH", "tree", "cm", TRUE,
+    "Diam\u00e8tre \u00e0 hauteur de poitrine (mesur\u00e9 \u00e0 1,3 m, DHP), cm.",
+    "SSS-10 p. 2; eq. 10 (p. 11)",
+    "auger2025_plot_mean_dbh", "DBH", "tree", "cm", TRUE,
+    "Diam\u00e8tre \u00e0 hauteur de poitrine (mesur\u00e9 \u00e0 1,3 m, DHP), cm.",
+    "SSS-10 p. 2; eqs. 11-12 (p. 14)",
+    "auger2025_plot_mean_dbh", "mean_DBH", "plot", "cm", TRUE,
+    "DMOY: 'le DHP moyen de tous les arbres de la placette' (arithmetic mean DBH of all trees in the plot).",
+    "SSS-10 eq. 2 (p. 6)",
+    "auger2025_dominant", "DBH", "tree", "cm", TRUE,
+    "Diam\u00e8tre \u00e0 hauteur de poitrine (mesur\u00e9 \u00e0 1,3 m, DHP), cm.",
+    "SSS-10 p. 2; eqs. 13-14 (p. 16)",
+    "auger2025_dominant", "HDOM", "plot", "m", TRUE,
+    "HDOM: mean height of the dominant trees of the plot, i.e. 'les 8 plus hauts arbres plant\u00e9s faisant partie de l'\u00e9tage des arbres dominants et bien r\u00e9partis dans la placette (200 arbres/ha)' (400 m2 plots).",
+    "SSS-10 eq. 3 (p. 7); p. 2",
+    "auger2025_dominant", "dominant_DBH", "plot", "cm", TRUE,
+    "DDOM: mean DBH of the same dominant trees of the plot.",
+    "SSS-10 eq. 3 (p. 7); p. 2"
   )
 }
 
@@ -207,6 +225,45 @@
       region_arg = "SDOM",
       calibration_published = TRUE,
       params_key = "parameters_hd_Auger2016"
+    ),
+    .hd_registry_row(
+      model_id = "auger2025_dbh",
+      engine = "hd_auger2025",
+      reference = "@Auger2025",
+      scope = "provincial",
+      province_scope = "QC",
+      stand_origin = "plantation",
+      equation_family = "korf",
+      description = "Quebec black spruce and jack pine plantation population DBH-height models, DBH only (Korf, eq. 10, Tableau 7; SSS-10).",
+      fixed_args = list(variant = "dbh"),
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Auger2025"
+    ),
+    .hd_registry_row(
+      model_id = "auger2025_plot_mean_dbh",
+      engine = "hd_auger2025",
+      reference = "@Auger2025",
+      scope = "provincial",
+      province_scope = "QC",
+      stand_origin = "plantation",
+      equation_family = "chapman_richards; hossfeld_ii",
+      description = "Quebec black spruce and jack pine plantation DBH-height models with plot mean DBH (eqs. 11-12, Tableau 8; SSS-10).",
+      fixed_args = list(variant = "plot_mean_dbh"),
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Auger2025"
+    ),
+    .hd_registry_row(
+      model_id = "auger2025_dominant",
+      engine = "hd_auger2025",
+      reference = "@Auger2025",
+      scope = "provincial",
+      province_scope = "QC",
+      stand_origin = "plantation",
+      equation_family = "chapman_richards; hossfeld_ii",
+      description = "Quebec black spruce and jack pine plantation DBH-height models with dominant height and dominant DBH (eqs. 13-14, Tableau 9; SSS-10).",
+      fixed_args = list(variant = "dominant"),
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Auger2025"
     )
   )
 }
