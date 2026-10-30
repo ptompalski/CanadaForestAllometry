@@ -4,23 +4,23 @@
 #' Two models (Nat1 and Nat2) are available:
 #'   \itemize{
 #'     \item{\strong{Nat1:} A multi-equation system predicting tree height (H), basal area (BA), 
-#'           and volume (V) based on stand age, growth degree days (GDD), precipitation (PREC), 
+#'           and volume (V) based on stand age, growth degree days (GDD), annual precipitation (MAP), 
 #'           and species-specific parameters.}
 #'     \item{\strong{Nat2:} A single equation that focuses on predicting stand volume (V) 
-#'           using age, GDD, and PREC.}
+#'           using age, GDD, and MAP.}
 #'   }
 #'  
 #' @details 
-#' In the Nat1 model, height and basal area are each modeled using age, GDD, and PREC in a 
+#' In the Nat1 model, height and basal area are each modeled using age, GDD, and MAP in a 
 #' Chapman-Richards formulation, and volume is derived via an allometric equation. In contrast, 
 #' Nat2 is more streamlined, modeling volume directly as a function of these same variables 
 #' but without explicit height and basal area components.
 #'
-#' @param species Character. A valid species name as defined in the parameter table of the model.
 #' @param age Numeric vector. The age(s) of the stand in years. Must be greater than 0.
+#' @param species Character. A valid species name as defined in the parameter table of the model.
 #' @param GDD Numeric. Growth degree days.
-#' @param PREC Numeric. Precipitation.
-#' @param model Character. Which model(s) to use. One of \code{"Nat1"}, \code{"Nat2"}, or 
+#' @param MAP Numeric. Annual precipitation (source "PREC").
+#' @param variant Character. Which model(s) to use. One of \code{"Nat1"}, \code{"Nat2"}, or 
 #'   \code{"both"}. Defaults to \code{"both"}.
 #'
 #' @return A tibble containing:
@@ -43,7 +43,7 @@
 #'   species = "ABIE.BAL",
 #'   age = 1:150,
 #'   GDD = 1500,
-#'   PREC = 800
+#'   MAP = 800
 #' )
 #' res_both
 #'
@@ -52,8 +52,8 @@
 #'   species = "ABIE.BAL",
 #'   age = 1:150,
 #'   GDD = 1500,
-#'   PREC = 800,
-#'   model = "Nat1"
+#'   MAP = 800,
+#'   variant = "Nat1"
 #' )
 #' res_nat1
 #'
@@ -62,23 +62,23 @@
 #'   species = "ABIE.BAL",
 #'   age = 1:150,
 #'   GDD = 1500,
-#'   PREC = 800,
-#'   model = "Nat2"
+#'   MAP = 800,
+#'   variant = "Nat2"
 #' )
 #' res_nat2
 #'
 #' @export
-Ung2009 <- function(species,
-                    age,
+Ung2009 <- function(age,
+                    species,
                     GDD,
-                    PREC,
-                    model = c("both", "Nat1", "Nat2")) {
+                    MAP,
+                    variant = c("both", "Nat1", "Nat2")) {
   
-  model <- match.arg(model)
+  variant <- match.arg(variant)
   
   # Validate inputs
   if (any(age <= 0)) stop("Age must be greater than 0.")
-  if (!is.numeric(GDD) || !is.numeric(PREC)) stop("GDD and PREC must be numeric.")
+  if (!is.numeric(GDD) || !is.numeric(MAP)) stop("GDD and MAP must be numeric.")
   if (!is.character(species)) stop("Species must be a character string.")
   
   # parameters for the Nat1 model
@@ -155,13 +155,13 @@ Ung2009 <- function(species,
   #----------------
   #   Nat1 model
   #----------------
-  if (model %in% c("Nat1","both")) {
-    lnH <- (param$h10 + (param$h11 * GDD) + (param$h12 * PREC)) + 
-      ((param$h20 + (param$h21 * GDD) + (param$h22 * PREC)) / age)
+  if (variant %in% c("Nat1","both")) {
+    lnH <- (param$h10 + (param$h11 * GDD) + (param$h12 * MAP)) + 
+      ((param$h20 + (param$h21 * GDD) + (param$h22 * MAP)) / age)
     H <- exp(lnH) * param$CDh
     
-    lnBA <- (param$g10 + (param$g11 * GDD) + (param$g12 * PREC)) + 
-      ((param$g20 + (param$g21 * GDD) + (param$g22 * PREC)) / age)
+    lnBA <- (param$g10 + (param$g11 * GDD) + (param$g12 * MAP)) + 
+      ((param$g20 + (param$g21 * GDD) + (param$g22 * MAP)) / age)
     BA <- exp(lnBA) * param$CDg
     
     lnV <- param$v30 + param$v31 * lnH + param$v32 * lnBA
@@ -175,9 +175,9 @@ Ung2009 <- function(species,
   #----------------
   #   Nat2 model
   #----------------
-  if (model %in% c("Nat2","both")) {
-    lnV2 <- (param2$v10 + (param2$v11 * GDD) + (param2$v12 * PREC)) +
-      ((param2$v20 + (param2$v21 * GDD) + (param2$v22 * PREC)) / age)
+  if (variant %in% c("Nat2","both")) {
+    lnV2 <- (param2$v10 + (param2$v11 * GDD) + (param2$v12 * MAP)) +
+      ((param2$v20 + (param2$v21 * GDD) + (param2$v22 * MAP)) / age)
     V2 <- exp(lnV2) * param2$Cd
     
     out$V2 <- V2

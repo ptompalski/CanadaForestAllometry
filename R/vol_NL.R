@@ -24,7 +24,7 @@
 #' @param DBH Numeric vector. Diameter at breast height (cm).
 #' @param height Numeric vector. Total tree height (m).
 #' @param species Character vector of NFI species codes (e.g., `"PICE.MAR"`).
-#' @param subregion Character or numeric vector. Either:
+#' @param district Character or numeric vector. NL forest district. Either:
 #'   - `"Province"` (default; uses province-wide equations), or
 #'   - District IDs `1-24`.
 #'   Only District `2` and `4-18` use district-level equations;
@@ -53,21 +53,21 @@
 #' vol_nl(20, 20, "PICE.MAR")
 #'
 #' # District-level model (NX-242 used for District 2)
-#' vol_nl(20, 20, "PICE.MAR", subregion = 2)
+#' vol_nl(20, 20, "PICE.MAR", district = 2)
 #'
 #' # Return net merchantable volume (if available)
-#' vol_nl(20, 20, "PICE.MAR", subregion = 2, keep_net = TRUE)
+#' vol_nl(20, 20, "PICE.MAR", district = 2, keep_net = TRUE)
 #'
 #' # Tidyverse workflow example
 #' trees <- tibble::tibble(
 #'   DBH = c(15, 20, 25, 30),
 #'   height = c(15, 20, 21, 25),
 #'   species = c("PICE.MAR", "ABIE.BAL","PICE.MAR", "BETU.PAP"),
-#'   subregion = c("Province", 2, 17, "Province")
+#'   district = c("Province", 2, 17, "Province")
 #' )
 #'
 #'trees |>
-#'   dplyr::mutate(vol = vol_nl(DBH, height, species, subregion)) |>
+#'   dplyr::mutate(vol = vol_nl(DBH, height, species, district)) |>
 #'   tidyr::unnest(vol)
 #'
 #' @references
@@ -86,19 +86,19 @@ vol_nl <- function(
   DBH,
   height,
   species,
-  subregion = "Province",
+  district = "Province",
   keep_net = FALSE
 ) {
   n <- length(DBH)
 
-  # ---- recycle subregion if length 1 ----
-  if (length(subregion) == 1L) {
-    subregion <- rep(subregion, n)
+  # ---- recycle district if length 1 ----
+  if (length(district) == 1L) {
+    district <- rep(district, n)
   }
 
-  if (length(height) != n || length(species) != n || length(subregion) != n) {
+  if (length(height) != n || length(species) != n || length(district) != n) {
     rlang::abort(
-      "DBH, height, species, and subregion must have the same length (or subregion length 1)."
+      "DBH, height, species, and district must have the same length (or district length 1)."
     )
   }
 
@@ -111,7 +111,7 @@ vol_nl <- function(
   species_std <- standardize_species_code(species)
 
   # Map default "Province" -> parameter key "ALL"
-  sub_key <- as.character(subregion)
+  sub_key <- as.character(district)
   sub_key <- dplyr::if_else(
     is.na(sub_key),
     NA_character_,
@@ -133,7 +133,7 @@ vol_nl <- function(
   sub_key[is_numeric_like] <-
     as.character(as.integer(as.numeric(sub_key[is_numeric_like])))
 
-  # Validate user-supplied subregion:
+  # Validate user-supplied district:
   # Users can provide "Province" (-> "ALL") or district IDs 1–24.
   is_all <- !is.na(sub_key) & sub_key == "ALL"
   is_numeric <- !is.na(sub_key) &
@@ -150,7 +150,7 @@ vol_nl <- function(
   if (any(!is_all & !is_district_1_24, na.rm = TRUE)) {
     bad <- unique(sub_key[!is_all & !is_district_1_24])
     rlang::abort(paste0(
-      "Invalid NL subregion value(s): ",
+      "Invalid NL district value(s): ",
       paste(bad, collapse = ", "),
       ". Use 'Province' (or 'ALL') or district IDs 1-24."
     ))
@@ -173,7 +173,7 @@ vol_nl <- function(
       i,
       " (species=",
       species_std[i],
-      ", subregion=",
+      ", district=",
       sub_key[i],
       ", DBH_cm=",
       DBH[i],
@@ -294,7 +294,7 @@ vol_nl <- function(
       dplyr::slice(1)
 
     if (nrow(p) == 0) {
-      abort_i(i, "No NL parameters returned for this species x subregion.")
+      abort_i(i, "No NL parameters returned for this species x district.")
     }
 
     use_district_formula <- p$param_set[[1]] %in%

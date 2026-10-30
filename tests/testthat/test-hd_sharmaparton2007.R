@@ -166,3 +166,19 @@ test_that("hd_sharmaparton2007 is registered consistently", {
   found <- find_hd_models(jurisdiction = "ON", species = "PINU.RES", available = "DBH")
   expect_true("sharmaparton2007" %in% found$model_id)
 })
+
+test_that("keep_model_id adds model_id", {
+  out <- hd_sharmaparton2007(
+    c(20, NA), c("PICE.MAR", NA), HDOM = 20, BA = 25, TPH = 2500,
+    keep_model_id = TRUE
+  )
+  expect_identical(out$model_id, c("sharmaparton2007", NA))
+  expect_identical(
+    hd_sharmaparton2007(numeric(), "PICE.MAR", 20, 25, 2500, keep_model_id = TRUE),
+    tibble::tibble(height = numeric(), model_id = character())
+  )
+  expect_error(
+    hd_sharmaparton2007(20, "PICE.MAR", 20, 25, 2500, keep_model_id = NA),
+    "keep_model_id"
+  )
+})

@@ -135,16 +135,16 @@ volume_model_registry <- function() {
     subregion_arg = c(
       NA_character_,
       NA_character_,
-      "BEC_zone",
+      "bec_zone",
       NA_character_,
-      "subregion", # vol_huang94() takes subregion=...
-      NA_character_,
-      NA_character_,
-      "subregion", # vol_klos2007() takes subregion=...
+      "natural_subregion", # vol_huang94()
       NA_character_,
       NA_character_,
-      "subregion", # nigh2016 works with bec zones or coast/interior,
-      "district" # NL district
+      "ecozone", # vol_klos2007()
+      NA_character_,
+      NA_character_,
+      "bec_zone", # vol_nigh2016(): BEC zone or Coast/Interior
+      "district" # vol_nl()
     ),
 
     description = c(

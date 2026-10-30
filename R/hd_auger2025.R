@@ -19,19 +19,19 @@
 #'     Estimates the mean height of the population for a given DBH; the
 #'     authors note that its shape is unlikely to suit any particular plot
 #'     (pp. 4--5).}
-#'   \item{`"plot_mean_dbh"`}{Requires `mean_DBH`. Jack pine, eq. 11
+#'   \item{`"plot_mean_dbh"`}{Requires `DMEAN`. Jack pine, eq. 11
 #'     (Chapman–Richards) and black spruce, eq. 12 (Hossfeld II) (Tableau 8,
 #'     p. 14):
 #'     \deqn{PIG: H = 1.3 + (\alpha_{10} + \alpha_{11} MD)
 #'       [1 - \exp(-(\alpha_{20} + \alpha_{21} MD) DBH)]^{\alpha_3};}
 #'     \deqn{EPN: H = 1.3 + (\alpha_{10} + \alpha_{11} MD)
 #'       \frac{DBH^{\alpha_3}}{(\alpha_{20} + \alpha_{21} MD) + DBH^{\alpha_3}},}
-#'     where \eqn{MD} is `mean_DBH`.}
-#'   \item{`"dominant"`}{Requires `HDOM` and `dominant_DBH`. Jack pine, eq. 13
+#'     where \eqn{MD} is `DMEAN`.}
+#'   \item{`"dominant"`}{Requires `HDOM` and `DDOM`. Jack pine, eq. 13
 #'     and black spruce, eq. 14 (Tableau 9, p. 17), the same forms with
 #'     \eqn{\alpha_{10} + \alpha_{11} HDOM} as asymptote term and
 #'     \eqn{\alpha_{20} + \alpha_{22} DD} as rate/scale term, where \eqn{DD}
-#'     is `dominant_DBH`.}
+#'     is `DDOM`.}
 #' }
 #' Predictors not used by the selected variant are ignored with a warning.
 #'
@@ -63,7 +63,7 @@
 #'   `"PICE.MAR"` or `"PINU.BAN"` (compact `"PICEMAR"` is accepted).
 #' @param variant Model variant: `"dbh"` (default), `"plot_mean_dbh"` or
 #'   `"dominant"`. See Details.
-#' @param mean_DBH Numeric vector. Plot level. Mean DBH (cm) of the plot,
+#' @param DMEAN Numeric vector. Plot level. Arithmetic mean DBH (cm) of the plot,
 #'   used by `variant = "plot_mean_dbh"`: "le DHP moyen de tous les arbres de
 #'   la placette" (source "DMOY", p. 6), i.e. the arithmetic (not quadratic)
 #'   mean DBH of all trees in the plot. The source does not state whether
@@ -73,7 +73,7 @@
 #'   (source "HDOM", p. 7), the dominant trees being "les 8 plus hauts arbres
 #'   plantés faisant partie de l'étage des arbres dominants et bien répartis
 #'   dans la placette (200 arbres/ha)" (400 m² plots, p. 2). Must be `> 0`.
-#' @param dominant_DBH Numeric vector. Plot level. Mean DBH (cm) of the same
+#' @param DDOM Numeric vector. Plot level. Mean DBH (cm) of the same
 #'   dominant trees (source "DDOM", p. 7), used by `variant = "dominant"`.
 #'   Must be `>= 0`.
 #' @param keep_model_id Logical. If `TRUE`, add column `model_id`
@@ -99,26 +99,26 @@
 #' # With the plot mean DBH
 #' hd_auger2025(
 #'   DBH = c(5, 10, 20), species = "PINU.BAN",
-#'   variant = "plot_mean_dbh", mean_DBH = 12
+#'   variant = "plot_mean_dbh", DMEAN = 12
 #' )
 #'
 #' # With dominant height and dominant DBH, inside dplyr::mutate()
 #' trees <- data.frame(
 #'   DBH = c(6, 9, 12),
 #'   species = "PICE.MAR",
-#'   HDOM = 9, dominant_DBH = 11
+#'   HDOM = 9, DDOM = 11
 #' )
 #' dplyr::mutate(
 #'   trees,
 #'   hd_auger2025(DBH, species, variant = "dominant",
-#'                HDOM = HDOM, dominant_DBH = dominant_DBH,
+#'                HDOM = HDOM, DDOM = DDOM,
 #'                keep_model_id = TRUE)
 #' )
 #'
 #' @export
 hd_auger2025 <- function(DBH, species,
                          variant = c("dbh", "plot_mean_dbh", "dominant"),
-                         mean_DBH = NULL, HDOM = NULL, dominant_DBH = NULL,
+                         DMEAN = NULL, HDOM = NULL, DDOM = NULL,
                          keep_model_id = FALSE) {
   fn <- "hd_auger2025"
 
@@ -131,11 +131,11 @@ hd_auger2025 <- function(DBH, species,
     cli::cli_abort("{.arg species} must be a character vector.")
   }
 
-  preds <- list(mean_DBH = mean_DBH, HDOM = HDOM, dominant_DBH = dominant_DBH)
+  preds <- list(DMEAN = DMEAN, HDOM = HDOM, DDOM = DDOM)
   needed <- switch(variant,
     dbh = character(),
-    plot_mean_dbh = "mean_DBH",
-    dominant = c("HDOM", "dominant_DBH")
+    plot_mean_dbh = "DMEAN",
+    dominant = c("HDOM", "DDOM")
   )
   supplied <- names(preds)[!vapply(preds, is.null, logical(1))]
   missing <- setdiff(needed, supplied)
@@ -153,10 +153,10 @@ hd_auger2025 <- function(DBH, species,
       class = "CanadaForestAllometry_hd_unused_predictor"
     )
   }
-  if ("mean_DBH" %in% needed) assert_numeric_vec(mean_DBH, "mean_DBH", gte = 0, allow_na = TRUE)
+  if ("DMEAN" %in% needed) assert_numeric_vec(DMEAN, "DMEAN", gte = 0, allow_na = TRUE)
   if ("HDOM" %in% needed) assert_numeric_vec(HDOM, "HDOM", gt = 0, allow_na = TRUE)
-  if ("dominant_DBH" %in% needed) {
-    assert_numeric_vec(dominant_DBH, "dominant_DBH", gte = 0, allow_na = TRUE)
+  if ("DDOM" %in% needed) {
+    assert_numeric_vec(DDOM, "DDOM", gte = 0, allow_na = TRUE)
   }
 
   if (length(DBH) == 0L) {
@@ -173,9 +173,11 @@ hd_auger2025 <- function(DBH, species,
 
   lower <- list(DBH = p$DBH_min)
   upper <- list(DBH = p$DBH_max)
+  # Range columns in the parameter table use the original names.
+  range_col <- c(DMEAN = "mean_DBH", HDOM = "HDOM", DDOM = "dominant_DBH")
   for (nm in needed) {
-    lower[[nm]] <- p[[paste0(nm, "_min")]]
-    upper[[nm]] <- p[[paste0(nm, "_max")]]
+    lower[[nm]] <- p[[paste0(range_col[[nm]], "_min")]]
+    upper[[nm]] <- p[[paste0(range_col[[nm]], "_max")]]
   }
   .hd_warn_out_of_range(v[c("DBH", needed)], lower = lower, upper = upper, fn = fn)
 
@@ -183,11 +185,11 @@ hd_auger2025 <- function(DBH, species,
     height <- 1.3 + p$a1 * exp(-p$a2 * v$DBH^(-p$a3))
   } else {
     if (variant == "plot_mean_dbh") {
-      asym <- p$a10 + p$a11 * v$mean_DBH
-      rate <- p$a20 + p$a21 * v$mean_DBH
+      asym <- p$a10 + p$a11 * v$DMEAN
+      rate <- p$a20 + p$a21 * v$DMEAN
     } else {
       asym <- p$a10 + p$a11 * v$HDOM
-      rate <- p$a20 + p$a22 * v$dominant_DBH
+      rate <- p$a20 + p$a22 * v$DDOM
     }
     height <- ifelse(
       p$equation == "chapman_richards",
@@ -197,7 +199,7 @@ hd_auger2025 <- function(DBH, species,
   }
 
   # Reachable far outside the data, e.g. jack pine "dominant" with
-  # dominant_DBH >= 62.7 cm, where the rate term a20 + a22 * dominant_DBH <= 0.
+  # DDOM >= 62.7 cm, where the rate term a20 + a22 * DDOM <= 0.
   # Heights are otherwise > 1 m for all valid inputs.
   bad <- is.na(height) & !is.na(v$DBH) & !is.na(p$Species)
   if (variant != "dbh") bad <- bad & !is.na(asym) & !is.na(rate)

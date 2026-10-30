@@ -22,7 +22,7 @@ test_that("hd_auger2016 returns a well-formed tibble", {
 test_that("hd_auger2016 reproduces the Annexe 1 worked example (white spruce)", {
   out <- hd(
     DBH = 20, species = "PICE.GLA", BA = 20, QMD = 15,
-    SDOM = "1", VP = "FC1", TMOY = 2.3
+    bioclim_subdomain = "1", potential_veg = "FC1", MAT = 2.3
   )$height
   expect_equal(out, 12.0, tolerance = 0.05 / 12)
 
@@ -34,8 +34,8 @@ test_that("hd_auger2016 reproduces the Annexe 1 worked example (white spruce)", 
 test_that("hd_auger2016 reproduces the effect sizes reported on p. 11", {
   f <- function(species, ...) {
     hd(
-      DBH = 20, species = species, BA = 20, QMD = 15.4, MP = 2, PTOT = 1000,
-      altitude = 300, disturbance = "aucune", ...
+      DBH = 20, species = species, BA = 20, QMD = 15.4, physical_env = 2, MAP = 1000,
+      elevation = 300, disturbance = "aucune", ...
     )$height
   }
   epn <- function(...) f("PICE.MAR", ...)
@@ -43,31 +43,31 @@ test_that("hd_auger2016 reproduces the effect sizes reported on p. 11", {
   ers <- function(...) f("ACER.SAH", ...)
 
   expect_equal(
-    epn(SDOM = "5ouest", VP = "RS2", TMOY = 1) - epn(SDOM = "6est", VP = "RS2", TMOY = 1),
+    epn(bioclim_subdomain = "5ouest", potential_veg = "RS2", MAT = 1) - epn(bioclim_subdomain = "6est", potential_veg = "RS2", MAT = 1),
     1.0, tolerance = 0.1
   )
   expect_equal(
-    sab(SDOM = "5ouest", VP = "RS2") - sab(SDOM = "6est", VP = "RS2"),
+    sab(bioclim_subdomain = "5ouest", potential_veg = "RS2") - sab(bioclim_subdomain = "6est", potential_veg = "RS2"),
     1.8, tolerance = 0.1 / 1.8
   )
   expect_equal(
-    epn(SDOM = "5ouest", VP = "RS2", TMOY = 4) - epn(SDOM = "5ouest", VP = "RS2", TMOY = 1),
+    epn(bioclim_subdomain = "5ouest", potential_veg = "RS2", MAT = 4) - epn(bioclim_subdomain = "5ouest", potential_veg = "RS2", MAT = 1),
     0.9, tolerance = 0.1 / 0.9
   )
   expect_equal(
-    ers(SDOM = "3ouest", VP = "FE3", TMOY = 5.5) - ers(SDOM = "3ouest", VP = "FE3", TMOY = 3.5),
+    ers(bioclim_subdomain = "3ouest", potential_veg = "FE3", MAT = 5.5) - ers(bioclim_subdomain = "3ouest", potential_veg = "FE3", MAT = 3.5),
     1.2, tolerance = 0.1 / 1.2
   )
   expect_equal(
-    epn(SDOM = "5ouest", VP = "RE2", TMOY = 1) - epn(SDOM = "5ouest", VP = "RS2", TMOY = 1),
+    epn(bioclim_subdomain = "5ouest", potential_veg = "RE2", MAT = 1) - epn(bioclim_subdomain = "5ouest", potential_veg = "RS2", MAT = 1),
     0.5, tolerance = 0.1 / 0.5
   )
   expect_equal(
-    sab(SDOM = "5ouest", VP = "RE2") - sab(SDOM = "5ouest", VP = "RS2"),
+    sab(bioclim_subdomain = "5ouest", potential_veg = "RE2") - sab(bioclim_subdomain = "5ouest", potential_veg = "RS2"),
     -0.59, tolerance = 0.1 / 0.59
   )
   expect_equal(
-    ers(SDOM = "3ouest", VP = "MJ1", TMOY = 3.5) - ers(SDOM = "3ouest", VP = "FE3", TMOY = 3.5),
+    ers(bioclim_subdomain = "3ouest", potential_veg = "MJ1", MAT = 3.5) - ers(bioclim_subdomain = "3ouest", potential_veg = "FE3", MAT = 3.5),
     -1.0, tolerance = 0.1
   )
 })
@@ -78,7 +78,7 @@ test_that("hd_auger2016 matches CFSForestTools for species with published parame
   # tmp/generate_hd_auger2016_comparison_values.R. Other species differ by
   # design (CFSForestTools uses unpublished estimates for them).
   ref <- tibble::tribble(
-    ~species, ~DBH, ~BA, ~QMD, ~SDOM, ~MP, ~VP, ~TMOY, ~PTOT, ~altitude, ~expected,
+    ~species, ~DBH, ~BA, ~QMD, ~bioclim_subdomain, ~physical_env, ~potential_veg, ~MAT, ~MAP, ~elevation, ~expected,
     "PRUN.SER", 11.7, 4.291710, 19.086426, "1", "2", "FE2", 6.1296, 948.2191, 90, 11.7242,
     "PRUN.SER", 32.9, 40.184249, 29.829712, "1", "2", "FE2", 7.0328, 1041.631, 40, 23.5316,
     "PRUN.SER", 18.4, 22.862725, 15.260334, "2EST", "2", "MJ1", 4.9067, 1114.7959, 140, 15.1708,
@@ -112,7 +112,7 @@ test_that("hd_auger2016 matches CFSForestTools for species with published parame
   )
   out <- dplyr::mutate(
     ref,
-    hd(DBH, species, BA, QMD, SDOM, MP, VP, TMOY, PTOT, altitude, disturbance = "NONE")
+    hd(DBH, species, BA, QMD, bioclim_subdomain, physical_env, potential_veg, MAT, MAP, elevation, disturbance = "NONE")
   )
   expect_lt(max(abs(out$height - out$expected)), 0.02)
 })
@@ -133,36 +133,36 @@ test_that("hd_auger2016 requires only the predictors used by the species present
     "QMD.*PICE.MAR"
   )
   expect_error(
-    hd_auger2016(DBH = 20, species = "BETU.PAP", BA = 20, QMD = 15, SDOM = "4est", MP = 2, VP = "MS2", PTOT = 1000, disturbance = "none"),
-    "altitude.*BETU.PAP"
+    hd_auger2016(DBH = 20, species = "BETU.PAP", BA = 20, QMD = 15, bioclim_subdomain = "4est", physical_env = 2, potential_veg = "MS2", MAP = 1000, disturbance = "none"),
+    "elevation.*BETU.PAP"
   )
   expect_error(
-    hd_auger2016(DBH = 20, species = "PINU.BAN", BA = 20, QMD = 15, SDOM = "4est", MP = 2),
+    hd_auger2016(DBH = 20, species = "PINU.BAN", BA = 20, QMD = 15, bioclim_subdomain = "4est", physical_env = 2),
     "disturbance.*PINU.BAN"
   )
 
   # Unused predictors are ignored, including NA values
   base <- hd(DBH = 20, species = "ACER.SAC", BA = 20)$height
   expect_identical(
-    hd(DBH = 20, species = "ACER.SAC", BA = 20, QMD = NA_real_, SDOM = NA, MP = 3, VP = "RS2", TMOY = NA_real_, PTOT = NA_real_, altitude = NA_real_, disturbance = NA)$height,
+    hd(DBH = 20, species = "ACER.SAC", BA = 20, QMD = NA_real_, bioclim_subdomain = NA, physical_env = 3, potential_veg = "RS2", MAT = NA_real_, MAP = NA_real_, elevation = NA_real_, disturbance = NA)$height,
     base
   )
 })
 
 test_that("hd_auger2016 returns NA for NA inputs used by the species", {
   args <- list(
-    DBH = 20, species = "PICE.MAR", BA = 20, QMD = 15, SDOM = "5ouest",
-    MP = 2, VP = "RS2", TMOY = 1, PTOT = 1000, disturbance = "aucune"
+    DBH = 20, species = "PICE.MAR", BA = 20, QMD = 15, bioclim_subdomain = "5ouest",
+    physical_env = 2, potential_veg = "RS2", MAT = 1, MAP = 1000, disturbance = "aucune"
   )
   expect_false(is.na(do.call(hd, args)$height))
-  for (nm in c("DBH", "BA", "QMD", "SDOM", "MP", "VP", "TMOY", "PTOT", "disturbance")) {
+  for (nm in c("DBH", "BA", "QMD", "bioclim_subdomain", "physical_env", "potential_veg", "MAT", "MAP", "disturbance")) {
     a <- args
     a[[nm]] <- if (is.numeric(a[[nm]])) NA_real_ else NA
     expect_true(is.na(do.call(hd, a)$height), info = nm)
   }
   bp <- list(
-    DBH = 20, species = "BETU.PAP", BA = 20, QMD = 15, SDOM = "4est", MP = 2,
-    VP = "MS2", PTOT = 1000, altitude = NA_real_, disturbance = "none"
+    DBH = 20, species = "BETU.PAP", BA = 20, QMD = 15, bioclim_subdomain = "4est", physical_env = 2,
+    potential_veg = "MS2", MAP = 1000, elevation = NA_real_, disturbance = "none"
   )
   expect_true(is.na(do.call(hd, bp)$height))
 
@@ -173,47 +173,47 @@ test_that("hd_auger2016 returns NA for NA inputs used by the species", {
 })
 
 test_that("hd_auger2016 normalizes class codes", {
-  p <- function(SDOM = "5ouest", VP = "RS2", disturbance = "aucune", MP = 2) {
+  p <- function(bioclim_subdomain = "5ouest", potential_veg = "RS2", disturbance = "aucune", physical_env = 2) {
     hd(
-      DBH = 20, species = "PICE.MAR", BA = 20, QMD = 15, SDOM = SDOM, MP = MP,
-      VP = VP, TMOY = 1, PTOT = 1000, disturbance = disturbance
+      DBH = 20, species = "PICE.MAR", BA = 20, QMD = 15, bioclim_subdomain = bioclim_subdomain, physical_env = physical_env,
+      potential_veg = potential_veg, MAT = 1, MAP = 1000, disturbance = disturbance
     )$height
   }
   ref <- p()
-  expect_identical(p(SDOM = "5OUEST"), ref)
-  expect_identical(p(SDOM = " 5Ouest "), ref)
-  expect_identical(p(VP = "rs2"), ref)
-  expect_identical(p(MP = "2"), ref)
-  expect_identical(p(SDOM = factor("5ouest")), ref)
+  expect_identical(p(bioclim_subdomain = "5OUEST"), ref)
+  expect_identical(p(bioclim_subdomain = " 5Ouest "), ref)
+  expect_identical(p(potential_veg = "rs2"), ref)
+  expect_identical(p(physical_env = "2"), ref)
+  expect_identical(p(bioclim_subdomain = factor("5ouest")), ref)
   expect_identical(p(disturbance = "none"), ref)
   expect_identical(p(disturbance = "AUCUNE"), ref)
   expect_identical(p(disturbance = "natural"), p(disturbance = "naturelle"))
   expect_identical(p(disturbance = "anthropogenic"), p(disturbance = "Anthropique"))
   expect_false(identical(p(disturbance = "natural"), ref))
-  expect_true(is.na(p(SDOM = "")))
+  expect_true(is.na(p(bioclim_subdomain = "")))
 })
 
 test_that("hd_auger2016 aborts on malformed class codes", {
   base <- list(DBH = 20, species = "PICE.MAR", BA = 20, QMD = 15)
   call <- function(...) do.call(hd_auger2016, c(base, list(...)))
-  expect_error(call(SDOM = "5nord"), "Invalid `SDOM`.*5nord")
-  expect_error(call(MP = 10), "Invalid `MP`")
-  expect_error(call(VP = "RS"), "Invalid `VP`")
+  expect_error(call(bioclim_subdomain = "5nord"), "Invalid `bioclim_subdomain`.*5nord")
+  expect_error(call(physical_env = 10), "Invalid `physical_env`")
+  expect_error(call(potential_veg = "RS"), "Invalid `potential_veg`")
   expect_error(call(disturbance = "fire"), "Invalid `disturbance`")
-  expect_error(call(SDOM = TRUE), "`SDOM` must be a character vector")
+  expect_error(call(bioclim_subdomain = TRUE), "`bioclim_subdomain` must be a character vector")
 })
 
 test_that("hd_auger2016 warns once and returns NA for classes without an estimate", {
   # Red oak has no estimate for physical environment 7 (Annexe 2).
   expect_warning(
-    out <- hd_auger2016(DBH = 20, species = "QUER.RUB", BA = 20, MP = c(7, 2)),
+    out <- hd_auger2016(DBH = 20, species = "QUER.RUB", BA = 20, physical_env = c(7, 2)),
     class = "CanadaForestAllometry_hd_uncovered_level"
   )
   expect_true(is.na(out$height[1]))
   expect_false(is.na(out$height[2]))
 
   w <- expect_warning(
-    hd_auger2016(DBH = 20, species = "QUER.RUB", BA = 20, MP = rep(7, 12)),
+    hd_auger2016(DBH = 20, species = "QUER.RUB", BA = 20, physical_env = rep(7, 12)),
     class = "CanadaForestAllometry_hd_uncovered_level"
   )
   expect_match(conditionMessage(w), "12 rows")
@@ -227,7 +227,7 @@ test_that("hd_auger2016 validates inputs", {
   expect_error(hd_auger2016(DBH = 20, species = 1, BA = 20), "species")
   expect_error(hd_auger2016(DBH = 20, species = "ACER.SAC", BA = -1), "BA")
   expect_error(hd_auger2016(DBH = 20, species = "ACER.SAC", BA = 20, QMD = 0), "QMD")
-  expect_error(hd_auger2016(DBH = 20, species = "ACER.SAC", BA = 20, PTOT = -1), "PTOT")
+  expect_error(hd_auger2016(DBH = 20, species = "ACER.SAC", BA = 20, MAP = -1), "MAP")
   expect_error(hd_auger2016(DBH = 20, species = "PICE.ABI", BA = 20), "not covered")
   expect_error(
     hd_auger2016(DBH = c(10, 20, 30), species = c("ACER.SAC", "ULMU.AME"), BA = 20),
@@ -246,19 +246,19 @@ test_that("hd_auger2016 recycles inside dplyr::mutate()", {
     DBH = c(14, 22, 18),
     species = c("PICE.MAR", "ABIE.BAL", "ACER.SAH"),
     QMD = c(15, 15, 20),
-    SDOM = c("5ouest", "5ouest", "3ouest"),
-    VP = c("RS2", "RS2", "FE3"),
-    TMOY = c(1, 1, 3.5)
+    bioclim_subdomain = c("5ouest", "5ouest", "3ouest"),
+    potential_veg = c("RS2", "RS2", "FE3"),
+    MAT = c(1, 1, 3.5)
   )
   out <- dplyr::mutate(
     trees,
-    hd(DBH, species, BA = 22, QMD = QMD, SDOM = SDOM, MP = 2, VP = VP, TMOY = TMOY, PTOT = 1000, altitude = 300, disturbance = "none")
+    hd(DBH, species, BA = 22, QMD = QMD, bioclim_subdomain = bioclim_subdomain, physical_env = 2, potential_veg = potential_veg, MAT = MAT, MAP = 1000, elevation = 300, disturbance = "none")
   )
   expect_equal(nrow(out), 3L)
   single <- vapply(seq_len(3), function(i) {
     hd(
-      trees$DBH[i], trees$species[i], 22, trees$QMD[i], trees$SDOM[i], 2,
-      trees$VP[i], trees$TMOY[i], 1000, 300, "none"
+      trees$DBH[i], trees$species[i], 22, trees$QMD[i], trees$bioclim_subdomain[i], 2,
+      trees$potential_veg[i], trees$MAT[i], 1000, 300, "none"
     )$height
   }, numeric(1))
   expect_equal(out$height, single)
@@ -279,14 +279,14 @@ test_that("hd_auger2016 warns for inputs outside the fitting range", {
   )
   expect_warning(
     hd_auger2016(
-      DBH = 20, species = "BETU.PAP", BA = 20, QMD = 15, SDOM = "4est", MP = 2,
-      VP = "MS2", PTOT = 1000, altitude = 5000, disturbance = "none"
+      DBH = 20, species = "BETU.PAP", BA = 20, QMD = 15, bioclim_subdomain = "4est", physical_env = 2,
+      potential_veg = "MS2", MAP = 1000, elevation = 5000, disturbance = "none"
     ),
-    "altitude"
+    "elevation"
   )
   # Unused out-of-range predictors are not reported
   expect_no_warning(
-    hd_auger2016(DBH = 20, species = "ACER.SAC", BA = 20, altitude = 5000, TMOY = 50, PTOT = 1e5)
+    hd_auger2016(DBH = 20, species = "ACER.SAC", BA = 20, elevation = 5000, MAT = 50, MAP = 1e5)
   )
 })
 
@@ -298,8 +298,21 @@ test_that("hd_auger2016 is consistent with the registry", {
   expect_identical(row$required_predictors[[1]], c("DBH", "BA"))
   expect_setequal(
     row$optional_predictors[[1]],
-    c("QMD", "SDOM", "MP", "VP", "TMOY", "PTOT", "altitude", "disturbance")
+    c("QMD", "bioclim_subdomain", "physical_env", "potential_veg", "MAT", "MAP", "elevation", "disturbance")
   )
   pars <- CanadaForestAllometry:::.get_internal_data("parameters_hd_Auger2016")
   expect_equal(nrow(pars), 27L)
+})
+
+test_that("keep_model_id adds model_id", {
+  out <- hd_auger2016(c(20, 20), c("ACER.SAC", NA), BA = 20, keep_model_id = TRUE)
+  expect_identical(out$model_id, c("auger2016", NA))
+  expect_identical(
+    hd_auger2016(numeric(), "ACER.SAC", BA = numeric(), keep_model_id = TRUE),
+    tibble::tibble(height = numeric(), model_id = character())
+  )
+  expect_error(
+    hd_auger2016(20, "ACER.SAC", BA = 20, keep_model_id = "yes"),
+    "keep_model_id"
+  )
 })

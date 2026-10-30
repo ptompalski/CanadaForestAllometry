@@ -4,7 +4,7 @@
 \alias{vol_kozak94}
 \title{Estimate tree volume using Kozak (1994) taper model (BC, BEC-zone specific)}
 \usage{
-vol_kozak94(DBH, height, species, BEC_zone)
+vol_kozak94(DBH, height, species, bec_zone)
 }
 \arguments{
 \item{DBH}{Numeric vector of diameter at breast height (cm).}
@@ -13,7 +13,7 @@ vol_kozak94(DBH, height, species, BEC_zone)
 
 \item{species}{Character vector of species codes (e.g. "TSUG.HET").}
 
-\item{BEC_zone}{Character vector of BEC zone codes (e.g., "CWH", "ICH", "IDF").}
+\item{bec_zone}{Character vector of BEC zone codes (e.g., "CWH", "ICH", "IDF").}
 }
 \value{
 A tibble with volumes (m^3): total, merchantable.
@@ -54,7 +54,7 @@ vol_kozak94(
   DBH = 35,
   height = 25,
   species = "PSEU.MEN",
-  BEC_zone = "CWH"
+  bec_zone = "CWH"
 )
 
 # Multiple trees, vectorized
@@ -62,7 +62,7 @@ vol_kozak94(
   DBH = c(22, 30, 45),
   height = c(18, 24, 33),
   species = c("PSEU.MEN", "THUJ.PLI", "POPU.BAL"),
-  BEC_zone = c("CWH", "ICH", "SBS")
+  bec_zone = c("CWH", "ICH", "SBS")
 )
 
 }

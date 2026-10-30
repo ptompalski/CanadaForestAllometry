@@ -9,7 +9,7 @@ si_lundgrendolid1970(
   height = NULL,
   si = NULL,
   species,
-  model = c("exponential_monomolecular", "monomolecular")
+  variant = c("exponential_monomolecular", "monomolecular")
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ si_lundgrendolid1970(
 
 \item{species}{Character vector of species codes (e.g., \code{"PICE.MAR"}).}
 
-\item{model}{Character scalar. One of \code{"exponential_monomolecular"} or \code{"monomolecular"}.}
+\item{variant}{Character scalar. One of \code{"exponential_monomolecular"} or \code{"monomolecular"}.}
 }
 \value{
 A tibble with columns:
@@ -51,7 +51,7 @@ Inputs/outputs are metric; the original equations are in imperial units, so
 the function converts internally.
 }
 \examples{
-# Predict site index from age + height (default model: exponential_monomolecular)
+# Predict site index from age + height (default variant: exponential_monomolecular)
 si_lundgrendolid1970(
   age = c(20, 40, 60),
   height = c(8, 16, 24),

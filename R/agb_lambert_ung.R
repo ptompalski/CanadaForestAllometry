@@ -2,14 +2,14 @@
 # -------------------------------------------------------------------------
 # Changes requested:
 #   1) Assume `standardize_species_code()` exists (CanadaForestAllometry-wide helper) and use it directly
-#   2) Allow `height` to be NA in validation (needed for equation_set = "auto" or "dbh")
+#   2) Allow `height` to be NA in validation (needed for variant = "auto" or "dbh")
 #
 # Core behavior:
-#   - equation_set = "auto": per-tree choice
+#   - variant = "auto": per-tree choice
 #       * if height is valid (>0, finite, non-NA) -> DBHHT
 #       * else                                   -> DBH
-#   - equation_set = "dbh":        always DBH
-#   - equation_set = "dbh_height": always DBHHT (requires valid height for all rows)
+#   - variant = "dbh":        always DBH
+#   - variant = "dbh_height": always DBHHT (requires valid height for all rows)
 #
 # Performance:
 #   - vectorized across species and equation set, grouped by (model_id, species)
@@ -20,7 +20,7 @@
 # Validate DBH and height.
 # DBH: must be numeric, non-NA, > 0
 # height: must be numeric; NA is allowed (auto/dbh), but any *non-NA* values must be > 0
-# (We validate "height required" separately when equation_set forces DBHHT.)
+# (We validate "height required" separately when variant forces DBHHT.)
 .lu_validate_inputs <- function(DBH, height = NULL) {
   # DBH checks
   if (!is.numeric(DBH)) {
@@ -39,7 +39,7 @@
       rlang::abort("`height` must be numeric.")
     }
 
-    # height may be NA (e.g., equation_set = "auto"), but non-NA values must be > 0
+    # height may be NA (e.g., variant = "auto"), but non-NA values must be > 0
     h_ok <- is.na(height) | (is.finite(height) & height > 0)
     if (any(!h_ok)) {
       rlang::abort("`height` must be > 0 and finite (or NA when allowed).")
@@ -191,14 +191,14 @@
 #' @description
 #' Unified interface for the Lambert et al. (2005) and Ung et al. (2008) Canadian
 #' national tree aboveground biomass equations. Two equation sets are available:
-#' dbh-only and dbh+height. By default (`equation_set = "auto"`), the dbh+height
+#' dbh-only and dbh+height. By default (`variant = "auto"`), the dbh+height
 #' set is used when valid `height` is provided, otherwise the dbh-only set is used.
 #'
 #' @param DBH Tree DBH (cm). Numeric vector.
 #' @param height Tree height (m). Numeric vector. Optional for the dbh-only equation set.
 #' @param species Tree species code in the NFI standard (e.g. `"POPU.TRE"`). Can be a
 #'   scalar (recycled) or a vector matching `DBH`.
-#' @param equation_set Which Lambert & Ung equation set to use. One of `"auto"`, `"dbh"`,
+#' @param variant Which Lambert & Ung equation set to use. One of `"auto"`, `"dbh"`,
 #'   `"dbh_height"`. `"auto"` makes a per-tree choice based on whether `height` is valid.
 #' @param keep_model_id Logical. If `TRUE`, include a `model_id` column indicating which
 #'   equation set was used (`"DBH"` or `"DBHHT"`).
@@ -209,7 +209,7 @@
 #' @export
 #' @examples
 #'
-#' # Auto-selection (equation_set = "auto" by default):
+#' # Auto-selection (variant = "auto" by default):
 #' # height missing -> DBH-only equations
 #' agb_lambert_ung(
 #'   DBH = 20,
@@ -235,7 +235,7 @@
 #'   DBH = 20,
 #'   height = 17,
 #'   species = "PICE.MAR",
-#'   equation_set = "dbh"
+#'   variant = "dbh"
 #' )
 #'
 #' # Multiple rows
@@ -260,10 +260,10 @@ agb_lambert_ung <- function(
   DBH,
   height = NA_real_,
   species = NA,
-  equation_set = c("auto", "dbh", "dbh_height"),
+  variant = c("auto", "dbh", "dbh_height"),
   keep_model_id = FALSE
 ) {
-  equation_set <- match.arg(equation_set)
+  variant <- match.arg(variant)
 
   # Validate DBH and height *shape* + numeric sanity.
   # Height is allowed to be NA here (auto/dbh); "height required" is enforced later.
@@ -292,18 +292,18 @@ agb_lambert_ung <- function(
   # Height is "usable" only if finite and > 0
   has_ht <- !is.na(height) & is.finite(height) & height > 0
 
-  # Map user-facing equation_set to per-row model_id
+  # Map user-facing variant to per-row model_id
   model_id <- switch(
-    equation_set,
+    variant,
     "auto" = ifelse(has_ht, "DBHHT", "DBH"),
     "dbh" = rep("DBH", n),
     "dbh_height" = rep("DBHHT", n)
   )
 
   # If user forces height-based equations, require valid height for all rows
-  if (identical(equation_set, "dbh_height") && any(!has_ht)) {
+  if (identical(variant, "dbh_height") && any(!has_ht)) {
     rlang::abort(
-      "`height` must be provided (>0 and finite) for equation_set = \"dbh_height\"."
+      "`height` must be provided (>0 and finite) for variant = \"dbh_height\"."
     )
   }
 

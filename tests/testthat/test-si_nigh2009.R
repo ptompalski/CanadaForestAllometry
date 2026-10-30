@@ -41,19 +41,19 @@ test_that("si_nigh2009 validates numeric inputs", {
   expect_error(si_nigh2009(age = 50, si = NA_real_))
 })
 
-test_that("si_nigh2009 validates the model argument", {
-  expect_error(si_nigh2009(age = 50, si = 18, model = 4))
-  expect_error(si_nigh2009(age = 50, si = 18, model = c(1, 2)))
+test_that("si_nigh2009 validates the variant argument", {
+  expect_error(si_nigh2009(age = 50, si = 18, variant = 4))
+  expect_error(si_nigh2009(age = 50, si = 18, variant = c(1, 2)))
 })
 
 test_that("si_nigh2009 requires bec_zone for model 3 and rejects unknown zones", {
-  expect_error(si_nigh2009(age = 50, si = 18, model = 3), "bec_zone")
-  expect_error(si_nigh2009(age = 50, si = 18, model = 3, bec_zone = "XYZ"))
+  expect_error(si_nigh2009(age = 50, si = 18, variant = 3), "bec_zone")
+  expect_error(si_nigh2009(age = 50, si = 18, variant = 3, bec_zone = "XYZ"))
 })
 
 test_that("si_nigh2009 warns when bec_zone is supplied with model 1 or 2", {
-  expect_warning(si_nigh2009(age = 50, si = 18, model = 1, bec_zone = "SBS"))
-  expect_warning(si_nigh2009(age = 50, si = 18, model = 2, bec_zone = "SBS"))
+  expect_warning(si_nigh2009(age = 50, si = 18, variant = 1, bec_zone = "SBS"))
+  expect_warning(si_nigh2009(age = 50, si = 18, variant = 2, bec_zone = "SBS"))
 })
 
 test_that("si_nigh2009 aborts on non-finite predictions from degenerate inputs", {
@@ -69,7 +69,7 @@ test_that("si_nigh2009 aborts on non-finite predictions from degenerate inputs",
 
 # --- Tier 1 (fidelity): Model 1 matches the SAS reference implementation ---
 # Independent re-derivation of the SAS HT_Nigh_2009 macro (b1=8.842, b2=-1.124,
-# b3=-1.561, Tr=50), evaluated directly, must equal si_nigh2009(model = 1).
+# b3=-1.561, Tr=50), evaluated directly, must equal si_nigh2009(variant = 1).
 test_that("si_nigh2009 model 1 matches the SAS HT_Nigh_2009 reference", {
   sas_ht <- function(bha, si) {
     b1 <- 8.842
@@ -86,7 +86,7 @@ test_that("si_nigh2009 model 1 matches the SAS HT_Nigh_2009 reference", {
     si = c(8, 14, 20, 26)
   )
   ref <- mapply(sas_ht, grid$bha, grid$si)
-  got <- si_nigh2009(age = grid$bha, si = grid$si, model = 1)$height
+  got <- si_nigh2009(age = grid$bha, si = grid$si, variant = 1)$height
   expect_equal(got, ref, tolerance = 1e-10)
 })
 
@@ -114,21 +114,21 @@ test_that("si_nigh2009 model 1 SI direction matches the SAS SI_Nigh_2009 referen
     si = c(10, 16, 22, 28)
   )
   height <- mapply(
-    function(a, s) si_nigh2009(age = a, si = s, model = 1)$height,
+    function(a, s) si_nigh2009(age = a, si = s, variant = 1)$height,
     grid$bha, grid$si
   )
   ref <- mapply(sas_si, grid$bha, height)
-  got <- si_nigh2009(age = grid$bha, height = height, model = 1)$si
+  got <- si_nigh2009(age = grid$bha, height = height, variant = 1)$si
   expect_equal(got, ref, tolerance = 1e-6)
 })
 
 # --- Fidelity guard: model is exact at the base age (height == si at BHA 50) ---
 test_that("si_nigh2009 returns height == si at breast-height age 50", {
-  expect_equal(si_nigh2009(age = 50, si = 20, model = 1)$height, 20)
-  expect_equal(si_nigh2009(age = 50, si = 20, model = 2)$height, 20)
+  expect_equal(si_nigh2009(age = 50, si = 20, variant = 1)$height, 20)
+  expect_equal(si_nigh2009(age = 50, si = 20, variant = 2)$height, 20)
   for (z in c("ICH", "IDF", "SBS")) {
     expect_equal(
-      si_nigh2009(age = 50, si = 20, model = 3, bec_zone = z)$height,
+      si_nigh2009(age = 50, si = 20, variant = 3, bec_zone = z)$height,
       20,
       info = z
     )
@@ -140,18 +140,18 @@ test_that("si_nigh2009 predict/invert round-trip recovers si", {
   ages <- c(15, 30, 80, 120)
   sis <- c(10, 16, 22, 28)
   for (m in 1:2) {
-    h <- si_nigh2009(age = ages, si = sis, model = m)$height
+    h <- si_nigh2009(age = ages, si = sis, variant = m)$height
     expect_equal(
-      si_nigh2009(age = ages, height = h, model = m)$si,
+      si_nigh2009(age = ages, height = h, variant = m)$si,
       sis,
       tolerance = 1e-6,
       info = paste("model", m)
     )
   }
   # zonal model round-trip
-  h3 <- si_nigh2009(age = ages, si = sis, model = 3, bec_zone = "SBS")$height
+  h3 <- si_nigh2009(age = ages, si = sis, variant = 3, bec_zone = "SBS")$height
   expect_equal(
-    si_nigh2009(age = ages, height = h3, model = 3, bec_zone = "SBS")$si,
+    si_nigh2009(age = ages, height = h3, variant = 3, bec_zone = "SBS")$si,
     sis,
     tolerance = 1e-6
   )
@@ -159,9 +159,9 @@ test_that("si_nigh2009 predict/invert round-trip recovers si", {
 
 # --- Plausibility: SBS a1 differs from ICH/IDF; ICH and IDF are identical ---
 test_that("si_nigh2009 model 3 zones behave as published (SBS != ICH == IDF)", {
-  ich <- si_nigh2009(age = 30, si = 20, model = 3, bec_zone = "ICH")$height
-  idf <- si_nigh2009(age = 30, si = 20, model = 3, bec_zone = "IDF")$height
-  sbs <- si_nigh2009(age = 30, si = 20, model = 3, bec_zone = "SBS")$height
+  ich <- si_nigh2009(age = 30, si = 20, variant = 3, bec_zone = "ICH")$height
+  idf <- si_nigh2009(age = 30, si = 20, variant = 3, bec_zone = "IDF")$height
+  sbs <- si_nigh2009(age = 30, si = 20, variant = 3, bec_zone = "SBS")$height
   expect_equal(ich, idf)
   expect_false(isTRUE(all.equal(ich, sbs)))
 })

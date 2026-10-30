@@ -4,15 +4,17 @@
 #' relationship of Auger (2016; Note de recherche forestière no 146) for 27
 #' commercial tree species of Québec. Predicts total tree height (m) from DBH
 #' (cm), plot merchantable basal area and, depending on the species, the
-#' tree's relative DBH, climate normals, altitude and Québec ecological
+#' tree's relative DBH, climate normals, elevation and Québec ecological
 #' classification codes.
 #'
 #' \strong{Model form} (equation 1, p. 4):
 #' \deqn{h = 1.3 + A \ln(DBH + 1) + B \ln(DBH + 1)^2,}
-#' \deqn{A = a + a_{ST} BA + a_{RDHP} \frac{DBH}{QMD} + a_{ALT} altitude +
+#' \deqn{A = a + a_{ST} BA + a_{RDHP} \frac{DBH}{QMD} + a_{ALT} ALT +
 #'   a_{PTOT} PTOT + a_{TMOY} TMOY + a_{SDOM} + a_{MP} + a_{VP} + a_{PERT},}
 #' where \eqn{B} is a species constant and every covariate effect interacts
-#' with \eqn{\ln(DBH + 1)}. Height is not transformed, so no
+#' with \eqn{\ln(DBH + 1)}. Source symbols map to arguments as: ALT =
+#' `elevation`, PTOT = `MAP`, TMOY = `MAT`, SDOM = `bioclim_subdomain`, MP =
+#' `physical_env`, VP = `potential_veg`, PERT = `disturbance`. Height is not transformed, so no
 #' back-transformation applies. Grey birch (`BETU.POP`) has no
 #' \eqn{\ln(DBH + 1)^2} term in the source (Annexe 1) and is linear in
 #' \eqn{\ln(DBH + 1)}.
@@ -23,7 +25,7 @@
 #' it; otherwise it may be `NULL` or `NA` and is ignored. Use
 #' `get_hd_model_info("auger2016")` for definitions, and see the source for the
 #' per-species predictor sets. For example, white spruce (`PICE.GLA`) uses
-#' `BA`, `QMD`, `TMOY`, `SDOM` and `VP`; silver maple, American elm and grey
+#' `BA`, `QMD`, `MAT`, `bioclim_subdomain` and `potential_veg`; silver maple, American elm and grey
 #' birch use `BA` only.
 #'
 #' \strong{Population-level prediction:} the published fixed effects with the
@@ -46,7 +48,7 @@
 #' against use for trees with DBH < 9 cm (p. 19); such trees are computed but
 #' reported as outside the range, and their predicted height may be below
 #' 1.3 m. Inputs outside the per-species ranges of the fitting data (Tableau 1:
-#' DBH and relative DBH; Tableau 2: `BA`, `altitude`, `TMOY`, `PTOT`) are
+#' DBH and relative DBH; Tableau 2: `BA`, `elevation`, `MAT`, `MAP`) are
 #' computed and reported in a single warning. Rows with `NA` in a used input
 #' return `NA` height.
 #'
@@ -73,28 +75,33 @@
 #' @param QMD Optional numeric vector. Plot level. Quadratic mean DBH (cm) of
 #'   the plot's merchantable trees. Used to compute the relative DBH
 #'   (RDHP = `DBH / QMD`). Must be `> 0`. Required for 21 species.
-#' @param SDOM Optional character vector. Plot level. Bioclimatic subdomain
-#'   (Saucier et al. 1998): `"1"`, `"2est"`, `"2ouest"`, `"3est"`, `"3ouest"`,
+#' @param bioclim_subdomain Optional character vector. Plot level.
+#'   Bioclimatic subdomain (source "SDOM"; Saucier et al. 1998): `"1"`, `"2est"`, `"2ouest"`, `"3est"`, `"3ouest"`,
 #'   `"4est"`, `"4ouest"`, `"5est"`, `"5ouest"`, `"6est"`, `"6ouest"`.
 #'   Required for 11 species.
-#' @param MP Optional character or integer vector. Plot level. Physical
-#'   environment class (« milieu physique », MRN 2013), `0` to `9`. Required
+#' @param physical_env Optional character or integer vector. Plot level.
+#'   Physical environment class (source "MP", « milieu physique », MRN 2013), `0` to `9`. Required
 #'   for 10 species.
-#' @param VP Optional character vector. Plot level. Potential vegetation code
-#'   (e.g. `"RS2"`, `"FE3"`; three characters). Required for 15 species.
-#' @param TMOY Optional numeric vector. Plot level. Mean annual temperature,
-#'   1981–2010 normal (°C). Required for 7 species.
-#' @param PTOT Optional numeric vector. Plot level. Total annual
-#'   precipitation, 1981–2010 normal (mm). Must be `>= 0`. Required for 10
+#' @param potential_veg Optional character vector. Plot level. Potential
+#'   vegetation code (source "VP"; e.g. `"RS2"`, `"FE3"`; three characters). Required for 15 species.
+#' @param MAT Optional numeric vector. Plot level. Mean annual temperature,
+#'   1981–2010 normal (°C; source "TMOY"). Required for 7 species.
+#' @param MAP Optional numeric vector. Plot level. Mean (total) annual
+#'   precipitation, 1981–2010 normal (mm; source "PTOT"). Must be `>= 0`. Required for 10
 #'   species.
-#' @param altitude Optional numeric vector. Plot level. Altitude (m). Required
+#' @param elevation Optional numeric vector. Plot level. Elevation above sea
+#'   level (m; source "ALT", altitude). Required
 #'   for 4 species.
 #' @param disturbance Optional character vector. Plot level. Occurrence of a
 #'   light disturbance (« perturbation légère »): `"anthropique"`
 #'   (`"anthropogenic"`), `"naturelle"` (`"natural"`) or `"aucune"`
 #'   (`"none"`). Required for 5 species.
 #'
-#' @return A tibble with column `height` (m).
+#' @param keep_model_id Logical. If `TRUE`, add column `model_id`
+#'   (`"auger2016"`).
+#'
+#' @return A tibble with column `height` (m), plus `model_id` if
+#'   `keep_model_id = TRUE`.
 #'
 #' @references
 #' Auger, I. (2016). Une nouvelle relation hauteur-diamètre tenant compte de
@@ -108,7 +115,7 @@
 #' # Worked example (Annexe 1): white spruce, 12.0 m
 #' hd_auger2016(
 #'   DBH = 20, species = "PICE.GLA", BA = 20, QMD = 15,
-#'   SDOM = "1", VP = "FC1", TMOY = 2.3
+#'   bioclim_subdomain = "1", potential_veg = "FC1", MAT = 2.3
 #' )
 #'
 #' # Species needing only basal area
@@ -119,19 +126,24 @@
 #'   DBH = c(14, 22, 18),
 #'   species = c("PICE.MAR", "ABIE.BAL", "ACER.SAH"),
 #'   BA = 22, QMD = c(15, 15, 20),
-#'   SDOM = c("5ouest", "5ouest", "3ouest"), MP = c(2, 2, 2),
-#'   VP = c("RS2", "RS2", "FE3"), TMOY = c(1, 1, 3.5),
-#'   PTOT = 1000, altitude = 300, disturbance = "none"
+#'   bioclim_subdomain = c("5ouest", "5ouest", "3ouest"), physical_env = 2,
+#'   potential_veg = c("RS2", "RS2", "FE3"), MAT = c(1, 1, 3.5),
+#'   MAP = 1000, elevation = 300, disturbance = "none"
 #' )
 #' dplyr::mutate(
 #'   trees,
-#'   hd_auger2016(DBH, species, BA, QMD, SDOM, MP, VP, TMOY, PTOT, altitude, disturbance)
+#'   hd_auger2016(
+#'     DBH, species, BA, QMD, bioclim_subdomain, physical_env, potential_veg,
+#'     MAT, MAP, elevation, disturbance
+#'   )
 #' )
 #'
 #' @export
-hd_auger2016 <- function(DBH, species, BA, QMD = NULL, SDOM = NULL, MP = NULL,
-                         VP = NULL, TMOY = NULL, PTOT = NULL, altitude = NULL,
-                         disturbance = NULL) {
+hd_auger2016 <- function(DBH, species, BA, QMD = NULL,
+                         bioclim_subdomain = NULL, physical_env = NULL,
+                         potential_veg = NULL, MAT = NULL, MAP = NULL,
+                         elevation = NULL, disturbance = NULL,
+                         keep_model_id = FALSE) {
   fn <- "hd_auger2016"
 
   assert_numeric_vec(DBH, "DBH", gte = 0, allow_na = TRUE)
@@ -140,23 +152,30 @@ hd_auger2016 <- function(DBH, species, BA, QMD = NULL, SDOM = NULL, MP = NULL,
   }
   assert_numeric_vec(BA, "BA", gte = 0, allow_na = TRUE)
   assert_numeric_vec(QMD, "QMD", gt = 0, allow_na = TRUE, allow_null = TRUE)
-  assert_numeric_vec(TMOY, "TMOY", allow_na = TRUE, allow_null = TRUE)
-  assert_numeric_vec(PTOT, "PTOT", gte = 0, allow_na = TRUE, allow_null = TRUE)
-  assert_numeric_vec(altitude, "altitude", allow_na = TRUE, allow_null = TRUE)
+  assert_numeric_vec(MAT, "MAT", allow_na = TRUE, allow_null = TRUE)
+  assert_numeric_vec(MAP, "MAP", gte = 0, allow_na = TRUE, allow_null = TRUE)
+  assert_numeric_vec(elevation, "elevation", allow_na = TRUE, allow_null = TRUE)
+  if (!is.logical(keep_model_id) || length(keep_model_id) != 1L || is.na(keep_model_id)) {
+    cli::cli_abort("{.arg keep_model_id} must be TRUE or FALSE.")
+  }
+  # Internal keys follow the source variable names (SDOM, MP, VP, PERT,
+  # TMOY, PTOT, altitude), matching the parameter tables.
   codes <- list(
-    SDOM = .auger2016_codes(SDOM, "SDOM"),
-    MP = .auger2016_codes(MP, "MP"),
-    VP = .auger2016_codes(VP, "VP"),
+    SDOM = .auger2016_codes(bioclim_subdomain, "bioclim_subdomain"),
+    MP = .auger2016_codes(physical_env, "physical_env"),
+    VP = .auger2016_codes(potential_veg, "potential_veg"),
     PERT = .auger2016_codes(disturbance, "disturbance")
   )
 
   if (length(DBH) == 0L) {
-    return(tibble::tibble(height = numeric()))
+    out <- tibble::tibble(height = numeric())
+    if (isTRUE(keep_model_id)) out$model_id <- character()
+    return(out)
   }
 
   inputs <- list(
     DBH = DBH, species = as.character(species), BA = BA, QMD = QMD,
-    TMOY = TMOY, PTOT = PTOT, altitude = altitude,
+    TMOY = MAT, PTOT = MAP, altitude = elevation,
     SDOM = codes$SDOM, MP = codes$MP, VP = codes$VP, PERT = codes$PERT
   )
   inputs <- inputs[!vapply(inputs, is.null, logical(1))]
@@ -170,14 +189,18 @@ hd_auger2016 <- function(DBH, species, BA, QMD = NULL, SDOM = NULL, MP = NULL,
   cont <- list(
     QMD = "b_rdhp", altitude = "b_alt", PTOT = "b_ptot", TMOY = "b_tmoy"
   )
-  cls_arg <- c(SDOM = "SDOM", MP = "MP", VP = "VP", PERT = "disturbance")
+  cont_arg <- c(QMD = "QMD", altitude = "elevation", PTOT = "MAP", TMOY = "MAT")
+  cls_arg <- c(
+    SDOM = "bioclim_subdomain", MP = "physical_env", VP = "potential_veg",
+    PERT = "disturbance"
+  )
   uses <- c(
     lapply(cont, function(col) has_sp & !is.na(p[[col]])),
     lapply(stats::setNames(names(cls_arg), names(cls_arg)), function(var) {
       has_sp & p[[paste0("uses_", var)]] %in% TRUE
     })
   )
-  arg_of <- c(stats::setNames(names(cont), names(cont)), cls_arg)
+  arg_of <- c(cont_arg, cls_arg)
   for (nm in names(uses)) {
     arg <- arg_of[[nm]]
     if (any(uses[[nm]]) && is.null(v[[nm]])) {
@@ -233,17 +256,17 @@ hd_auger2016 <- function(DBH, species, BA, QMD = NULL, SDOM = NULL, MP = NULL,
       DBH = v$DBH,
       BA = v$BA,
       RDHP = ifelse(uses$QMD, RDHP, NA_real_),
-      altitude = if (is.null(v$altitude)) rep(NA_real_, n) else ifelse(uses$altitude, v$altitude, NA_real_),
-      TMOY = if (is.null(v$TMOY)) rep(NA_real_, n) else ifelse(uses$TMOY, v$TMOY, NA_real_),
-      PTOT = if (is.null(v$PTOT)) rep(NA_real_, n) else ifelse(uses$PTOT, v$PTOT, NA_real_)
+      elevation = if (is.null(v$altitude)) rep(NA_real_, n) else ifelse(uses$altitude, v$altitude, NA_real_),
+      MAT = if (is.null(v$TMOY)) rep(NA_real_, n) else ifelse(uses$TMOY, v$TMOY, NA_real_),
+      MAP = if (is.null(v$PTOT)) rep(NA_real_, n) else ifelse(uses$PTOT, v$PTOT, NA_real_)
     ),
     lower = list(
       DBH = p$DBH_min, BA = p$BA_min, RDHP = p$RDHP_min,
-      altitude = p$altitude_min, TMOY = p$TMOY_min, PTOT = p$PTOT_min
+      elevation = p$altitude_min, MAT = p$TMOY_min, MAP = p$PTOT_min
     ),
     upper = list(
       DBH = p$DBH_max, BA = p$BA_max, RDHP = p$RDHP_max,
-      altitude = p$altitude_max, TMOY = p$TMOY_max, PTOT = p$PTOT_max
+      elevation = p$altitude_max, MAT = p$TMOY_max, MAP = p$PTOT_max
     ),
     fn = fn
   )
@@ -255,7 +278,11 @@ hd_auger2016 <- function(DBH, species, BA, QMD = NULL, SDOM = NULL, MP = NULL,
     # nocov end
   }
 
-  tibble::tibble(height = height)
+  out <- tibble::tibble(height = height)
+  if (isTRUE(keep_model_id)) {
+    out$model_id <- ifelse(has_sp, "auger2016", NA_character_)
+  }
+  out
 }
 
 
@@ -278,12 +305,12 @@ hd_auger2016 <- function(DBH, species, BA, QMD = NULL, SDOM = NULL, MP = NULL,
   y[y == ""] <- NA_character_
   given <- !is.na(y)
   ok <- switch(arg,
-    SDOM = {
+    bioclim_subdomain = {
       y <- tolower(y)
       grepl("^[0-9](est|ouest)?$", y)
     },
-    MP = grepl("^[0-9]$", y),
-    VP = {
+    physical_env = grepl("^[0-9]$", y),
+    potential_veg = {
       y <- toupper(y)
       grepl("^[A-Z]{2}[0-9]$", y)
     },
@@ -302,9 +329,9 @@ hd_auger2016 <- function(DBH, species, BA, QMD = NULL, SDOM = NULL, MP = NULL,
   bad <- unique(x[given & !ok])
   if (length(bad)) {
     hint <- switch(arg,
-      SDOM = "Use bioclimatic subdomain codes such as \"1\", \"2est\" or \"6ouest\".",
-      MP = "Use physical environment classes 0 to 9.",
-      VP = "Use three-character potential vegetation codes such as \"RS2\" or \"FE3\".",
+      bioclim_subdomain = "Use bioclimatic subdomain codes such as \"1\", \"2est\" or \"6ouest\".",
+      physical_env = "Use physical environment classes 0 to 9.",
+      potential_veg = "Use three-character potential vegetation codes such as \"RS2\" or \"FE3\".",
       disturbance = "Use \"anthropique\"/\"anthropogenic\", \"naturelle\"/\"natural\" or \"aucune\"/\"none\"."
     )
     cli::cli_abort(

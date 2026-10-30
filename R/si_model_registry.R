@@ -671,7 +671,7 @@ si_model_registry <- function() {
       NA_character_,
       NA_character_,
       NA_character_,
-      "subregion",
+      "natural_subregion",
       NA_character_,
       NA_character_,
       NA_character_,

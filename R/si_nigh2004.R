@@ -38,13 +38,13 @@
 #' }
 #'
 #' @param age Numeric vector. Total age (years).
-#' @param species Character vector of NFI species codes: `"PINU.CON"`
-#'   (lodgepole pine) or `"PICE.GLA"` (interior spruce). Recycled to a common
-#'   length with the other inputs.
 #' @param height Optional numeric vector. Site height (m). If provided, `si` is
 #'   predicted.
 #' @param si Optional numeric vector. Site index (m). If provided, `height` is
 #'   predicted.
+#' @param species Character vector of NFI species codes: `"PINU.CON"`
+#'   (lodgepole pine) or `"PICE.GLA"` (interior spruce). Recycled to a common
+#'   length with the other inputs.
 #' @param bec_zone Optional character vector selecting zone-specific
 #'   coefficients. One of `"BWBS"`, `"ESSF"`, `"ICH"`, `"IDF"`, `"MS"`, `"SBS"`,
 #'   `"SBPS"`. When `NULL` (default), the province-wide parameters are used.
@@ -73,9 +73,9 @@
 #' @export
 si_nigh2004 <- function(
   age,
-  species,
   height = NULL,
   si = NULL,
+  species,
   bec_zone = NULL
 ) {
   if (xor(is.null(height), is.null(si)) == FALSE) {

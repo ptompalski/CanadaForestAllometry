@@ -104,7 +104,7 @@ plot_si_curves <- function(
     args <- c(
       list(age = age_i, si = si_i),
       if ("species" %in% names(formals(model_fun))) list(species = sp_i) else list(),
-      if ("subregion" %in% names(formals(model_fun))) list(subregion = subregion) else list(),
+      if ("natural_subregion" %in% names(formals(model_fun))) list(natural_subregion = subregion) else list(),
       call_fixed
     )
     out <- tryCatch(do.call(model_fun, args), error = function(e) NULL)

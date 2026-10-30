@@ -16,7 +16,9 @@ vol_kozak88_engine <- function(
   model_id,
   fallback_subregion = "Province",
   # optional: named character vector, e.g. c("UB" = "LBH")
-  subregion_map = NULL
+  subregion_map = NULL,
+  # user-facing argument name used in messages
+  subregion_name = "subregion"
 ) {
   # ---- recycle scalars (common in usage) ----
   n <- max(length(DBH), length(height), length(species), length(subregion))
@@ -32,9 +34,11 @@ vol_kozak88_engine <- function(
     species <- rep(species, length.out = n)
     subregion <- rep(subregion, length.out = n)
   } else {
-    rlang::abort(
-      "DBH, height, species, and subregion must have compatible lengths (each length 1 or the same length)."
-    )
+    rlang::abort(paste0(
+      "DBH, height, species, and ",
+      subregion_name,
+      " must have compatible lengths (each length 1 or the same length)."
+    ))
   }
 
   # ---- standardize inputs ----
@@ -66,7 +70,9 @@ vol_kozak88_engine <- function(
       jurisdiction_std,
       ", species=",
       species_std[i],
-      ", subregion=",
+      ", ",
+      subregion_name,
+      "=",
       subr_std[i],
       ", DBH_cm=",
       DBH[i],
@@ -355,7 +361,9 @@ vol_kozak88_engine <- function(
           model_id,
           ", species=",
           species_std[i],
-          ", subregion=",
+          ", ",
+          subregion_name,
+          "=",
           subr_req,
           "); using ",
           fallback_subregion,
@@ -377,7 +385,9 @@ vol_kozak88_engine <- function(
       abort_i(
         i,
         paste0(
-          "No parameters found (neither subregion='",
+          "No parameters found (neither ",
+          subregion_name,
+          "='",
           subr_req,
           "' nor fallback_subregion='",
           fallback_subregion,
@@ -475,7 +485,9 @@ vol_kozak88_engine <- function(
 #' @param DBH Numeric vector. Diameter at breast height (cm).
 #' @param height Numeric vector. Total height (m).
 #' @param species Character vector. Species code (e.g., "PICE.MAR").
-#' @param subregion Character vector. Alberta subregion name; defaults to "Province".
+#' @param natural_subregion Character vector. Alberta natural subregion code
+#'   (e.g. `"CM"`, `"LF"`, `"UF"`); defaults to `"Province"` (province-wide
+#'   parameters). `"UB"` is treated as `"LBH"`.
 #'
 #' @return A tibble with volumes (m^3): total and merchantable.
 #'
@@ -485,24 +497,26 @@ vol_kozak88_engine <- function(
 #' Kozak, A. (1988). A variable-exponent taper equation. \emph{Canadian Journal of Forest Research}, 18, 1363–1368.
 #'
 #' @export
-vol_huang94 <- function(DBH, height, species, subregion = "Province") {
+vol_huang94 <- function(DBH, height, species, natural_subregion = "Province") {
   # Huang 1994 note: UB treated as LBH
   vol_kozak88_engine(
     DBH = DBH,
     height = height,
     species = species,
-    subregion = subregion,
+    subregion = natural_subregion,
     jurisdiction = "AB",
     model_id = "regional_huang94",
     fallback_subregion = "Province",
-    subregion_map = c("UB" = "LBH")
+    subregion_map = c("UB" = "LBH"),
+    subregion_name = "natural_subregion"
   )
 }
 
 #' Estimate tree volume in Manitoba using Kozak (1988) form with Klos (2004) parameters
 #'
 #' @inheritParams vol_huang94
-#' @param subregion Optional Ecozone or Ecoregion identifier
+#' @param ecozone Optional Manitoba ecozone name (`"Boreal Shield"` or
+#'   `"Boreal Plains"`); defaults to `"Province"` (province-wide parameters).
 #'
 #' @references
 #' Klos, R. J., Wang, G. G., Dang, Q.-L., & East, E. W. (2007).
@@ -512,15 +526,16 @@ vol_huang94 <- function(DBH, height, species, subregion = "Province") {
 #' Kozak, A. (1988). A variable-exponent taper equation. \emph{Canadian Journal of Forest Research}, 18, 1363–1368.
 #'
 #' @export
-vol_klos2007 <- function(DBH, height, species, subregion = "Province") {
+vol_klos2007 <- function(DBH, height, species, ecozone = "Province") {
   vol_kozak88_engine(
     DBH = DBH,
     height = height,
     species = species,
-    subregion = subregion,
+    subregion = ecozone,
     jurisdiction = "MB",
     model_id = "regional_klos2007",
-    fallback_subregion = "Province"
+    fallback_subregion = "Province",
+    subregion_name = "ecozone"
   )
 }
 

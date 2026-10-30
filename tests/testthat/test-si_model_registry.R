@@ -233,7 +233,7 @@ testthat::test_that("si_model_registry includes Huang1994 subregion metadata", {
 
   testthat::expect_equal(nrow(h), 1L)
   testthat::expect_identical(h$subregion_type[[1]], "ab_natural_region_group")
-  testthat::expect_identical(h$subregion_arg[[1]], "subregion")
+  testthat::expect_identical(h$subregion_arg[[1]], "natural_subregion")
   testthat::expect_identical(h$params_key[[1]], "parameters_Huang1994_si")
 })
 

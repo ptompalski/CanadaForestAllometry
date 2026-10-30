@@ -10,9 +10,9 @@
 #' Rules:
 #' * For British Columbia (`"BC"`), `species` is OPTIONAL:
 #'   - If `species` is missing, the function falls back to `Species == "ALL"` and warns.
-#'   - If `BEC_zone` is provided and can be mapped, criteria are looked up using
+#'   - If `bec_zone` is provided and can be mapped, criteria are looked up using
 #'     (Province + Species + BEC_group).
-#'   - If `BEC_zone` is missing/unknown, criteria fall back to a conservative BC
+#'   - If `bec_zone` is missing/unknown, criteria fall back to a conservative BC
 #'     BEC-independent layer using `BEC_group == "UNKNOWN"` (species-specific if present,
 #'     otherwise `Species == "ALL"`).
 #'   - If no exact species match is found, the function falls back to genus-level rules
@@ -24,7 +24,7 @@
 #'
 #' @param jurisdiction Province/Territory code (e.g., `"BC"`, `"AB"`).
 #' @param species Species code. Optional for `"BC"`; if missing, falls back to `"ALL"` with a warning.
-#' @param BEC_zone Optional BEC zone code (e.g., `"CWH"`, `"ICH"`). If missing for `"BC"`,
+#' @param bec_zone Optional BEC zone code (e.g., `"CWH"`, `"ICH"`). If missing for `"BC"`,
 #'   conservative criteria are taken from `BEC_group == "UNKNOWN"`.
 #' @param verbose If TRUE, warns when BC falls back to genus-level, UNKNOWN BEC, or ALL.
 #'
@@ -42,7 +42,7 @@
 get_merch_criteria <- function(
   jurisdiction,
   species = NA_character_,
-  BEC_zone = NA_character_,
+  bec_zone = NA_character_,
   verbose = TRUE
 ) {
   stopifnot(
@@ -221,7 +221,7 @@ get_merch_criteria <- function(
   }
 
   # ---- BC ----
-  bec_group <- bec_to_group(BEC_zone)
+  bec_group <- bec_to_group(bec_zone)
   bec_group_eff <- if (!is.na(bec_group) && nzchar(bec_group)) {
     bec_group
   } else {
@@ -298,17 +298,17 @@ get_merch_criteria <- function(
 
     # BEC warnings: only when UNKNOWN is used
     if (identical(res$bg, "UNKNOWN")) {
-      if (is.na(BEC_zone) || !nzchar(BEC_zone)) {
+      if (is.na(bec_zone) || !nzchar(bec_zone)) {
         msgs <- c(
           msgs,
-          "BEC_zone missing; using conservative BC 'UNKNOWN' utilization."
+          "bec_zone missing; using conservative BC 'UNKNOWN' utilization."
         )
       } else {
         msgs <- c(
           msgs,
           sprintf(
-            "BEC_zone '%s' could not be mapped; using conservative BC 'UNKNOWN' utilization.",
-            BEC_zone
+            "bec_zone '%s' could not be mapped; using conservative BC 'UNKNOWN' utilization.",
+            bec_zone
           )
         )
       }

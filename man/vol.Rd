@@ -29,15 +29,16 @@ vol(
 If \code{FALSE}, compute all candidate model outputs per tree and return a list-column
 (one tibble per tree) that can be unnested for comparison.}
 
-\item{keep_model_id}{Logical. If \code{TRUE}, include a \code{vol_model} column with the engine function name used.}
+\item{keep_model_id}{Logical. If \code{TRUE}, include a \code{model_id} column with the
+volume model used (registry ID, see \code{\link[=volume_model_registry]{volume_model_registry()}}).}
 }
 \value{
 If \code{pick_best = TRUE}, a tibble with one row per tree and columns:
-\code{vol_total}, \code{vol_merchantable}, and optionally \code{vol_model}.
+\code{vol_total}, \code{vol_merchantable}, and optionally \code{model_id}.
 
 If \code{pick_best = FALSE}, a list (suitable for use as a list-column in \code{dplyr::mutate()})
 with one element per tree. Each element is a tibble of candidate model outputs
-(\code{vol_total}, \code{vol_merchantable}, and optionally \code{vol_model}).
+(\code{vol_total}, \code{vol_merchantable}, and optionally \code{model_id}).
 }
 \description{
 \code{vol()} is the main convenience wrapper for estimating total and

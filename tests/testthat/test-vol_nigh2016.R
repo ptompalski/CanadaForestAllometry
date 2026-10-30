@@ -61,7 +61,7 @@ testthat::test_that("vol_nigh2016: returns tibble and matches Nigh2016 formula",
     DBH = DBH,
     height = ht,
     species = sp,
-    subregion = subr
+    bec_zone = subr
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -104,7 +104,7 @@ testthat::test_that("vol_nigh2016: vectorization and subregion recycling", {
     DBH = c(15, 25, 35),
     height = c(12, 18, 24),
     species = rep(sp, 3),
-    subregion = subr
+    bec_zone = subr
   )
 
   testthat::expect_equal(nrow(out), 3L)
@@ -120,7 +120,7 @@ testthat::test_that("vol_nigh2016: input validation errors", {
       height = 20,
       species = "PICE.GLA"
     ),
-    "subregion is required",
+    "bec_zone is required",
     ignore.case = TRUE
   )
 
@@ -129,9 +129,9 @@ testthat::test_that("vol_nigh2016: input validation errors", {
       DBH = c(20, 30),
       height = c(20, 22),
       species = c("PICE.GLA", "ABIE.BAL"),
-      subregion = c("Coast", "Interior", "CWH")
+      bec_zone = c("Coast", "Interior", "CWH")
     ),
-    "subregion must have length 1 or the same length as DBH",
+    "bec_zone must have length 1 or the same length as DBH",
     ignore.case = TRUE
   )
 
@@ -140,7 +140,7 @@ testthat::test_that("vol_nigh2016: input validation errors", {
       DBH = c(20, 30),
       height = 20,
       species = "PICE.GLA",
-      subregion = "Coast"
+      bec_zone = "Coast"
     ),
     "DBH, height, and species must have the same length",
     ignore.case = TRUE
@@ -176,7 +176,7 @@ testthat::test_that("vol_nigh2016: rejects invalid geometry values", {
       DBH = 0,
       height = 20,
       species = sp,
-      subregion = subr
+      bec_zone = subr
     ),
     "DBH must be > 0",
     ignore.case = TRUE
@@ -187,7 +187,7 @@ testthat::test_that("vol_nigh2016: rejects invalid geometry values", {
       DBH = 20,
       height = 0,
       species = sp,
-      subregion = subr
+      bec_zone = subr
     ),
     "height must be > 0",
     ignore.case = TRUE
@@ -198,7 +198,7 @@ testthat::test_that("vol_nigh2016: rejects invalid geometry values", {
       DBH = 20,
       height = 1.2,
       species = sp,
-      subregion = subr
+      bec_zone = subr
     ),
     "height must be >= 1.3",
     ignore.case = TRUE
@@ -209,7 +209,7 @@ testthat::test_that("vol_nigh2016: rejects invalid geometry values", {
       DBH = NA_real_,
       height = 20,
       species = sp,
-      subregion = subr
+      bec_zone = subr
     ),
     "finite numeric values",
     ignore.case = TRUE
@@ -234,7 +234,7 @@ testthat::test_that("vol_nigh2016: unknown subregion produces informative error"
       DBH = 20,
       height = 18,
       species = sp,
-      subregion = "NOT_A_REAL_SUBREGION"
+      bec_zone = "NOT_A_REAL_SUBREGION"
     ),
     "No parameters returned|No Nigh2016 parameters found",
     ignore.case = TRUE
@@ -270,7 +270,7 @@ testthat::test_that("vol_nigh2016: works across all species/subregion pairs", {
     DBH = rep(DBH, nrow(keys)),
     height = rep(ht, nrow(keys)),
     species = keys$Species,
-    subregion = keys$Subregion
+    bec_zone = keys$Subregion
   )
 
   testthat::expect_equal(nrow(out), nrow(keys))
@@ -331,7 +331,7 @@ testthat::test_that("vol_nigh2016 errors when parameter table misses required co
         DBH = 20,
         height = 20,
         species = "PICE.MAR",
-        subregion = "Interior"
+        bec_zone = "Interior"
       ),
       "missing required columns",
       ignore.case = TRUE
@@ -349,9 +349,9 @@ testthat::test_that("vol_nigh2016 errors when no row matches species+subregion w
         DBH = c(20, 20),
         height = c(20, 20),
         species = c("PICE.MAR", "ABIE.BAL"),
-        subregion = c("Interior", "Interior")
+        bec_zone = c("Interior", "Interior")
       ),
-      "No Nigh2016 parameters found for this species \\+ subregion",
+      "No Nigh2016 parameters found for this species \\+ bec_zone",
       ignore.case = TRUE
     ),
     get_volume_params = function(model_id, species, subregion, ...) {
@@ -391,7 +391,7 @@ testthat::test_that("vol_nigh2016 errors when total or merchantable row cardinal
         DBH = 20,
         height = 20,
         species = "PICE.MAR",
-        subregion = "Interior"
+        bec_zone = "Interior"
       ),
       "Expected exactly one 'total' parameter row",
       ignore.case = TRUE
@@ -416,7 +416,7 @@ testthat::test_that("vol_nigh2016 errors when total or merchantable row cardinal
         DBH = 20,
         height = 20,
         species = "PICE.MAR",
-        subregion = "Interior"
+        bec_zone = "Interior"
       ),
       "Expected exactly one 'merchantable' parameter row",
       ignore.case = TRUE
@@ -443,7 +443,7 @@ testthat::test_that("vol_nigh2016 catches non-finite parameters and non-finite p
         DBH = 20,
         height = 20,
         species = "PICE.MAR",
-        subregion = "Interior"
+        bec_zone = "Interior"
       ),
       "not finite",
       ignore.case = TRUE
@@ -468,7 +468,7 @@ testthat::test_that("vol_nigh2016 catches non-finite parameters and non-finite p
         DBH = 20,
         height = 20,
         species = "PICE.MAR",
-        subregion = "Interior"
+        bec_zone = "Interior"
       ),
       "Prediction is not finite",
       ignore.case = TRUE

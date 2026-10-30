@@ -7,7 +7,7 @@
 get_merch_criteria(
   jurisdiction,
   species = NA_character_,
-  BEC_zone = NA_character_,
+  bec_zone = NA_character_,
   verbose = TRUE
 )
 }
@@ -16,7 +16,7 @@ get_merch_criteria(
 
 \item{species}{Species code. Optional for \code{"BC"}; if missing, falls back to \code{"ALL"} with a warning.}
 
-\item{BEC_zone}{Optional BEC zone code (e.g., \code{"CWH"}, \code{"ICH"}). If missing for \code{"BC"},
+\item{bec_zone}{Optional BEC zone code (e.g., \code{"CWH"}, \code{"ICH"}). If missing for \code{"BC"},
 conservative criteria are taken from \code{BEC_group == "UNKNOWN"}.}
 
 \item{verbose}{If TRUE, warns when BC falls back to genus-level, UNKNOWN BEC, or ALL.}
@@ -41,9 +41,9 @@ Rules:
 \item For British Columbia (\code{"BC"}), \code{species} is OPTIONAL:
 \itemize{
 \item If \code{species} is missing, the function falls back to \code{Species == "ALL"} and warns.
-\item If \code{BEC_zone} is provided and can be mapped, criteria are looked up using
+\item If \code{bec_zone} is provided and can be mapped, criteria are looked up using
 (Province + Species + BEC_group).
-\item If \code{BEC_zone} is missing/unknown, criteria fall back to a conservative BC
+\item If \code{bec_zone} is missing/unknown, criteria fall back to a conservative BC
 BEC-independent layer using \code{BEC_group == "UNKNOWN"} (species-specific if present,
 otherwise \code{Species == "ALL"}).
 \item If no exact species match is found, the function falls back to genus-level rules

@@ -79,20 +79,20 @@ testthat::test_that("vol_nl validates lengths and subregion inputs", {
   )
 
   testthat::expect_error(
-    CanadaForestAllometry::vol_nl(20, 20, "PICE.MAR", subregion = 25),
-    "Invalid NL subregion",
+    CanadaForestAllometry::vol_nl(20, 20, "PICE.MAR", district = 25),
+    "Invalid NL district",
     ignore.case = TRUE
   )
 
   testthat::expect_error(
-    CanadaForestAllometry::vol_nl(20, 20, "PICE.MAR", subregion = "foo"),
-    "Invalid NL subregion",
+    CanadaForestAllometry::vol_nl(20, 20, "PICE.MAR", district = "foo"),
+    "Invalid NL district",
     ignore.case = TRUE
   )
 
   testthat::expect_error(
-    CanadaForestAllometry::vol_nl(20, 20, "PICE.MAR", subregion = NA),
-    "Invalid NL subregion",
+    CanadaForestAllometry::vol_nl(20, 20, "PICE.MAR", district = NA),
+    "Invalid NL district",
     ignore.case = TRUE
   )
 })
@@ -124,7 +124,7 @@ testthat::test_that("vol_nl returns tibble with expected columns and vectorizes"
     DBH = c(10, 20, 30),
     height = c(12, 18, 24),
     species = rep(sp_all, 3),
-    subregion = "ALL"
+    district = "ALL"
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -161,7 +161,7 @@ testthat::test_that("vol_nl keep_net=TRUE adds net columns and respects constrai
     DBH = 20,
     height = 20,
     species = sp,
-    subregion = sr,
+    district = sr,
     keep_net = TRUE
   )
 
@@ -235,7 +235,7 @@ testthat::test_that("vol_nl applies NL minDBH rule: below -> merch 0, total stil
     DBH = DBH_small,
     height = 20,
     species = sp,
-    subregion = "ALL",
+    district = "ALL",
     keep_net = TRUE
   )
 
@@ -272,7 +272,7 @@ testthat::test_that("vol_nl works across many Species/Subregion combinations (sm
         DBH = 20,
         height = 20,
         species = sp,
-        subregion = sr,
+        district = sr,
         keep_net = TRUE
       ) |>
         dplyr::mutate(Species = sp, subregion = sr)
@@ -322,12 +322,12 @@ testthat::test_that("NL model matches NX-242 Appendix I for total + gross mercha
   # This implementation follows the OSM policy and constrains net to >= 95% of gross.
 
   # ABIE.BAL (ABBA), District 12, DBH=20, H=15
-  x_abba <- vol_nl(20, 15, "ABIE.BAL", subregion = 12, keep_net = TRUE)
+  x_abba <- vol_nl(20, 15, "ABIE.BAL", district = 12, keep_net = TRUE)
   testthat::expect_equal(r3(x_abba$vol_total), 0.206) # NX-242 p20
   testthat::expect_equal(r3(x_abba$vol_merchantable_gross), 0.196) # NX-242 p22
 
   # PICE.MAR (PIMA), District 12, DBH=20, H=15
-  x_bs <- vol_nl(20, 15, "PICE.MAR", subregion = 12, keep_net = TRUE)
+  x_bs <- vol_nl(20, 15, "PICE.MAR", district = 12, keep_net = TRUE)
   testthat::expect_equal(r3(x_bs$vol_total), 0.201) # NX-242 p31
   testthat::expect_equal(r3(x_bs$vol_merchantable_gross), 0.191) # NX-242 p33
 })
@@ -350,8 +350,8 @@ testthat::test_that("NL model constrains net volume to >= 95% of gross (internal
     .env = ns
   )
 
-  x_abba <- vol_nl(20, 15, "ABIE.BAL", subregion = 12, keep_net = TRUE)
-  x_bs <- vol_nl(20, 15, "PICE.MAR", subregion = 12, keep_net = TRUE)
+  x_abba <- vol_nl(20, 15, "ABIE.BAL", district = 12, keep_net = TRUE)
+  x_bs <- vol_nl(20, 15, "PICE.MAR", district = 12, keep_net = TRUE)
 
   testthat::expect_equal(
     x_abba$vol_merchantable_net / x_abba$vol_merchantable_gross,
@@ -401,7 +401,7 @@ testthat::test_that("NL Honer-based model matches reference total volume (confir
     DBH = 21.91162,
     height = 17.23452,
     species = "ABIE.BAL",
-    subregion = 2,
+    district = 2,
     keep_net = TRUE
   )
 
@@ -463,7 +463,7 @@ testthat::test_that("NL Honer-based model random stress test: invariants hold (s
     DBH = dbh,
     height = ht,
     species = sp,
-    subregion = sr,
+    district = sr,
     keep_net = TRUE
   )
 
@@ -506,14 +506,14 @@ testthat::test_that("District 19 is accepted but falls back to province model (C
     20,
     20,
     "PICE.MAR",
-    subregion = "Province",
+    district = "Province",
     keep_net = TRUE
   )
   b <- CanadaForestAllometry::vol_nl(
     20,
     20,
     "PICE.MAR",
-    subregion = 19,
+    district = 19,
     keep_net = TRUE
   )
 
@@ -527,7 +527,7 @@ testthat::test_that("vol_nl row-level validation includes context for bad numeri
       DBH = NA_real_,
       height = 20,
       species = "PICE.MAR",
-      subregion = "Province"
+      district = "Province"
     ),
     "failed for row 1.*finite numeric",
     ignore.case = TRUE
@@ -538,7 +538,7 @@ testthat::test_that("vol_nl row-level validation includes context for bad numeri
       DBH = 0,
       height = 20,
       species = "PICE.MAR",
-      subregion = "Province"
+      district = "Province"
     ),
     "failed for row 1.*DBH must be > 0",
     ignore.case = TRUE
@@ -549,7 +549,7 @@ testthat::test_that("vol_nl row-level validation includes context for bad numeri
       DBH = 20,
       height = 0,
       species = "PICE.MAR",
-      subregion = "Province"
+      district = "Province"
     ),
     "failed for row 1.*height must be > 0",
     ignore.case = TRUE
@@ -561,7 +561,7 @@ testthat::test_that("vol_nl normalizes numeric-like district keys and preserves 
     DBH = c(20, 20, 20, 20),
     height = c(20, 20, 20, 20),
     species = c("PICE.MAR", "PICE.MAR", "PICE.MAR", "ABIE.BAL"),
-    subregion = c("Province", "19.0", "04", "2"),
+    district = c("Province", "19.0", "04", "2"),
     keep_net = TRUE
   )
 
@@ -577,7 +577,7 @@ testthat::test_that("vol_nl district 19.0 behaves like district 19 and province 
     DBH = 20,
     height = 20,
     species = "PICE.MAR",
-    subregion = "Province",
+    district = "Province",
     keep_net = TRUE
   )
 
@@ -585,7 +585,7 @@ testthat::test_that("vol_nl district 19.0 behaves like district 19 and province 
     DBH = 20,
     height = 20,
     species = "PICE.MAR",
-    subregion = 19,
+    district = 19,
     keep_net = TRUE
   )
 
@@ -593,7 +593,7 @@ testthat::test_that("vol_nl district 19.0 behaves like district 19 and province 
     DBH = 20,
     height = 20,
     species = "PICE.MAR",
-    subregion = "19.0",
+    district = "19.0",
     keep_net = TRUE
   )
 
@@ -612,9 +612,9 @@ testthat::test_that("vol_nl errors when species has no NL parameter rows", {
       DBH = 20,
       height = 20,
       species = "PSEU.MEN",
-      subregion = "Province"
+      district = "Province"
     ),
-    "No NL parameters returned for this species x subregion",
+    "No NL parameters returned for this species x district",
     fixed = FALSE
   )
 })

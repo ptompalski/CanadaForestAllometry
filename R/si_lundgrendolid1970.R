@@ -22,7 +22,7 @@
 #' @param height Optional numeric vector. Total tree height (m). If provided, `si` is predicted.
 #' @param si Optional numeric vector. Site index (m, base age 50 years at breast height). If provided, `height` is predicted.
 #' @param species Character vector of species codes (e.g., `"PICE.MAR"`).
-#' @param model Character scalar. One of `"exponential_monomolecular"` or `"monomolecular"`.
+#' @param variant Character scalar. One of `"exponential_monomolecular"` or `"monomolecular"`.
 #'
 #' @return A tibble with columns:
 #' \describe{
@@ -34,7 +34,7 @@
 #' Lundgren, Allen L.; Dolid, William A. 1970. Biological growth functions describe published site index curves for Lake States timber species. Research Paper NC-36. St. Paul, MN: U.S. Dept. of Agriculture, Forest Service, North Central Forest Experiment Station
 #'
 #' @examples
-#' # Predict site index from age + height (default model: exponential_monomolecular)
+#' # Predict site index from age + height (default variant: exponential_monomolecular)
 #' si_lundgrendolid1970(
 #'   age = c(20, 40, 60),
 #'   height = c(8, 16, 24),
@@ -88,13 +88,13 @@ si_lundgrendolid1970 <- function(
   height = NULL,
   si = NULL,
   species,
-  model = c("exponential_monomolecular", "monomolecular")
+  variant = c("exponential_monomolecular", "monomolecular")
 ) {
   if (xor(is.null(height), is.null(si)) == FALSE) {
     cli::cli_abort("Provide exactly one of {.arg height} or {.arg si}.")
   }
 
-  model <- rlang::arg_match(model)
+  variant <- rlang::arg_match(variant)
 
   mode <- if (is.null(height)) "predict_height" else "predict_si"
   x <- if (mode == "predict_height") si else height
@@ -105,11 +105,11 @@ si_lundgrendolid1970 <- function(
     x = x,
     species = species,
     x_name = x_name,
-    model = model
+    model = variant
   )
 
   if (mode == "predict_height") {
-    h_ft <- if (identical(model, "exponential_monomolecular")) {
+    h_ft <- if (identical(variant, "exponential_monomolecular")) {
       with(df, b1 * si_ft * (1 - exp(b2 * age))^b3)
     } else {
       with(df, si_ft * (a + b1 * exp(b2 * age)))
@@ -131,7 +131,7 @@ si_lundgrendolid1970 <- function(
     return(dplyr::tibble(height = h_ft / 3.28084))
   }
 
-  denom <- if (identical(model, "exponential_monomolecular")) {
+  denom <- if (identical(variant, "exponential_monomolecular")) {
     with(df, b1 * (1 - exp(b2 * age))^b3)
   } else {
     with(df, a + b1 * exp(b2 * age))

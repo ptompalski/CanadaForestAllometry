@@ -9,7 +9,7 @@ vol_total_to_merchantable(
   species,
   jurisdiction,
   ecozone,
-  include_prop = FALSE,
+  include_props = FALSE,
   clamp_prop = TRUE,
   warn_outside = TRUE,
   clamp_x = FALSE
@@ -24,7 +24,7 @@ vol_total_to_merchantable(
 
 \item{ecozone}{Ecozone identifier. Either: numeric ecozone code (1–15) or official ecozone name (English or French; case-insensitive).}
 
-\item{include_prop}{Logical. If TRUE, return the predicted merchantable proportion.}
+\item{include_props}{Logical. If TRUE, return the predicted merchantable proportion.}
 
 \item{clamp_prop}{Logical. If TRUE (default), clamp predicted proportion to \code{[0, 1]}.}
 
@@ -56,7 +56,7 @@ vol_total_to_merchantable(
   species = "PICE.MAR",
   jurisdiction = "AB",
   ecozone = 4,
-  include_prop = TRUE
+  include_props = TRUE
 )
 
 # ---- vectorized over volume ------------------------------------------------
@@ -65,7 +65,7 @@ vol_total_to_merchantable(
   species = "PICE.MAR",
   jurisdiction = "AB",
   ecozone = 4,
-  include_prop = TRUE
+  include_props = TRUE
 )
 
 # ---- tidyverse workflow ----------------------------------------------------
@@ -87,7 +87,7 @@ stands |>
       species = species,
       jurisdiction = jurisdiction,
       ecozone = ecozone,
-      include_prop = TRUE
+      include_props = TRUE
     )
   ) |>
   unnest(merch)

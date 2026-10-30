@@ -3,7 +3,7 @@ testthat::test_that("vol_kozak94: basic output structure and types", {
     DBH = 20,
     height = 20,
     species = "PSEU.MEN",
-    BEC_zone = "CWH"
+    bec_zone = "CWH"
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -50,7 +50,7 @@ testthat::test_that("vol_kozak94: input length checks", {
       DBH = c(10, 20),
       height = 20,
       species = "PSEU.MEN",
-      BEC_zone = "CWH"
+      bec_zone = "CWH"
     ),
     "must have the same length"
   )
@@ -60,7 +60,7 @@ testthat::test_that("vol_kozak94: input length checks", {
       DBH = 20,
       height = c(10, 20),
       species = "PSEU.MEN",
-      BEC_zone = "CWH"
+      bec_zone = "CWH"
     ),
     "must have the same length"
   )
@@ -70,7 +70,7 @@ testthat::test_that("vol_kozak94: input length checks", {
       DBH = 20,
       height = 20,
       species = c("PSEU.MEN", "PSEU.MEN"),
-      BEC_zone = "CWH"
+      bec_zone = "CWH"
     ),
     "must have the same length"
   )
@@ -80,7 +80,7 @@ testthat::test_that("vol_kozak94: input length checks", {
       DBH = 20,
       height = 20,
       species = "PSEU.MEN",
-      BEC_zone = c("CWH", "CWH")
+      bec_zone = c("CWH", "CWH")
     ),
     "must have the same length"
   )
@@ -93,7 +93,7 @@ testthat::test_that("vol_kozak94: rejects invalid numeric inputs", {
       DBH = NA_real_,
       height = 20,
       species = "PSEU.MEN",
-      BEC_zone = "CWH"
+      bec_zone = "CWH"
     ),
     "finite"
   )
@@ -103,18 +103,18 @@ testthat::test_that("vol_kozak94: rejects invalid numeric inputs", {
       DBH = 20,
       height = NA_real_,
       species = "PSEU.MEN",
-      BEC_zone = "CWH"
+      bec_zone = "CWH"
     ),
     "finite"
   )
 
   testthat::expect_error(
-    vol_kozak94(DBH = -1, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+    vol_kozak94(DBH = -1, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
     "DBH must be > 0"
   )
 
   testthat::expect_error(
-    vol_kozak94(DBH = 20, height = -1, species = "PSEU.MEN", BEC_zone = "CWH"),
+    vol_kozak94(DBH = 20, height = -1, species = "PSEU.MEN", bec_zone = "CWH"),
     "height must be > 0"
   )
 })
@@ -125,13 +125,13 @@ testthat::test_that("vol_kozak94: BEC zone is case/whitespace insensitive", {
     DBH = 20,
     height = 20,
     species = "PSEU.MEN",
-    BEC_zone = "CWH"
+    bec_zone = "CWH"
   )
   out2 <- vol_kozak94(
     DBH = 20,
     height = 20,
     species = "PSEU.MEN",
-    BEC_zone = "  cwh  "
+    bec_zone = "  cwh  "
   )
 
   testthat::expect_equal(out1$vol_total, out2$vol_total, tolerance = 1e-12)
@@ -147,7 +147,7 @@ testthat::test_that("vol_kozak94: total volume is calculated for small trees (db
   mc <- get_merch_criteria(
     "BC",
     species = "PSEU.MEN",
-    BEC_zone = "CWH",
+    bec_zone = "CWH",
     verbose = FALSE
   ) |>
     dplyr::slice(1)
@@ -162,7 +162,7 @@ testthat::test_that("vol_kozak94: total volume is calculated for small trees (db
     DBH = dbh_small,
     height = 10,
     species = "PSEU.MEN",
-    BEC_zone = "CWH"
+    bec_zone = "CWH"
   )
 
   # merchantable must be zero below mindbh
@@ -177,7 +177,7 @@ testthat::test_that("vol_kozak94: merchantable volume is positive for a clearly 
   mc <- get_merch_criteria(
     "BC",
     species = "PSEU.MEN",
-    BEC_zone = "CWH",
+    bec_zone = "CWH",
     verbose = FALSE
   ) |>
     dplyr::slice(1)
@@ -191,7 +191,7 @@ testthat::test_that("vol_kozak94: merchantable volume is positive for a clearly 
     DBH = dbh_big,
     height = 25,
     species = "PSEU.MEN",
-    BEC_zone = "CWH"
+    bec_zone = "CWH"
   )
 
   testthat::expect_true(out$vol_merchantable > 0)
@@ -207,7 +207,7 @@ testthat::test_that("vol_kozak94: vectorized inputs return same-length output an
     DBH = DBH,
     height = H,
     species = rep("PSEU.MEN", length(DBH)),
-    BEC_zone = rep("CWH", length(DBH))
+    bec_zone = rep("CWH", length(DBH))
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -261,7 +261,7 @@ testthat::test_that("vol_kozak94: errors when multiple parameter rows are return
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mock_mc,
       get_volume_params = function(...) mock_p,
       .package = "CanadaForestAllometry"
@@ -298,7 +298,7 @@ testthat::test_that("vol_kozak94: errors on missing/non-finite/invalid parameter
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mock_mc,
       get_volume_params = function(...) p_missing,
       .package = "CanadaForestAllometry"
@@ -309,7 +309,7 @@ testthat::test_that("vol_kozak94: errors on missing/non-finite/invalid parameter
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mock_mc,
       get_volume_params = function(...) p_nonfinite,
       .package = "CanadaForestAllometry"
@@ -320,7 +320,7 @@ testthat::test_that("vol_kozak94: errors on missing/non-finite/invalid parameter
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mock_mc,
       get_volume_params = function(...) p_bias_bad,
       .package = "CanadaForestAllometry"
@@ -353,7 +353,7 @@ testthat::test_that("vol_kozak94: errors on missing/invalid merchantability crit
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_missing_col,
       get_volume_params = function(...) p_ok,
       .package = "CanadaForestAllometry"
@@ -364,7 +364,7 @@ testthat::test_that("vol_kozak94: errors on missing/invalid merchantability crit
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_empty,
       get_volume_params = function(...) p_ok,
       .package = "CanadaForestAllometry"
@@ -375,7 +375,7 @@ testthat::test_that("vol_kozak94: errors on missing/invalid merchantability crit
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_bad_stump,
       get_volume_params = function(...) p_ok,
       .package = "CanadaForestAllometry"
@@ -386,7 +386,7 @@ testthat::test_that("vol_kozak94: errors on missing/invalid merchantability crit
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_bad_top,
       get_volume_params = function(...) p_ok,
       .package = "CanadaForestAllometry"
@@ -397,7 +397,7 @@ testthat::test_that("vol_kozak94: errors on missing/invalid merchantability crit
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_bad_mindbh,
       get_volume_params = function(...) p_ok,
       .package = "CanadaForestAllometry"
@@ -437,7 +437,7 @@ testthat::test_that("vol_kozak94: errors on no params, bad form factor, bad DIB,
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_ok,
       get_volume_params = function(...) p_empty,
       .package = "CanadaForestAllometry"
@@ -448,7 +448,7 @@ testthat::test_that("vol_kozak94: errors on no params, bad form factor, bad DIB,
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_ok,
       get_volume_params = function(...) p_ff_bad,
       .package = "CanadaForestAllometry"
@@ -459,7 +459,7 @@ testthat::test_that("vol_kozak94: errors on no params, bad form factor, bad DIB,
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_ok,
       get_volume_params = function(...) p_dib_bad,
       .package = "CanadaForestAllometry"
@@ -470,7 +470,7 @@ testthat::test_that("vol_kozak94: errors on no params, bad form factor, bad DIB,
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_ok,
       get_volume_params = function(...) p_solver_bad,
       .package = "CanadaForestAllometry"
@@ -481,7 +481,7 @@ testthat::test_that("vol_kozak94: errors on no params, bad form factor, bad DIB,
 
   testthat::expect_error(
     testthat::with_mocked_bindings(
-      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", BEC_zone = "CWH"),
+      ns$vol_kozak94(DBH = 20, height = 20, species = "PSEU.MEN", bec_zone = "CWH"),
       get_merch_criteria = function(...) mc_hm_bad,
       get_volume_params = function(...) p_dib_bad,
       .package = "CanadaForestAllometry"
@@ -495,14 +495,14 @@ testthat::test_that("vol_kozak94 clamps height below 1.3 m consistently", {
     DBH = 20,
     height = 0.8,
     species = "PSEU.MEN",
-    BEC_zone = "CWH"
+    bec_zone = "CWH"
   )
 
   out_13 <- vol_kozak94(
     DBH = 20,
     height = 1.3,
     species = "PSEU.MEN",
-    BEC_zone = "CWH"
+    bec_zone = "CWH"
   )
 
   testthat::expect_equal(out_low$vol_total, out_13$vol_total, tolerance = 1e-12)
@@ -513,7 +513,7 @@ testthat::test_that("vol_kozak94 can return zero merchantable above mindbh for v
   mc <- get_merch_criteria(
     "BC",
     species = "POPU.BAL",
-    BEC_zone = "BWBS",
+    bec_zone = "BWBS",
     verbose = FALSE
   ) |>
     dplyr::slice(1)
@@ -526,7 +526,7 @@ testthat::test_that("vol_kozak94 can return zero merchantable above mindbh for v
     DBH = dbh,
     height = 1.31,
     species = "POPU.BAL",
-    BEC_zone = "BWBS"
+    bec_zone = "BWBS"
   )
 
   testthat::expect_true(out$vol_total > 0)
@@ -542,7 +542,7 @@ testthat::test_that("vol_kozak94 errors clearly for unsupported BEC zones (no mo
       DBH = 20,
       height = 20,
       species = "PSEU.MEN",
-      BEC_zone = "ZZZ"
+      bec_zone = "ZZZ"
     ),
     "No Kozak94 parameters found",
     ignore.case = TRUE

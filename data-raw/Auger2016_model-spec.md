@@ -1,5 +1,7 @@
 # Model spec: hd_auger2016
 
+> **Argument rename (0.8.7):** the user-facing arguments are now `bioclim_subdomain` (SDOM), `physical_env` (MP), `potential_veg` (VP), `MAT` (TMOY), `MAP` (PTOT) and `elevation` (altitude). The parameter tables keep the source names.
+
 > Human-reviewed extraction artifact (Stage 1). Page numbers are the printed
 > page numbers of NRF 146, which match the PDF page numbers. Items marked ⚠
 > need a reviewer decision. Every coefficient was transcribed from 300-dpi

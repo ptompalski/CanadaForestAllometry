@@ -1,5 +1,7 @@
 # Model spec: hd_auger2025
 
+> **Argument rename (0.8.7):** the user-facing `mean_DBH` and `dominant_DBH` arguments are now `DMEAN` and `DDOM`. The parameter-table range columns keep the old names.
+
 > Human-reviewed extraction artifact (Stage 1). The page numbers are the
 > printed "n/31" page numbers of SSS-10, which match the PDF page numbers.
 > Every equation and coefficient was read from 300-dpi renders (`pdftoppm`)

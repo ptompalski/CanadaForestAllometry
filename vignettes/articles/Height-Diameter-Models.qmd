@@ -152,7 +152,12 @@ and in the table below.
 | `TPH` | plot | stems/ha | Stand density |
 | `HDOM` | plot | m | Dominant (or dominant and codominant) height |
 | `QMD` | plot | cm | Quadratic mean DBH |
-| region / classification | plot | code | Model-specific names, e.g. `natural_subregion` (AB), `SDOM`, `MP`, `VP` (QC) |
+| `DMEAN` | plot | cm | Arithmetic mean DBH |
+| `DDOM` | plot | cm | Mean DBH of the dominant trees |
+| `MAT` | plot | °C | Mean annual temperature |
+| `MAP` | plot | mm | Mean (total) annual precipitation |
+| `elevation` | plot | m | Elevation above sea level |
+| region / classification | plot | code | Model-specific descriptive names, e.g. `natural_subregion` (AB), `bioclim_subdomain`, `physical_env`, `potential_veg` (QC) |
 
 Plot-level predictors can be given as a single value (recycled to all trees)
 or as one value per tree. The package does not compute stand variables from
@@ -242,7 +247,7 @@ hd_auger2025(
   DBH = c(6, 9, 12),
   species = "PICE.MAR",
   variant = "dominant",
-  HDOM = 9, dominant_DBH = 11
+  HDOM = 9, DDOM = 11
 )
 ```
 
@@ -388,8 +393,8 @@ plot_hd_curves(dplyr::bind_rows(m4, m5), colour = "model", colour_lab = "Model")
 ## `hd_auger2016()`
 
 Québec, 27 species [@Auger2016]. Reference plot: `BA` = 20 m²/ha,
-`QMD` = 20 cm, `SDOM` = `"4est"`, `MP` = `"2"`, `VP` = `"MS2"`,
-`TMOY` = 2 °C, `PTOT` = 1,000 mm, `altitude` = 300 m, `disturbance` =
+`QMD` = 20 cm, `bioclim_subdomain` = `"4est"`, `physical_env` = `"2"`, `potential_veg` = `"MS2"`,
+`MAT` = 2 °C, `MAP` = 1,000 mm, `elevation` = 300 m, `disturbance` =
 `"none"` (each species uses only the predictors in its model). The source
 advises against use for trees with DBH < 9 cm, so curves start at 9 cm.
 
@@ -403,8 +408,8 @@ advises against use for trees with DBH < 9 cm, so curves start at 9 cm.
 grid <- tidyr::expand_grid(species = hd_species("auger2016"), DBH = seq(9, 60, by = 1))
 grid$height <- hd_auger2016(
   grid$DBH, grid$species,
-  BA = 20, QMD = 20, SDOM = "4est", MP = "2", VP = "MS2",
-  TMOY = 2, PTOT = 1000, altitude = 300, disturbance = "none"
+  BA = 20, QMD = 20, bioclim_subdomain = "4est", physical_env = "2", potential_veg = "MS2",
+  MAT = 2, MAP = 1000, elevation = 300, disturbance = "none"
 )$height
 plot_hd_curves(grid, ncol = 5)
 ```
@@ -412,8 +417,8 @@ plot_hd_curves(grid, ncol = 5)
 ## `hd_auger2025()`
 
 Québec black spruce and jack pine **plantations** [@Auger2025]. The three
-variants: DBH only, plot mean DBH (`mean_DBH` = 12 cm), and dominant height
-and DBH (`HDOM` = 12 m, `dominant_DBH` = 16 cm). Curves are limited to the
+variants: DBH only, plot mean DBH (`DMEAN` = 12 cm), and dominant height
+and DBH (`HDOM` = 12 m, `DDOM` = 16 cm). Curves are limited to the
 calibration DBH range of each species.
 
 ```{r}
@@ -437,13 +442,13 @@ v_dbh <- dplyr::mutate(
 v_mean <- dplyr::mutate(
   grid,
   variant = "plot_mean_dbh",
-  height = hd_auger2025(DBH, species, variant = "plot_mean_dbh", mean_DBH = 12)$height
+  height = hd_auger2025(DBH, species, variant = "plot_mean_dbh", DMEAN = 12)$height
 )
 v_dom <- dplyr::mutate(
   grid,
   variant = "dominant",
   height = hd_auger2025(
-    DBH, species, variant = "dominant", HDOM = 12, dominant_DBH = 16
+    DBH, species, variant = "dominant", HDOM = 12, DDOM = 16
   )$height
 )
 plot_hd_curves(

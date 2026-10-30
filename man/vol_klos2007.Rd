@@ -4,7 +4,7 @@
 \alias{vol_klos2007}
 \title{Estimate tree volume in Manitoba using Kozak (1988) form with Klos (2004) parameters}
 \usage{
-vol_klos2007(DBH, height, species, subregion = "Province")
+vol_klos2007(DBH, height, species, ecozone = "Province")
 }
 \arguments{
 \item{DBH}{Numeric vector. Diameter at breast height (cm).}
@@ -13,7 +13,8 @@ vol_klos2007(DBH, height, species, subregion = "Province")
 
 \item{species}{Character vector. Species code (e.g., "PICE.MAR").}
 
-\item{subregion}{Optional Ecozone or Ecoregion identifier}
+\item{ecozone}{Optional Manitoba ecozone name (\code{"Boreal Shield"} or
+\code{"Boreal Plains"}); defaults to \code{"Province"} (province-wide parameters).}
 }
 \description{
 Estimate tree volume in Manitoba using Kozak (1988) form with Klos (2004) parameters

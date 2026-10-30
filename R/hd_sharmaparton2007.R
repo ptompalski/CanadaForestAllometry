@@ -44,7 +44,11 @@
 #'   "calculated from the trees with DBH greater than or equal to 2.5 cm"
 #'   (source "N/ha", p. 188). Must be `> 0`.
 #'
-#' @return A tibble with column `height` (m).
+#' @param keep_model_id Logical. If `TRUE`, add column `model_id`
+#'   (`"sharmaparton2007"`).
+#'
+#' @return A tibble with column `height` (m) and, if `keep_model_id = TRUE`,
+#'   `model_id`.
 #'
 #' @references
 #' Sharma, M., and Parton, J. (2007). Height–diameter equations for boreal
@@ -69,9 +73,13 @@
 #' dplyr::mutate(trees, hd_sharmaparton2007(DBH, species, HDOM, BA, TPH))
 #'
 #' @export
-hd_sharmaparton2007 <- function(DBH, species, HDOM, BA, TPH) {
+hd_sharmaparton2007 <- function(DBH, species, HDOM, BA, TPH,
+                                keep_model_id = FALSE) {
   fn <- "hd_sharmaparton2007"
 
+  if (!is.logical(keep_model_id) || length(keep_model_id) != 1L || is.na(keep_model_id)) {
+    cli::cli_abort("{.arg keep_model_id} must be TRUE or FALSE.")
+  }
   assert_numeric_vec(DBH, "DBH", gte = 0, allow_na = TRUE)
   if (!is.character(species) && !is.factor(species)) {
     cli::cli_abort("{.arg species} must be a character vector.")
@@ -81,7 +89,9 @@ hd_sharmaparton2007 <- function(DBH, species, HDOM, BA, TPH) {
   assert_numeric_vec(TPH, "TPH", gt = 0, allow_na = TRUE)
 
   if (length(DBH) == 0L) {
-    return(tibble::tibble(height = numeric()))
+    out <- tibble::tibble(height = numeric())
+    if (keep_model_id) out$model_id <- character()
+    return(out)
   }
   v <- assert_len_compat(
     DBH = DBH,
@@ -113,7 +123,11 @@ hd_sharmaparton2007 <- function(DBH, species, HDOM, BA, TPH) {
     # nocov end
   }
 
-  tibble::tibble(height = height)
+  out <- tibble::tibble(height = height)
+  if (keep_model_id) {
+    out$model_id <- ifelse(is.na(p$Species), NA_character_, "sharmaparton2007")
+  }
+  out
 }
 
 

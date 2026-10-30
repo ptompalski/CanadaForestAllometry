@@ -51,12 +51,24 @@ Function names encode model lineage as `prefix_[author][year]`:
 Internal per-element helpers use a leading dot / `_one` suffix (e.g.
 `.thrower1994_height_one`).
 
-**`hd_` argument case rule:** acronyms upper case, words lower case — `DBH`
-(cm), `BA` (m²/ha), `TPH` (stems/ha), `HDOM` (m), `QMD` (cm), `BAL` (m²/ha);
-`height`, `species`, `jurisdiction`. Exception: site index is `si` (m).
-Tree- vs plot-level is stated in each `@param`, not encoded in case. Region /
-ecological arguments use model-specific descriptive names (`natural_subregion`,
-`ecoregion`, `bec_zone`, …), never a generic `subregion`.
+**Argument naming rule (package-wide):** acronyms upper case, words lower case —
+`DBH` (cm), `BA` (m²/ha), `TPH` (stems/ha), `HDOM` (m), `QMD` (cm), `DMEAN`
+(cm), `DDOM` (cm), `BAL` (m²/ha), climate `MAT` (°C), `MAP` (mm), `GDD`;
+`height`, `age`, `species`, `jurisdiction`, `elevation`. Exception: site index
+is `si` (m). Tree- vs plot-level is stated in each `@param`, not encoded in
+case. Do not use source-language symbols (e.g. `TMOY`, `SDOM`) as argument
+names; map them inside the function and note the source symbol in `@param`.
+
+- **Region / ecological** arguments use model-specific descriptive names
+  (`natural_subregion`, `ecozone`, `ecoregion`, `bec_zone`, `district`,
+  `bioclim_subdomain`, …), never a generic `subregion`. Only `vol()` (the
+  dispatcher) and `get_volume_params()` (a table filter) take `subregion`. The
+  registry `subregion_arg` / `region_arg` must name the engine's actual argument.
+- **Model-variant selectors** are called `variant` (character, `rlang::arg_match`).
+- **Flags** are `keep_*` (extra output columns, e.g. `keep_model_id`) or
+  `include_*`, and are scalar logicals.
+- **Argument order:** `DBH`/`age`, then `height`/`si`, then `species`, then
+  region, then other predictors, then options/flags.
 
 ## API conventions
 

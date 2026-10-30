@@ -4,7 +4,7 @@
 \alias{hd_sharmaparton2007}
 \title{Sharma and Parton (2007) DBH–height models for Ontario boreal tree species}
 \usage{
-hd_sharmaparton2007(DBH, species, HDOM, BA, TPH)
+hd_sharmaparton2007(DBH, species, HDOM, BA, TPH, keep_model_id = FALSE)
 }
 \arguments{
 \item{DBH}{Numeric vector. Tree level. Diameter at breast height (1.3 m
@@ -24,9 +24,13 @@ state a minimum DBH for this total. Must be \verb{> 0}.}
 \item{TPH}{Numeric vector. Plot level. Stand density (stems/ha),
 "calculated from the trees with DBH greater than or equal to 2.5 cm"
 (source "N/ha", p. 188). Must be \verb{> 0}.}
+
+\item{keep_model_id}{Logical. If \code{TRUE}, add column \code{model_id}
+(\code{"sharmaparton2007"}).}
 }
 \value{
-A tibble with column \code{height} (m).
+A tibble with column \code{height} (m) and, if \code{keep_model_id = TRUE},
+\code{model_id}.
 }
 \description{
 Vectorized implementation of the population-level individual-tree

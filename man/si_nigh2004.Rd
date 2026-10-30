@@ -4,20 +4,20 @@
 \alias{si_nigh2004}
 \title{Nigh (2004) juvenile height-age (site index) model for British Columbia}
 \usage{
-si_nigh2004(age, species, height = NULL, si = NULL, bec_zone = NULL)
+si_nigh2004(age, height = NULL, si = NULL, species, bec_zone = NULL)
 }
 \arguments{
 \item{age}{Numeric vector. Total age (years).}
-
-\item{species}{Character vector of NFI species codes: \code{"PINU.CON"}
-(lodgepole pine) or \code{"PICE.GLA"} (interior spruce). Recycled to a common
-length with the other inputs.}
 
 \item{height}{Optional numeric vector. Site height (m). If provided, \code{si} is
 predicted.}
 
 \item{si}{Optional numeric vector. Site index (m). If provided, \code{height} is
 predicted.}
+
+\item{species}{Character vector of NFI species codes: \code{"PINU.CON"}
+(lodgepole pine) or \code{"PICE.GLA"} (interior spruce). Recycled to a common
+length with the other inputs.}
 
 \item{bec_zone}{Optional character vector selecting zone-specific
 coefficients. One of \code{"BWBS"}, \code{"ESSF"}, \code{"ICH"}, \code{"IDF"}, \code{"MS"}, \code{"SBS"},

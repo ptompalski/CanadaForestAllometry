@@ -11,15 +11,15 @@ test_that("vol() pick_best=TRUE returns one row per tree and expected columns", 
   expect_equal(nrow(out), 2)
   expect_true(all(c("vol_total", "vol_merchantable") %in% names(out)))
 
-  # Depending on implementation, vol_model may or may not be present when keep_model_id=FALSE.
+  # Depending on implementation, model_id may or may not be present when keep_model_id=FALSE.
   # If present, it should be character (often NA) and length nrow(out).
-  if ("vol_model" %in% names(out)) {
-    expect_true(is.character(out$vol_model))
-    expect_equal(length(out$vol_model), nrow(out))
+  if ("model_id" %in% names(out)) {
+    expect_true(is.character(out$model_id))
+    expect_equal(length(out$model_id), nrow(out))
   }
 })
 
-test_that("vol() keep_model_id=TRUE includes vol_model when pick_best=TRUE", {
+test_that("vol() keep_model_id=TRUE includes model_id when pick_best=TRUE", {
   out <- vol(
     DBH = 20,
     height = 20,
@@ -32,11 +32,11 @@ test_that("vol() keep_model_id=TRUE includes vol_model when pick_best=TRUE", {
   expect_s3_class(out, "tbl_df")
   expect_equal(nrow(out), 1)
   expect_true(all(
-    c("vol_total", "vol_merchantable", "vol_model") %in% names(out)
+    c("vol_total", "vol_merchantable", "model_id") %in% names(out)
   ))
-  expect_true(is.character(out$vol_model))
-  expect_equal(length(out$vol_model), 1)
-  expect_true(nzchar(out$vol_model))
+  expect_true(is.character(out$model_id))
+  expect_equal(length(out$model_id), 1)
+  expect_true(nzchar(out$model_id))
 })
 
 test_that("vol() pick_best=FALSE returns list suitable for list-column use", {
@@ -59,7 +59,7 @@ test_that("vol() pick_best=FALSE returns list suitable for list-column use", {
   purrr::walk(res, function(x) {
     expect_s3_class(x, "tbl_df")
     expect_true(all(
-      c("vol_total", "vol_merchantable", "vol_model") %in% names(x)
+      c("vol_total", "vol_merchantable", "model_id") %in% names(x)
     ))
   })
 })
@@ -91,7 +91,7 @@ test_that("vol() pick_best=FALSE can be unnested after mutate()", {
 
   expect_s3_class(out, "tbl_df")
   expect_true(all(
-    c("vol_total", "vol_merchantable", "vol_model") %in% names(out)
+    c("vol_total", "vol_merchantable", "model_id") %in% names(out)
   ))
   expect_true(nrow(out) >= nrow(trees))
 })
@@ -114,7 +114,7 @@ test_that("subregion NA does not override engine defaults (AB Huang appears with
   cand <- res[[1]]
 
   # Huang should be among candidates when eligible
-  expect_true(any(cand$vol_model == "vol_huang94"))
+  expect_true(any(cand$model_id == "regional_huang94"))
 })
 
 test_that("pick_best=TRUE prefers highest-ranked successful model (AB Huang over Ung)", {
@@ -127,7 +127,7 @@ test_that("pick_best=TRUE prefers highest-ranked successful model (AB Huang over
     keep_model_id = TRUE
   )
 
-  expect_equal(out$vol_model, "vol_huang94")
+  expect_equal(out$model_id, "regional_huang94")
 })
 
 test_that("Ung variants are collapsed to a single row per tree when pick_best=FALSE", {
@@ -143,7 +143,7 @@ test_that("Ung variants are collapsed to a single row per tree when pick_best=FA
   )
 
   cand <- res[[1]]
-  expect_lte(sum(cand$vol_model == "vol_ung2013"), 1)
+  expect_lte(sum(grepl("^national_ung", cand$model_id)), 1)
 })
 
 test_that("invalid species codes error early with informative message", {
@@ -212,7 +212,7 @@ test_that("vol() handles missing backward-compat registry columns", {
 
   expect_s3_class(out, "tbl_df")
   expect_equal(nrow(out), 1)
-  expect_true(all(c("vol_total", "vol_merchantable", "vol_model") %in% names(out)))
+  expect_true(all(c("vol_total", "vol_merchantable", "model_id") %in% names(out)))
 })
 
 test_that("vol() errors when no eligible model exists", {
@@ -288,5 +288,13 @@ test_that("vol() handles engine failures differently for pick_best TRUE vs FALSE
   expect_equal(length(out_list), 1)
   expect_s3_class(out_list[[1]], "tbl_df")
   expect_equal(nrow(out_list[[1]]), 0L)
-  expect_true(all(c("vol_total", "vol_merchantable", "vol_model") %in% names(out_list[[1]])))
+  expect_true(all(c("vol_total", "vol_merchantable", "model_id") %in% names(out_list[[1]])))
+})
+
+testthat::test_that("vol() forwards subregion to vol_nl() as district", {
+  out <- vol(DBH = 25, height = 18, species = "PICE.MAR", jurisdiction = "NL", subregion = 2)
+  ref <- vol_nl(25, 18, "PICE.MAR", district = 2)
+  testthat::expect_equal(out$vol_total, ref$vol_total)
+  testthat::expect_equal(out$vol_merchantable, ref$vol_merchantable)
+  testthat::expect_identical(out$model_id, "regional_NL")
 })

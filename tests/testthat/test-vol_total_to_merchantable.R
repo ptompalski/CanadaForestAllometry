@@ -118,7 +118,7 @@ testthat::test_that("vol_total_to_merchantable vectorizes over vol_total", {
     species = "PICE.MAR",
     jurisdiction = "AB",
     ecozone = 4,
-    include_prop = TRUE,
+    include_props = TRUE,
     warn_outside = FALSE
   )
 
@@ -129,13 +129,13 @@ testthat::test_that("vol_total_to_merchantable vectorizes over vol_total", {
   ))
 })
 
-testthat::test_that("vol_total_to_merchantable respects include_prop and clamp_x output columns", {
+testthat::test_that("vol_total_to_merchantable respects include_props and clamp_x output columns", {
   testthat::skip_if_not(exists("parameters_v2b", inherits = TRUE))
 
   a <- vol_total_to_merchantable(100, "PICE.MAR", "AB", 4)
   testthat::expect_named(a, "vol_merchantable")
 
-  b <- vol_total_to_merchantable(100, "PICE.MAR", "AB", 4, include_prop = TRUE)
+  b <- vol_total_to_merchantable(100, "PICE.MAR", "AB", 4, include_props = TRUE)
   testthat::expect_true(all(c("vol_merchantable", "prop_merch") %in% names(b)))
 
   c <- vol_total_to_merchantable(
@@ -193,7 +193,7 @@ testthat::test_that("vol_total_to_merchantable clamps prop to [0,1] when clamp_p
     species = "PICE.MAR",
     jurisdiction = "AB",
     ecozone = 4,
-    include_prop = TRUE,
+    include_props = TRUE,
     warn_outside = FALSE,
     clamp_prop = TRUE
   )

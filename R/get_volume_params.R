@@ -6,7 +6,7 @@
 #'
 #' The function then applies **context filters** (when relevant / available in the
 #' parameter table), typically by \code{species}, and for regional models also by
-#' \code{province} and \code{subregion}.
+#' \code{jurisdiction} and \code{subregion}.
 #'
 #' This function does **not** refactor or run any volume engines; it only returns
 #' the parameter rows needed for a given model/context.
@@ -14,7 +14,7 @@
 #' @param model_id A single model id from \code{volume_model_registry()$model_id},
 #'   e.g. \code{"national_ung_dbh"} or \code{"regional_kozak88"}.
 #' @param species Species code (e.g., \code{"POPU.TRE"}). Required for all current models.
-#' @param province Province/jurisdiction code (e.g., \code{"BC"}, \code{"AB"}).
+#' @param jurisdiction Province/jurisdiction code (e.g., \code{"BC"}, \code{"AB"}).
 #'   Used for regional models when the parameter table includes a \code{Province} column.
 #' @param subregion Subregion identifier (BEC zone in BC).
 #'   Used for regional models when the parameter table includes a \code{Subregion} column.
@@ -29,17 +29,17 @@
 #' # National DBH-only (Ung et al.)
 #' # get_volume_params("national_ung_dbh", species = "POPU.TRE")
 #'
-#' # Regional Kozak 88 (requires province/subregion in most parameter tables)
-#' # get_volume_params("regional_kozak88", species = "POPU.TRE", province = "AB", subregion = "ALL")
+#' # Regional Kozak 88 (requires jurisdiction/subregion in most parameter tables)
+#' # get_volume_params("regional_kozak88", species = "POPU.TRE", jurisdiction = "AB", subregion = "ALL")
 #'
 #' # BC Kozak 94 (BEC zone as subregion)
-#' # get_volume_params("regional_kozak94", species = "PSEU.MEN", province = "BC", subregion = "SBS")
+#' # get_volume_params("regional_kozak94", species = "PSEU.MEN", jurisdiction = "BC", subregion = "SBS")
 #'
 #' @export
 get_volume_params <- function(
   model_id,
   species,
-  province = NA_character_,
+  jurisdiction = NA_character_,
   subregion = "ALL",
   strict = FALSE
 ) {
@@ -112,8 +112,8 @@ get_volume_params <- function(
   out <- out0
 
   # Province filter (only if present & provided)
-  if ("Province" %in% names(out) && !is.na(province) && nzchar(province)) {
-    out <- out[out$Province == province, , drop = FALSE]
+  if ("Province" %in% names(out) && !is.na(jurisdiction) && nzchar(jurisdiction)) {
+    out <- out[out$Province == jurisdiction, , drop = FALSE]
   }
 
   # Subregion filter (only if present & provided)
@@ -138,8 +138,8 @@ get_volume_params <- function(
         "', species='",
         species_std,
         "'",
-        if (!is.na(province) && nzchar(province)) {
-          paste0(", province='", province, "'")
+        if (!is.na(jurisdiction) && nzchar(jurisdiction)) {
+          paste0(", jurisdiction='", jurisdiction, "'")
         } else {
           ""
         },
@@ -165,5 +165,5 @@ get_volume_params <- function(
 
 # get_volume_params("national_ung_dbh", species = "POPU.TRE")
 # get_volume_params("regional_honer", species = "PICE.GLA", strict = T)
-# get_volume_params("regional_kozak88", species = "POPU.TRE", province = "AB", subregion = "ALL")
-# get_volume_params("regional_kozak94", species = "PSEU.MEN", province = "BC", subregion = "CWH")
+# get_volume_params("regional_kozak88", species = "POPU.TRE", jurisdiction = "AB", subregion = "ALL")
+# get_volume_params("regional_kozak94", species = "PSEU.MEN", jurisdiction = "BC", subregion = "CWH")

@@ -9,13 +9,14 @@ hd_auger2016(
   species,
   BA,
   QMD = NULL,
-  SDOM = NULL,
-  MP = NULL,
-  VP = NULL,
-  TMOY = NULL,
-  PTOT = NULL,
-  altitude = NULL,
-  disturbance = NULL
+  bioclim_subdomain = NULL,
+  physical_env = NULL,
+  potential_veg = NULL,
+  MAT = NULL,
+  MAP = NULL,
+  elevation = NULL,
+  disturbance = NULL,
+  keep_model_id = FALSE
 )
 }
 \arguments{
@@ -39,51 +40,58 @@ species.}
 the plot's merchantable trees. Used to compute the relative DBH
 (RDHP = \code{DBH / QMD}). Must be \verb{> 0}. Required for 21 species.}
 
-\item{SDOM}{Optional character vector. Plot level. Bioclimatic subdomain
-(Saucier et al. 1998): \code{"1"}, \code{"2est"}, \code{"2ouest"}, \code{"3est"}, \code{"3ouest"},
+\item{bioclim_subdomain}{Optional character vector. Plot level.
+Bioclimatic subdomain (source "SDOM"; Saucier et al. 1998): \code{"1"}, \code{"2est"}, \code{"2ouest"}, \code{"3est"}, \code{"3ouest"},
 \code{"4est"}, \code{"4ouest"}, \code{"5est"}, \code{"5ouest"}, \code{"6est"}, \code{"6ouest"}.
 Required for 11 species.}
 
-\item{MP}{Optional character or integer vector. Plot level. Physical
-environment class (« milieu physique », MRN 2013), \code{0} to \code{9}. Required
+\item{physical_env}{Optional character or integer vector. Plot level.
+Physical environment class (source "MP", « milieu physique », MRN 2013), \code{0} to \code{9}. Required
 for 10 species.}
 
-\item{VP}{Optional character vector. Plot level. Potential vegetation code
-(e.g. \code{"RS2"}, \code{"FE3"}; three characters). Required for 15 species.}
+\item{potential_veg}{Optional character vector. Plot level. Potential
+vegetation code (source "VP"; e.g. \code{"RS2"}, \code{"FE3"}; three characters). Required for 15 species.}
 
-\item{TMOY}{Optional numeric vector. Plot level. Mean annual temperature,
-1981–2010 normal (°C). Required for 7 species.}
+\item{MAT}{Optional numeric vector. Plot level. Mean annual temperature,
+1981–2010 normal (°C; source "TMOY"). Required for 7 species.}
 
-\item{PTOT}{Optional numeric vector. Plot level. Total annual
-precipitation, 1981–2010 normal (mm). Must be \verb{>= 0}. Required for 10
+\item{MAP}{Optional numeric vector. Plot level. Mean (total) annual
+precipitation, 1981–2010 normal (mm; source "PTOT"). Must be \verb{>= 0}. Required for 10
 species.}
 
-\item{altitude}{Optional numeric vector. Plot level. Altitude (m). Required
+\item{elevation}{Optional numeric vector. Plot level. Elevation above sea
+level (m; source "ALT", altitude). Required
 for 4 species.}
 
 \item{disturbance}{Optional character vector. Plot level. Occurrence of a
 light disturbance (« perturbation légère »): \code{"anthropique"}
 (\code{"anthropogenic"}), \code{"naturelle"} (\code{"natural"}) or \code{"aucune"}
 (\code{"none"}). Required for 5 species.}
+
+\item{keep_model_id}{Logical. If \code{TRUE}, add column \code{model_id}
+(\code{"auger2016"}).}
 }
 \value{
-A tibble with column \code{height} (m).
+A tibble with column \code{height} (m), plus \code{model_id} if
+\code{keep_model_id = TRUE}.
 }
 \description{
 Vectorized implementation of the population-level height–diameter
 relationship of Auger (2016; Note de recherche forestière no 146) for 27
 commercial tree species of Québec. Predicts total tree height (m) from DBH
 (cm), plot merchantable basal area and, depending on the species, the
-tree's relative DBH, climate normals, altitude and Québec ecological
+tree's relative DBH, climate normals, elevation and Québec ecological
 classification codes.
 }
 \details{
 \strong{Model form} (equation 1, p. 4):
 \deqn{h = 1.3 + A \ln(DBH + 1) + B \ln(DBH + 1)^2,}
-\deqn{A = a + a_{ST} BA + a_{RDHP} \frac{DBH}{QMD} + a_{ALT} altitude +
+\deqn{A = a + a_{ST} BA + a_{RDHP} \frac{DBH}{QMD} + a_{ALT} ALT +
   a_{PTOT} PTOT + a_{TMOY} TMOY + a_{SDOM} + a_{MP} + a_{VP} + a_{PERT},}
 where \eqn{B} is a species constant and every covariate effect interacts
-with \eqn{\ln(DBH + 1)}. Height is not transformed, so no
+with \eqn{\ln(DBH + 1)}. Source symbols map to arguments as: ALT =
+\code{elevation}, PTOT = \code{MAP}, TMOY = \code{MAT}, SDOM = \code{bioclim_subdomain}, MP =
+\code{physical_env}, VP = \code{potential_veg}, PERT = \code{disturbance}. Height is not transformed, so no
 back-transformation applies. Grey birch (\code{BETU.POP}) has no
 \eqn{\ln(DBH + 1)^2} term in the source (Annexe 1) and is linear in
 \eqn{\ln(DBH + 1)}.
@@ -94,7 +102,7 @@ model contains them. A predictor is required only when a row's species uses
 it; otherwise it may be \code{NULL} or \code{NA} and is ignored. Use
 \code{get_hd_model_info("auger2016")} for definitions, and see the source for the
 per-species predictor sets. For example, white spruce (\code{PICE.GLA}) uses
-\code{BA}, \code{QMD}, \code{TMOY}, \code{SDOM} and \code{VP}; silver maple, American elm and grey
+\code{BA}, \code{QMD}, \code{MAT}, \code{bioclim_subdomain} and \code{potential_veg}; silver maple, American elm and grey
 birch use \code{BA} only.
 
 \strong{Population-level prediction:} the published fixed effects with the
@@ -117,7 +125,7 @@ of the Québec permanent and temporary inventory plots. The author advises
 against use for trees with DBH < 9 cm (p. 19); such trees are computed but
 reported as outside the range, and their predicted height may be below
 1.3 m. Inputs outside the per-species ranges of the fitting data (Tableau 1:
-DBH and relative DBH; Tableau 2: \code{BA}, \code{altitude}, \code{TMOY}, \code{PTOT}) are
+DBH and relative DBH; Tableau 2: \code{BA}, \code{elevation}, \code{MAT}, \code{MAP}) are
 computed and reported in a single warning. Rows with \code{NA} in a used input
 return \code{NA} height.
 
@@ -132,7 +140,7 @@ different parameter estimates and predictor sets for the other 17 species
 # Worked example (Annexe 1): white spruce, 12.0 m
 hd_auger2016(
   DBH = 20, species = "PICE.GLA", BA = 20, QMD = 15,
-  SDOM = "1", VP = "FC1", TMOY = 2.3
+  bioclim_subdomain = "1", potential_veg = "FC1", MAT = 2.3
 )
 
 # Species needing only basal area
@@ -143,13 +151,16 @@ trees <- data.frame(
   DBH = c(14, 22, 18),
   species = c("PICE.MAR", "ABIE.BAL", "ACER.SAH"),
   BA = 22, QMD = c(15, 15, 20),
-  SDOM = c("5ouest", "5ouest", "3ouest"), MP = c(2, 2, 2),
-  VP = c("RS2", "RS2", "FE3"), TMOY = c(1, 1, 3.5),
-  PTOT = 1000, altitude = 300, disturbance = "none"
+  bioclim_subdomain = c("5ouest", "5ouest", "3ouest"), physical_env = 2,
+  potential_veg = c("RS2", "RS2", "FE3"), MAT = c(1, 1, 3.5),
+  MAP = 1000, elevation = 300, disturbance = "none"
 )
 dplyr::mutate(
   trees,
-  hd_auger2016(DBH, species, BA, QMD, SDOM, MP, VP, TMOY, PTOT, altitude, disturbance)
+  hd_auger2016(
+    DBH, species, BA, QMD, bioclim_subdomain, physical_env, potential_veg,
+    MAT, MAP, elevation, disturbance
+  )
 )
 
 }
