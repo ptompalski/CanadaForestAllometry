@@ -20,7 +20,19 @@
     "T/609 p. 6 (eqs. [1]-[2])",
     "huang2016", "natural_subregion", "plot", "code (1-21 or e.g. 'CM')", FALSE,
     "Alberta 2006 natural subregion (Natural Regions Committee 2006); selects the natural-subregion-group model. NULL = provincial model.",
-    "T/609 Table 2 (p. 2); Table 4 (p. 7)"
+    "T/609 Table 2 (p. 2); Table 4 (p. 7)",
+    "sharmaparton2007", "DBH", "tree", "cm", TRUE,
+    "D = diameter at breast height (DBH) (cm).",
+    "FEM 249:187-198, p. 190 (eq. 6)",
+    "sharmaparton2007", "HDOM", "plot", "m", TRUE,
+    "Dominant stand height (SHT): mean height of sampled dominant and codominant trees in a plot, irrespective of species.",
+    "FEM 249:187-198, p. 188; p. 190",
+    "sharmaparton2007", "BA", "plot", "m2/ha", TRUE,
+    "Total tree basal area (BA/ha); minimum DBH for the total not stated.",
+    "FEM 249:187-198, p. 188; p. 190",
+    "sharmaparton2007", "TPH", "plot", "stems/ha", TRUE,
+    "Number of stems (N/ha), calculated from the trees with DBH greater than or equal to 2.5 cm.",
+    "FEM 249:187-198, p. 188"
   )
 }
 
@@ -101,6 +113,18 @@
       region_arg = "natural_subregion",
       calibration_published = TRUE,
       params_key = "parameters_hd_Huang2016"
+    ),
+    .hd_registry_row(
+      model_id = "sharmaparton2007",
+      engine = "hd_sharmaparton2007",
+      reference = "@SharmaParton2007",
+      scope = "regional",
+      province_scope = "ON",
+      stand_origin = "both",
+      equation_family = "chapman_richards_stand",
+      description = "Northern Ontario boreal population DBH-height models with dominant height, basal area and stems/ha (Method 2 fixed effects, Table 6).",
+      calibration_published = TRUE,
+      params_key = "parameters_hd_SharmaParton2007"
     )
   )
 }

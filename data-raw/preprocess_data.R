@@ -1453,6 +1453,35 @@ stopifnot(
   all(huang2016_hd_species_map$species_key %in% parameters_hd_Huang2016$species_key)
 )
 
+## Sharma & Parton 2007 DBH-height models, Ontario boreal ####
+# Eq. 6/8 coefficients for Method 1 (fixed-effects) and Method 2 (mixed,
+# plot-x-species random asymptote; used for population prediction with u = 0),
+# Table 6. Per-species DBH ranges from Table 1 (model set); pooled plot ranges
+# (BA, N/ha, SHT) from p. 188. sigma2_u is NA for Method 1.
+parameters_hd_SharmaParton2007 <- read.csv(
+  "data-raw/SharmaParton2007_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    method = as.integer(method),
+    theta, delta, beta, phi, gamma, sigma2_e, sigma2_u,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, TPH_min, TPH_max, HDOM_min, HDOM_max,
+    n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(Species, method)
+
+stopifnot(
+  nrow(parameters_hd_SharmaParton2007) == 16L,
+  !anyDuplicated(parameters_hd_SharmaParton2007[c("Species", "method")]),
+  all(table(parameters_hd_SharmaParton2007$method) == 8L),
+  !anyNA(parameters_hd_SharmaParton2007$sigma2_u[
+    parameters_hd_SharmaParton2007$method == 2L
+  ])
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1507,7 +1536,8 @@ internal_objs <- c(
   "parameters_Buckman2006",
   "parameters_Batho2014",
   "parameters_hd_Huang2016",
-  "hd_huang2016_natural_subregions"
+  "hd_huang2016_natural_subregions",
+  "parameters_hd_SharmaParton2007"
 )
 
 # sanity check: make sure they exist before saving

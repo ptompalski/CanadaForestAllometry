@@ -81,3 +81,12 @@
   )
   invisible(sort(rows_all))
 }
+
+# internal
+# Chapman-Richards height-diameter form with stand-level predictors (Sharma &
+# Parton 2007, eqs. 6/8 with u = 0; same form used by later Ontario hd models):
+#   H = 1.3 + a0 * HDOM^a1 * (1 - exp(-a2 * (TPH / BA)^a3 * DBH))^a4
+# Inputs are assumed validated and of common length. NA in -> NA out.
+.hd_cr_stand <- function(DBH, HDOM, BA, TPH, a0, a1, a2, a3, a4) {
+  1.3 + a0 * HDOM^a1 * (1 - exp(-a2 * (TPH / BA)^a3 * DBH))^a4
+}

@@ -85,3 +85,13 @@ test_that(".hd_warn_out_of_range() validates args", {
     "unknown input"
   )
 })
+
+test_that(".hd_cr_stand evaluates the stand-level Chapman-Richards form", {
+  h <- .hd_cr_stand(
+    DBH = c(0, 10, NA), HDOM = 20, BA = 25, TPH = 2500,
+    a0 = 2, a1 = 0.5, a2 = 0.05, a3 = 0.1, a4 = 1.2
+  )
+  expect_equal(h[1], 1.3)
+  expect_equal(h[2], 1.3 + 2 * 20^0.5 * (1 - exp(-0.05 * 100^0.1 * 10))^1.2)
+  expect_true(is.na(h[3]))
+})
