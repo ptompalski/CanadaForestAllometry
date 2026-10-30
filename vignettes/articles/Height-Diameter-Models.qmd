@@ -80,8 +80,10 @@ for (i in seq_len(nrow(reg_fun))) {
 
 The registry has one row per model **variant**. Some functions implement
 several variants: `hd_eslamdoust2026()` chooses M4 (DBH only) or M5 (with
-stand variables) from the predictors you supply, and `hd_auger2025()` uses an
-explicit `variant` argument because its variants need different inputs.
+stand variables) from the predictors you supply, `hd_zhang2002()` uses the
+ecoregion, forest-region or Ontario-wide fit depending on which region you
+give, and `hd_auger2025()` uses an explicit `variant` argument because its
+variants need different inputs.
 
 ```{r}
 #| label: hd-registry-table
@@ -388,6 +390,31 @@ m5 <- dplyr::mutate(
   height = hd_eslamdoust2026(DBH, species, HDOM = 20, BA = 25, TPH = 1500)$height
 )
 plot_hd_curves(dplyr::bind_rows(m4, m5), colour = "model", colour_lab = "Model")
+```
+
+## `hd_zhang2002()`
+
+Ontario jack pine [@Zhang2002hd]: the seven ecoregion fits, the two forest-region fits (Boreal, Central) and the Ontario-wide (Overall) fit.
+
+```{r}
+#| label: fig-zhang2002
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 7
+#| fig-height: 4
+sets <- tibble::tibble(
+  set = c("3E", "3S", "3W", "4E", "4S", "4W", "5E", "boreal", "central", "overall"),
+  ecoregion = c("3E", "3S", "3W", "4E", "4S", "4W", "5E", NA, NA, NA),
+  forest_region = c(rep(NA, 7), "boreal", "central", NA)
+)
+grid <- tidyr::expand_grid(sets, DBH = seq(1, 50, by = 1))
+grid$species <- "PINU.BAN"
+grid$height <- hd_zhang2002(
+  grid$DBH, "PINU.BAN",
+  ecoregion = grid$ecoregion, forest_region = grid$forest_region
+)$height
+plot_hd_curves(grid, colour = "set", colour_lab = "Parameter set")
 ```
 
 ## `hd_auger2016()`

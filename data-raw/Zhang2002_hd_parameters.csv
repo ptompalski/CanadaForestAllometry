@@ -1,0 +1,11 @@
+species_src,species_name,nfi_species,variant,ecoregion,forest_region,a,b,c,mse,n_trees,DBH_mean,DBH_sd,DBH_min,DBH_max,height_mean,height_sd,height_min,height_max,source_params,source_ranges
+jack pine,Pinus banksiana,PINU.BAN,ecoregion,3E,boreal,25.3621,0.0735,1.6178,7.0844,4889,15.43,7.69,1.40,51.30,13.84,6.14,2.15,28.02,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,ecoregion,3S,boreal,79.0082,0.0082,0.8275,3.8682,507,14.27,5.98,2.50,35.30,13.76,4.58,2.49,25.69,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,ecoregion,3W,boreal,21.8002,0.1085,2.1053,6.0078,2174,14.28,7.71,1.30,42.50,13.04,6.31,2.30,27.04,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,ecoregion,4E,central,25.5031,0.0545,0.9629,5.8497,323,18.83,7.07,3.10,39.50,17.23,4.49,3.10,26.44,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,ecoregion,4S,boreal,22.8653,0.0807,1.7913,5.5642,1997,12.60,6.97,2.50,37.00,10.85,5.70,2.06,25.30,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,ecoregion,4W,boreal,19.0772,0.1245,1.9955,5.2653,687,18.78,5.55,2.50,33.50,16.15,3.73,2.40,26.10,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,ecoregion,5E,central,23.1614,0.1065,1.5542,5.9114,150,23.12,6.83,3.40,35.20,20.55,4.43,5.12,25.63,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,regional,,boreal,23.9313,0.0812,1.7149,6.5688,10254,14.80,7.51,1.30,51.30,13.24,6.05,2.06,28.02,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,regional,,central,25.1702,0.0650,1.1038,6.2790,473,20.19,7.27,3.10,39.50,18.29,4.73,3.10,26.44,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)
+jack pine,Pinus banksiana,PINU.BAN,overall,,,24.0677,0.0808,1.7062,6.6496,10727,15.04,7.58,1.30,51.30,13.46,6.08,2.06,28.02,Table 2 p.533 (PDF p4),Table 1 p.532 (PDF p3)

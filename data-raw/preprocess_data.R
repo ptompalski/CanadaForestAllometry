@@ -1606,6 +1606,44 @@ stopifnot(
   )
 )
 
+## Zhang, Peng, Huang & Zhou 2002 jack pine DBH-height models, Ontario ####
+# Chapman-Richards eq. [1], H = 1.3 + a * (1 - exp(-b * DBH))^c, fitted by
+# NLS separately to 7 ELC ecoregions, the Boreal and Central forest regions,
+# and all data (Overall). Coefficients and MSE from Table 2 (p. 533); ranges
+# from Table 1 (p. 532). `parameter_set` is the ecoregion code, the forest
+# region, or "overall". See data-raw/Zhang2002_model-spec.md.
+parameters_hd_Zhang2002 <- read.csv(
+  "data-raw/Zhang2002_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant, ecoregion, forest_region,
+    parameter_set = dplyr::coalesce(ecoregion, forest_region, "overall"),
+    a, b, c, mse,
+    DBH_min, DBH_max, height_min, height_max,
+    n_trees = as.integer(n_trees)
+  )
+
+stopifnot(
+  nrow(parameters_hd_Zhang2002) == 10L,
+  all(parameters_hd_Zhang2002$Species == "PINU.BAN"),
+  !anyDuplicated(parameters_hd_Zhang2002$parameter_set),
+  identical(
+    as.vector(table(parameters_hd_Zhang2002$variant)[c("ecoregion", "regional", "overall")]),
+    c(7L, 2L, 1L)
+  ),
+  with(
+    parameters_hd_Zhang2002,
+    !anyNA(cbind(a, b, c, DBH_min, DBH_max)) &&
+      all(a > 0 & b > 0 & c > 0) &&
+      !anyNA(forest_region[variant != "overall"]) &&
+      all(forest_region %in% c("boreal", "central", NA))
+  )
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1665,7 +1703,8 @@ internal_objs <- c(
   "parameters_hd_Eslamdoust2026",
   "parameters_hd_Auger2016",
   "parameters_hd_Auger2016_classes",
-  "parameters_hd_Auger2025"
+  "parameters_hd_Auger2025",
+  "parameters_hd_Zhang2002"
 )
 
 # sanity check: make sure they exist before saving

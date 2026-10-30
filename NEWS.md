@@ -34,6 +34,7 @@ Function arguments now follow one package-wide naming scheme (see `AGENTS.md`). 
 - Added `hd_eslamdoust2026()`, the Eslamdoust et al. (2026) population DBH–height models for eight Ontario boreal and Great Lakes–St. Lawrence species (white pine, eastern white cedar, sugar maple, yellow birch, beech, tamarack, basswood, eastern hemlock): M4 from DBH only, or M5 with dominant height, basal area and stems/ha when supplied. The tamarack M5 rate coefficient uses a corrected value (0.09793; printed 0.9793). No source benchmark; M4 validated against Fig. 3a.
 - Added `hd_auger2016()`, the Auger (2016; NRF 146) population DBH–height models for 27 Québec species with basal area and species-specific relative DBH, climate, altitude and ecological-classification effects (validated against the published worked example and effect sizes, and CFSForestTools for the 10 species it implements as published).
 - Added `hd_auger2025()`, the Auger, DeBlois & Lambert (2025; SSS-10) DBH–height models for black spruce and jack pine plantations in Québec, from DBH only, plot mean DBH, or dominant height and DBH (no source benchmark).
+- Added `hd_zhang2002()`, the Zhang et al. (2002) Ontario jack pine DBH–height models by ecoregion, forest region or province-wide (no source benchmark).
 - Added the "DBH–Height Models" article: registry overview, discovery helpers, predictor definitions, population-level vs calibrated prediction, and model curves.
 
 # CanadaForestAllometry 0.8.6

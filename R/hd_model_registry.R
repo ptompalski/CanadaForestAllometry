@@ -95,7 +95,22 @@
     "SSS-10 eq. 3 (p. 7); p. 2",
     "auger2025_dominant", "DDOM", "plot", "cm", TRUE,
     "DDOM: mean DBH of the same dominant trees of the plot.",
-    "SSS-10 eq. 3 (p. 7); p. 2"
+    "SSS-10 eq. 3 (p. 7); p. 2",
+    "zhang2002_ecoregion", "DBH", "tree", "cm", TRUE,
+    "DBH is tree diameter at breast height (cm); outside bark, measured 1.3 m above ground.",
+    "For. Chron. 78:530-538, p. 532 (eq. [1]); p. 530",
+    "zhang2002_ecoregion", "ecoregion", "plot", "code ('3E','3S','3W','4E','4S','4W','5E')", TRUE,
+    "Ontario ecoregion (ELC Working Group 2000; Hayden et al. 1995): 3E, 3S, 3W, 4S, 4W (Boreal region) and 4E, 5E (Central region).",
+    "For. Chron. 78:530-538, p. 532; Fig. 1 (p. 531); Table 2 (p. 533)",
+    "zhang2002_regional", "DBH", "tree", "cm", TRUE,
+    "DBH is tree diameter at breast height (cm); outside bark, measured 1.3 m above ground.",
+    "For. Chron. 78:530-538, p. 532 (eq. [1]); p. 530",
+    "zhang2002_regional", "forest_region", "plot", "code ('boreal','central')", TRUE,
+    "Ontario forest region: Boreal (ecoregions 3E, 3S, 3W, 4S, 4W) or Central (Great Lakes-St. Lawrence; ecoregions 4E, 5E). Used when ecoregion is not supplied.",
+    "For. Chron. 78:530-538, p. 532; Table 2 (p. 533)",
+    "zhang2002_overall", "DBH", "tree", "cm", TRUE,
+    "DBH is tree diameter at breast height (cm); outside bark, measured 1.3 m above ground.",
+    "For. Chron. 78:530-538, p. 532 (eq. [1]); p. 530"
   )
 }
 
@@ -264,6 +279,44 @@
       fixed_args = list(variant = "dominant"),
       calibration_published = FALSE,
       params_key = "parameters_hd_Auger2025"
+    ),
+    .hd_registry_row(
+      model_id = "zhang2002_ecoregion",
+      engine = "hd_zhang2002",
+      reference = "@Zhang2002hd",
+      scope = "regional",
+      province_scope = "ON",
+      stand_origin = "both",
+      equation_family = "chapman_richards",
+      description = "Ontario jack pine DBH-height models by ELC ecoregion (3E, 3S, 3W, 4E, 4S, 4W, 5E; Table 2); used when ecoregion is supplied.",
+      region_arg = "ecoregion",
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Zhang2002"
+    ),
+    .hd_registry_row(
+      model_id = "zhang2002_regional",
+      engine = "hd_zhang2002",
+      reference = "@Zhang2002hd",
+      scope = "regional",
+      province_scope = "ON",
+      stand_origin = "both",
+      equation_family = "chapman_richards",
+      description = "Ontario jack pine DBH-height models for the Boreal and Central forest regions (Table 2); used when only forest_region is supplied.",
+      region_arg = "forest_region",
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Zhang2002"
+    ),
+    .hd_registry_row(
+      model_id = "zhang2002_overall",
+      engine = "hd_zhang2002",
+      reference = "@Zhang2002hd",
+      scope = "provincial",
+      province_scope = "ON",
+      stand_origin = "both",
+      equation_family = "chapman_richards",
+      description = "Ontario jack pine DBH-height model fitted to all data (Overall, Table 2); used when neither ecoregion nor forest_region is supplied.",
+      calibration_published = FALSE,
+      params_key = "parameters_hd_Zhang2002"
     )
   )
 }
