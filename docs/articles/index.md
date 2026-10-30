@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [DBH–Height
+  Models](https://ptompalski.github.io/CanadaForestAllometry/articles/Height-Diameter-Models.md):
 - [Site Index
   Models](https://ptompalski.github.io/CanadaForestAllometry/articles/Site-Index-Models.md):
 - [Tree Aboveground Biomass

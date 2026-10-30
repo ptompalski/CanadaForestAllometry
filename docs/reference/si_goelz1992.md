@@ -14,17 +14,17 @@ si_goelz1992(age, height = NULL, si = NULL)
 
 - age:
 
-  Numeric vector. Breast-height age (years), with \`age \> 0\`.
+  Numeric vector. Breast-height age (years), with `age > 0`.
 
 - height:
 
-  Optional numeric vector. Site height (m), with \`height \> 1.3\`. If
-  provided, \`si\` is predicted.
+  Optional numeric vector. Site height (m), with `height > 1.3`. If
+  provided, `si` is predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height), with \`si \> 1.3\`. If provided, \`height\` is predicted.
+  height), with `si > 1.3`. If provided, `height` is predicted.
 
 ## Value
 
@@ -32,18 +32,18 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** jack pine (`PINU.BAN`).
 
-**Age definition note:** \`age\` is breast-height age (years). Heights
-are referenced to a breast height of 1.3 m.
+**Age definition note:** `age` is breast-height age (years). Heights are
+referenced to a breast height of 1.3 m.
 
 **Base-age note:** the equation is base-age invariant. Site index is
 returned as the predicted height (m) at a breast-height age of 50 years,
@@ -70,15 +70,15 @@ from that height therefore need not recover the original value exactly;
 the round-trip discrepancy is small (the source reports curve
 differences across base ages of less than 0.5 m).
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\` at \`age\`.
+- If `si` is provided, the function predicts `height` at `age`.
 
-- If \`height\` is provided, the function predicts \`si\` (height at
-  base age 50) from the observed (\`age\`, \`height\`) pair.
+- If `height` is provided, the function predicts `si` (height at base
+  age 50) from the observed (`age`, `height`) pair.
 
-This model is specific to jack pine (\`PINU.BAN\`); the species is fixed
-and there is no \`species\` argument.
+This model is specific to jack pine (`PINU.BAN`); the species is fixed
+and there is no `species` argument.
 
 ## References
 

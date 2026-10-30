@@ -20,13 +20,13 @@ si_alemdag1991(age, height = NULL, si = NULL)
 
 - height:
 
-  Optional numeric vector. Total tree height (m). If provided, \`si\` is
+  Optional numeric vector. Total tree height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 ## Value
 
@@ -34,20 +34,20 @@ A tibble with a single column:
 
 - height:
 
-  Predicted total tree height (m), returned when \`si\` is provided.
+  Predicted total tree height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** white spruce, NFI code `PICE.GLA`.
 This is a single national model with no species argument.
 
-**Age definition note:** \`age\` is breast-height age (years), i.e.
-rings counted at 1.30 m. Both equations use height and site index
-measured above breast height (\\H - 1.30\\, \\S - 1.30\\).
+**Age definition note:** `age` is breast-height age (years), i.e. rings
+counted at 1.30 m. Both equations use height and site index measured
+above breast height (\\H - 1.30\\, \\S - 1.30\\).
 
 **Base-age note:** site index is total tree height at index (base) age
 \\A_1 = 50\\ years breast-height age. Both equations are conditioned so
@@ -70,11 +70,11 @@ The two equations were fitted independently (they are not exact inverses
 of one another), each on the combined national data. Both directions are
 closed-form.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\` (model \[4\]).
+- If `si` is provided, the function predicts `height` (model \[4\]).
 
-- If \`height\` is provided, the function predicts \`si\` (model \[9\]).
+- If `height` is provided, the function predicts `si` (model \[9\]).
 
 ## References
 

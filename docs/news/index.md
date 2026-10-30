@@ -1,39 +1,52 @@
 # Changelog
 
+## CanadaForestAllometry 0.8.7
+
+### DBH–height models
+
+- Added
+  [`hd_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_model_registry.md),
+  [`get_hd_model_info()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_hd_model_info.md)
+  and
+  [`find_hd_models()`](https://ptompalski.github.io/CanadaForestAllometry/reference/find_hd_models.md)
+  as the discovery interface for the new DBH–height (`hd_*()`) model
+  family (no models registered yet).
+- Added
+  [`hd_huang2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2016.md),
+  the Huang, Yang & Aitkin (2016; T/609) population DBH–height models
+  for major Alberta tree species, provincial or by natural-subregion
+  group.
+- Added
+  [`hd_sharmaparton2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmaparton2007.md),
+  the Sharma & Parton (2007) population DBH–height models for eight
+  northern Ontario boreal species using dominant height, basal area and
+  stems/ha (no source benchmark; validated against Fig. 2).
+- Added
+  [`hd_eslamdoust2026()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026.md),
+  the Eslamdoust et al. (2026) population DBH–height models for eight
+  Ontario boreal and Great Lakes–St. Lawrence species (white pine,
+  eastern white cedar, sugar maple, yellow birch, beech, tamarack,
+  basswood, eastern hemlock): M4 from DBH only, or M5 with dominant
+  height, basal area and stems/ha when supplied. The tamarack M5 rate
+  coefficient uses a corrected value (0.09793; printed 0.9793). No
+  source benchmark; M4 validated against Fig. 3a.
+- Added
+  [`hd_auger2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2016.md),
+  the Auger (2016; NRF 146) population DBH–height models for 27 Québec
+  species with basal area and species-specific relative DBH, climate,
+  altitude and ecological-classification effects (validated against the
+  published worked example and effect sizes, and CFSForestTools for the
+  10 species it implements as published).
+- Added
+  [`hd_auger2025()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2025.md),
+  the Auger, DeBlois & Lambert (2025; SSS-10) DBH–height models for
+  black spruce and jack pine plantations in Québec, from DBH only, plot
+  mean DBH, or dominant height and DBH (no source benchmark).
+- Added the “DBH–Height Models” article: registry overview, discovery
+  helpers, predictor definitions, population-level vs calibrated
+  prediction, and model curves.
+
 ## CanadaForestAllometry 0.8.6
-
-### Internal changes
-
-- Moved the
-  [`si_carmeanhahn1981()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.md),
-  [`si_augerward2021()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_augerward2021.md),
-  [`si_sharma2022()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2022.md),
-  [`si_nigh1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh1998.md),
-  [`si_buckman2006()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_buckman2006.md),
-  and
-  [`si_batho2014()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_batho2014.md)
-  model coefficients from inline tibbles/constant lists into the
-  compiled internal parameter data, for consistency with the rest of the
-  site-index family.
-- Consolidated the shared Carmean constrained-polymorphic (Newnham)
-  height and site-index solver used by
-  [`si_carmean2001()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean2001.md)
-  and
-  [`si_carmean2006()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean2006.md)
-  into common internal helpers; model outputs are unchanged.
-
-### Years-to-breast-height updates
-
-- Added
-  [`ytbh_nigh1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh1998.md)
-  for western hemlock (`TSUG.HET`) in the interior of British Columbia,
-  implementing the Nigh (1998) years-to-breast-height model (invertible
-  for site index).
-- Added
-  [`ytbh_nigh2015()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh2015.md)
-  for Engelmann spruce (`PICE.ENG`) in the ESSF biogeoclimatic zone of
-  British Columbia, implementing the Nigh (2015) years-to-breast-height
-  model (no source benchmark).
 
 ### Site index updates
 
@@ -148,6 +161,39 @@
   (2002), with base and biogeoclimatic-zone-calibrated variants via
   `bec_zone`.
 
+### Years-to-breast-height updates
+
+- Added
+  [`ytbh_nigh1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh1998.md)
+  for western hemlock (`TSUG.HET`) in the interior of British Columbia,
+  implementing the Nigh (1998) years-to-breast-height model (invertible
+  for site index).
+- Added
+  [`ytbh_nigh2015()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_nigh2015.md)
+  for Engelmann spruce (`PICE.ENG`) in the ESSF biogeoclimatic zone of
+  British Columbia, implementing the Nigh (2015) years-to-breast-height
+  model (no source benchmark).
+
+### Internal changes
+
+- Moved the
+  [`si_carmeanhahn1981()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmeanhahn1981.md),
+  [`si_augerward2021()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_augerward2021.md),
+  [`si_sharma2022()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_sharma2022.md),
+  [`si_nigh1998()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_nigh1998.md),
+  [`si_buckman2006()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_buckman2006.md),
+  and
+  [`si_batho2014()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_batho2014.md)
+  model coefficients from inline tibbles/constant lists into the
+  compiled internal parameter data, for consistency with the rest of the
+  site-index family.
+- Consolidated the shared Carmean constrained-polymorphic (Newnham)
+  height and site-index solver used by
+  [`si_carmean2001()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean2001.md)
+  and
+  [`si_carmean2006()`](https://ptompalski.github.io/CanadaForestAllometry/reference/si_carmean2006.md)
+  into common internal helpers; model outputs are unchanged.
+
 ## CanadaForestAllometry 0.8.5
 
 ### Bug fixes
@@ -176,8 +222,10 @@
 
 - Added `hd_huang2013()` for fixed/population-average height-diameter
   predictions for major Alberta tree species.
-- Added `hd_sharmaparton2007()` for fixed height-diameter predictions
-  for eight Ontario boreal tree species using DBH and stand covariates.
+- Added
+  [`hd_sharmaparton2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmaparton2007.md)
+  for fixed height-diameter predictions for eight Ontario boreal tree
+  species using DBH and stand covariates.
 - Added `hd_rijal2012()` for fixed height-diameter predictions for 15
   Acadian Region tree species using DBH, site, and competition
   covariates.
@@ -315,7 +363,7 @@ improving correctness, transparency, and vectorization:
 
 - Model components are now modularized and vectorized, making the
   functions safe to use inside
-  [`dplyr::mutate()`](https://rdrr.io/pkg/dplyr/man/mutate.html)
+  [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)
   workflows.
 - Parameter selection is stricter and more explicit, with clear errors
   when parameters are missing or non-unique.
@@ -333,8 +381,8 @@ New implementation of the Boudewyn et al. (2007) *total volume →
 merchantable volume* conversion based on Appendix 6 (Table 14).
 
 - Fully vectorized and safe for use inside
-  [`dplyr::mutate()`](https://rdrr.io/pkg/dplyr/man/mutate.html) +
-  [`tidyr::unnest()`](https://rdrr.io/pkg/tidyr/man/unnest.html).
+  [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) +
+  [`tidyr::unnest()`](https://tidyr.tidyverse.org/reference/unnest.html).
 - Supports genus-level species matching using NFI species codes.
 - Optional controls for:
   - returning the predicted merchantable proportion
@@ -356,7 +404,7 @@ issued by default in such cases.
 Results from
 [`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/v2b.md)
 may differ from earlier implementations of the Boudewyn models,
-particularly for high-volume stands.  
+particularly for high-volume stands.\
 These differences arise because earlier code paths applied the Table 6
 proportion equations directly, without enforcing the Table 7 bounds. The
 new implementation follows the documented model behavior more closely by
@@ -388,8 +436,8 @@ applying these caps.
   and are no longer exported.
 - The refactored implementation is vectorized and must be called on full
   vectors of inputs; row-wise usage (e.g., via
-  [`dplyr::rowwise()`](https://rdrr.io/pkg/dplyr/man/rowwise.html)) is
-  no longer supported and may lead to incorrect results or poor
+  [`dplyr::rowwise()`](https://dplyr.tidyverse.org/reference/rowwise.html))
+  is no longer supported and may lead to incorrect results or poor
   performance.
 - The equation set used can be included explicitly via
   `keep_model_id = TRUE`, in which case `model_id` is returned as the

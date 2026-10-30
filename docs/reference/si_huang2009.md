@@ -25,21 +25,21 @@ si_huang2009(
 - height:
 
   Optional numeric vector. Top height (m), i.e. average height of the
-  100 largest-DBH trees per hectare. If provided, \`si\` is predicted.
+  100 largest-DBH trees per hectare. If provided, `si` is predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years on the
-  \`index_age\` scale). If provided, \`height\` is predicted.
+  `index_age` scale). If provided, `height` is predicted.
 
 - species:
 
-  Character vector of NFI species codes (e.g., \`"PINU.CON"\`).
+  Character vector of NFI species codes (e.g., `"PINU.CON"`).
 
 - index_age:
 
-  Character scalar, \`"breast_height"\` (default) or \`"total"\`.
-  Selects whether site index is expressed at 50 years breast-height age
+  Character scalar, `"breast_height"` (default) or `"total"`. Selects
+  whether site index is expressed at 50 years breast-height age
   (\\SI\_{bh}\\) or 50 years total age (\\SI_t\\).
 
 ## Value
@@ -48,11 +48,11 @@ A tibble with columns:
 
 - height:
 
-  Predicted top height (m), returned when input \`si\` is provided.
+  Predicted top height (m), returned when input `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when input \`height\` is provided.
+  Predicted site index (m), returned when input `height` is provided.
 
 ## Details
 
@@ -60,35 +60,36 @@ A tibble with columns:
 `PICE.MAR` (black spruce), `PINU.CON` (lodgepole pine), `PICE.GLA`
 (white spruce).
 
-**Age definition note:** \`age\` is *total* age (years from the point of
+**Age definition note:** `age` is *total* age (years from the point of
 germination). This is the age basis on which the GYPSY top-height models
 are fitted and inverted.
 
 **Base-age note:** site index is referenced to height at 50 years. The
-\`index_age\` argument selects which 50-year index is used:
+`index_age` argument selects which 50-year index is used:
 
-- \`"breast_height"\` (default): \\SI\_{bh}\\, top height at 50 years
+- `"breast_height"` (default): \\SI\_{bh}\\, top height at 50 years
   breast-height age (the index currently used in Alberta).
 
-- \`"total"\`: \\SI_t\\, top height at 50 years total age (the quantity
+- `"total"`: \\SI_t\\, top height at 50 years total age (the quantity
   the model form uses directly).
 
 The conversion between the two uses the years-to-breast-height (Y2BH)
 relation embedded in the source SAS program (Appendix 1).
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`height\` is provided, the function predicts \`si\` (on the
-  \`index_age\` scale).
+- If `height` is provided, the function predicts `si` (on the
+  `index_age` scale).
 
-- If \`si\` is provided (on the \`index_age\` scale), the function
-  predicts top height.
+- If `si` is provided (on the `index_age` scale), the function predicts
+  top height.
 
 The top-height model is not closed-form invertible in site index;
-predicting \`si\` from \`height\` is solved by the damped fixed-point
-iteration used in the source SAS program. When \`index_age =
-"breast_height"\`, recovering \\SI_t\\ from a supplied \\SI\_{bh}\\ is
-solved numerically with \`stats::uniroot()\`.
+predicting `si` from `height` is solved by the damped fixed-point
+iteration used in the source SAS program. When
+`index_age = "breast_height"`, recovering \\SI_t\\ from a supplied
+\\SI\_{bh}\\ is solved numerically with
+[`stats::uniroot()`](https://rdrr.io/r/stats/uniroot.html).
 
 ## References
 

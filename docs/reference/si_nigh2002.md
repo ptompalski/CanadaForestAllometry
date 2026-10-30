@@ -18,19 +18,19 @@ si_nigh2002(age, height = NULL, si = NULL, bec_zone = NULL)
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 - bec_zone:
 
   Optional character vector selecting the extended (per-zone) model. One
-  of \`"BWBS"\`, \`"ICH"\`, \`"IDF"\`, \`"MS"\`, \`"SBPS"\`, \`"SBS"\`.
-  When \`NULL\` (default) the general base model is used.
+  of `"BWBS"`, `"ICH"`, `"IDF"`, `"MS"`, `"SBPS"`, `"SBS"`. When `NULL`
+  (default) the general base model is used.
 
 ## Value
 
@@ -38,40 +38,40 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** trembling aspen, NFI code
 `POPU.TRE`.
 
-**Age definition note:** \`age\` is breast-height age (BHA, years). The
-model is conditioned to return \`height = si\` exactly at BHA 50.
+**Age definition note:** `age` is breast-height age (BHA, years). The
+model is conditioned to return `height = si` exactly at BHA 50.
 
 **Base-age note:** site index is site height at breast-height age 50.
 
 **Base vs. extended model:** the paper fits one logistic form (eq. 1)
 \$\$HT = 1.3 + (SI - 1.3) \times \frac{1 + e^{a_0 + a_1 \ln(49.5) + a_2
 \ln(SI - 1.3)}} {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2 \ln(SI -
-1.3)}}\$\$ where \\a_0, a_1, a_2\\ are either the general
-\*\*base-model\*\* coefficients (used anywhere in BC, or when the
-biogeoclimatic zone is unknown) or the \*\*extended-model\*\* per-zone
-coefficients calibrated to six BEC zones. Supply \`bec_zone\` to use the
-extended model; leave it \`NULL\` (the default) for the base model.
+1.3)}}\$\$ where \\a_0, a_1, a_2\\ are either the general **base-model**
+coefficients (used anywhere in BC, or when the biogeoclimatic zone is
+unknown) or the **extended-model** per-zone coefficients calibrated to
+six BEC zones. Supply `bec_zone` to use the extended model; leave it
+`NULL` (the default) for the base model.
 
 Because \\SI\\ appears both as a multiplier and inside a logarithm, eq.
 1 has no closed-form inverse in \\SI\\; when predicting site index the
 equation is solved numerically.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
 ## References
 

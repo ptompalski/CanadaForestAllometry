@@ -19,26 +19,25 @@ si_nigh2004(age, species, height = NULL, si = NULL, bec_zone = NULL)
 
 - species:
 
-  Character vector of NFI species codes: \`"PINU.CON"\` (lodgepole pine)
-  or \`"PICE.GLA"\` (interior spruce). Recycled to a common length with
+  Character vector of NFI species codes: `"PINU.CON"` (lodgepole pine)
+  or `"PICE.GLA"` (interior spruce). Recycled to a common length with
   the other inputs.
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
-  Optional numeric vector. Site index (m). If provided, \`height\` is
+  Optional numeric vector. Site index (m). If provided, `height` is
   predicted.
 
 - bec_zone:
 
   Optional character vector selecting zone-specific coefficients. One of
-  \`"BWBS"\`, \`"ESSF"\`, \`"ICH"\`, \`"IDF"\`, \`"MS"\`, \`"SBS"\`,
-  \`"SBPS"\`. When \`NULL\` (default), the province-wide parameters are
-  used.
+  `"BWBS"`, `"ESSF"`, `"ICH"`, `"IDF"`, `"MS"`, `"SBS"`, `"SBPS"`. When
+  `NULL` (default), the province-wide parameters are used.
 
 ## Value
 
@@ -46,11 +45,11 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
@@ -58,9 +57,9 @@ A tibble with a single column:
 and interior spruce, modelled as white spruce (NFI code `PICE.GLA`),
 following the source publication.
 
-**Age definition note:** \`age\` is *total* age (years), not
-breast-height age. The model is conditioned to predict a height of zero
-at total age zero.
+**Age definition note:** `age` is *total* age (years), not breast-height
+age. The model is conditioned to predict a height of zero at total age
+zero.
 
 **Model form:** the base model (eq. 3) is \$\$H = a_1 \times SI \times
 A^{a_2 + a_3 SI} \times a_4^{A}\$\$ where \\H\\ is height (m), \\SI\\ is
@@ -70,21 +69,21 @@ are fitted parameters. The parameters were fitted province-wide (Table
 indicator terms (eqs. 4-6, Table 3). This implementation stores the
 resolved per-zone \\a_1, a_2, a_3, a_4\\ plus a province-wide set.
 
-**Zone selection:** supply \`bec_zone\` to use a zone-specific parameter
-set (one of \`"BWBS"\`, \`"ESSF"\`, \`"ICH"\`, \`"IDF"\`, \`"MS"\`,
-\`"SBS"\`, \`"SBPS"\`). When \`bec_zone\` is \`NULL\` (the default), the
-province-wide average parameters are used, as recommended by the author
-when the zone is unknown or was not sampled.
+**Zone selection:** supply `bec_zone` to use a zone-specific parameter
+set (one of `"BWBS"`, `"ESSF"`, `"ICH"`, `"IDF"`, `"MS"`, `"SBS"`,
+`"SBPS"`). When `bec_zone` is `NULL` (the default), the province-wide
+average parameters are used, as recommended by the author when the zone
+is unknown or was not sampled.
 
 Because \\SI\\ appears both as a multiplier and inside the exponent of
 \\A\\, eq. 3 has no closed-form inverse in \\SI\\; when predicting site
 index the equation is solved numerically.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
 ## References
 

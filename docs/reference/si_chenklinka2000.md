@@ -19,18 +19,18 @@ si_chenklinka2000(age, height = NULL, si = NULL, species)
 
 - height:
 
-  Optional numeric vector. Top height (m). If provided, \`si\` is
+  Optional numeric vector. Top height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 - species:
 
-  Character vector of NFI species codes (\`"ABIE.LAS"\`, \`"PICE.ENG"\`,
-  or \`"PINU.CON"\`).
+  Character vector of NFI species codes (`"ABIE.LAS"`, `"PICE.ENG"`, or
+  `"PINU.CON"`).
 
 ## Value
 
@@ -38,18 +38,18 @@ A tibble with columns:
 
 - height:
 
-  Predicted top height (m), returned when input \`si\` is provided.
+  Predicted top height (m), returned when input `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when input \`height\` is provided.
+  Predicted site index (m), returned when input `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** `ABIE.LAS` (subalpine fir),
 `PICE.ENG` (Engelmann spruce), `PINU.CON` (lodgepole pine).
 
-**Age definition note:** \`age\` is breast-height age (years).
+**Age definition note:** `age` is breast-height age (years).
 
 **Base-age note:** site index is referenced to top height at 50 years
 breast-height age.
@@ -60,12 +60,12 @@ coefficients \\b_1, b_2, b_3\\) is \$\$H = 1.3 + b_1 \left\[(S -
 \frac{\ln\left((S - 1.3)^{1 - b_2} / b_1\right)}{\ln\left(1 - e^{-b_3
 \times 50}\right)}.\$\$
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`height\` is provided, the function predicts \`si\` (solved
+- If `height` is provided, the function predicts `si` (solved
   numerically; the model has no closed-form inverse).
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
 ## References
 

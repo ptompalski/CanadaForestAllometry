@@ -260,6 +260,30 @@ Functions for site index modeling.
 - [`ytbh_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_thrower1994.md)
   : Thrower et al. (1994) years-to-breast-height models
 
+## DBH-height models
+
+Functions predicting tree height from DBH, and model discovery helpers.
+
+- [`hd_auger2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2016.md)
+  : Auger (2016) DBH–height model for 27 Québec tree species
+- [`hd_auger2025()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2025.md)
+  : Auger, DeBlois & Lambert (2025) DBH–height models for Québec
+  plantations
+- [`hd_eslamdoust2026()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026.md)
+  : Eslamdoust et al. (2026) DBH–height models for Ontario tree species
+- [`hd_huang2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2016.md)
+  : Huang, Yang and Aitkin (2016) DBH–height models for Alberta tree
+  species
+- [`hd_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_model_registry.md)
+  : DBH–height model registry
+- [`hd_sharmaparton2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmaparton2007.md)
+  : Sharma and Parton (2007) DBH–height models for Ontario boreal tree
+  species
+- [`get_hd_model_info()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_hd_model_info.md)
+  : Get information about a DBH–height model
+- [`find_hd_models()`](https://ptompalski.github.io/CanadaForestAllometry/reference/find_hd_models.md)
+  : Find DBH–height models usable with your data
+
 ## Volume conversions
 
 Functions convert volume to biomass, total volume to merchantable, or
@@ -307,6 +331,8 @@ systems and names.
 
 ### All vignettes
 
+- [DBH–Height
+  Models](https://ptompalski.github.io/CanadaForestAllometry/articles/Height-Diameter-Models.md):
 - [Site Index
   Models](https://ptompalski.github.io/CanadaForestAllometry/articles/Site-Index-Models.md):
 - [Tree Aboveground Biomass

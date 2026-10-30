@@ -18,7 +18,7 @@ exposed through a consistent, vectorized API.
 
 - **Version**: see
   [DESCRIPTION](https://ptompalski.github.io/CanadaForestAllometry/DESCRIPTION)
-  (currently 0.8.5)
+  (currently 0.8.7)
 - **License**: LGPL (\>= 3); Copyright His Majesty the King in Right of
   Canada (NRCan)
 - **R**: \>= 4.1.0
@@ -50,19 +50,28 @@ Function names encode model lineage as `prefix_[author][year]`:
 | `si_` | Site index / productivity | `si_thrower1994`, `si_huang1994` |
 | `agb_` | Aboveground biomass | `agb_lambert_ung` |
 | `ytbh_` | Year-to-breast-height age helper | `ytbh_thrower1994` |
+| `hd_` | DBH–height (height from DBH) model | `hd_huang2016` |
 | `get_` | Lookup / retrieval | `get_volume_params`, `get_merch_criteria` |
 | `assert_` | Internal input validation | `assert_numeric_vec` |
-| `*_model_registry` | Metadata table for a model family | `volume_model_registry` |
+| `*_model_registry` | Metadata table for a model family | `volume_model_registry`, `hd_model_registry` |
 
 Internal per-element helpers use a leading dot / `_one` suffix (e.g.
 `.thrower1994_height_one`).
+
+**`hd_` argument case rule:** acronyms upper case, words lower case —
+`DBH` (cm), `BA` (m²/ha), `TPH` (stems/ha), `HDOM` (m), `QMD` (cm),
+`BAL` (m²/ha); `height`, `species`, `jurisdiction`. Exception: site
+index is `si` (m). Tree- vs plot-level is stated in each `@param`, not
+encoded in case. Region / ecological arguments use model-specific
+descriptive names (`natural_subregion`, `ecoregion`, `bec_zone`, …),
+never a generic `subregion`.
 
 ## API conventions
 
 - **Vectorized**: user-facing model functions operate element-wise and
   are safe inside
-  [`dplyr::mutate()`](https://rdrr.io/pkg/dplyr/man/mutate.html). Inputs
-  are recycled to a common length; incompatible lengths raise an
+  [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html).
+  Inputs are recycled to a common length; incompatible lengths raise an
   explicit error. No `rowwise()`/`pmap()` wrappers required.
 - **Return tibbles** with snake_case columns (e.g. `vol_total`,
   `vol_merchantable`).
@@ -87,7 +96,7 @@ Internal per-element helpers use a leading dot / `_one` suffix (e.g.
   `data-raw/preprocess_data.R`, and compiled into `R/sysdata.rda`.
 - To change parameters: edit the CSV(s), re-run
   `source("data-raw/preprocess_data.R")`, then **restart R** and
-  [`devtools::load_all()`](https://rdrr.io/pkg/devtools/man/load_all.html).
+  [`devtools::load_all()`](https://devtools.r-lib.org/reference/load_all.html).
   Do not hand-edit `sysdata.rda`.
 - Public datasets in `data/` are documented via roxygen blocks in
   `R/data.R`.
@@ -124,7 +133,7 @@ and test against it.
 ## Development workflow
 
 Prefer
-[`devtools::load_all()`](https://rdrr.io/pkg/devtools/man/load_all.html)
+[`devtools::load_all()`](https://devtools.r-lib.org/reference/load_all.html)
 over [`library()`](https://rdrr.io/r/base/library.html) during
 development. Common commands (see
 [`_packageSetup.R`](https://ptompalski.github.io/CanadaForestAllometry/_packageSetup.R)):
@@ -145,11 +154,11 @@ Prefer **pak** for installing dependencies.
 
 ## Pre-release checklist
 
-- [`devtools::document()`](https://rdrr.io/pkg/devtools/man/document.html)
-- [`devtools::test()`](https://rdrr.io/pkg/devtools/man/test.html)
-- [`devtools::check()`](https://rdrr.io/pkg/devtools/man/check.html)
-- [`covr::package_coverage()`](https://rdrr.io/pkg/covr/man/package_coverage.html)
-- [`urlchecker::url_check()`](https://rdrr.io/pkg/urlchecker/man/url_check.html)
+- [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
+- [`devtools::test()`](https://devtools.r-lib.org/reference/test.html)
+- [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
+- [`covr::package_coverage()`](http://covr.r-lib.org/reference/package_coverage.md)
+- [`urlchecker::url_check()`](https://urlchecker.r-lib.org/reference/url_check.html)
 - [`spelling::spell_check_package()`](https://docs.ropensci.org/spelling//reference/spell_check_package.html)
 - Update `NEWS.md`
 

@@ -18,13 +18,13 @@ si_brisco2002(age, height = NULL, si = NULL)
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 ## Value
 
@@ -32,17 +32,17 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** western larch, NFI code `LARI.OCC`.
 
-**Age definition note:** \`age\` is breast-height age (BHA, years).
+**Age definition note:** `age` is breast-height age (BHA, years).
 
 **Base-age note:** site index is site height at breast-height age 50.
 
@@ -55,12 +55,12 @@ e^{b_3 (A - 0.5)}\right)^{b_4 (S - 1.3)^{b_5}}\$\$ with \\b_1 = 3.875\\,
 (years), and \\S\\ is site index (m). At \\A = 50\\ the equation returns
 \\H = S\\.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\` directly from
-  eq. 6.
+- If `si` is provided, the function predicts `height` directly from eq.
+  6.
 
-- If \`height\` is provided, the function predicts \`si\`. Because \\S\\
+- If `height` is provided, the function predicts `si`. Because \\S\\
   appears in the base, the leading power, and the outer exponent of eq.
   6, it cannot be isolated in closed form and is obtained by numerically
   inverting eq. 6 for each (age, height) pair.
