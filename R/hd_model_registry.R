@@ -197,7 +197,31 @@
     "For. Chron. 76:303-309, p. 304; Table 5 (p. 308)",
     "staudhammerlemay2000_density", "DMAX", "plot", "cm", FALSE,
     "Maximum dbh of all species on the plot, used for REL_dbh = 'dbh divided by the maximum dbh for all species'. Required for western redcedar, Douglas-fir and western hemlock (eq. 2b).",
-    "For. Chron. 76:303-309, p. 304; Table 1 (p. 304); Table 5 (p. 308)"
+    "For. Chron. 76:303-309, p. 304; Table 1 (p. 304); Table 5 (p. 308)",
+    "rijal2012_gnls", "DBH", "tree", "cm", TRUE,
+    "d.b.h. (cm); measured at 1.3 m in the Canadian data and 1.37 m in the US data.",
+    "Forestry 85:379-389, eq. 4 (p. 381); Table 1 (p. 381)",
+    "rijal2012_gnls", "CSI", "plot", "m (assumed)", TRUE,
+    "A climate-derived estimate of site index (CSI), based on a non-parametric regression model that relates observed site index to local climate variables (Weiskittel et al., 2011b). Units and base age not stated.",
+    "Forestry 85:379-389, p. 381; eq. 4",
+    "rijal2012_gnls", "CCF", "plot", "%", TRUE,
+    "Stand-level crown competition factor (Krajicek et al., 1961), estimated using maximum crown width equations developed for the region (Russell and Weiskittel, 2011). Minimum tree size not stated.",
+    "Forestry 85:379-389, pp. 380-381; eq. 4",
+    "rijal2012_gnls", "BAL", "tree", "m2/ha (assumed)", TRUE,
+    "Basal area larger than subject tree (BAL); units, species basis and minimum DBH not stated.",
+    "Forestry 85:379-389, p. 381; eq. 4",
+    "rijal2012_nlme", "DBH", "tree", "cm", TRUE,
+    "d.b.h. (cm); measured at 1.3 m in the Canadian data and 1.37 m in the US data.",
+    "Forestry 85:379-389, eq. 4 (p. 381); Table 1 (p. 381)",
+    "rijal2012_nlme", "CSI", "plot", "m (assumed)", TRUE,
+    "A climate-derived estimate of site index (CSI), based on a non-parametric regression model that relates observed site index to local climate variables (Weiskittel et al., 2011b). Units and base age not stated.",
+    "Forestry 85:379-389, p. 381; eq. 4",
+    "rijal2012_nlme", "CCF", "plot", "%", TRUE,
+    "Stand-level crown competition factor (Krajicek et al., 1961), estimated using maximum crown width equations developed for the region (Russell and Weiskittel, 2011). Minimum tree size not stated.",
+    "Forestry 85:379-389, pp. 380-381; eq. 4",
+    "rijal2012_nlme", "BAL", "tree", "m2/ha (assumed)", TRUE,
+    "Basal area larger than subject tree (BAL); units, species basis and minimum DBH not stated.",
+    "Forestry 85:379-389, p. 381; eq. 4"
   )
 }
 
@@ -541,6 +565,32 @@
       fixed_args = list(variant = "density"),
       calibration_published = FALSE,
       params_key = "parameters_hd_StaudhammerLeMay2000"
+    ),
+    .hd_registry_row(
+      model_id = "rijal2012_gnls",
+      engine = "hd_rijal2012",
+      reference = "@Rijal2012",
+      scope = "regional",
+      province_scope = c("NB", "NS", "PE", "QC"),
+      stand_origin = "natural",
+      equation_family = "chapman_richards_stand",
+      description = "Acadian Region DBH-height models for 15 species with climate site index, crown competition factor and basal area in larger trees (eq. 4, GNLS fit, Table 5); recommended without local calibration.",
+      fixed_args = list(variant = "gnls"),
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Rijal2012"
+    ),
+    .hd_registry_row(
+      model_id = "rijal2012_nlme",
+      engine = "hd_rijal2012",
+      reference = "@Rijal2012",
+      scope = "regional",
+      province_scope = c("NB", "NS", "PE", "QC"),
+      stand_origin = "natural",
+      equation_family = "chapman_richards_stand",
+      description = "Acadian Region DBH-height models for 15 species with climate site index, crown competition factor and basal area in larger trees (eq. 4, NLME fixed effects, Table 6; random effects = 0).",
+      fixed_args = list(variant = "nlme"),
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Rijal2012"
     )
   )
 }

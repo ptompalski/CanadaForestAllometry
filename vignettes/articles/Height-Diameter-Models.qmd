@@ -86,6 +86,8 @@ several variants: `hd_eslamdoust2026()` chooses M4 (DBH only) or M5 (with
 stand variables) from the predictors you supply, `hd_huang2009()` likewise
 chooses model 9, 10 or 11 from whether `HTOP` and `BA` are given,
 `hd_temesgen2004()` uses Model 7 only when `BAL`, `TPH` and `BA` are given,
+`hd_rijal2012()` uses GNLS or mixed-model fixed-effect coefficients
+through `variant`,
 `hd_zhang2002()` uses the
 ecoregion, forest-region or Ontario-wide fit depending on which region you
 give, and `hd_auger2025()` uses an explicit `variant` argument because its
@@ -163,6 +165,9 @@ and in the table below.
 | `QMD` | plot | cm | Quadratic mean DBH |
 | `DMEAN` | plot | cm | Arithmetic mean DBH |
 | `DDOM` | plot | cm | Mean DBH of the dominant trees |
+| `BAL` | tree | m²/ha | Basal area of trees larger than the subject tree |
+| `CCF` | plot | % | Crown competition factor |
+| `CSI` | plot | m | Climate-derived site index (Acadian Region) |
 | `MAT` | plot | °C | Mean annual temperature |
 | `MAP` | plot | mm | Mean (total) annual precipitation |
 | `elevation` | plot | m | Elevation above sea level |
@@ -580,6 +585,38 @@ v_den <- dplyr::mutate(
   )$height
 )
 plot_hd_curves(dplyr::bind_rows(v_dbh, v_den), colour = "variant", colour_lab = "Variant")
+```
+
+## `hd_rijal2012()`
+
+Acadian Region (Maine, New Brunswick, Nova Scotia, Prince Edward Island and
+southern Québec), 15 species [@Rijal2012]. GNLS (default) and NLME
+fixed-effect coefficients for a tree with `BAL` = 10 m²/ha in a stand with
+`CCF` = 150 and a climate site index `CSI` = 15 m. `CSI` comes from a
+separate climate model and must be supplied by the user. Curves are limited
+to the fitting DBH range of each species.
+
+```{r}
+#| label: fig-rijal2012
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(15, ncol = 5)
+dbh_rng <- CanadaForestAllometry:::get_params_tbl("parameters_hd_Rijal2012") |>
+  dplyr::filter(.data$variant == "gnls") |>
+  dplyr::select("Species", "DBH_min", "DBH_max")
+grid <- tidyr::expand_grid(species = dbh_rng$Species, DBH = seq(1, 56, by = 1)) |>
+  dplyr::left_join(dbh_rng, by = c(species = "Species")) |>
+  dplyr::filter(.data$DBH >= .data$DBH_min, .data$DBH <= .data$DBH_max)
+curves <- dplyr::bind_rows(lapply(c("gnls", "nlme"), function(v) {
+  dplyr::mutate(
+    grid,
+    variant = v,
+    height = hd_rijal2012(DBH, species, CSI = 15, CCF = 150, BAL = 10, variant = v)$height
+  )
+}))
+plot_hd_curves(curves, colour = "variant", colour_lab = "Variant", ncol = 5)
 ```
 
 ## `hd_auger2016()`

@@ -1860,6 +1860,43 @@ stopifnot(
   )
 )
 
+## Rijal, Weiskittel & Kershaw 2012 DBH-height models, Acadian Region ####
+# HT = 1.37 + (c0 + CSI^c3) * (1 - exp(-c1*DBH))^(c2 + c4*ln(CCF+1) + c5*BAL)
+# (eq. 4, p. 381). Variant "gnls" = Table 5 (p. 387; recommended without
+# local calibration); "nlme" = Table 6 fixed effects (p. 387) with Table 7
+# variance components (p. 388, not used for prediction). NLME c5 for GB and
+# RO printed "-" (not significant): NA, 0 in code. Ranges from Table 1
+# (p. 381). See data-raw/Rijal2012_model-spec.md.
+parameters_hd_Rijal2012 <- read.csv(
+  "data-raw/Rijal2012_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    c0, c1, c2, c3, c4, c5,
+    var_power, res_std, r2,
+    var_source, var_stand, var_year,
+    DBH_min, DBH_max, height_min, height_max,
+    n_obs = as.integer(n_obs)
+  ) %>%
+  arrange(variant, Species)
+
+stopifnot(
+  nrow(parameters_hd_Rijal2012) == 30L,
+  !anyDuplicated(parameters_hd_Rijal2012[c("Species", "variant")]),
+  all(table(parameters_hd_Rijal2012$variant)[c("gnls", "nlme")] == 15L),
+  with(
+    parameters_hd_Rijal2012,
+    !anyNA(cbind(c0, c1, c2, c3, c4, DBH_min, DBH_max)) &&
+      all(c0 > 0 & c1 > 0 & c2 > 0 & c3 > 0) &&
+      sum(is.na(c5)) == 2L &&
+      all(is.na(c5) == (variant == "nlme" & source_species %in% c("GB", "RO")))
+  )
+)
+
 ## Staudhammer & LeMay 2000 DBH-height models, BC coast (UBC MKRF) ####
 # H = 1.3 + E1 * (1 - exp(E2 * DBH^E3)). Variant "dbh" = eq 2 (Table 5,
 # p. 308): Ek = ek_0. Variant "density" = parameter prediction, Ek = ek_0 +
@@ -1968,7 +2005,8 @@ internal_objs <- c(
   "parameters_hd_Auger2025",
   "parameters_hd_Zhang2002",
   "parameters_hd_Temesgen2004",
-  "parameters_hd_StaudhammerLeMay2000"
+  "parameters_hd_StaudhammerLeMay2000",
+  "parameters_hd_Rijal2012"
 )
 
 # sanity check: make sure they exist before saving
