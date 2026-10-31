@@ -1632,6 +1632,39 @@ stopifnot(
   !anyNA(parameters_hd_Sharma2016)
 )
 
+## Sharma & Zhang 2004 DBH-height models, Ontario jack pine / black spruce ####
+# OLS NLS fits, Table 3 (jack pine) and Table 4 (black spruce), p. 445. Only
+# eq. (2) (BA + stems/ha) and eq. (5) (DBH only) are implemented; eqs. (3)/(4)
+# are kept in the CSV for provenance but dropped here (degenerate as printed:
+# height is constant in DBH; see SharmaZhang2004_hd_model-spec.md). Ranges
+# cover model + validation data: Table 1 p. 443 (plots), Table 2 p. 444 (trees).
+parameters_hd_SharmaZhang2004 <- read.csv(
+  "data-raw/SharmaZhang2004_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  filter(variant %in% c("eq2", "eq5")) %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    alpha, beta, gamma, delta, phi, mse, r2,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, TPH_min, TPH_max,
+    n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_SharmaZhang2004) == 4L,
+  !anyDuplicated(parameters_hd_SharmaZhang2004[c("Species", "variant")]),
+  all(table(parameters_hd_SharmaZhang2004$variant) == 2L),
+  with(
+    parameters_hd_SharmaZhang2004,
+    all(!is.na(delta) & !is.na(phi) & is.na(gamma) | variant != "eq2") &&
+      all(!is.na(gamma) & is.na(delta) & is.na(phi) | variant != "eq5")
+  )
+)
+
 ## Eslamdoust et al. 2026 DBH-height models, Ontario GLSL / hardwoods ####
 # Mixed-model fixed effects (u = 0) for M4 (Eq. 4, Table 4) and M5 (Eq. 5,
 # Table 5), p. 225; a0-a4 keep the source symbols per variant (M4: a1 rate,
@@ -1998,6 +2031,7 @@ internal_objs <- c(
   "parameters_hd_Huang2016b",
   "parameters_hd_SharmaParton2007",
   "parameters_hd_Sharma2016",
+  "parameters_hd_SharmaZhang2004",
   "parameters_hd_Eslamdoust2026",
   "parameters_hd_Huang2009",
   "parameters_hd_Auger2016",

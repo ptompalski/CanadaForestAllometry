@@ -442,6 +442,37 @@ grid$height <- hd_sharma2016(
 plot_hd_curves(grid, colour = "variant", colour_lab = "Stand origin")
 ```
 
+## `hd_sharmazhang2004()`
+
+Northern Ontario jack pine and black spruce [@SharmaZhang2004]. Eq. 2 with
+`TPH` = 1,500 stems/ha for several basal areas (`BA`), as in Fig. 3 of the
+source (which adjusts density with DBH), and the DBH-only eq. 5.
+
+```{r}
+#| label: fig-sharmazhang2004
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("sharmazhang2004_eq2"))) + 0.5
+grid <- tidyr::expand_grid(
+  species = hd_species("sharmazhang2004_eq2"),
+  BA = c(12.5, 25, 37.5, 50),
+  DBH = seq(1, 45, by = 1)
+)
+grid$height <- hd_sharmazhang2004(
+  grid$DBH, grid$species, BA = grid$BA, TPH = 1500
+)$height
+eq5 <- tidyr::expand_grid(
+  species = hd_species("sharmazhang2004_eq5"),
+  BA = "eq. 5 (DBH only)",
+  DBH = seq(1, 45, by = 1)
+)
+eq5$height <- hd_sharmazhang2004(eq5$DBH, eq5$species, variant = "eq5")$height
+grid$BA <- paste0("eq. 2, BA = ", grid$BA)
+plot_hd_curves(dplyr::bind_rows(grid, eq5), colour = "BA", colour_lab = "Model")
+```
+
 ## `hd_eslamdoust2026()`
 
 Ontario boreal and Great Lakes–St. Lawrence forests [@Eslamdoust2026]. M4
