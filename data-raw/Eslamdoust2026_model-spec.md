@@ -31,7 +31,7 @@
   from rendered p.217 header; published online 15 Oct 2025; Open Access,
   CC BY-NC 4.0, © Crown Copyright).
 - **BibTeX key:** @Eslamdoust2026 (proposed; not yet in `REFERENCES.bib`)
-- **Document in `sources/`:** `sources/height-diameter/eslamdoust2026_fst_boreal_mixed_hd.pdf`
+- **Document in `sources/`:** `sources/height-diameter/implemented/eslamdoust2026_fst_boreal_mixed_hd.pdf`
 - **Model family:** hd
 - **Target function:** `hd_eslamdoust2026`
 - **Plan reference:** `implementation_plan.md` §6 PR 3 (models.csv ids

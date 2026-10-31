@@ -22,7 +22,7 @@
   p.3 header / title block and running heads "Vol. 3, No. 4 … April, 2009".)
 - **BibTeX key:** @Huang2009hd (proposed; `@Huang2009gypsy` already exists for
   the GYPSY report used by `si_huang2009`).
-- **Document in `sources/`:** `sources/height-diameter/huang2009a_mas_blackspruce_hd.pdf`
+- **Document in `sources/`:** `sources/height-diameter/implemented/huang2009a_mas_blackspruce_hd.pdf`
 - **Model family:** hd
 - **Target function:** `hd_huang2009` (no clash: the existing `si_huang2009`
   has a different prefix). Data-raw files use `Huang2009_hd_*` to avoid

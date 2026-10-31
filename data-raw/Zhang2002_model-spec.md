@@ -32,7 +32,7 @@
   follows the journal's pattern but is not printed in the PDF — verify before
   adding to `REFERENCES.bib`).
 - **BibTeX key:** @Zhang2002hd (proposed; not yet in `REFERENCES.bib`)
-- **Document in `sources/`:** `sources/height-diameter/zhang2002_forchron_jackpine_ecoregion_hd.pdf`
+- **Document in `sources/`:** `sources/height-diameter/implemented/zhang2002_forchron_jackpine_ecoregion_hd.pdf`
 - **Model family:** hd
 - **Target function:** `hd_zhang2002`
 

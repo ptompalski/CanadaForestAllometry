@@ -42,7 +42,7 @@
   Faune et des Parcs, Direction de la recherche forestière. Note de recherche
   forestière n° 146. 31 p.
 - **BibTeX key:** @Auger2016 (proposed; not yet in `REFERENCES.bib`)
-- **Document in `sources/`:** `sources/height-diameter/auger2016_nrf146_qc_hd.pdf`
+- **Document in `sources/`:** `sources/height-diameter/implemented/auger2016_nrf146_qc_hd.pdf`
 - **Model family:** hd
 - **Target function:** `hd_auger2016`
 - **Plan reference:** `implementation_plan.md` §6 **PR 4**, models.csv id

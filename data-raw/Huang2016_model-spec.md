@@ -11,7 +11,7 @@
   Alberta Agriculture and Forestry, Edmonton, AB. 82 pp.
   ISBN 978-1-4601-2646-2 (online).
 - **BibTeX key:** @Huang2016_T609 (proposed)
-- **Document in `sources/`:** `sources/height-diameter/huang2016_t609_updated_hd.pdf`
+- **Document in `sources/`:** `sources/height-diameter/implemented/huang2016_t609_updated_hd.pdf`
 - **Model family:** hd
 - **Target function:** `hd_huang2016`
 

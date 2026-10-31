@@ -19,7 +19,7 @@
   - <https://doi.org/10.82204/dcwg-5v65>
 - **BibTeX key:** @Auger2025 (proposed; no clash in `REFERENCES.bib`)
 - **Document in `sources/`:**
-  `sources/height-diameter/auger2025_sss10_qc_plantation_hd.pdf`
+  `sources/height-diameter/implemented/auger2025_sss10_qc_plantation_hd.pdf`
 - **Model family:** hd
 - **Target function:** `hd_auger2025`
 - **Plan reference:** `implementation_plan.md` §6 **PR 5**. The models.csv ids

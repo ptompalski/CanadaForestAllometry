@@ -22,7 +22,7 @@
   *Forest Ecology and Management* 249(3): 187–198.
   doi:10.1016/j.foreco.2007.05.006 (confirmed from rendered p.187 header).
 - **BibTeX key:** @SharmaParton2007 (proposed; not yet in `REFERENCES.bib`)
-- **Document in `sources/`:** `sources/height-diameter/Sharma and Parton - 2007 - Height–diameter equations for boreal tree species in Ontario using a mixed-effects modeling approach.pdf`
+- **Document in `sources/`:** `sources/height-diameter/implemented/Sharma and Parton - 2007 - Height–diameter equations for boreal tree species in Ontario using a mixed-effects modeling approach.pdf`
 - **Model family:** hd
 - **Target function:** `hd_sharmaparton2007`
 
