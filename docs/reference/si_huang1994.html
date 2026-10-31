@@ -57,7 +57,7 @@ Alberta.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">si_huang1994</span><span class="op">(</span><span class="va">age</span>, height <span class="op">=</span> <span class="cn">NULL</span>, si <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">species</span>, subregion <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">si_huang1994</span><span class="op">(</span><span class="va">age</span>, height <span class="op">=</span> <span class="cn">NULL</span>, si <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">species</span>, natural_subregion <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,7 +82,7 @@ breast height). If provided, <code>height</code> is predicted.</p></dd>
 <dd><p>Character vector of NFI species codes.</p></dd>
 
 
-<dt id="arg-subregion">subregion<a class="anchor" aria-label="anchor" href="#arg-subregion"></a></dt>
+<dt id="arg-natural-subregion">natural_subregion<a class="anchor" aria-label="anchor" href="#arg-natural-subregion"></a></dt>
 <dd><p>Character vector. Alberta natural-region grouping used by
 Huang et al. (1994). Defaults to <code>"All"</code> (provincial parameter set).</p></dd>
 
@@ -134,7 +134,7 @@ Environmental Protection, Land and Forest Service.</p>
 <span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">35</span>, <span class="fl">50</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  si <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">16</span>, <span class="fl">20</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PICE.GLA"</span>, <span class="st">"PINU.CON"</span>, <span class="st">"POPU.TRE"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  subregion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LF"</span>, <span class="st">"UF"</span>, <span class="st">"CM"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  natural_subregion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LF"</span>, <span class="st">"UF"</span>, <span class="st">"CM"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   height</span>
@@ -154,7 +154,7 @@ Environmental Protection, Land and Forest Service.</p>
 <span class="r-in"><span>      age <span class="op">=</span> <span class="va">age</span>,</span></span>
 <span class="r-in"><span>      height <span class="op">=</span> <span class="va">height</span>,</span></span>
 <span class="r-in"><span>      species <span class="op">=</span> <span class="va">species</span>,</span></span>
-<span class="r-in"><span>      subregion <span class="op">=</span> <span class="st">"All"</span></span></span>
+<span class="r-in"><span>      natural_subregion <span class="op">=</span> <span class="st">"All"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">si</span><span class="op">)</span></span></span>

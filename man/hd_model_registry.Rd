@@ -11,11 +11,16 @@ A tibble with one row per model variant and columns:
 \describe{
 \item{\code{model_id}}{Stable model identifier (with variant suffix).}
 \item{\code{engine}}{Name of the \verb{hd_*()} function implementing the model.}
+\item{\code{rank}}{Preference used by \code{\link[=hd]{hd()}} when several models are eligible
+(higher = preferred). Only meaningful among models covering the same
+jurisdiction and species.}
 \item{\code{fixed_args}}{List-column of arguments selecting the variant.}
 \item{\code{reference}}{BibTeX key of the source publication.}
 \item{\code{scope}}{\code{"provincial"} or \code{"regional"}.}
 \item{\code{province_scope}}{List-column of jurisdiction codes.}
 \item{\code{stand_origin}}{\code{"natural"}, \code{"plantation"} or \code{"both"}.}
+\item{\code{bc_region}}{For British Columbia models fitted to only part of the
+province: \code{"coastal"} or \code{"interior"}; \code{NA} otherwise. Used by \code{\link[=hd]{hd()}}.}
 \item{\code{equation_family}}{Model form (e.g. \code{"chapman_richards"}).}
 \item{\code{required_predictors}, \code{optional_predictors}}{List-columns of
 argument names (excluding \code{species}).}
@@ -33,8 +38,8 @@ coefficients are not stored in a parameter table.}
 Returns a registry (metadata table) of the DBH–height (\verb{hd_*()}) models
 available in CanadaForestAllometry, one row per model variant. Use it with
 \code{\link[=get_hd_model_info]{get_hd_model_info()}} and \code{\link[=find_hd_models]{find_hd_models()}} to discover which model suits
-your data, then call the corresponding \verb{hd_*()} function directly. There is
-no automatic model selection.
+your data, then call the corresponding \verb{hd_*()} function directly, or let
+\code{\link[=hd]{hd()}} select a model automatically (using \code{rank}).
 }
 \details{
 All models predict total tree height (m) from DBH (cm) at the population
@@ -44,5 +49,5 @@ level (random effects set to zero for mixed-effects sources).
 hd_model_registry()
 }
 \seealso{
-\code{\link[=get_hd_model_info]{get_hd_model_info()}}, \code{\link[=find_hd_models]{find_hd_models()}}
+\code{\link[=get_hd_model_info]{get_hd_model_info()}}, \code{\link[=find_hd_models]{find_hd_models()}}, \code{\link[=hd]{hd()}}
 }

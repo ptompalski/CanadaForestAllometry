@@ -34,16 +34,19 @@ columns `arg`, `level`, `units`, `required`, `definition` and
 ids <- hd_model_registry()$model_id
 if (length(ids) > 0) get_hd_model_info(ids[[1]])
 #> $model_id
-#> [1] "huang2016"
+#> [1] "huang1994"
 #> 
 #> $engine
-#> [1] "hd_huang2016"
+#> [1] "hd_huang1994"
+#> 
+#> $rank
+#> [1] 30
 #> 
 #> $fixed_args
 #> list()
 #> 
 #> $reference
-#> [1] "@Huang2016hd"
+#> [1] "@Huang1994hd"
 #> 
 #> $scope
 #> [1] "provincial"
@@ -54,8 +57,11 @@ if (length(ids) > 0) get_hd_model_info(ids[[1]])
 #> $stand_origin
 #> [1] "natural"
 #> 
+#> $bc_region
+#> [1] NA
+#> 
 #> $equation_family
-#> [1] "chapman_richards; log_logistic"
+#> [1] "chapman_richards"
 #> 
 #> $required_predictors
 #> [1] "DBH"
@@ -70,27 +76,26 @@ if (length(ids) > 0) get_hd_model_info(ids[[1]])
 #> [1] "population"
 #> 
 #> $calibration_published
-#> [1] TRUE
+#> [1] FALSE
 #> 
 #> $params_key
-#> [1] "parameters_hd_Huang2016"
+#> [1] "parameters_hd_Huang1994"
 #> 
 #> $species_manual
 #> NULL
 #> 
 #> $description
-#> [1] "Alberta T/609 population DBH-height models (base fits, Table 4); provincial or natural-subregion-group variants."
+#> [1] "Alberta T/291 ecologically based DBH-height models (weighted NLS); provincial (Table 2) or natural-region-group (Table 1) variants, incl. softwood/hardwood group models."
 #> 
 #> $species
-#>  [1] "ABIE.BAL" "ABIE.LAS" "BETU.PAP" "LARI.LAR" "LARI.LYA" "LARI.OCC"
-#>  [7] "PICE.ENG" "PICE.GLA" "PICE.MAR" "PINU.ALB" "PINU.BAN" "PINU.CON"
-#> [13] "PINU.FLE" "POPU.BAL" "POPU.TRE" "PSEU.MEN"
+#>  [1] "ABIE.BAL" "ABIE.LAS" "BETU.PAP" "LARI.LAR" "PICE.ENG" "PICE.GLA"
+#>  [7] "PICE.MAR" "PINU.BAN" "PINU.CON" "POPU.BAL" "POPU.TRE" "PSEU.MEN"
 #> 
 #> $predictors
 #> # A tibble: 2 × 6
 #>   arg               level units               required definition source_locator
 #>   <chr>             <chr> <chr>               <lgl>    <chr>      <chr>         
-#> 1 DBH               tree  cm                  TRUE     Tree diam… T/609 p. 6 (e…
-#> 2 natural_subregion plot  code (1-21 or e.g.… FALSE    Alberta 2… T/609 Table 2…
+#> 1 DBH               tree  cm                  TRUE     D: diamet… T/291 p. 2    
+#> 2 natural_subregion plot  code (1-21 or e.g.… FALSE    Alberta n… T/291 Table 1…
 #> 
 ```

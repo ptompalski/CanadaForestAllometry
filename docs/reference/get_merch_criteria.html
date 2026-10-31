@@ -57,7 +57,7 @@ top diameter, and minimum DBH) from the internal <code>merchcrit</code> lookup t
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_merch_criteria</span><span class="op">(</span></span>
 <span>  <span class="va">jurisdiction</span>,</span>
 <span>  species <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
-<span>  BEC_zone <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  bec_zone <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -74,7 +74,7 @@ top diameter, and minimum DBH) from the internal <code>merchcrit</code> lookup t
 <dd><p>Species code. Optional for <code>"BC"</code>; if missing, falls back to <code>"ALL"</code> with a warning.</p></dd>
 
 
-<dt id="arg-bec-zone">BEC_zone<a class="anchor" aria-label="anchor" href="#arg-bec-zone"></a></dt>
+<dt id="arg-bec-zone">bec_zone<a class="anchor" aria-label="anchor" href="#arg-bec-zone"></a></dt>
 <dd><p>Optional BEC zone code (e.g., <code>"CWH"</code>, <code>"ICH"</code>). If missing for <code>"BC"</code>,
 conservative criteria are taken from <code>BEC_group == "UNKNOWN"</code>.</p></dd>
 
@@ -93,9 +93,9 @@ conservative criteria are taken from <code>BEC_group == "UNKNOWN"</code>.</p></d
     <p>Before lookup, inputs are standardized using internal helpers:</p><ul><li><p><code><a href="standardize_jurisdiction_code.html">standardize_jurisdiction_code()</a></code> for <code>jurisdiction</code></p></li>
 <li><p><code><a href="standardize_species_code.html">standardize_species_code()</a></code> for <code>species</code> (keeps <code>"ALL"</code> as-is)</p></li>
 </ul><p>Rules:</p><ul><li><p>For British Columbia (<code>"BC"</code>), <code>species</code> is OPTIONAL:</p><ul><li><p>If <code>species</code> is missing, the function falls back to <code>Species == "ALL"</code> and warns.</p></li>
-<li><p>If <code>BEC_zone</code> is provided and can be mapped, criteria are looked up using
+<li><p>If <code>bec_zone</code> is provided and can be mapped, criteria are looked up using
 (Province + Species + BEC_group).</p></li>
-<li><p>If <code>BEC_zone</code> is missing/unknown, criteria fall back to a conservative BC
+<li><p>If <code>bec_zone</code> is missing/unknown, criteria fall back to a conservative BC
 BEC-independent layer using <code>BEC_group == "UNKNOWN"</code> (species-specific if present,
 otherwise <code>Species == "ALL"</code>).</p></li>
 <li><p>If no exact species match is found, the function falls back to genus-level rules
@@ -130,7 +130,7 @@ species/BEC are ignored.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> BC           PICE.GLA       0.3        15      17.5</span>
 <span class="r-in"><span><span class="fu">get_merch_criteria</span><span class="op">(</span><span class="st">"BC"</span><span class="op">)</span>                          <span class="co"># falls back to BC ALL + UNKNOWN (warns)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>For jurisdiction 'BC', `species` was not provided; using BC fallback Species='ALL'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>BEC_zone missing; using conservative BC 'UNKNOWN' utilization.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>bec_zone missing; using conservative BC 'UNKNOWN' utilization.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   jurisdiction species stumpht_m topdbh_cm mindbh_cm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

@@ -8,7 +8,7 @@ when DBH is below the jurisdictional minimum DBH criterion.
 ## Usage
 
 ``` r
-vol_kozak94(DBH, height, species, BEC_zone)
+vol_kozak94(DBH, height, species, bec_zone)
 ```
 
 ## Arguments
@@ -25,7 +25,7 @@ vol_kozak94(DBH, height, species, BEC_zone)
 
   Character vector of species codes (e.g. "TSUG.HET").
 
-- BEC_zone:
+- bec_zone:
 
   Character vector of BEC zone codes (e.g., "CWH", "ICH", "IDF").
 
@@ -66,7 +66,7 @@ vol_kozak94(
   DBH = 35,
   height = 25,
   species = "PSEU.MEN",
-  BEC_zone = "CWH"
+  bec_zone = "CWH"
 )
 #> # A tibble: 1 × 2
 #>   vol_total vol_merchantable
@@ -78,7 +78,7 @@ vol_kozak94(
   DBH = c(22, 30, 45),
   height = c(18, 24, 33),
   species = c("PSEU.MEN", "THUJ.PLI", "POPU.BAL"),
-  BEC_zone = c("CWH", "ICH", "SBS")
+  bec_zone = c("CWH", "ICH", "SBS")
 )
 #> # A tibble: 3 × 2
 #>   vol_total vol_merchantable

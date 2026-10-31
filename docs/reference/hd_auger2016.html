@@ -9,12 +9,12 @@
 relationship of Auger (2016; Note de recherche forestière no 146) for 27
 commercial tree species of Québec. Predicts total tree height (m) from DBH
 (cm), plot merchantable basal area and, depending on the species, the
-tree's relative DBH, climate normals, altitude and Québec ecological
+tree's relative DBH, climate normals, elevation and Québec ecological
 classification codes."><meta property="og:description" content="Vectorized implementation of the population-level height–diameter
 relationship of Auger (2016; Note de recherche forestière no 146) for 27
 commercial tree species of Québec. Predicts total tree height (m) from DBH
 (cm), plot merchantable basal area and, depending on the species, the
-tree's relative DBH, climate normals, altitude and Québec ecological
+tree's relative DBH, climate normals, elevation and Québec ecological
 classification codes."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -60,7 +60,7 @@ classification codes."></head><body>
 relationship of Auger (2016; Note de recherche forestière no 146) for 27
 commercial tree species of Québec. Predicts total tree height (m) from DBH
 (cm), plot merchantable basal area and, depending on the species, the
-tree's relative DBH, climate normals, altitude and Québec ecological
+tree's relative DBH, climate normals, elevation and Québec ecological
 classification codes.</p>
     </div>
 
@@ -71,13 +71,14 @@ classification codes.</p>
 <span>  <span class="va">species</span>,</span>
 <span>  <span class="va">BA</span>,</span>
 <span>  QMD <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  SDOM <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  MP <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  VP <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  TMOY <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  PTOT <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  altitude <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  disturbance <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  bioclim_subdomain <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  physical_env <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  potential_veg <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  MAT <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  MAP <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  elevation <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  disturbance <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  keep_model_id <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -113,37 +114,38 @@ the plot's merchantable trees. Used to compute the relative DBH
 (RDHP = <code>DBH / QMD</code>). Must be <code>&gt; 0</code>. Required for 21 species.</p></dd>
 
 
-<dt id="arg-sdom">SDOM<a class="anchor" aria-label="anchor" href="#arg-sdom"></a></dt>
-<dd><p>Optional character vector. Plot level. Bioclimatic subdomain
-(Saucier et al. 1998): <code>"1"</code>, <code>"2est"</code>, <code>"2ouest"</code>, <code>"3est"</code>, <code>"3ouest"</code>,
+<dt id="arg-bioclim-subdomain">bioclim_subdomain<a class="anchor" aria-label="anchor" href="#arg-bioclim-subdomain"></a></dt>
+<dd><p>Optional character vector. Plot level.
+Bioclimatic subdomain (source "SDOM"; Saucier et al. 1998): <code>"1"</code>, <code>"2est"</code>, <code>"2ouest"</code>, <code>"3est"</code>, <code>"3ouest"</code>,
 <code>"4est"</code>, <code>"4ouest"</code>, <code>"5est"</code>, <code>"5ouest"</code>, <code>"6est"</code>, <code>"6ouest"</code>.
 Required for 11 species.</p></dd>
 
 
-<dt id="arg-mp">MP<a class="anchor" aria-label="anchor" href="#arg-mp"></a></dt>
-<dd><p>Optional character or integer vector. Plot level. Physical
-environment class (« milieu physique », MRN 2013), <code>0</code> to <code>9</code>. Required
+<dt id="arg-physical-env">physical_env<a class="anchor" aria-label="anchor" href="#arg-physical-env"></a></dt>
+<dd><p>Optional character or integer vector. Plot level.
+Physical environment class (source "MP", « milieu physique », MRN 2013), <code>0</code> to <code>9</code>. Required
 for 10 species.</p></dd>
 
 
-<dt id="arg-vp">VP<a class="anchor" aria-label="anchor" href="#arg-vp"></a></dt>
-<dd><p>Optional character vector. Plot level. Potential vegetation code
-(e.g. <code>"RS2"</code>, <code>"FE3"</code>; three characters). Required for 15 species.</p></dd>
+<dt id="arg-potential-veg">potential_veg<a class="anchor" aria-label="anchor" href="#arg-potential-veg"></a></dt>
+<dd><p>Optional character vector. Plot level. Potential
+vegetation code (source "VP"; e.g. <code>"RS2"</code>, <code>"FE3"</code>; three characters). Required for 15 species.</p></dd>
 
 
-<dt id="arg-tmoy">TMOY<a class="anchor" aria-label="anchor" href="#arg-tmoy"></a></dt>
+<dt id="arg-mat">MAT<a class="anchor" aria-label="anchor" href="#arg-mat"></a></dt>
 <dd><p>Optional numeric vector. Plot level. Mean annual temperature,
-1981–2010 normal (°C). Required for 7 species.</p></dd>
+1981–2010 normal (°C; source "TMOY"). Required for 7 species.</p></dd>
 
 
-<dt id="arg-ptot">PTOT<a class="anchor" aria-label="anchor" href="#arg-ptot"></a></dt>
-<dd><p>Optional numeric vector. Plot level. Total annual
-precipitation, 1981–2010 normal (mm). Must be <code>&gt;= 0</code>. Required for 10
+<dt id="arg-map">MAP<a class="anchor" aria-label="anchor" href="#arg-map"></a></dt>
+<dd><p>Optional numeric vector. Plot level. Mean (total) annual
+precipitation, 1981–2010 normal (mm; source "PTOT"). Must be <code>&gt;= 0</code>. Required for 10
 species.</p></dd>
 
 
-<dt id="arg-altitude">altitude<a class="anchor" aria-label="anchor" href="#arg-altitude"></a></dt>
-<dd><p>Optional numeric vector. Plot level. Altitude (m). Required
+<dt id="arg-elevation">elevation<a class="anchor" aria-label="anchor" href="#arg-elevation"></a></dt>
+<dd><p>Optional numeric vector. Plot level. Elevation above sea
+level (m; source "ALT", altitude). Required
 for 4 species.</p></dd>
 
 
@@ -153,19 +155,27 @@ light disturbance (« perturbation légère »): <code>"anthropique"</code>
 (<code>"anthropogenic"</code>), <code>"naturelle"</code> (<code>"natural"</code>) or <code>"aucune"</code>
 (<code>"none"</code>). Required for 5 species.</p></dd>
 
+
+<dt id="arg-keep-model-id">keep_model_id<a class="anchor" aria-label="anchor" href="#arg-keep-model-id"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, add column <code>model_id</code>
+(<code>"auger2016"</code>).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with column <code>height</code> (m).</p>
+    <p>A tibble with column <code>height</code> (m), plus <code>model_id</code> if
+<code>keep_model_id = TRUE</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><strong>Model form</strong> (equation 1, p. 4):
 $$h = 1.3 + A \ln(DBH + 1) + B \ln(DBH + 1)^2,$$
-$$A = a + a_{ST} BA + a_{RDHP} \frac{DBH}{QMD} + a_{ALT} altitude +
+$$A = a + a_{ST} BA + a_{RDHP} \frac{DBH}{QMD} + a_{ALT} ALT +
   a_{PTOT} PTOT + a_{TMOY} TMOY + a_{SDOM} + a_{MP} + a_{VP} + a_{PERT},$$
 where \(B\) is a species constant and every covariate effect interacts
-with \(\ln(DBH + 1)\). Height is not transformed, so no
+with \(\ln(DBH + 1)\). Source symbols map to arguments as: ALT =
+<code>elevation</code>, PTOT = <code>MAP</code>, TMOY = <code>MAT</code>, SDOM = <code>bioclim_subdomain</code>, MP =
+<code>physical_env</code>, VP = <code>potential_veg</code>, PERT = <code>disturbance</code>. Height is not transformed, so no
 back-transformation applies. Grey birch (<code>BETU.POP</code>) has no
 \(\ln(DBH + 1)^2\) term in the source (Annexe 1) and is linear in
 \(\ln(DBH + 1)\).</p>
@@ -175,7 +185,7 @@ model contains them. A predictor is required only when a row's species uses
 it; otherwise it may be <code>NULL</code> or <code>NA</code> and is ignored. Use
 <code>get_hd_model_info("auger2016")</code> for definitions, and see the source for the
 per-species predictor sets. For example, white spruce (<code>PICE.GLA</code>) uses
-<code>BA</code>, <code>QMD</code>, <code>TMOY</code>, <code>SDOM</code> and <code>VP</code>; silver maple, American elm and grey
+<code>BA</code>, <code>QMD</code>, <code>MAT</code>, <code>bioclim_subdomain</code> and <code>potential_veg</code>; silver maple, American elm and grey
 birch use <code>BA</code> only.</p>
 <p><strong>Population-level prediction:</strong> the published fixed effects with the
 plot random effect and residual set to zero, i.e. the marginal prediction
@@ -194,7 +204,7 @@ of the Québec permanent and temporary inventory plots. The author advises
 against use for trees with DBH &lt; 9 cm (p. 19); such trees are computed but
 reported as outside the range, and their predicted height may be below
 1.3 m. Inputs outside the per-species ranges of the fitting data (Tableau 1:
-DBH and relative DBH; Tableau 2: <code>BA</code>, <code>altitude</code>, <code>TMOY</code>, <code>PTOT</code>) are
+DBH and relative DBH; Tableau 2: <code>BA</code>, <code>elevation</code>, <code>MAT</code>, <code>MAP</code>) are
 computed and reported in a single warning. Rows with <code>NA</code> in a used input
 return <code>NA</code> height.</p>
 <p><strong>External implementation:</strong> the <code>generalhdrelation2014</code> module of
@@ -222,7 +232,7 @@ no 146. 31 p.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Worked example (Annexe 1): white spruce, 12.0 m</span></span></span>
 <span class="r-in"><span><span class="fu">hd_auger2016</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  DBH <span class="op">=</span> <span class="fl">20</span>, species <span class="op">=</span> <span class="st">"PICE.GLA"</span>, BA <span class="op">=</span> <span class="fl">20</span>, QMD <span class="op">=</span> <span class="fl">15</span>,</span></span>
-<span class="r-in"><span>  SDOM <span class="op">=</span> <span class="st">"1"</span>, VP <span class="op">=</span> <span class="st">"FC1"</span>, TMOY <span class="op">=</span> <span class="fl">2.3</span></span></span>
+<span class="r-in"><span>  bioclim_subdomain <span class="op">=</span> <span class="st">"1"</span>, potential_veg <span class="op">=</span> <span class="st">"FC1"</span>, MAT <span class="op">=</span> <span class="fl">2.3</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   height</span>
@@ -242,18 +252,25 @@ no 146. 31 p.</p>
 <span class="r-in"><span>  DBH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">14</span>, <span class="fl">22</span>, <span class="fl">18</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PICE.MAR"</span>, <span class="st">"ABIE.BAL"</span>, <span class="st">"ACER.SAH"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  BA <span class="op">=</span> <span class="fl">22</span>, QMD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  SDOM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5ouest"</span>, <span class="st">"5ouest"</span>, <span class="st">"3ouest"</span><span class="op">)</span>, MP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  VP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RS2"</span>, <span class="st">"RS2"</span>, <span class="st">"FE3"</span><span class="op">)</span>, TMOY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3.5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  PTOT <span class="op">=</span> <span class="fl">1000</span>, altitude <span class="op">=</span> <span class="fl">300</span>, disturbance <span class="op">=</span> <span class="st">"none"</span></span></span>
+<span class="r-in"><span>  bioclim_subdomain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5ouest"</span>, <span class="st">"5ouest"</span>, <span class="st">"3ouest"</span><span class="op">)</span>, physical_env <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  potential_veg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RS2"</span>, <span class="st">"RS2"</span>, <span class="st">"FE3"</span><span class="op">)</span>, MAT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3.5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  MAP <span class="op">=</span> <span class="fl">1000</span>, elevation <span class="op">=</span> <span class="fl">300</span>, disturbance <span class="op">=</span> <span class="st">"none"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">trees</span>,</span></span>
-<span class="r-in"><span>  <span class="fu">hd_auger2016</span><span class="op">(</span><span class="va">DBH</span>, <span class="va">species</span>, <span class="va">BA</span>, <span class="va">QMD</span>, <span class="va">SDOM</span>, <span class="va">MP</span>, <span class="va">VP</span>, <span class="va">TMOY</span>, <span class="va">PTOT</span>, <span class="va">altitude</span>, <span class="va">disturbance</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">hd_auger2016</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">DBH</span>, <span class="va">species</span>, <span class="va">BA</span>, <span class="va">QMD</span>, <span class="va">bioclim_subdomain</span>, <span class="va">physical_env</span>, <span class="va">potential_veg</span>,</span></span>
+<span class="r-in"><span>    <span class="va">MAT</span>, <span class="va">MAP</span>, <span class="va">elevation</span>, <span class="va">disturbance</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   DBH  species BA QMD   SDOM MP  VP TMOY PTOT altitude disturbance   height</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  14 PICE.MAR 22  15 5ouest  2 RS2  1.0 1000      300        none 12.30616</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  22 ABIE.BAL 22  15 5ouest  2 RS2  1.0 1000      300        none 16.15196</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  18 ACER.SAH 22  20 3ouest  2 FE3  3.5 1000      300        none 16.46363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   DBH  species BA QMD bioclim_subdomain physical_env potential_veg MAT  MAP</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  14 PICE.MAR 22  15            5ouest            2           RS2 1.0 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  22 ABIE.BAL 22  15            5ouest            2           RS2 1.0 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  18 ACER.SAH 22  20            3ouest            2           FE3 3.5 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   elevation disturbance   height</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       300        none 12.30616</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       300        none 16.15196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       300        none 16.46363</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

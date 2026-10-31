@@ -84,16 +84,19 @@ unwrapped), its <code>species</code> coverage, and <code>predictors</code>, a ti
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="hd_model_registry.html">hd_model_registry</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">model_id</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ids</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="fu">get_hd_model_info</span><span class="op">(</span><span class="va">ids</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $model_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "huang2016"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "huang1994"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $engine</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "hd_huang2016"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "hd_huang1994"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fixed_args</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $reference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "@Huang2016hd"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "@Huang1994hd"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $scope</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "provincial"</span>
@@ -104,8 +107,11 @@ unwrapped), its <code>species</code> coverage, and <code>predictors</code>, a ti
 <span class="r-out co"><span class="r-pr">#&gt;</span> $stand_origin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "natural"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $bc_region</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $equation_family</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chapman_richards; log_logistic"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chapman_richards"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $required_predictors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "DBH"</span>
@@ -120,28 +126,27 @@ unwrapped), its <code>species</code> coverage, and <code>predictors</code>, a ti
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "population"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $calibration_published</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $params_key</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "parameters_hd_Huang2016"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "parameters_hd_Huang1994"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $species_manual</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $description</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Alberta T/609 population DBH-height models (base fits, Table 4); provincial or natural-subregion-group variants."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Alberta T/291 ecologically based DBH-height models (weighted NLS); provincial (Table 2) or natural-region-group (Table 1) variants, incl. softwood/hardwood group models."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $species</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ABIE.BAL" "ABIE.LAS" "BETU.PAP" "LARI.LAR" "LARI.LYA" "LARI.OCC"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "PICE.ENG" "PICE.GLA" "PICE.MAR" "PINU.ALB" "PINU.BAN" "PINU.CON"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "PINU.FLE" "POPU.BAL" "POPU.TRE" "PSEU.MEN"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ABIE.BAL" "ABIE.LAS" "BETU.PAP" "LARI.LAR" "PICE.ENG" "PICE.GLA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "PICE.MAR" "PINU.BAN" "PINU.CON" "POPU.BAL" "POPU.TRE" "PSEU.MEN"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $predictors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   arg               level units               required definition source_locator</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DBH               tree  cm                  TRUE     Tree diam… T/609 p. 6 (e…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> natural_subregion plot  code (1-21 or e.g.… FALSE    Alberta 2… T/609 Table 2…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DBH               tree  cm                  TRUE     D: diamet… T/291 p. 2    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> natural_subregion plot  code (1-21 or e.g.… FALSE    Alberta n… T/291 Table 1…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

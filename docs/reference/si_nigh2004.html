@@ -60,7 +60,7 @@ engelmannii</em>, and their hybrid) in British Columbia.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">si_nigh2004</span><span class="op">(</span><span class="va">age</span>, <span class="va">species</span>, height <span class="op">=</span> <span class="cn">NULL</span>, si <span class="op">=</span> <span class="cn">NULL</span>, bec_zone <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">si_nigh2004</span><span class="op">(</span><span class="va">age</span>, height <span class="op">=</span> <span class="cn">NULL</span>, si <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">species</span>, bec_zone <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,12 +71,6 @@ engelmannii</em>, and their hybrid) in British Columbia.</p>
 <dd><p>Numeric vector. Total age (years).</p></dd>
 
 
-<dt id="arg-species">species<a class="anchor" aria-label="anchor" href="#arg-species"></a></dt>
-<dd><p>Character vector of NFI species codes: <code>"PINU.CON"</code>
-(lodgepole pine) or <code>"PICE.GLA"</code> (interior spruce). Recycled to a common
-length with the other inputs.</p></dd>
-
-
 <dt id="arg-height">height<a class="anchor" aria-label="anchor" href="#arg-height"></a></dt>
 <dd><p>Optional numeric vector. Site height (m). If provided, <code>si</code> is
 predicted.</p></dd>
@@ -85,6 +79,12 @@ predicted.</p></dd>
 <dt id="arg-si">si<a class="anchor" aria-label="anchor" href="#arg-si"></a></dt>
 <dd><p>Optional numeric vector. Site index (m). If provided, <code>height</code> is
 predicted.</p></dd>
+
+
+<dt id="arg-species">species<a class="anchor" aria-label="anchor" href="#arg-species"></a></dt>
+<dd><p>Character vector of NFI species codes: <code>"PINU.CON"</code>
+(lodgepole pine) or <code>"PICE.GLA"</code> (interior spruce). Recycled to a common
+length with the other inputs.</p></dd>
 
 
 <dt id="arg-bec-zone">bec_zone<a class="anchor" aria-label="anchor" href="#arg-bec-zone"></a></dt>

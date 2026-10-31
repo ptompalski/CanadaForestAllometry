@@ -8,12 +8,12 @@
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="DBH–height model registry — hd_model_registry"><meta name="description" content="Returns a registry (metadata table) of the DBH–height (hd_*()) models
 available in CanadaForestAllometry, one row per model variant. Use it with
 get_hd_model_info() and find_hd_models() to discover which model suits
-your data, then call the corresponding hd_*() function directly. There is
-no automatic model selection."><meta property="og:description" content="Returns a registry (metadata table) of the DBH–height (hd_*()) models
+your data, then call the corresponding hd_*() function directly, or let
+hd() select a model automatically (using rank)."><meta property="og:description" content="Returns a registry (metadata table) of the DBH–height (hd_*()) models
 available in CanadaForestAllometry, one row per model variant. Use it with
 get_hd_model_info() and find_hd_models() to discover which model suits
-your data, then call the corresponding hd_*() function directly. There is
-no automatic model selection."></head><body>
+your data, then call the corresponding hd_*() function directly, or let
+hd() select a model automatically (using rank)."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -57,8 +57,8 @@ no automatic model selection."></head><body>
     <p>Returns a registry (metadata table) of the DBH–height (<code>hd_*()</code>) models
 available in CanadaForestAllometry, one row per model variant. Use it with
 <code><a href="get_hd_model_info.html">get_hd_model_info()</a></code> and <code><a href="find_hd_models.html">find_hd_models()</a></code> to discover which model suits
-your data, then call the corresponding <code>hd_*()</code> function directly. There is
-no automatic model selection.</p>
+your data, then call the corresponding <code>hd_*()</code> function directly, or let
+<code><a href="hd.html">hd()</a></code> select a model automatically (using <code>rank</code>).</p>
     </div>
 
     <div class="section level2">
@@ -74,6 +74,11 @@ no automatic model selection.</p>
 <dt><code>engine</code></dt>
 <dd><p>Name of the <code>hd_*()</code> function implementing the model.</p></dd>
 
+<dt><code>rank</code></dt>
+<dd><p>Preference used by <code><a href="hd.html">hd()</a></code> when several models are eligible
+(higher = preferred). Only meaningful among models covering the same
+jurisdiction and species.</p></dd>
+
 <dt><code>fixed_args</code></dt>
 <dd><p>List-column of arguments selecting the variant.</p></dd>
 
@@ -88,6 +93,10 @@ no automatic model selection.</p>
 
 <dt><code>stand_origin</code></dt>
 <dd><p><code>"natural"</code>, <code>"plantation"</code> or <code>"both"</code>.</p></dd>
+
+<dt><code>bc_region</code></dt>
+<dd><p>For British Columbia models fitted to only part of the
+province: <code>"coastal"</code> or <code>"interior"</code>; <code>NA</code> otherwise. Used by <code><a href="hd.html">hd()</a></code>.</p></dd>
 
 <dt><code>equation_family</code></dt>
 <dd><p>Model form (e.g. <code>"chapman_richards"</code>).</p></dd>
@@ -125,24 +134,28 @@ level (random effects set to zero for mixed-effects sources).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get_hd_model_info.html">get_hd_model_info()</a></code>, <code><a href="find_hd_models.html">find_hd_models()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="get_hd_model_info.html">get_hd_model_info()</a></code>, <code><a href="find_hd_models.html">find_hd_models()</a></code>, <code><a href="hd.html">hd()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">hd_model_registry</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   model_id       engine fixed_args   reference scope province_scope stand_origin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> huang2016      hd_hu… <span style="color: #949494;">&lt;list [0]&gt;</span>   @Huang20… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      natural     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sharmaparton2… hd_sh… <span style="color: #949494;">&lt;list [0]&gt;</span>   @SharmaP… regi… <span style="color: #949494;">&lt;chr [1]&gt;</span>      both        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> eslamdoust202… hd_es… <span style="color: #949494;">&lt;list [0]&gt;</span>   @Eslamdo… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      natural     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> eslamdoust202… hd_es… <span style="color: #949494;">&lt;list [0]&gt;</span>   @Eslamdo… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      natural     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> auger2016      hd_au… <span style="color: #949494;">&lt;list [0]&gt;</span>   @Auger20… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      natural     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> auger2025_dbh  hd_au… <span style="color: #949494;">&lt;named list&gt;</span> @Auger20… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      plantation  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> auger2025_plo… hd_au… <span style="color: #949494;">&lt;named list&gt;</span> @Auger20… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      plantation  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> auger2025_dom… hd_au… <span style="color: #949494;">&lt;named list&gt;</span> @Auger20… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      plantation  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: equation_family &lt;chr&gt;, required_predictors &lt;list&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 27 × 18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    model_id             engine  rank fixed_args   reference scope province_scope</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> huang1994            hd_hu…    30 <span style="color: #949494;">&lt;list [0]&gt;</span>   @Huang19… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> huang2016            hd_hu…    70 <span style="color: #949494;">&lt;list [0]&gt;</span>   @Huang20… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> huang2016b           hd_hu…    90 <span style="color: #949494;">&lt;list [0]&gt;</span>   @Huang20… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sharmaparton2007     hd_sh…    80 <span style="color: #949494;">&lt;list [0]&gt;</span>   @SharmaP… regi… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sharma2016_natural   hd_sh…    85 <span style="color: #949494;">&lt;named list&gt;</span> @Sharma2… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sharma2016_plantati… hd_sh…    85 <span style="color: #949494;">&lt;named list&gt;</span> @Sharma2… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sharmazhang2004_eq2  hd_sh…    75 <span style="color: #949494;">&lt;named list&gt;</span> @SharmaZ… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sharmazhang2004_eq5  hd_sh…    45 <span style="color: #949494;">&lt;named list&gt;</span> @SharmaZ… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> eslamdoust2026_m4    hd_es…    55 <span style="color: #949494;">&lt;list [0]&gt;</span>   @Eslamdo… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> eslamdoust2026_m5    hd_es…    90 <span style="color: #949494;">&lt;list [0]&gt;</span>   @Eslamdo… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 11 more variables: stand_origin &lt;chr&gt;, bc_region &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   equation_family &lt;chr&gt;, required_predictors &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   optional_predictors &lt;list&gt;, region_arg &lt;chr&gt;, prediction_types &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   calibration_published &lt;lgl&gt;, params_key &lt;chr&gt;, species_manual &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   description &lt;chr&gt;</span></span>

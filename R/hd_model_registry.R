@@ -262,12 +262,14 @@
 .hd_registry_row <- function(
   model_id,
   engine,
+  rank = NA_real_,
   reference,
   scope,
   province_scope,
   stand_origin,
   equation_family,
   description,
+  bc_region = NA_character_,
   fixed_args = list(),
   region_arg = NA_character_,
   prediction_types = "population",
@@ -277,9 +279,15 @@
 ) {
   assert_chr_scalar(model_id, "model_id")
   assert_chr_scalar(engine, "engine")
+  if (!is.numeric(rank) || length(rank) != 1L) {
+    cli::cli_abort("{.arg rank} must be a single number (or NA).")
+  }
   assert_chr_scalar(reference, "reference")
   assert_choice(scope, "scope", c("provincial", "regional"))
   assert_choice(stand_origin, "stand_origin", c("natural", "plantation", "both"))
+  if (!identical(bc_region, NA_character_)) {
+    assert_choice(bc_region, "bc_region", c("coastal", "interior"))
+  }
   assert_chr_scalar(equation_family, "equation_family")
   assert_chr_scalar(description, "description")
   assert_chr_scalar(region_arg, "region_arg", allow_na = TRUE)
@@ -304,11 +312,13 @@
   tibble::tibble(
     model_id = model_id,
     engine = engine,
+    rank = as.numeric(rank),
     fixed_args = list(fixed_args),
     reference = reference,
     scope = scope,
     province_scope = list(province_scope),
     stand_origin = stand_origin,
+    bc_region = bc_region,
     equation_family = equation_family,
     region_arg = region_arg,
     prediction_types = list(prediction_types),
@@ -325,6 +335,7 @@
   list(
     .hd_registry_row(
       model_id = "huang1994",
+      rank = 30,
       engine = "hd_huang1994",
       reference = "@Huang1994hd",
       scope = "provincial",
@@ -338,6 +349,7 @@
     ),
     .hd_registry_row(
       model_id = "huang2016",
+      rank = 70,
       engine = "hd_huang2016",
       reference = "@Huang2016hd",
       scope = "provincial",
@@ -351,6 +363,7 @@
     ),
     .hd_registry_row(
       model_id = "huang2016b",
+      rank = 90,
       engine = "hd_huang2016b",
       reference = "@Huang2016hdExpanded",
       scope = "provincial",
@@ -363,6 +376,7 @@
     ),
     .hd_registry_row(
       model_id = "sharmaparton2007",
+      rank = 80,
       engine = "hd_sharmaparton2007",
       reference = "@SharmaParton2007",
       scope = "regional",
@@ -375,6 +389,7 @@
     ),
     .hd_registry_row(
       model_id = "sharma2016_natural",
+      rank = 85,
       engine = "hd_sharma2016",
       reference = "@Sharma2016",
       scope = "provincial",
@@ -388,6 +403,7 @@
     ),
     .hd_registry_row(
       model_id = "sharma2016_plantation",
+      rank = 85,
       engine = "hd_sharma2016",
       reference = "@Sharma2016",
       scope = "provincial",
@@ -401,6 +417,7 @@
     ),
     .hd_registry_row(
       model_id = "sharmazhang2004_eq2",
+      rank = 75,
       engine = "hd_sharmazhang2004",
       reference = "@SharmaZhang2004",
       scope = "provincial",
@@ -414,6 +431,7 @@
     ),
     .hd_registry_row(
       model_id = "sharmazhang2004_eq5",
+      rank = 45,
       engine = "hd_sharmazhang2004",
       reference = "@SharmaZhang2004",
       scope = "provincial",
@@ -427,6 +445,7 @@
     ),
     .hd_registry_row(
       model_id = "eslamdoust2026_m4",
+      rank = 55,
       engine = "hd_eslamdoust2026",
       reference = "@Eslamdoust2026",
       scope = "provincial",
@@ -439,6 +458,7 @@
     ),
     .hd_registry_row(
       model_id = "eslamdoust2026_m5",
+      rank = 90,
       engine = "hd_eslamdoust2026",
       reference = "@Eslamdoust2026",
       scope = "provincial",
@@ -451,6 +471,7 @@
     ),
     .hd_registry_row(
       model_id = "huang2009_m9",
+      rank = 50,
       engine = "hd_huang2009",
       reference = "@Huang2009hd",
       scope = "regional",
@@ -463,6 +484,7 @@
     ),
     .hd_registry_row(
       model_id = "huang2009_m10",
+      rank = 75,
       engine = "hd_huang2009",
       reference = "@Huang2009hd",
       scope = "regional",
@@ -475,6 +497,7 @@
     ),
     .hd_registry_row(
       model_id = "huang2009_m11",
+      rank = 80,
       engine = "hd_huang2009",
       reference = "@Huang2009hd",
       scope = "regional",
@@ -487,6 +510,7 @@
     ),
     .hd_registry_row(
       model_id = "auger2016",
+      rank = 80,
       engine = "hd_auger2016",
       reference = "@Auger2016",
       scope = "provincial",
@@ -500,6 +524,7 @@
     ),
     .hd_registry_row(
       model_id = "fortin2009",
+      rank = 60,
       engine = "hd_fortin2009",
       reference = "@Fortin2009",
       scope = "provincial",
@@ -513,6 +538,7 @@
     ),
     .hd_registry_row(
       model_id = "auger2025_dbh",
+      rank = 50,
       engine = "hd_auger2025",
       reference = "@Auger2025",
       scope = "provincial",
@@ -526,6 +552,7 @@
     ),
     .hd_registry_row(
       model_id = "auger2025_plot_mean_dbh",
+      rank = 85,
       engine = "hd_auger2025",
       reference = "@Auger2025",
       scope = "provincial",
@@ -539,6 +566,7 @@
     ),
     .hd_registry_row(
       model_id = "auger2025_dominant",
+      rank = 90,
       engine = "hd_auger2025",
       reference = "@Auger2025",
       scope = "provincial",
@@ -552,6 +580,7 @@
     ),
     .hd_registry_row(
       model_id = "zhang2002_ecoregion",
+      rank = 65,
       engine = "hd_zhang2002",
       reference = "@Zhang2002hd",
       scope = "regional",
@@ -565,6 +594,7 @@
     ),
     .hd_registry_row(
       model_id = "zhang2002_regional",
+      rank = 60,
       engine = "hd_zhang2002",
       reference = "@Zhang2002hd",
       scope = "regional",
@@ -578,6 +608,7 @@
     ),
     .hd_registry_row(
       model_id = "zhang2002_overall",
+      rank = 50,
       engine = "hd_zhang2002",
       reference = "@Zhang2002hd",
       scope = "provincial",
@@ -590,11 +621,13 @@
     ),
     .hd_registry_row(
       model_id = "temesgen2004_m2",
+      rank = 50,
       engine = "hd_temesgen2004",
       reference = "@Temesgen2004",
       scope = "regional",
       province_scope = "BC",
       stand_origin = "natural",
+      bc_region = "interior",
       equation_family = "weibull",
       description = "Interior BC (IDF zone) complex-stand DBH-height models, DBH only (Model 2, Table 5); used when BAL, TPH and BA are not supplied.",
       calibration_published = FALSE,
@@ -602,11 +635,13 @@
     ),
     .hd_registry_row(
       model_id = "temesgen2004_m7",
+      rank = 70,
       engine = "hd_temesgen2004",
       reference = "@Temesgen2004",
       scope = "regional",
       province_scope = "BC",
       stand_origin = "natural",
+      bc_region = "interior",
       equation_family = "weibull_stand",
       description = "Interior BC (IDF zone) complex-stand DBH-height models with basal area in larger trees, stems/ha and basal area (Model 7, Table 4); used when BAL, TPH and BA are supplied.",
       calibration_published = FALSE,
@@ -614,11 +649,13 @@
     ),
     .hd_registry_row(
       model_id = "staudhammerlemay2000_dbh",
+      rank = 45,
       engine = "hd_staudhammerlemay2000",
       reference = "@StaudhammerLeMay2000",
       scope = "regional",
       province_scope = "BC",
       stand_origin = "both",
+      bc_region = "coastal",
       equation_family = "weibull",
       description = "Coastal BC (UBC Malcolm Knapp Research Forest, CWH zone) DBH-height models for western redcedar, red alder, Douglas-fir and western hemlock, DBH only (eq. 2, Table 5).",
       fixed_args = list(variant = "dbh"),
@@ -627,11 +664,13 @@
     ),
     .hd_registry_row(
       model_id = "staudhammerlemay2000_density",
+      rank = 65,
       engine = "hd_staudhammerlemay2000",
       reference = "@StaudhammerLeMay2000",
       scope = "regional",
       province_scope = "BC",
       stand_origin = "both",
+      bc_region = "coastal",
       equation_family = "weibull_parameter_prediction",
       description = "Coastal BC (UBC Malcolm Knapp Research Forest) DBH-height models with stand density: stems/ha and basal area for red alder (eq. 2a), relative DBH for western redcedar, Douglas-fir and western hemlock (eq. 2b; Table 5).",
       fixed_args = list(variant = "density"),
@@ -640,6 +679,7 @@
     ),
     .hd_registry_row(
       model_id = "rijal2012_gnls",
+      rank = 55,
       engine = "hd_rijal2012",
       reference = "@Rijal2012",
       scope = "regional",
@@ -653,6 +693,7 @@
     ),
     .hd_registry_row(
       model_id = "rijal2012_nlme",
+      rank = 40,
       engine = "hd_rijal2012",
       reference = "@Rijal2012",
       scope = "regional",
@@ -672,8 +713,8 @@
 #' Returns a registry (metadata table) of the DBH–height (`hd_*()`) models
 #' available in CanadaForestAllometry, one row per model variant. Use it with
 #' [get_hd_model_info()] and [find_hd_models()] to discover which model suits
-#' your data, then call the corresponding `hd_*()` function directly. There is
-#' no automatic model selection.
+#' your data, then call the corresponding `hd_*()` function directly, or let
+#' [hd()] select a model automatically (using `rank`).
 #'
 #' All models predict total tree height (m) from DBH (cm) at the population
 #' level (random effects set to zero for mixed-effects sources).
@@ -682,11 +723,16 @@
 #' \describe{
 #'   \item{`model_id`}{Stable model identifier (with variant suffix).}
 #'   \item{`engine`}{Name of the `hd_*()` function implementing the model.}
+#'   \item{`rank`}{Preference used by [hd()] when several models are eligible
+#'     (higher = preferred). Only meaningful among models covering the same
+#'     jurisdiction and species.}
 #'   \item{`fixed_args`}{List-column of arguments selecting the variant.}
 #'   \item{`reference`}{BibTeX key of the source publication.}
 #'   \item{`scope`}{`"provincial"` or `"regional"`.}
 #'   \item{`province_scope`}{List-column of jurisdiction codes.}
 #'   \item{`stand_origin`}{`"natural"`, `"plantation"` or `"both"`.}
+#'   \item{`bc_region`}{For British Columbia models fitted to only part of the
+#'     province: `"coastal"` or `"interior"`; `NA` otherwise. Used by [hd()].}
 #'   \item{`equation_family`}{Model form (e.g. `"chapman_richards"`).}
 #'   \item{`required_predictors`, `optional_predictors`}{List-columns of
 #'     argument names (excluding `species`).}
@@ -700,7 +746,7 @@
 #'   \item{`description`}{One-line description.}
 #' }
 #'
-#' @seealso [get_hd_model_info()], [find_hd_models()]
+#' @seealso [get_hd_model_info()], [find_hd_models()], [hd()]
 #' @examples
 #' hd_model_registry()
 #' @export
@@ -813,7 +859,8 @@ get_hd_model_info <- function(model_id) {
 #' Filters [hd_model_registry()] by jurisdiction and species, and reports which
 #' required predictors each candidate model needs that you do not have. Models
 #' with missing predictors are kept (as near-misses) so you can see what extra
-#' data would make them usable. No model is selected automatically.
+#' data would make them usable. No model is selected automatically; see [hd()]
+#' for automatic selection.
 #'
 #' @param jurisdiction Optional character vector of province/territory codes
 #'   (e.g. `"ON"`). Models covering any of them are kept. `NULL` (default)
@@ -926,6 +973,9 @@ find_hd_models <- function(jurisdiction = NULL, species = NULL, available = "DBH
         id, ": engine arguments without default not declared as required predictors: ",
         paste(undeclared, collapse = ", ")
       ))
+    }
+    if (is.na(reg$rank[[i]])) {
+      out <- c(out, paste0(id, ": `rank` is missing."))
     }
     if (!is.na(reg$region_arg[[i]]) && !reg$region_arg[[i]] %in% args) {
       out <- c(out, paste0(id, ": region_arg `", reg$region_arg[[i]], "` is not a predictor."))

@@ -1,5 +1,9 @@
 # CanadaForestAllometry 0.8.7
 
+## New features
+
+- `hd()`: wrapper that predicts tree height by selecting, per tree, the best eligible DBH–height model (by jurisdiction, species, stand origin, BC coast/interior and the predictors supplied in `...`), with fallback to lower-ranked models; `pick_best = FALSE` returns all candidates. Plantation trees fall back to natural-stand models with a warning; in BC, `bec_zone` or `bc_region` restricts coastal/interior-only models. `hd_model_registry()` gains `rank` and `bc_region` columns.
+
 ## Breaking changes: consistent argument names
 
 Function arguments now follow one package-wide naming scheme (see `AGENTS.md`). The old names are removed, with no deprecation shims. Model numerics are unchanged.

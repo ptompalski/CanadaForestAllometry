@@ -9,7 +9,7 @@ and stand density.
 ## Usage
 
 ``` r
-hd_sharmaparton2007(DBH, species, HDOM, BA, TPH)
+hd_sharmaparton2007(DBH, species, HDOM, BA, TPH, keep_model_id = FALSE)
 ```
 
 ## Arguments
@@ -42,9 +42,14 @@ hd_sharmaparton2007(DBH, species, HDOM, BA, TPH)
   the trees with DBH greater than or equal to 2.5 cm" (source "N/ha", p.
   188). Must be `> 0`.
 
+- keep_model_id:
+
+  Logical. If `TRUE`, add column `model_id` (`"sharmaparton2007"`).
+
 ## Value
 
-A tibble with column `height` (m).
+A tibble with column `height` (m) and, if `keep_model_id = TRUE`,
+`model_id`.
 
 ## Details
 

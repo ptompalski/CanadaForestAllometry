@@ -6,7 +6,7 @@ Open Stand Model (OSM) API, based on Honer’s refitted formulations.
 ## Usage
 
 ``` r
-vol_nl(DBH, height, species, subregion = "Province", keep_net = FALSE)
+vol_nl(DBH, height, species, district = "Province", keep_net = FALSE)
 ```
 
 ## Arguments
@@ -23,9 +23,9 @@ vol_nl(DBH, height, species, subregion = "Province", keep_net = FALSE)
 
   Character vector of NFI species codes (e.g., `"PICE.MAR"`).
 
-- subregion:
+- district:
 
-  Character or numeric vector. Either:
+  Character or numeric vector. NL forest district. Either:
 
   - `"Province"` (default; uses province-wide equations), or
 
@@ -108,14 +108,14 @@ vol_nl(20, 20, "PICE.MAR")
 #> 1     0.249            0.229
 
 # District-level model (NX-242 used for District 2)
-vol_nl(20, 20, "PICE.MAR", subregion = 2)
+vol_nl(20, 20, "PICE.MAR", district = 2)
 #> # A tibble: 1 × 2
 #>   vol_total vol_merchantable
 #>       <dbl>            <dbl>
 #> 1     0.306            0.288
 
 # Return net merchantable volume (if available)
-vol_nl(20, 20, "PICE.MAR", subregion = 2, keep_net = TRUE)
+vol_nl(20, 20, "PICE.MAR", district = 2, keep_net = TRUE)
 #> # A tibble: 1 × 4
 #>   vol_total vol_merchantable vol_merchantable_gross vol_merchantable_net
 #>       <dbl>            <dbl>                  <dbl>                <dbl>
@@ -126,17 +126,17 @@ trees <- tibble::tibble(
   DBH = c(15, 20, 25, 30),
   height = c(15, 20, 21, 25),
   species = c("PICE.MAR", "ABIE.BAL","PICE.MAR", "BETU.PAP"),
-  subregion = c("Province", 2, 17, "Province")
+  district = c("Province", 2, 17, "Province")
 )
 
 trees |>
-  dplyr::mutate(vol = vol_nl(DBH, height, species, subregion)) |>
+  dplyr::mutate(vol = vol_nl(DBH, height, species, district)) |>
   tidyr::unnest(vol)
 #> # A tibble: 4 × 6
-#>     DBH height species  subregion vol_total vol_merchantable
-#>   <dbl>  <dbl> <chr>    <chr>         <dbl>            <dbl>
-#> 1    15     15 PICE.MAR Province      0.118            0.102
-#> 2    20     20 ABIE.BAL 2             0.284            0.270
-#> 3    25     21 PICE.MAR 17            0.353            0.337
-#> 4    30     25 BETU.PAP Province      0.661            0.626
+#>     DBH height species  district vol_total vol_merchantable
+#>   <dbl>  <dbl> <chr>    <chr>        <dbl>            <dbl>
+#> 1    15     15 PICE.MAR Province     0.118            0.102
+#> 2    20     20 ABIE.BAL 2            0.284            0.270
+#> 3    25     21 PICE.MAR 17           0.353            0.337
+#> 4    30     25 BETU.PAP Province     0.661            0.626
 ```

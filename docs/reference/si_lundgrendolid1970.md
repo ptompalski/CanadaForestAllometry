@@ -11,7 +11,7 @@ si_lundgrendolid1970(
   height = NULL,
   si = NULL,
   species,
-  model = c("exponential_monomolecular", "monomolecular")
+  variant = c("exponential_monomolecular", "monomolecular")
 )
 ```
 
@@ -35,7 +35,7 @@ si_lundgrendolid1970(
 
   Character vector of species codes (e.g., `"PICE.MAR"`).
 
-- model:
+- variant:
 
   Character scalar. One of `"exponential_monomolecular"` or
   `"monomolecular"`.
@@ -79,7 +79,7 @@ Service, North Central Forest Experiment Station
 ## Examples
 
 ``` r
-# Predict site index from age + height (default model: exponential_monomolecular)
+# Predict site index from age + height (default variant: exponential_monomolecular)
 si_lundgrendolid1970(
   age = c(20, 40, 60),
   height = c(8, 16, 24),

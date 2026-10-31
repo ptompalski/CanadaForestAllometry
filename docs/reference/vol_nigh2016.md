@@ -8,7 +8,7 @@ tree height.
 ## Usage
 
 ``` r
-vol_nigh2016(DBH, height, species, subregion)
+vol_nigh2016(DBH, height, species, bec_zone)
 ```
 
 ## Source
@@ -31,7 +31,7 @@ Province of British Columbia, Technical Report 106.
 
   Character vector of species codes
 
-- subregion:
+- bec_zone:
 
   Character scalar or vector defining the spatial stratum for the
   coefficients. Can be `"Coast"` / `"Interior"` or a BEC zone code
@@ -54,7 +54,7 @@ A tibble with volumes (m\\^3\\):
 
 Parameters are stratified either by region (`"Coast"`, `"Interior"`) or
 by BEC zone (e.g., `"CWH"`, `"ICH"`, `"BWBS"`), depending on which
-parameter row is requested via `subregion`.
+parameter row is requested via `bec_zone`.
 
 Model form (Nigh 2016): \$\$V = \exp(b_0) \cdot DBH^{b_1} \cdot
 H^{b_2}\$\$ where \\V\\ is volume (m\\^3\\), \\DBH\\ is in cm, and \\H\\
@@ -65,11 +65,11 @@ stump (0.3 m) and top volume above a 4 cm inside-bark diameter threshold
 (fixed definition in the original report).
 
 Nigh (2016) function parameters are available for the following species
-and `subregion` combinations:
+and `bec_zone` combinations:
 
 |            |                                                        |
 |------------|--------------------------------------------------------|
-| Species    | Supported `subregion` values                           |
+| Species    | Supported `bec_zone` values                            |
 | `ABIE.LAS` | AT, BWBS, ESSF, ICH, IDF, Interior, MS, SBS, SWB       |
 | `ABIE.SPP` | Coast, CWH, MH                                         |
 | `ACER.MAC` | Coast, CWH                                             |
@@ -97,19 +97,19 @@ vol_nigh2016(
   DBH = 35,
   height = 25,
   species = "POPU.TRI",
-  subregion = "Interior"
+  bec_zone = "Interior"
 )
 #> # A tibble: 1 × 2
 #>   vol_total vol_merchantable
 #>       <dbl>            <dbl>
 #> 1     0.821            0.788
 
-# Multiple trees, vectorized (mixed subregions allowed)
+# Multiple trees, vectorized (mixed zones allowed)
 vol_nigh2016(
   DBH = c(22, 30, 45),
   height = c(18, 24, 33),
   species = c("PSEU.MEN", "THUJ.PLI", "POPU.TRI"),
-  subregion = c("Coast", "ICH", "Interior")
+  bec_zone = c("Coast", "ICH", "Interior")
 )
 #> # A tibble: 3 × 2
 #>   vol_total vol_merchantable

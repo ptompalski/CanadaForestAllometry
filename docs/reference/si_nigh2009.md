@@ -7,7 +7,7 @@ index) model in Nigh, Thomas, Yearsley and Wang (2009) for paper birch
 ## Usage
 
 ``` r
-si_nigh2009(age, height = NULL, si = NULL, model = 1, bec_zone = NULL)
+si_nigh2009(age, height = NULL, si = NULL, variant = 1, bec_zone = NULL)
 ```
 
 ## Arguments
@@ -26,16 +26,16 @@ si_nigh2009(age, height = NULL, si = NULL, model = 1, bec_zone = NULL)
   Optional numeric vector. Site index (m, base age 50 years at breast
   height). If provided, `height` is predicted.
 
-- model:
+- variant:
 
   Model variant: `1` (base, default), `2` (operational), or `3` (zonal).
   See Details.
 
 - bec_zone:
 
-  Optional character vector selecting the zonal (`model = 3`)
+  Optional character vector selecting the zonal (`variant = 3`)
   coefficients. One of `"ICH"`, `"IDF"`, `"SBS"`. Required when
-  `model = 3` and ignored otherwise.
+  `variant = 3` and ignored otherwise.
 
 ## Value
 
@@ -63,16 +63,16 @@ form (eq. 1) \$\$HT = 1.3 + (SI - 1.3) \times \frac{1 + e^{a_0 + a_1
 \ln(49.5) + a_2 \ln(SI - 1.3)}} {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2
 \ln(SI - 1.3)}}\$\$ differing only in their coefficients:
 
-- `model = 1`:
+- `variant = 1`:
 
   Base log-logistic fit (Table 2). Default.
 
-- `model = 2`:
+- `variant = 2`:
 
   Operational form of the mixed model. Recommended by the authors when
   the biogeoclimatic zone is unknown or is not ICH/IDF/SBS.
 
-- `model = 3`:
+- `variant = 3`:
 
   Zonal indicator-variable model. Only \\a_1\\ carries a significant
   zone effect (SBS vs. ICH/IDF). Supply `bec_zone` (one of `"ICH"`,
@@ -117,14 +117,14 @@ si_nigh2009(age = c(25, 50, 80), height = c(8, 18, 26))
 #> 3  21.5
 
 # Operational model (recommended when zone is unknown)
-si_nigh2009(age = 60, si = 18, model = 2)
+si_nigh2009(age = 60, si = 18, variant = 2)
 #> # A tibble: 1 × 1
 #>   height
 #>    <dbl>
 #> 1   19.8
 
 # Zonal model
-si_nigh2009(age = 60, si = 18, model = 3, bec_zone = "SBS")
+si_nigh2009(age = 60, si = 18, variant = 3, bec_zone = "SBS")
 #> # A tibble: 1 × 1
 #>   height
 #>    <dbl>

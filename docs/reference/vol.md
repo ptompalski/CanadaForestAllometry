@@ -55,18 +55,19 @@ vol(
 
 - keep_model_id:
 
-  Logical. If `TRUE`, include a `vol_model` column with the engine
-  function name used.
+  Logical. If `TRUE`, include a `model_id` column with the volume model
+  used (registry ID, see
+  [`volume_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/volume_model_registry.md)).
 
 ## Value
 
 If `pick_best = TRUE`, a tibble with one row per tree and columns:
-`vol_total`, `vol_merchantable`, and optionally `vol_model`.
+`vol_total`, `vol_merchantable`, and optionally `model_id`.
 
 If `pick_best = FALSE`, a list (suitable for use as a list-column in
 [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html))
 with one element per tree. Each element is a tibble of candidate model
-outputs (`vol_total`, `vol_merchantable`, and optionally `vol_model`).
+outputs (`vol_total`, `vol_merchantable`, and optionally `model_id`).
 
 ## Model selection logic
 
@@ -137,9 +138,9 @@ vol(
   jurisdiction = "ON"
 )
 #> # A tibble: 1 × 3
-#>   vol_total vol_merchantable vol_model         
-#>       <dbl>            <dbl> <chr>             
-#> 1     0.285            0.260 vol_zakrzewski2013
+#>   vol_total vol_merchantable model_id               
+#>       <dbl>            <dbl> <chr>                  
+#> 1     0.285            0.260 regional_zakrzewski2013
 
 ## --- Return all applicable models (one row per engine) ---
 ## Note: national Ung DBH-only and DBH+HT variants are collapsed
@@ -154,12 +155,12 @@ vol(
 )
 #> [[1]]
 #> # A tibble: 4 × 3
-#>   vol_total vol_merchantable vol_model         
-#>       <dbl>            <dbl> <chr>             
-#> 1     0.260            0.227 vol_honer83       
-#> 2     0.282            0.267 vol_sharma2021    
-#> 3     0.266            0.248 vol_ung2013       
-#> 4     0.285            0.260 vol_zakrzewski2013
+#>   vol_total vol_merchantable model_id               
+#>       <dbl>            <dbl> <chr>                  
+#> 1     0.260            0.227 regional_honer83       
+#> 2     0.282            0.267 regional_sharma2021    
+#> 3     0.266            0.248 national_ung_dbh_ht    
+#> 4     0.285            0.260 regional_zakrzewski2013
 #> 
 
 ## --- Missing height: height-dependent models are skipped ---
@@ -170,9 +171,9 @@ vol(
   jurisdiction = "QC"
 )
 #> # A tibble: 1 × 3
-#>   vol_total vol_merchantable vol_model  
-#>       <dbl>            <dbl> <chr>      
-#> 1     0.441            0.428 vol_ung2013
+#>   vol_total vol_merchantable model_id        
+#>       <dbl>            <dbl> <chr>           
+#> 1     0.441            0.428 national_ung_dbh
 
 ## --- Regional model with required subregion (BC example) ---
 ## Kozak (1994) requires a BEC zone; if provided, it is preferred.
@@ -184,9 +185,9 @@ vol(
   subregion = "CWH"
 )
 #> # A tibble: 1 × 3
-#>   vol_total vol_merchantable vol_model  
-#>       <dbl>            <dbl> <chr>      
-#> 1     0.655            0.565 vol_kozak94
+#>   vol_total vol_merchantable model_id        
+#>       <dbl>            <dbl> <chr>           
+#> 1     0.655            0.565 regional_kozak94
 
 ## --- Automatic fallback when a regional model does not cover species ---
 ## If no provincial model covers the species, a suitable national or
@@ -198,9 +199,9 @@ vol(
   jurisdiction = "MB"
 )
 #> # A tibble: 1 × 3
-#>   vol_total vol_merchantable vol_model  
-#>       <dbl>            <dbl> <chr>      
-#> 1     0.151            0.142 vol_ung2013
+#>   vol_total vol_merchantable model_id           
+#>       <dbl>            <dbl> <chr>              
+#> 1     0.151            0.142 national_ung_dbh_ht
 
 ## --- Vectorized input ---
 vol(
@@ -211,11 +212,11 @@ vol(
   keep_model_id = TRUE
 )
 #> # A tibble: 3 × 3
-#>   vol_total vol_merchantable vol_model         
-#>       <dbl>            <dbl> <chr>             
-#> 1     0.172            0.150 vol_zakrzewski2013
-#> 2     0.411            0.353 vol_zakrzewski2013
-#> 3     0.766            0.635 vol_zakrzewski2013
+#>   vol_total vol_merchantable model_id               
+#>       <dbl>            <dbl> <chr>                  
+#> 1     0.172            0.150 regional_zakrzewski2013
+#> 2     0.411            0.353 regional_zakrzewski2013
+#> 3     0.766            0.635 regional_zakrzewski2013
 
 #' ## --- Tidyverse workflow with multiple species and jurisdictions ---
 library(dplyr)
@@ -249,7 +250,7 @@ trees |>
 #> ! There was 1 warning in `dplyr::mutate()`.
 #> ℹ In argument: `merch = purrr::pmap(...)`.
 #> Caused by warning:
-#> ! BEC_zone missing; using conservative BC 'UNKNOWN' utilization.
+#> ! bec_zone missing; using conservative BC 'UNKNOWN' utilization.
 #> # A tibble: 4 × 8
 #>     DBH height species  jurisdiction subregion vol_total vol_merchantable
 #>   <dbl>  <dbl> <chr>    <chr>        <chr>         <dbl>            <dbl>
@@ -257,7 +258,7 @@ trees |>
 #> 2    22     18 BETU.PAP ON           NA            0.291            0.233
 #> 3    30     22 POPU.TRE QC           NA           NA                0.674
 #> 4    26     20 PSEU.MEN BC           CWH           0.387            0.305
-#> # ℹ 1 more variable: vol_model <chr>
+#> # ℹ 1 more variable: model_id <chr>
 
 ## --- Same data, return all applicable volume models per tree ---
 trees |>
@@ -282,7 +283,7 @@ trees |>
 #> ! There was 1 warning in `dplyr::mutate()`.
 #> ℹ In argument: `merch = purrr::pmap(...)`.
 #> Caused by warning:
-#> ! BEC_zone missing; using conservative BC 'UNKNOWN' utilization.
+#> ! bec_zone missing; using conservative BC 'UNKNOWN' utilization.
 #> # A tibble: 4 × 6
 #>     DBH height species  jurisdiction subregion `vol(...)`      
 #>   <dbl>  <dbl> <chr>    <chr>        <chr>     <list>          

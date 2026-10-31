@@ -4,6 +4,7 @@ fake_definitions <- function() {
     .hd_registry_row(
       model_id = "fake_on",
       engine = "hd_fake_on",
+      rank = 60,
       reference = "@Fake2007",
       scope = "regional",
       province_scope = "ON",
@@ -16,6 +17,7 @@ fake_definitions <- function() {
     .hd_registry_row(
       model_id = "fake_ab",
       engine = "hd_fake_ab",
+      rank = 50,
       reference = "@Fake2016",
       scope = "provincial",
       province_scope = "AB",
@@ -28,6 +30,7 @@ fake_definitions <- function() {
     .hd_registry_row(
       model_id = "fake_all",
       engine = "hd_fake_all",
+      rank = 10,
       reference = "@Fake2020",
       scope = "provincial",
       province_scope = "ALL",
@@ -75,8 +78,8 @@ test_that("hd_model_registry() has the documented columns and types", {
   expect_identical(
     names(reg),
     c(
-      "model_id", "engine", "fixed_args", "reference", "scope",
-      "province_scope", "stand_origin", "equation_family",
+      "model_id", "engine", "rank", "fixed_args", "reference", "scope",
+      "province_scope", "stand_origin", "bc_region", "equation_family",
       "required_predictors", "optional_predictors", "region_arg",
       "prediction_types", "calibration_published", "params_key",
       "species_manual", "description"

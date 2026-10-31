@@ -147,8 +147,6 @@ Agriculture and Forestry, Edmonton, Alberta.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Provincial models</span></span></span>
 <span class="r-in"><span><span class="fu">hd_huang2016</span><span class="op">(</span>DBH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">40</span><span class="op">)</span>, species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PICE.GLA"</span>, <span class="st">"POPU.TRE"</span>, <span class="st">"PINU.CON"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> hd_huang2016(): `natural_subregion` not supplied; using the provincial models.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This message is displayed once per session.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   height</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -158,8 +156,6 @@ Agriculture and Forestry, Edmonton, Alberta.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Natural-subregion-group models (Lower Foothills), numeric or character code</span></span></span>
 <span class="r-in"><span><span class="fu">hd_huang2016</span><span class="op">(</span>DBH <span class="op">=</span> <span class="fl">25</span>, species <span class="op">=</span> <span class="st">"PICE.MAR"</span>, natural_subregion <span class="op">=</span> <span class="st">"LF"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> hd_huang2016(): using natural-subregion-group models where available.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This message is displayed once per session.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   height</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

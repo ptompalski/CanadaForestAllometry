@@ -59,7 +59,7 @@ index equations for Lake States species.</p>
 <span>  height <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  si <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">species</span>,</span>
-<span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exponential_monomolecular"</span>, <span class="st">"monomolecular"</span><span class="op">)</span></span>
+<span>  variant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exponential_monomolecular"</span>, <span class="st">"monomolecular"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -83,7 +83,7 @@ index equations for Lake States species.</p>
 <dd><p>Character vector of species codes (e.g., <code>"PICE.MAR"</code>).</p></dd>
 
 
-<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
+<dt id="arg-variant">variant<a class="anchor" aria-label="anchor" href="#arg-variant"></a></dt>
 <dd><p>Character scalar. One of <code>"exponential_monomolecular"</code> or <code>"monomolecular"</code>.</p></dd>
 
 </dl></div>
@@ -113,7 +113,7 @@ the function converts internally.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Predict site index from age + height (default model: exponential_monomolecular)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Predict site index from age + height (default variant: exponential_monomolecular)</span></span></span>
 <span class="r-in"><span><span class="fu">si_lundgrendolid1970</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">60</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">16</span>, <span class="fl">24</span><span class="op">)</span>,</span></span>

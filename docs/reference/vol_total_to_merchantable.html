@@ -59,7 +59,7 @@ to convert total volume (all live trees) to merchantable volume via a genus-leve
 <span>  <span class="va">species</span>,</span>
 <span>  <span class="va">jurisdiction</span>,</span>
 <span>  <span class="va">ecozone</span>,</span>
-<span>  include_prop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  include_props <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  clamp_prop <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  warn_outside <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  clamp_x <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -86,7 +86,7 @@ to convert total volume (all live trees) to merchantable volume via a genus-leve
 <dd><p>Ecozone identifier. Either: numeric ecozone code (1–15) or official ecozone name (English or French; case-insensitive).</p></dd>
 
 
-<dt id="arg-include-prop">include_prop<a class="anchor" aria-label="anchor" href="#arg-include-prop"></a></dt>
+<dt id="arg-include-props">include_props<a class="anchor" aria-label="anchor" href="#arg-include-props"></a></dt>
 <dd><p>Logical. If TRUE, return the predicted merchantable proportion.</p></dd>
 
 
@@ -129,7 +129,7 @@ Optionally includes <code>prop_merch</code> and <code>vol_total_used</code>.</p>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="st">"PICE.MAR"</span>,</span></span>
 <span class="r-in"><span>  jurisdiction <span class="op">=</span> <span class="st">"AB"</span>,</span></span>
 <span class="r-in"><span>  ecozone <span class="op">=</span> <span class="fl">4</span>,</span></span>
-<span class="r-in"><span>  include_prop <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  include_props <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   vol_merchantable prop_merch</span>
@@ -142,7 +142,7 @@ Optionally includes <code>prop_merch</code> and <code>vol_total_used</code>.</p>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="st">"PICE.MAR"</span>,</span></span>
 <span class="r-in"><span>  jurisdiction <span class="op">=</span> <span class="st">"AB"</span>,</span></span>
 <span class="r-in"><span>  ecozone <span class="op">=</span> <span class="fl">4</span>,</span></span>
-<span class="r-in"><span>  include_prop <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  include_props <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   vol_merchantable prop_merch</span>
@@ -171,7 +171,7 @@ Optionally includes <code>prop_merch</code> and <code>vol_total_used</code>.</p>
 <span class="r-in"><span>      species <span class="op">=</span> <span class="va">species</span>,</span></span>
 <span class="r-in"><span>      jurisdiction <span class="op">=</span> <span class="va">jurisdiction</span>,</span></span>
 <span class="r-in"><span>      ecozone <span class="op">=</span> <span class="va">ecozone</span>,</span></span>
-<span class="r-in"><span>      include_prop <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>      include_props <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">merch</span><span class="op">)</span></span></span>

@@ -92,7 +92,7 @@ trees |>
 #> 3    30     22 POPU.TRE QC           <NA>             NA                0.674
 #> 4    26     20 PSEU.MEN BC           CWH               0.387            0.305
 #> 5    20     20 PINU.BAN MB           Boreal Plains     0.291            0.274
-#> # ℹ 1 more variable: vol_model <chr>
+#> # ℹ 1 more variable: model_id <chr>
 ```
 
 ## Merchantability criteria

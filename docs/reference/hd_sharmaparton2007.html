@@ -60,7 +60,7 @@ stand-level predictors: dominant stand height, basal area and stand density.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hd_sharmaparton2007</span><span class="op">(</span><span class="va">DBH</span>, <span class="va">species</span>, <span class="va">HDOM</span>, <span class="va">BA</span>, <span class="va">TPH</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hd_sharmaparton2007</span><span class="op">(</span><span class="va">DBH</span>, <span class="va">species</span>, <span class="va">HDOM</span>, <span class="va">BA</span>, <span class="va">TPH</span>, keep_model_id <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -94,10 +94,16 @@ state a minimum DBH for this total. Must be <code>&gt; 0</code>.</p></dd>
 "calculated from the trees with DBH greater than or equal to 2.5 cm"
 (source "N/ha", p. 188). Must be <code>&gt; 0</code>.</p></dd>
 
+
+<dt id="arg-keep-model-id">keep_model_id<a class="anchor" aria-label="anchor" href="#arg-keep-model-id"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, add column <code>model_id</code>
+(<code>"sharmaparton2007"</code>).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with column <code>height</code> (m).</p>
+    <p>A tibble with column <code>height</code> (m) and, if <code>keep_model_id = TRUE</code>,
+<code>model_id</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

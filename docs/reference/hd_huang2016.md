@@ -102,8 +102,6 @@ Alberta Agriculture and Forestry, Edmonton, Alberta.
 ``` r
 # Provincial models
 hd_huang2016(DBH = c(10, 25, 40), species = c("PICE.GLA", "POPU.TRE", "PINU.CON"))
-#> hd_huang2016(): `natural_subregion` not supplied; using the provincial models.
-#> This message is displayed once per session.
 #> # A tibble: 3 × 1
 #>   height
 #>    <dbl>
@@ -113,8 +111,6 @@ hd_huang2016(DBH = c(10, 25, 40), species = c("PICE.GLA", "POPU.TRE", "PINU.CON"
 
 # Natural-subregion-group models (Lower Foothills), numeric or character code
 hd_huang2016(DBH = 25, species = "PICE.MAR", natural_subregion = "LF")
-#> hd_huang2016(): using natural-subregion-group models where available.
-#> This message is displayed once per session.
 #> # A tibble: 1 × 1
 #>   height
 #>    <dbl>

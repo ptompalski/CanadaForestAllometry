@@ -10,7 +10,7 @@ lookup table.
 get_merch_criteria(
   jurisdiction,
   species = NA_character_,
-  BEC_zone = NA_character_,
+  bec_zone = NA_character_,
   verbose = TRUE
 )
 ```
@@ -26,7 +26,7 @@ get_merch_criteria(
   Species code. Optional for `"BC"`; if missing, falls back to `"ALL"`
   with a warning.
 
-- BEC_zone:
+- bec_zone:
 
   Optional BEC zone code (e.g., `"CWH"`, `"ICH"`). If missing for
   `"BC"`, conservative criteria are taken from `BEC_group == "UNKNOWN"`.
@@ -57,10 +57,10 @@ Rules:
   - If `species` is missing, the function falls back to
     `Species == "ALL"` and warns.
 
-  - If `BEC_zone` is provided and can be mapped, criteria are looked up
+  - If `bec_zone` is provided and can be mapped, criteria are looked up
     using (Province + Species + BEC_group).
 
-  - If `BEC_zone` is missing/unknown, criteria fall back to a
+  - If `bec_zone` is missing/unknown, criteria fall back to a
     conservative BC BEC-independent layer using `BEC_group == "UNKNOWN"`
     (species-specific if present, otherwise `Species == "ALL"`).
 
@@ -98,7 +98,7 @@ get_merch_criteria("BC", "PICE.GLA", "CWH")       # genus fallback to PICE.SPP i
 #> 1 BC           PICE.GLA       0.3        15      17.5
 get_merch_criteria("BC")                          # falls back to BC ALL + UNKNOWN (warns)
 #> Warning: For jurisdiction 'BC', `species` was not provided; using BC fallback Species='ALL'.
-#> Warning: BEC_zone missing; using conservative BC 'UNKNOWN' utilization.
+#> Warning: bec_zone missing; using conservative BC 'UNKNOWN' utilization.
 #> # A tibble: 1 × 5
 #>   jurisdiction species stumpht_m topdbh_cm mindbh_cm
 #>   <chr>        <chr>       <dbl>     <dbl>     <dbl>

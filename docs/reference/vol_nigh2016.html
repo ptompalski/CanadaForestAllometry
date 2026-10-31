@@ -57,7 +57,7 @@ breast height (DBH) and total tree height.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vol_nigh2016</span><span class="op">(</span><span class="va">DBH</span>, <span class="va">height</span>, <span class="va">species</span>, <span class="va">subregion</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vol_nigh2016</span><span class="op">(</span><span class="va">DBH</span>, <span class="va">height</span>, <span class="va">species</span>, <span class="va">bec_zone</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,7 +82,7 @@ British Columbia, Technical Report 106.</p>
 <dd><p>Character vector of species codes</p></dd>
 
 
-<dt id="arg-subregion">subregion<a class="anchor" aria-label="anchor" href="#arg-subregion"></a></dt>
+<dt id="arg-bec-zone">bec_zone<a class="anchor" aria-label="anchor" href="#arg-bec-zone"></a></dt>
 <dd><p>Character scalar or vector defining the spatial stratum for
 the coefficients. Can be <code>"Coast"</code> / <code>"Interior"</code> or a BEC zone code
 (e.g., <code>"CWH"</code>, <code>"ICH"</code>, <code>"BWBS"</code>). Must have length 1 or the
@@ -103,7 +103,7 @@ same length as <code>DBH</code>.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Parameters are stratified either by region (<code>"Coast"</code>, <code>"Interior"</code>)
 or by BEC zone (e.g., <code>"CWH"</code>, <code>"ICH"</code>, <code>"BWBS"</code>), depending on
-which parameter row is requested via <code>subregion</code>.</p>
+which parameter row is requested via <code>bec_zone</code>.</p>
 <p>Model form (Nigh 2016):
 $$V = \exp(b_0) \cdot DBH^{b_1} \cdot H^{b_2}$$
 where \(V\) is volume (m\(^3\)), \(DBH\) is in cm, and \(H\) is in m.</p>
@@ -111,8 +111,8 @@ where \(V\) is volume (m\(^3\)), \(DBH\) is in cm, and \(H\) is in m.</p>
 (0.3 m) and top volume above a 4 cm inside-bark diameter threshold (fixed
 definition in the original report).</p>
 <p>Nigh (2016) function parameters are available for the following species and
-<code>subregion</code> combinations:</p>
-<table class="table table"><tr><td>Species</td><td>Supported <code>subregion</code> values</td></tr><tr><td><code>ABIE.LAS</code></td><td>AT, BWBS, ESSF, ICH, IDF, Interior, MS, SBS, SWB</td></tr><tr><td><code>ABIE.SPP</code></td><td>Coast, CWH, MH</td></tr><tr><td><code>ACER.MAC</code></td><td>Coast, CWH</td></tr><tr><td><code>ALNU.RUB</code></td><td>Coast, CWH</td></tr><tr><td><code>BETU.PAP</code></td><td>BWBS, ICH, IDF, Interior, SBS</td></tr><tr><td><code>CHAM.NOO</code></td><td>Coast</td></tr><tr><td><code>LARI.SPP</code></td><td>BWBS, ESSF, ICH, IDF, Interior, MS</td></tr><tr><td><code>PICE.SIT</code></td><td>Coast</td></tr><tr><td><code>PICE.SPP</code></td><td>Interior</td></tr><tr><td><code>PINU.ALB</code></td><td>ESSF, Interior</td></tr><tr><td><code>PINU.CON</code></td><td>Coast, Interior</td></tr><tr><td><code>PINU.MON</code></td><td>Coast, Interior</td></tr><tr><td><code>PINU.PON</code></td><td>Interior</td></tr><tr><td><code>POPU.TRE</code></td><td>BWBS, ICH, IDF, Interior, SBS</td></tr><tr><td><code>POPU.TRI</code></td><td>BWBS, Coast, CWH, ICH, IDF, Interior, SBS</td></tr><tr><td><code>PSEU.MEN</code></td><td>CDF, Coast, CWH, ESSF, ICH, IDF, Interior, MS, PP, SBS</td></tr><tr><td><code>THUJ.PLI</code></td><td>Coast, CWH, ESSF, ICH, IDF, Interior, MS</td></tr><tr><td><code>TSUG.HET</code></td><td>Coast, CWH, ESSF, ICH, IDF, Interior, MH, SBS</td></tr></table></div>
+<code>bec_zone</code> combinations:</p>
+<table class="table table"><tr><td>Species</td><td>Supported <code>bec_zone</code> values</td></tr><tr><td><code>ABIE.LAS</code></td><td>AT, BWBS, ESSF, ICH, IDF, Interior, MS, SBS, SWB</td></tr><tr><td><code>ABIE.SPP</code></td><td>Coast, CWH, MH</td></tr><tr><td><code>ACER.MAC</code></td><td>Coast, CWH</td></tr><tr><td><code>ALNU.RUB</code></td><td>Coast, CWH</td></tr><tr><td><code>BETU.PAP</code></td><td>BWBS, ICH, IDF, Interior, SBS</td></tr><tr><td><code>CHAM.NOO</code></td><td>Coast</td></tr><tr><td><code>LARI.SPP</code></td><td>BWBS, ESSF, ICH, IDF, Interior, MS</td></tr><tr><td><code>PICE.SIT</code></td><td>Coast</td></tr><tr><td><code>PICE.SPP</code></td><td>Interior</td></tr><tr><td><code>PINU.ALB</code></td><td>ESSF, Interior</td></tr><tr><td><code>PINU.CON</code></td><td>Coast, Interior</td></tr><tr><td><code>PINU.MON</code></td><td>Coast, Interior</td></tr><tr><td><code>PINU.PON</code></td><td>Interior</td></tr><tr><td><code>POPU.TRE</code></td><td>BWBS, ICH, IDF, Interior, SBS</td></tr><tr><td><code>POPU.TRI</code></td><td>BWBS, Coast, CWH, ICH, IDF, Interior, SBS</td></tr><tr><td><code>PSEU.MEN</code></td><td>CDF, Coast, CWH, ESSF, ICH, IDF, Interior, MS, PP, SBS</td></tr><tr><td><code>THUJ.PLI</code></td><td>Coast, CWH, ESSF, ICH, IDF, Interior, MS</td></tr><tr><td><code>TSUG.HET</code></td><td>Coast, CWH, ESSF, ICH, IDF, Interior, MH, SBS</td></tr></table></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -121,19 +121,19 @@ definition in the original report).</p>
 <span class="r-in"><span>  DBH <span class="op">=</span> <span class="fl">35</span>,</span></span>
 <span class="r-in"><span>  height <span class="op">=</span> <span class="fl">25</span>,</span></span>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="st">"POPU.TRI"</span>,</span></span>
-<span class="r-in"><span>  subregion <span class="op">=</span> <span class="st">"Interior"</span></span></span>
+<span class="r-in"><span>  bec_zone <span class="op">=</span> <span class="st">"Interior"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.821            0.788</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Multiple trees, vectorized (mixed subregions allowed)</span></span></span>
+<span class="r-in"><span><span class="co"># Multiple trees, vectorized (mixed zones allowed)</span></span></span>
 <span class="r-in"><span><span class="fu">vol_nigh2016</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  DBH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">22</span>, <span class="fl">30</span>, <span class="fl">45</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">24</span>, <span class="fl">33</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PSEU.MEN"</span>, <span class="st">"THUJ.PLI"</span>, <span class="st">"POPU.TRI"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  subregion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Coast"</span>, <span class="st">"ICH"</span>, <span class="st">"Interior"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  bec_zone <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Coast"</span>, <span class="st">"ICH"</span>, <span class="st">"Interior"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable</span>

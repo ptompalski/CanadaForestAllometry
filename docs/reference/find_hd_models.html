@@ -8,10 +8,12 @@
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Find DBH–height models usable with your data — find_hd_models"><meta name="description" content="Filters hd_model_registry() by jurisdiction and species, and reports which
 required predictors each candidate model needs that you do not have. Models
 with missing predictors are kept (as near-misses) so you can see what extra
-data would make them usable. No model is selected automatically."><meta property="og:description" content="Filters hd_model_registry() by jurisdiction and species, and reports which
+data would make them usable. No model is selected automatically; see hd()
+for automatic selection."><meta property="og:description" content="Filters hd_model_registry() by jurisdiction and species, and reports which
 required predictors each candidate model needs that you do not have. Models
 with missing predictors are kept (as near-misses) so you can see what extra
-data would make them usable. No model is selected automatically."></head><body>
+data would make them usable. No model is selected automatically; see hd()
+for automatic selection."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -55,7 +57,8 @@ data would make them usable. No model is selected automatically."></head><body>
     <p>Filters <code><a href="hd_model_registry.html">hd_model_registry()</a></code> by jurisdiction and species, and reports which
 required predictors each candidate model needs that you do not have. Models
 with missing predictors are kept (as near-misses) so you can see what extra
-data would make them usable. No model is selected automatically.</p>
+data would make them usable. No model is selected automatically; see <code><a href="hd.html">hd()</a></code>
+for automatic selection.</p>
     </div>
 
     <div class="section level2">
@@ -101,15 +104,19 @@ names, which are case-sensitive.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">find_hd_models</span><span class="op">(</span>jurisdiction <span class="op">=</span> <span class="st">"ON"</span>, species <span class="op">=</span> <span class="st">"PICE.MAR"</span>,</span></span>
 <span class="r-in"><span>               available <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DBH"</span>, <span class="st">"BA"</span>, <span class="st">"TPH"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 21</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   model_id         engine fixed_args reference scope province_scope stand_origin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sharmaparton2007 hd_sh… <span style="color: #949494;">&lt;list [0]&gt;</span> @SharmaP… regi… <span style="color: #949494;">&lt;chr [1]&gt;</span>      both        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more variables: equation_family &lt;chr&gt;, required_predictors &lt;list&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   optional_predictors &lt;list&gt;, region_arg &lt;chr&gt;, prediction_types &lt;list&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   calibration_published &lt;lgl&gt;, params_key &lt;chr&gt;, species_manual &lt;list&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   description &lt;chr&gt;, species &lt;list&gt;, n_species &lt;int&gt;, species_text &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   missing_predictors &lt;list&gt;, usable &lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 23</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   model_id engine  rank fixed_args   reference scope province_scope stand_origin</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sharmaz… hd_sh…    75 <span style="color: #949494;">&lt;named list&gt;</span> @SharmaZ… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      both        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sharmaz… hd_sh…    45 <span style="color: #949494;">&lt;named list&gt;</span> @SharmaZ… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      both        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sharmap… hd_sh…    80 <span style="color: #949494;">&lt;list [0]&gt;</span>   @SharmaP… regi… <span style="color: #949494;">&lt;chr [1]&gt;</span>      both        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sharma2… hd_sh…    85 <span style="color: #949494;">&lt;named list&gt;</span> @Sharma2… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      natural     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sharma2… hd_sh…    85 <span style="color: #949494;">&lt;named list&gt;</span> @Sharma2… prov… <span style="color: #949494;">&lt;chr [1]&gt;</span>      plantation  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more variables: bc_region &lt;chr&gt;, equation_family &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   required_predictors &lt;list&gt;, optional_predictors &lt;list&gt;, region_arg &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   prediction_types &lt;list&gt;, calibration_published &lt;lgl&gt;, params_key &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   species_manual &lt;list&gt;, description &lt;chr&gt;, species &lt;list&gt;, n_species &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   species_text &lt;chr&gt;, missing_predictors &lt;list&gt;, usable &lt;lgl&gt;</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

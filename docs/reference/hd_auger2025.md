@@ -13,9 +13,9 @@ hd_auger2025(
   DBH,
   species,
   variant = c("dbh", "plot_mean_dbh", "dominant"),
-  mean_DBH = NULL,
+  DMEAN = NULL,
   HDOM = NULL,
-  dominant_DBH = NULL,
+  DDOM = NULL,
   keep_model_id = FALSE
 )
 ```
@@ -37,10 +37,10 @@ hd_auger2025(
   Model variant: `"dbh"` (default), `"plot_mean_dbh"` or `"dominant"`.
   See Details.
 
-- mean_DBH:
+- DMEAN:
 
-  Numeric vector. Plot level. Mean DBH (cm) of the plot, used by
-  `variant = "plot_mean_dbh"`: "le DHP moyen de tous les arbres de la
+  Numeric vector. Plot level. Arithmetic mean DBH (cm) of the plot, used
+  by `variant = "plot_mean_dbh"`: "le DHP moyen de tous les arbres de la
   placette" (source "DMOY", p. 6), i.e. the arithmetic (not quadratic)
   mean DBH of all trees in the plot. The source does not state whether
   natural ingress is included or a minimum DBH. Must be `>= 0`.
@@ -54,7 +54,7 @@ hd_auger2025(
   répartis dans la placette (200 arbres/ha)" (400 m² plots, p. 2). Must
   be `> 0`.
 
-- dominant_DBH:
+- DDOM:
 
   Numeric vector. Plot level. Mean DBH (cm) of the same dominant trees
   (source "DDOM", p. 7), used by `variant = "dominant"`. Must be `>= 0`.
@@ -87,20 +87,19 @@ natural stands; stand origin cannot be checked by the function.
 
 - `"plot_mean_dbh"`:
 
-  Requires `mean_DBH`. Jack pine, eq. 11 (Chapman–Richards) and black
+  Requires `DMEAN`. Jack pine, eq. 11 (Chapman–Richards) and black
   spruce, eq. 12 (Hossfeld II) (Tableau 8, p. 14): \$\$PIG: H = 1.3 +
   (\alpha\_{10} + \alpha\_{11} MD) \[1 - \exp(-(\alpha\_{20} +
   \alpha\_{21} MD) DBH)\]^{\alpha_3};\$\$ \$\$EPN: H = 1.3 +
   (\alpha\_{10} + \alpha\_{11} MD) \frac{DBH^{\alpha_3}}{(\alpha\_{20} +
-  \alpha\_{21} MD) + DBH^{\alpha_3}},\$\$ where \\MD\\ is `mean_DBH`.
+  \alpha\_{21} MD) + DBH^{\alpha_3}},\$\$ where \\MD\\ is `DMEAN`.
 
 - `"dominant"`:
 
-  Requires `HDOM` and `dominant_DBH`. Jack pine, eq. 13 and black
-  spruce, eq. 14 (Tableau 9, p. 17), the same forms with
-  \\\alpha\_{10} + \alpha\_{11} HDOM\\ as asymptote term and
-  \\\alpha\_{20} + \alpha\_{22} DD\\ as rate/scale term, where \\DD\\ is
-  `dominant_DBH`.
+  Requires `HDOM` and `DDOM`. Jack pine, eq. 13 and black spruce, eq. 14
+  (Tableau 9, p. 17), the same forms with \\\alpha\_{10} + \alpha\_{11}
+  HDOM\\ as asymptote term and \\\alpha\_{20} + \alpha\_{22} DD\\ as
+  rate/scale term, where \\DD\\ is `DDOM`.
 
 Predictors not used by the selected variant are ignored with a warning.
 
@@ -155,7 +154,7 @@ hd_auger2025(DBH = c(5, 10, 20), species = c("PICE.MAR", "PINU.BAN", "PINU.BAN")
 # With the plot mean DBH
 hd_auger2025(
   DBH = c(5, 10, 20), species = "PINU.BAN",
-  variant = "plot_mean_dbh", mean_DBH = 12
+  variant = "plot_mean_dbh", DMEAN = 12
 )
 #> # A tibble: 3 × 1
 #>   height
@@ -168,16 +167,16 @@ hd_auger2025(
 trees <- data.frame(
   DBH = c(6, 9, 12),
   species = "PICE.MAR",
-  HDOM = 9, dominant_DBH = 11
+  HDOM = 9, DDOM = 11
 )
 dplyr::mutate(
   trees,
   hd_auger2025(DBH, species, variant = "dominant",
-               HDOM = HDOM, dominant_DBH = dominant_DBH,
+               HDOM = HDOM, DDOM = DDOM,
                keep_model_id = TRUE)
 )
-#>   DBH  species HDOM dominant_DBH   height           model_id
-#> 1   6 PICE.MAR    9           11 6.152723 auger2025_dominant
-#> 2   9 PICE.MAR    9           11 7.731378 auger2025_dominant
-#> 3  12 PICE.MAR    9           11 8.704548 auger2025_dominant
+#>   DBH  species HDOM DDOM   height           model_id
+#> 1   6 PICE.MAR    9   11 6.152723 auger2025_dominant
+#> 2   9 PICE.MAR    9   11 7.731378 auger2025_dominant
+#> 3  12 PICE.MAR    9   11 8.704548 auger2025_dominant
 ```

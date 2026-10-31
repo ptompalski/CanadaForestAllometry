@@ -29,7 +29,8 @@ The matching rows of \code{hd_model_registry()} with species coverage
 Filters \code{\link[=hd_model_registry]{hd_model_registry()}} by jurisdiction and species, and reports which
 required predictors each candidate model needs that you do not have. Models
 with missing predictors are kept (as near-misses) so you can see what extra
-data would make them usable. No model is selected automatically.
+data would make them usable. No model is selected automatically; see \code{\link[=hd]{hd()}}
+for automatic selection.
 }
 \examples{
 find_hd_models(jurisdiction = "ON", species = "PICE.MAR",
