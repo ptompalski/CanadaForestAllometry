@@ -55,7 +55,10 @@ reg_fun <- reg |>
   dplyr::summarise(
     reference = dplyr::first(.data$reference),
     province_scope = paste(sort(unique(unlist(.data$province_scope))), collapse = ", "),
-    stand_origin = dplyr::first(.data$stand_origin),
+    stand_origin = {
+      o <- unique(.data$stand_origin)
+      if (length(o) == 1L) o else "both"
+    },
     variants = paste0("`", .data$model_id, "`", collapse = ", "),
     n_species = max(.data$n_species),
     .groups = "drop"
@@ -409,6 +412,29 @@ grid$height <- hd_sharmaparton2007(
   grid$DBH, grid$species, HDOM = grid$HDOM, BA = 25, TPH = 2500
 )$height
 plot_hd_curves(grid, colour = "HDOM", colour_lab = "HDOM (m)")
+```
+
+## `hd_sharma2016()`
+
+Ontario plantations and natural stands [@Sharma2016]. `HDOM` = 16 m,
+`BA` = 25 m²/ha and `TPH` = 2,200 stems/ha, as in Fig. 4 of the source.
+
+```{r}
+#| label: fig-sharma2016
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("sharma2016_natural"))) + 0.5
+grid <- tidyr::expand_grid(
+  species = hd_species("sharma2016_natural"),
+  variant = c("natural", "plantation"),
+  DBH = seq(1, 50, by = 1)
+)
+grid$height <- hd_sharma2016(
+  grid$DBH, grid$species, grid$variant, HDOM = 16, BA = 25, TPH = 2200
+)$height
+plot_hd_curves(grid, colour = "variant", colour_lab = "Stand origin")
 ```
 
 ## `hd_eslamdoust2026()`

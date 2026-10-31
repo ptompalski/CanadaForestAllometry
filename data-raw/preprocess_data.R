@@ -1603,6 +1603,35 @@ stopifnot(
   ])
 )
 
+## Sharma 2016 DBH-height models, Ontario plantations vs natural stands ####
+# Eq. 4 fixed effects (u = 0), Table 3 p. 74, per species x stand origin
+# (variant = "natural" / "plantation"). Same form as Sharma & Parton (2007).
+# White spruce plantation phi is blank in Table 3 ("not significant", p. 75)
+# and set to 0 by maintainer decision. Per-species x origin ranges: Table 1
+# (BA, TPH, SHT) and Table 2 (DBH, height), p. 72.
+parameters_hd_Sharma2016 <- read.csv(
+  "data-raw/Sharma2016_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    theta, delta, beta, phi, gamma, sigma2_e, sigma2_u,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, TPH_min, TPH_max, HDOM_min, HDOM_max,
+    n_plots = as.integer(n_plots), n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_Sharma2016) == 8L,
+  !anyDuplicated(parameters_hd_Sharma2016[c("Species", "variant")]),
+  setequal(parameters_hd_Sharma2016$variant, c("natural", "plantation")),
+  all(table(parameters_hd_Sharma2016$variant) == 4L),
+  !anyNA(parameters_hd_Sharma2016)
+)
+
 ## Eslamdoust et al. 2026 DBH-height models, Ontario GLSL / hardwoods ####
 # Mixed-model fixed effects (u = 0) for M4 (Eq. 4, Table 4) and M5 (Eq. 5,
 # Table 5), p. 225; a0-a4 keep the source symbols per variant (M4: a1 rate,
@@ -1931,6 +1960,7 @@ internal_objs <- c(
   "parameters_hd_Huang1994",
   "parameters_hd_Huang2016b",
   "parameters_hd_SharmaParton2007",
+  "parameters_hd_Sharma2016",
   "parameters_hd_Eslamdoust2026",
   "parameters_hd_Huang2009",
   "parameters_hd_Auger2016",

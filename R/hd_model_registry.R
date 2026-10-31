@@ -48,6 +48,30 @@
     "sharmaparton2007", "TPH", "plot", "stems/ha", TRUE,
     "Number of stems (N/ha), calculated from the trees with DBH greater than or equal to 2.5 cm.",
     "FEM 249:187-198, p. 188",
+    "sharma2016_natural", "DBH", "tree", "cm", TRUE,
+    "Tree dbh (cm).",
+    "For. Sci. 62:70-77, p. 72 (eq. 1); Table 2 (p. 72)",
+    "sharma2016_natural", "HDOM", "plot", "m", TRUE,
+    "Stand height (SHT): average height of dominant and codominant trees in the plot.",
+    "For. Sci. 62:70-77, p. 71; p. 72",
+    "sharma2016_natural", "BA", "plot", "m2/ha", TRUE,
+    "Total tree basal area (m2/ha) of the plot; minimum DBH for the total not stated.",
+    "For. Sci. 62:70-77, p. 71; p. 72",
+    "sharma2016_natural", "TPH", "plot", "stems/ha", TRUE,
+    "Number of stems (trees/ha), calculated from the trees with dbh >= 2.5 cm.",
+    "For. Sci. 62:70-77, p. 71",
+    "sharma2016_plantation", "DBH", "tree", "cm", TRUE,
+    "Tree dbh (cm).",
+    "For. Sci. 62:70-77, p. 72 (eq. 1); Table 2 (p. 72)",
+    "sharma2016_plantation", "HDOM", "plot", "m", TRUE,
+    "Stand height (SHT): average height of dominant and codominant trees in the plot.",
+    "For. Sci. 62:70-77, p. 71; p. 72",
+    "sharma2016_plantation", "BA", "plot", "m2/ha", TRUE,
+    "Total tree basal area (m2/ha) of the plot; minimum DBH for the total not stated.",
+    "For. Sci. 62:70-77, p. 71; p. 72",
+    "sharma2016_plantation", "TPH", "plot", "stems/ha", TRUE,
+    "Number of stems (trees/ha), calculated from the trees with dbh >= 2.5 cm.",
+    "For. Sci. 62:70-77, p. 71",
     "eslamdoust2026_m4", "DBH", "tree", "cm", TRUE,
     "DBH_ij is diameter at breast height (cm) of jth tree in ith plot.",
     "FST 22:217-230, p. 220 (eq. 4)",
@@ -291,6 +315,32 @@
       description = "Northern Ontario boreal population DBH-height models with dominant height, basal area and stems/ha (Method 2 fixed effects, Table 6).",
       calibration_published = TRUE,
       params_key = "parameters_hd_SharmaParton2007"
+    ),
+    .hd_registry_row(
+      model_id = "sharma2016_natural",
+      engine = "hd_sharma2016",
+      reference = "@Sharma2016",
+      scope = "provincial",
+      province_scope = "ON",
+      stand_origin = "natural",
+      equation_family = "chapman_richards_stand",
+      description = "Ontario jack pine, red pine, black spruce and white spruce DBH-height models for natural stands, with dominant height, basal area and stems/ha (eq. 4 fixed effects, Table 3).",
+      fixed_args = list(variant = "natural"),
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Sharma2016"
+    ),
+    .hd_registry_row(
+      model_id = "sharma2016_plantation",
+      engine = "hd_sharma2016",
+      reference = "@Sharma2016",
+      scope = "provincial",
+      province_scope = "ON",
+      stand_origin = "plantation",
+      equation_family = "chapman_richards_stand",
+      description = "Ontario jack pine, red pine, black spruce and white spruce DBH-height models for plantations, with dominant height, basal area and stems/ha (eq. 4 fixed effects, Table 3).",
+      fixed_args = list(variant = "plantation"),
+      calibration_published = TRUE,
+      params_key = "parameters_hd_Sharma2016"
     ),
     .hd_registry_row(
       model_id = "eslamdoust2026_m4",
@@ -745,7 +795,10 @@ find_hd_models <- function(jurisdiction = NULL, species = NULL, available = "DBH
       out <- c(out, paste0(id, ": not arguments of the engine: ", paste(not_formal, collapse = ", ")))
     }
     no_default <- names(fmls)[vapply(fmls, function(x) identical(x, quote(expr = )), logical(1))]
-    undeclared <- setdiff(no_default, c(reg$required_predictors[[i]], "species"))
+    undeclared <- setdiff(
+      no_default,
+      c(reg$required_predictors[[i]], names(reg$fixed_args[[i]]), "species")
+    )
     if (length(undeclared)) {
       out <- c(out, paste0(
         id, ": engine arguments without default not declared as required predictors: ",
