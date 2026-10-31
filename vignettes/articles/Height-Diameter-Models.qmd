@@ -674,6 +674,30 @@ grid$height <- hd_auger2016(
 plot_hd_curves(grid, ncol = 5)
 ```
 
+## `hd_fortin2009()`
+
+Québec, 20 species [@Fortin2009]; superseded by `hd_auger2016()`. Reference
+plot: `BA` = 20 m²/ha, `QMD` = 20 cm, `ecoregion` = `"4d"` (Centre
+subdivision), `drainage` = `"mesic"`, `MAT` = 2 °C, `disturbance` =
+`"none"`. Curves start at the 9.1 cm merchantable threshold of the fitting
+data.
+
+```{r}
+#| label: fig-fortin2009
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10
+#| fig-height: !expr fig_height(length(hd_species("fortin2009")), ncol = 5)
+grid <- tidyr::expand_grid(species = hd_species("fortin2009"), DBH = seq(9.1, 60, by = 1))
+grid$height <- hd_fortin2009(
+  grid$DBH, grid$species,
+  BA = 20, QMD = 20, ecoregion = "4d", drainage = "mesic", MAT = 2,
+  disturbance = "none"
+)$height
+plot_hd_curves(grid, ncol = 5)
+```
+
 ## `hd_auger2025()`
 
 Québec black spruce and jack pine **plantations** [@Auger2025]. The three

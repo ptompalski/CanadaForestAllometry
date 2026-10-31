@@ -1783,6 +1783,59 @@ stopifnot(
   }, logical(1)))
 )
 
+## Fortin et al. 2009 DBH-height model, Quebec (MRF 153) ####
+# Eq. (6) fixed effects (b_is = 0). Coefficients at full precision from
+# CFSForestTools (0_HDRelationBeta.csv, same fit; LGPL-3); the printed values
+# of Tableau 4 (p. 11) and Tableau 5 (p. 12) are kept as *_published. Ranges
+# from Tableau 2 (p. 4) and Tableau 1 (p. 3). Ecological region ->
+# subdivision lookup from CFSForestTools (cf. Figure 2, p. 8). See
+# data-raw/Fortin2009_model-spec.md.
+parameters_hd_Fortin2009 <- read.csv(
+  "data-raw/Fortin2009_hd_parameters.csv",
+  encoding = "UTF-8"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    species_group,
+    b1, b2, b8, b9, G_s,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, MAT_min, MAT_max,
+    n_obs = as.integer(n_obs)
+  ) %>%
+  arrange(Species)
+
+parameters_hd_Fortin2009_effects <- read.csv(
+  "data-raw/Fortin2009_hd_effects.csv",
+  encoding = "UTF-8"
+) %>%
+  as_tibble() %>%
+  filter(component == "fixed") %>%
+  transmute(parameter, variable, class = dplyr::coalesce(class, ""), estimate)
+
+hd_fortin2009_ecoregions <- read.csv(
+  "data-raw/Fortin2009_hd_ecoregions.csv",
+  encoding = "UTF-8"
+) %>%
+  as_tibble() %>%
+  transmute(ecoregion, ecological_subdivision) %>%
+  arrange(ecoregion)
+
+stopifnot(
+  nrow(parameters_hd_Fortin2009) == 20L,
+  !anyDuplicated(parameters_hd_Fortin2009$Species),
+  !anyNA(parameters_hd_Fortin2009[c("b1", "b2", "b8", "b9", "DBH_min", "DBH_max")]),
+  nrow(parameters_hd_Fortin2009_effects) == 14L,
+  !anyDuplicated(parameters_hd_Fortin2009_effects[c("parameter", "class")]),
+  nrow(hd_fortin2009_ecoregions) == 48L,
+  !anyDuplicated(hd_fortin2009_ecoregions$ecoregion),
+  setequal(
+    hd_fortin2009_ecoregions$ecological_subdivision,
+    parameters_hd_Fortin2009_effects$class[parameters_hd_Fortin2009_effects$parameter == "b5"]
+  )
+)
+
 ## Auger, DeBlois & Lambert 2025 DBH-height models, Quebec plantations ####
 # SSS-10 (MRNF Quebec). Jack pine (PIG) and black spruce (EPN) plantations.
 # Variant "dbh": Korf, eq. 10 (Tableau 3, p. 11). Variant "plot_mean_dbh":
@@ -2036,6 +2089,9 @@ internal_objs <- c(
   "parameters_hd_Huang2009",
   "parameters_hd_Auger2016",
   "parameters_hd_Auger2016_classes",
+  "parameters_hd_Fortin2009",
+  "parameters_hd_Fortin2009_effects",
+  "hd_fortin2009_ecoregions",
   "parameters_hd_Auger2025",
   "parameters_hd_Zhang2002",
   "parameters_hd_Temesgen2004",
