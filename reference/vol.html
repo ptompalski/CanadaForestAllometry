@@ -19,7 +19,7 @@ based on the model registry returned by volume_model_registry()."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,7 +30,8 @@ based on the model registry returned by volume_model_registry()."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Height-Diameter-Models.html">DBH–Height Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
     <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
@@ -46,7 +47,7 @@ based on the model registry returned by volume_model_registry()."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Calculate tree volume: choose best available model or run all candidate models</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/v0.8.6/R/vol.R" class="external-link"><code>R/vol.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/main/R/vol.R" class="external-link"><code>R/vol.R</code></a></small>
       <div class="d-none name"><code>vol.Rd</code></div>
     </div>
 
@@ -101,16 +102,17 @@ If <code>FALSE</code>, compute all candidate model outputs per tree and return a
 
 
 <dt id="arg-keep-model-id">keep_model_id<a class="anchor" aria-label="anchor" href="#arg-keep-model-id"></a></dt>
-<dd><p>Logical. If <code>TRUE</code>, include a <code>vol_model</code> column with the engine function name used.</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, include a <code>model_id</code> column with the
+volume model used (registry ID, see <code><a href="volume_model_registry.html">volume_model_registry()</a></code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>If <code>pick_best = TRUE</code>, a tibble with one row per tree and columns:
-<code>vol_total</code>, <code>vol_merchantable</code>, and optionally <code>vol_model</code>.</p>
+<code>vol_total</code>, <code>vol_merchantable</code>, and optionally <code>model_id</code>.</p>
 <p>If <code>pick_best = FALSE</code>, a list (suitable for use as a list-column in <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>)
 with one element per tree. Each element is a tibble of candidate model outputs
-(<code>vol_total</code>, <code>vol_merchantable</code>, and optionally <code>vol_model</code>).</p>
+(<code>vol_total</code>, <code>vol_merchantable</code>, and optionally <code>model_id</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="model-selection-logic">Model selection logic<a class="anchor" aria-label="anchor" href="#model-selection-logic"></a></h2>
@@ -173,9 +175,9 @@ to compare models.</p></li>
 <span class="r-in"><span>  jurisdiction <span class="op">=</span> <span class="st">"ON"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable vol_model         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.285            0.260 vol_zakrzewski2013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable model_id               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.285            0.260 regional_zakrzewski2013</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## --- Return all applicable models (one row per engine) ---</span></span></span>
 <span class="r-in"><span><span class="co">## Note: national Ung DBH-only and DBH+HT variants are collapsed</span></span></span>
@@ -190,12 +192,12 @@ to compare models.</p></li>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable vol_model         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.260            0.227 vol_honer83       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0.282            0.267 vol_sharma2021    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     0.266            0.248 vol_ung2013       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     0.285            0.260 vol_zakrzewski2013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable model_id               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.260            0.227 regional_honer83       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0.282            0.267 regional_sharma2021    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     0.266            0.248 national_ung_dbh_ht    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     0.285            0.260 regional_zakrzewski2013</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## --- Missing height: height-dependent models are skipped ---</span></span></span>
@@ -206,9 +208,9 @@ to compare models.</p></li>
 <span class="r-in"><span>  jurisdiction <span class="op">=</span> <span class="st">"QC"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable vol_model  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.441            0.428 vol_ung2013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable model_id        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.441            0.428 national_ung_dbh</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## --- Regional model with required subregion (BC example) ---</span></span></span>
 <span class="r-in"><span><span class="co">## Kozak (1994) requires a BEC zone; if provided, it is preferred.</span></span></span>
@@ -220,9 +222,9 @@ to compare models.</p></li>
 <span class="r-in"><span>  subregion <span class="op">=</span> <span class="st">"CWH"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable vol_model  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.655            0.565 vol_kozak94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable model_id        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.655            0.565 regional_kozak94</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## --- Automatic fallback when a regional model does not cover species ---</span></span></span>
 <span class="r-in"><span><span class="co">## If no provincial model covers the species, a suitable national or</span></span></span>
@@ -234,9 +236,9 @@ to compare models.</p></li>
 <span class="r-in"><span>  jurisdiction <span class="op">=</span> <span class="st">"MB"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable vol_model  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.151            0.142 vol_ung2013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable model_id           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.151            0.142 national_ung_dbh_ht</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## --- Vectorized input ---</span></span></span>
 <span class="r-in"><span><span class="fu">vol</span><span class="op">(</span></span></span>
@@ -247,11 +249,11 @@ to compare models.</p></li>
 <span class="r-in"><span>  keep_model_id <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable vol_model         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.172            0.150 vol_zakrzewski2013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0.411            0.353 vol_zakrzewski2013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     0.766            0.635 vol_zakrzewski2013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   vol_total vol_merchantable model_id               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     0.172            0.150 regional_zakrzewski2013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     0.411            0.353 regional_zakrzewski2013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     0.766            0.635 regional_zakrzewski2013</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' ## --- Tidyverse workflow with multiple species and jurisdictions ---</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
@@ -285,7 +287,7 @@ to compare models.</p></li>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> There was 1 warning in `dplyr::mutate()`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `merch = purrr::pmap(...)`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> BEC_zone missing; using conservative BC 'UNKNOWN' utilization.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> bec_zone missing; using conservative BC 'UNKNOWN' utilization.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     DBH height species  jurisdiction subregion vol_total vol_merchantable</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -293,7 +295,7 @@ to compare models.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>    22     18 BETU.PAP ON           <span style="color: #BB0000;">NA</span>            0.291            0.233</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>    30     22 POPU.TRE QC           <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>                0.674</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>    26     20 PSEU.MEN BC           CWH           0.387            0.305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: vol_model &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: model_id &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## --- Same data, return all applicable volume models per tree ---</span></span></span>
 <span class="r-in"><span><span class="va">trees</span> <span class="op">|&gt;</span></span></span>
@@ -318,7 +320,7 @@ to compare models.</p></li>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> There was 1 warning in `dplyr::mutate()`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `merch = purrr::pmap(...)`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> BEC_zone missing; using conservative BC 'UNKNOWN' utilization.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> bec_zone missing; using conservative BC 'UNKNOWN' utilization.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     DBH height species  jurisdiction subregion `vol(...)`      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          </span>

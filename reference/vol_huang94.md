@@ -6,7 +6,7 @@ Estimate tree volume in Alberta using Kozak (1988) model form with Huang
 ## Usage
 
 ``` r
-vol_huang94(DBH, height, species, subregion = "Province")
+vol_huang94(DBH, height, species, natural_subregion = "Province")
 ```
 
 ## Arguments
@@ -23,9 +23,11 @@ vol_huang94(DBH, height, species, subregion = "Province")
 
   Character vector. Species code (e.g., "PICE.MAR").
 
-- subregion:
+- natural_subregion:
 
-  Character vector. Alberta subregion name; defaults to "Province".
+  Character vector. Alberta natural subregion code (e.g. `"CM"`, `"LF"`,
+  `"UF"`); defaults to `"Province"` (province-wide parameters). `"UB"`
+  is treated as `"LBH"`.
 
 ## Value
 

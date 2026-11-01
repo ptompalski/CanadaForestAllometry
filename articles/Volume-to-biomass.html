@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
+<li><a class="dropdown-item" href="../articles/Height-Diameter-Models.html">DBH–Height Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
     <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
@@ -65,7 +66,7 @@
 
 
 
-      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/v0.8.6/vignettes/articles/Volume-to-biomass.qmd" class="external-link"><code>vignettes/articles/Volume-to-biomass.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/main/vignettes/articles/Volume-to-biomass.qmd" class="external-link"><code>vignettes/articles/Volume-to-biomass.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -77,7 +78,7 @@
     <p>The <code>CanadaForestAllometry</code> package implements the national volume-to-biomass conversion models developed by <span class="citation" data-cites="Boudewyn2007">Boudewyn et al. (<a href="#ref-Boudewyn2007" role="doc-biblioref">2007</a>)</span>, which allow to translate between merchantable stem volume and aboveground biomass components. These models were designed to enable consistent large-scale biomass estimation in situations where inventory systems report volume rather than directly measured biomass. The <span class="citation" data-cites="Boudewyn2007">Boudewyn et al. (<a href="#ref-Boudewyn2007" role="doc-biblioref">2007</a>)</span> approach combines species- and ecozone-specific conversion factors with empirically derived component allocation equations to estimate stemwood, bark, branches, and foliage biomass from merchantable volume. The functions use the updated model parameters available at https://nfi.nfis.org/en/biomass_models.</p>
 <ul>
 <li>
-<code><a href="../reference/V2B.html">v2b()</a></code> - converts merchantable volume to biomass components</li>
+<code><a href="../reference/v2b.html">v2b()</a></code> - converts merchantable volume to biomass components</li>
 <li>
 <code><a href="../reference/vol_total_to_merchantable.html">vol_total_to_merchantable()</a></code> - converts total volume to merchantable volume</li>
 <li>

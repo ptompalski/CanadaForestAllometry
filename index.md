@@ -47,6 +47,12 @@ Full documentation is available at
   models](https://ptompalski.github.io/CanadaForestAllometry/articles/Volume-to-biomass.html)
 - Estimate site index and site productivity: [Site index
   models](https://ptompalski.github.io/CanadaForestAllometry/articles/Site-Index-Models.html)
+- Estimate tree height from DBH (height–diameter models for AB, BC, ON,
+  QC, and the Maritimes), with
+  [`hd()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd.md)
+  selecting a suitable model based on species, jurisdiction, and
+  available predictors: [Height–diameter
+  models](https://ptompalski.github.io/CanadaForestAllometry/articles/Height-Diameter-Models.html)
 - Convert total volume to merchantable volume
 - Apply simple growth models to estimate changes in attributes over time
 

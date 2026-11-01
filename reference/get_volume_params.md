@@ -11,7 +11,7 @@ and the parameter objects bundled with the CanadaForestAllometry package
 get_volume_params(
   model_id,
   species,
-  province = NA_character_,
+  jurisdiction = NA_character_,
   subregion = "ALL",
   strict = FALSE
 )
@@ -28,7 +28,7 @@ get_volume_params(
 
   Species code (e.g., `"POPU.TRE"`). Required for all current models.
 
-- province:
+- jurisdiction:
 
   Province/jurisdiction code (e.g., `"BC"`, `"AB"`). Used for regional
   models when the parameter table includes a `Province` column.
@@ -53,7 +53,7 @@ same columns as the underlying parameter table.
 
 The function then applies **context filters** (when relevant / available
 in the parameter table), typically by `species`, and for regional models
-also by `province` and `subregion`.
+also by `jurisdiction` and `subregion`.
 
 This function does **not** refactor or run any volume engines; it only
 returns the parameter rows needed for a given model/context.
@@ -64,9 +64,9 @@ returns the parameter rows needed for a given model/context.
 # National DBH-only (Ung et al.)
 # get_volume_params("national_ung_dbh", species = "POPU.TRE")
 
-# Regional Kozak 88 (requires province/subregion in most parameter tables)
-# get_volume_params("regional_kozak88", species = "POPU.TRE", province = "AB", subregion = "ALL")
+# Regional Kozak 88 (requires jurisdiction/subregion in most parameter tables)
+# get_volume_params("regional_kozak88", species = "POPU.TRE", jurisdiction = "AB", subregion = "ALL")
 
 # BC Kozak 94 (BEC zone as subregion)
-# get_volume_params("regional_kozak94", species = "PSEU.MEN", province = "BC", subregion = "SBS")
+# get_volume_params("regional_kozak94", species = "PSEU.MEN", jurisdiction = "BC", subregion = "SBS")
 ```

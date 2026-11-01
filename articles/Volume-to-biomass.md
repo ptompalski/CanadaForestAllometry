@@ -13,7 +13,7 @@ bark, branches, and foliage biomass from merchantable volume. The
 functions use the updated model parameters available at
 https://nfi.nfis.org/en/biomass_models.
 
-- [`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/V2B.md) -
+- [`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/v2b.md) -
   converts merchantable volume to biomass components
 - [`vol_total_to_merchantable()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_total_to_merchantable.md) -
   converts total volume to merchantable volume

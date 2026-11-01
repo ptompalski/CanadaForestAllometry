@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,8 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/Site-Index-Models.html">Site Index Models</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/Height-Diameter-Models.html">DBH–Height Models</a></li>
+    <li><a class="dropdown-item" href="articles/Site-Index-Models.html">Site Index Models</a></li>
     <li><a class="dropdown-item" href="articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
     <li><a class="dropdown-item" href="articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
@@ -40,7 +41,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>AGENTS.md — CanadaForestAllometry</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/v0.8.6/AGENTS.md" class="external-link"><code>AGENTS.md</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/main/AGENTS.md" class="external-link"><code>AGENTS.md</code></a></small>
     </div>
 
 <div id="agentsmd--canadaforestallometry" class="section level1">
@@ -50,7 +51,7 @@
 <h2 id="what-this-package-is">What this package is<a class="anchor" aria-label="anchor" href="#what-this-package-is"></a></h2>
 <p><code>CanadaForestAllometry</code> provides a unified interface to published allometric models for Canadian forests: tree <strong>volume</strong> (total and merchantable), <strong>aboveground biomass (AGB)</strong>, <strong>volume-to-biomass</strong> conversion, <strong>site index / productivity</strong>, and supporting utilities. Models are implemented faithfully to their source publications and exposed through a consistent, vectorized API.</p>
 <ul><li>
-<strong>Version</strong>: see <a href="DESCRIPTION">DESCRIPTION</a> (currently 0.8.5)</li>
+<strong>Version</strong>: see <a href="DESCRIPTION">DESCRIPTION</a> (currently 0.8.7)</li>
 <li>
 <strong>License</strong>: LGPL (&gt;= 3); Copyright His Majesty the King in Right of Canada (NRCan)</li>
 <li>
@@ -108,6 +109,9 @@
 </tr><tr><td><code>ytbh_</code></td>
 <td>Year-to-breast-height age helper</td>
 <td><code>ytbh_thrower1994</code></td>
+</tr><tr><td><code>hd_</code></td>
+<td>DBH–height (height from DBH) model</td>
+<td><code>hd_huang2016</code></td>
 </tr><tr><td><code>get_</code></td>
 <td>Lookup / retrieval</td>
 <td>
@@ -118,9 +122,20 @@
 <td><code>assert_numeric_vec</code></td>
 </tr><tr><td><code>*_model_registry</code></td>
 <td>Metadata table for a model family</td>
-<td><code>volume_model_registry</code></td>
+<td>
+<code>volume_model_registry</code>, <code>hd_model_registry</code>
+</td>
 </tr></tbody></table><p>Internal per-element helpers use a leading dot / <code>_one</code> suffix (e.g. <code>.thrower1994_height_one</code>).</p>
-</div>
+<p><strong>Argument naming rule (package-wide):</strong> acronyms upper case, words lower case — <code>DBH</code> (cm), <code>BA</code> (m²/ha), <code>TPH</code> (stems/ha), <code>HDOM</code> (m), <code>HTOP</code> (m, top height), <code>QMD</code> (cm), <code>DMEAN</code> (cm), <code>DDOM</code> (cm), <code>DMAX</code> (cm, plot maximum DBH), <code>BAL</code> (m²/ha), climate <code>MAT</code> (°C), <code>MAP</code> (mm), <code>GDD</code>; <code>height</code>, <code>age</code>, <code>species</code>, <code>jurisdiction</code>, <code>elevation</code>. Exception: site index is <code>si</code> (m). Tree- vs plot-level is stated in each <code>@param</code>, not encoded in case. Do not use source-language symbols (e.g. <code>TMOY</code>, <code>SDOM</code>) as argument names; map them inside the function and note the source symbol in <code>@param</code>.</p>
+<ul><li>
+<strong>Region / ecological</strong> arguments use model-specific descriptive names (<code>natural_subregion</code>, <code>ecozone</code>, <code>ecoregion</code>, <code>bec_zone</code>, <code>district</code>, <code>bioclim_subdomain</code>, …), never a generic <code>subregion</code>. Only <code><a href="reference/vol.html">vol()</a></code> (the dispatcher) and <code><a href="reference/get_volume_params.html">get_volume_params()</a></code> (a table filter) take <code>subregion</code>. The registry <code>subregion_arg</code> / <code>region_arg</code> must name the engine’s actual argument.</li>
+<li>
+<strong>Model-variant selectors</strong> are called <code>variant</code> (character, <code><a href="https://rlang.r-lib.org/reference/arg_match.html" class="external-link">rlang::arg_match</a></code>).</li>
+<li>
+<strong>Flags</strong> are <code>keep_*</code> (extra output columns, e.g. <code>keep_model_id</code>) or <code>include_*</code>, and are scalar logicals.</li>
+<li>
+<strong>Argument order:</strong> <code>DBH</code>/<code>age</code>, then <code>height</code>/<code>si</code>, then <code>species</code>, then region, then other predictors, then options/flags.</li>
+</ul></div>
 <div class="section level2">
 <h2 id="api-conventions">API conventions<a class="anchor" aria-label="anchor" href="#api-conventions"></a></h2>
 <ul><li>

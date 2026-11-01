@@ -17,7 +17,7 @@ index) model in Nigh, Thomas, Yearsley and Wang (2009) for paper birch
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +28,8 @@ index) model in Nigh, Thomas, Yearsley and Wang (2009) for paper birch
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Height-Diameter-Models.html">DBH–Height Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
     <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
@@ -44,7 +45,7 @@ index) model in Nigh, Thomas, Yearsley and Wang (2009) for paper birch
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Nigh, Thomas, Yearsley and Wang (2009) paper birch height-age (site index) model for British Columbia</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/v0.8.6/R/si_nigh2009.R" class="external-link"><code>R/si_nigh2009.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/main/R/si_nigh2009.R" class="external-link"><code>R/si_nigh2009.R</code></a></small>
       <div class="d-none name"><code>si_nigh2009.Rd</code></div>
     </div>
 
@@ -56,7 +57,7 @@ index) model in Nigh, Thomas, Yearsley and Wang (2009) for paper birch
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">si_nigh2009</span><span class="op">(</span><span class="va">age</span>, height <span class="op">=</span> <span class="cn">NULL</span>, si <span class="op">=</span> <span class="cn">NULL</span>, model <span class="op">=</span> <span class="fl">1</span>, bec_zone <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">si_nigh2009</span><span class="op">(</span><span class="va">age</span>, height <span class="op">=</span> <span class="cn">NULL</span>, si <span class="op">=</span> <span class="cn">NULL</span>, variant <span class="op">=</span> <span class="fl">1</span>, bec_zone <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -77,14 +78,14 @@ predicted.</p></dd>
 height). If provided, <code>height</code> is predicted.</p></dd>
 
 
-<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
+<dt id="arg-variant">variant<a class="anchor" aria-label="anchor" href="#arg-variant"></a></dt>
 <dd><p>Model variant: <code>1</code> (base, default), <code>2</code> (operational), or <code>3</code>
 (zonal). See Details.</p></dd>
 
 
 <dt id="arg-bec-zone">bec_zone<a class="anchor" aria-label="anchor" href="#arg-bec-zone"></a></dt>
-<dd><p>Optional character vector selecting the zonal (<code>model = 3</code>)
-coefficients. One of <code>"ICH"</code>, <code>"IDF"</code>, <code>"SBS"</code>. Required when <code>model = 3</code>
+<dd><p>Optional character vector selecting the zonal (<code>variant = 3</code>)
+coefficients. One of <code>"ICH"</code>, <code>"IDF"</code>, <code>"SBS"</code>. Required when <code>variant = 3</code>
 and ignored otherwise.</p></dd>
 
 </dl></div>
@@ -110,14 +111,14 @@ form (eq. 1)
 $$HT = 1.3 + (SI - 1.3) \times
   \frac{1 + e^{a_0 + a_1 \ln(49.5) + a_2 \ln(SI - 1.3)}}
        {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2 \ln(SI - 1.3)}}$$
-differing only in their coefficients:</p><dl><dt><code>model = 1</code></dt>
+differing only in their coefficients:</p><dl><dt><code>variant = 1</code></dt>
 <dd><p>Base log-logistic fit (Table 2). Default.</p></dd>
 
-<dt><code>model = 2</code></dt>
+<dt><code>variant = 2</code></dt>
 <dd><p>Operational form of the mixed model. Recommended by the
 authors when the biogeoclimatic zone is unknown or is not ICH/IDF/SBS.</p></dd>
 
-<dt><code>model = 3</code></dt>
+<dt><code>variant = 3</code></dt>
 <dd><p>Zonal indicator-variable model. Only \(a_1\) carries a
 significant zone effect (SBS vs. ICH/IDF). Supply <code>bec_zone</code> (one of
 <code>"ICH"</code>, <code>"IDF"</code>, <code>"SBS"</code>); recommended for those zones.</p></dd>
@@ -157,14 +158,14 @@ height-age models for paper birch in British Columbia. Northwest Science
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>  21.5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Operational model (recommended when zone is unknown)</span></span></span>
-<span class="r-in"><span><span class="fu">si_nigh2009</span><span class="op">(</span>age <span class="op">=</span> <span class="fl">60</span>, si <span class="op">=</span> <span class="fl">18</span>, model <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">si_nigh2009</span><span class="op">(</span>age <span class="op">=</span> <span class="fl">60</span>, si <span class="op">=</span> <span class="fl">18</span>, variant <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   height</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>   19.8</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Zonal model</span></span></span>
-<span class="r-in"><span><span class="fu">si_nigh2009</span><span class="op">(</span>age <span class="op">=</span> <span class="fl">60</span>, si <span class="op">=</span> <span class="fl">18</span>, model <span class="op">=</span> <span class="fl">3</span>, bec_zone <span class="op">=</span> <span class="st">"SBS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">si_nigh2009</span><span class="op">(</span>age <span class="op">=</span> <span class="fl">60</span>, si <span class="op">=</span> <span class="fl">18</span>, variant <span class="op">=</span> <span class="fl">3</span>, bec_zone <span class="op">=</span> <span class="st">"SBS"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   height</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

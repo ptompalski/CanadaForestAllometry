@@ -14,8 +14,6 @@ Functions for AGB estimation.
 
 Functions for volume estimation.
 
-- [`vol_nl()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_NL.md)
-  : Estimate tree volume for Newfoundland
 - [`vol_fortin2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_fortin2007.md)
   : Estimate tree merchantable volume using Fortin et al. (2007) model
   (QC)
@@ -36,6 +34,8 @@ Functions for volume estimation.
 - [`vol_nigh2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_nigh2016.md)
   : Calculate tree total and merchantable volume using Nigh (2016)
   equations (BC)
+- [`vol_nl()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_nl.md)
+  : Estimate tree volume for Newfoundland
 - [`vol_sharma2021()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_sharma2021.md)
   : Sharma (2021) stem volume using DBH and total height
 - [`vol_total_to_merchantable()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_total_to_merchantable.md)
@@ -187,12 +187,68 @@ Functions for site index modeling.
 - [`ytbh_thrower1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/ytbh_thrower1994.md)
   : Thrower et al. (1994) years-to-breast-height models
 
+## DBH-height models
+
+Functions predicting tree height from DBH, and model discovery helpers.
+
+- [`hd()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd.md)
+  : Predict tree height: choose best available DBH–height model or run
+  all candidates
+- [`hd_auger2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2016.md)
+  : Auger (2016) DBH–height model for 27 Québec tree species
+- [`hd_auger2025()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2025.md)
+  : Auger, DeBlois & Lambert (2025) DBH–height models for Québec
+  plantations
+- [`hd_eslamdoust2026()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026.md)
+  : Eslamdoust et al. (2026) DBH–height models for Ontario tree species
+- [`hd_fortin2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_fortin2009.md)
+  : Fortin et al. (2009) DBH–height model for 20 Québec tree species
+- [`hd_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang1994.md)
+  : Huang, Titus, Lakusta and Held (1994) DBH–height models for Alberta
+  tree species
+- [`hd_huang2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2009.md)
+  : Huang, Meng and Yang (2009) DBH–height models for Alberta black
+  spruce
+- [`hd_huang2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2016.md)
+  : Huang, Yang and Aitkin (2016) DBH–height models for Alberta tree
+  species
+- [`hd_huang2016b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2016b.md)
+  : Huang and Yang (2016) expanded DBH–height models for Alberta tree
+  species
+- [`hd_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_model_registry.md)
+  : DBH–height model registry
+- [`hd_rijal2012()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_rijal2012.md)
+  : Rijal, Weiskittel and Kershaw (2012) DBH–height models for the
+  Acadian Region
+- [`hd_sharma2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharma2016.md)
+  : Sharma (2016) DBH–height models for Ontario plantations and natural
+  stands
+- [`hd_sharmaparton2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmaparton2007.md)
+  : Sharma and Parton (2007) DBH–height models for Ontario boreal tree
+  species
+- [`hd_sharmazhang2004()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmazhang2004.md)
+  : Sharma and Zhang (2004) DBH–height models for Ontario jack pine and
+  black spruce
+- [`hd_staudhammerlemay2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_staudhammerlemay2000.md)
+  : Staudhammer and LeMay (2000) DBH–height models for coastal British
+  Columbia
+- [`hd_temesgen2004()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_temesgen2004.md)
+  : Temesgen and von Gadow (2004) DBH–height models for interior British
+  Columbia
+- [`hd_zhang2002()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_zhang2002.md)
+  : Zhang, Peng, Huang and Zhou (2002) ecoregion-based jack pine
+  DBH–height models for Ontario
+- [`get_hd_model_info()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_hd_model_info.md)
+  : Get information about a DBH–height model
+- [`find_hd_models()`](https://ptompalski.github.io/CanadaForestAllometry/reference/find_hd_models.md)
+  : Find DBH–height models usable with your data
+
 ## Volume conversions
 
 Functions convert volume to biomass, total volume to merchantable, or
 calculate AGB component proportions.
 
-- [`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/V2B.md)
+- [`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/v2b.md)
   : Convert volume to aboveground biomass components (Boudewyn et al.
   2007)
 - [`agb_component_proportions()`](https://ptompalski.github.io/CanadaForestAllometry/reference/agb_component_proportions.md)

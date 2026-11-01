@@ -15,7 +15,7 @@ index equations for Lake States species."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,8 @@ index equations for Lake States species."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Height-Diameter-Models.html">DBH–Height Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
     <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
@@ -42,7 +43,7 @@ index equations for Lake States species."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Lundgren and Dolid (1970) site index model</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/v0.8.6/R/si_lundgrendolid1970.R" class="external-link"><code>R/si_lundgrendolid1970.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ptompalski/CanadaForestAllometry/blob/main/R/si_lundgrendolid1970.R" class="external-link"><code>R/si_lundgrendolid1970.R</code></a></small>
       <div class="d-none name"><code>si_lundgrendolid1970.Rd</code></div>
     </div>
 
@@ -58,7 +59,7 @@ index equations for Lake States species.</p>
 <span>  height <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  si <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">species</span>,</span>
-<span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exponential_monomolecular"</span>, <span class="st">"monomolecular"</span><span class="op">)</span></span>
+<span>  variant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exponential_monomolecular"</span>, <span class="st">"monomolecular"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -82,7 +83,7 @@ index equations for Lake States species.</p>
 <dd><p>Character vector of species codes (e.g., <code>"PICE.MAR"</code>).</p></dd>
 
 
-<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
+<dt id="arg-variant">variant<a class="anchor" aria-label="anchor" href="#arg-variant"></a></dt>
 <dd><p>Character scalar. One of <code>"exponential_monomolecular"</code> or <code>"monomolecular"</code>.</p></dd>
 
 </dl></div>
@@ -112,7 +113,7 @@ the function converts internally.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Predict site index from age + height (default model: exponential_monomolecular)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Predict site index from age + height (default variant: exponential_monomolecular)</span></span></span>
 <span class="r-in"><span><span class="fu">si_lundgrendolid1970</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">60</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">16</span>, <span class="fl">24</span><span class="op">)</span>,</span></span>

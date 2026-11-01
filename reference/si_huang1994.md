@@ -6,7 +6,7 @@ polymorphic site-index equations from Huang et al. (1994) for Alberta.
 ## Usage
 
 ``` r
-si_huang1994(age, height = NULL, si = NULL, species, subregion = "All")
+si_huang1994(age, height = NULL, si = NULL, species, natural_subregion = "All")
 ```
 
 ## Arguments
@@ -29,7 +29,7 @@ si_huang1994(age, height = NULL, si = NULL, species, subregion = "All")
 
   Character vector of NFI species codes.
 
-- subregion:
+- natural_subregion:
 
   Character vector. Alberta natural-region grouping used by Huang et al.
   (1994). Defaults to `"All"` (provincial parameter set).
@@ -89,7 +89,7 @@ si_huang1994(
   age = c(20, 35, 50),
   si = c(12, 16, 20),
   species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-  subregion = c("LF", "UF", "CM")
+  natural_subregion = c("LF", "UF", "CM")
 )
 #> # A tibble: 3 × 1
 #>   height
@@ -109,7 +109,7 @@ dplyr::tibble(
       age = age,
       height = height,
       species = species,
-      subregion = "All"
+      natural_subregion = "All"
     )
   ) |>
   tidyr::unnest(si)

@@ -109,6 +109,14 @@ agb_component_proportions(
 # ---- Vectorized / tidyverse workflow --------------------------------------
 
 library(dplyr)
+#> 
+#> Attaching package: ‘dplyr’
+#> The following objects are masked from ‘package:stats’:
+#> 
+#>     filter, lag
+#> The following objects are masked from ‘package:base’:
+#> 
+#>     intersect, setdiff, setequal, union
 library(tidyr)
 
 stands <- tibble::tibble(

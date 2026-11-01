@@ -32,7 +32,7 @@ The package currently includes:
 - [`vol_nigh2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_nigh2016.md).
   Total and merchantable volume equations for BC. Coverage: BC. 18
   species
-- [`vol_nl()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_NL.md).
+- [`vol_nl()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_nl.md).
   Total and merchantable volume for Newfoundland and Labrador. Coverage:
   NL. 12 species
 - [`vol_sharma2021()`](https://ptompalski.github.io/CanadaForestAllometry/reference/vol_sharma2021.md).
@@ -92,7 +92,7 @@ trees |>
 #> 3    30     22 POPU.TRE QC           <NA>             NA                0.674
 #> 4    26     20 PSEU.MEN BC           CWH               0.387            0.305
 #> 5    20     20 PINU.BAN MB           Boreal Plains     0.291            0.274
-#> # ℹ 1 more variable: vol_model <chr>
+#> # ℹ 1 more variable: model_id <chr>
 ```
 
 ## Merchantability criteria

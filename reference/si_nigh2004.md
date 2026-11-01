@@ -8,7 +8,7 @@ their hybrid) in British Columbia.
 ## Usage
 
 ``` r
-si_nigh2004(age, species, height = NULL, si = NULL, bec_zone = NULL)
+si_nigh2004(age, height = NULL, si = NULL, species, bec_zone = NULL)
 ```
 
 ## Arguments
@@ -16,12 +16,6 @@ si_nigh2004(age, species, height = NULL, si = NULL, bec_zone = NULL)
 - age:
 
   Numeric vector. Total age (years).
-
-- species:
-
-  Character vector of NFI species codes: `"PINU.CON"` (lodgepole pine)
-  or `"PICE.GLA"` (interior spruce). Recycled to a common length with
-  the other inputs.
 
 - height:
 
@@ -32,6 +26,12 @@ si_nigh2004(age, species, height = NULL, si = NULL, bec_zone = NULL)
 
   Optional numeric vector. Site index (m). If provided, `height` is
   predicted.
+
+- species:
+
+  Character vector of NFI species codes: `"PINU.CON"` (lodgepole pine)
+  or `"PICE.GLA"` (interior spruce). Recycled to a common length with
+  the other inputs.
 
 - bec_zone:
 

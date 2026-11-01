@@ -1,5 +1,115 @@
 # Changelog
 
+## CanadaForestAllometry 0.8.7
+
+### New features
+
+- [`hd()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd.md):
+  wrapper that predicts tree height by selecting, per tree, the best
+  eligible DBH–height model (by jurisdiction, species, stand origin, BC
+  coast/interior and the predictors supplied in `...`), with fallback to
+  lower-ranked models; `pick_best = FALSE` returns all candidates.
+  Plantation trees fall back to natural-stand models with a warning; in
+  BC, `bec_zone` or `bc_region` restricts coastal/interior-only models.
+  [`hd_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_model_registry.md)
+  gains `rank` and `bc_region` columns.
+
+### DBH–height models
+
+- Added
+  [`hd_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_model_registry.md),
+  [`get_hd_model_info()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_hd_model_info.md)
+  and
+  [`find_hd_models()`](https://ptompalski.github.io/CanadaForestAllometry/reference/find_hd_models.md)
+  as the discovery interface for the new DBH–height (`hd_*()`) model
+  family (no models registered yet).
+- Added
+  [`hd_huang2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2016.md),
+  the Huang, Yang & Aitkin (2016; T/609) population DBH–height models
+  for major Alberta tree species, provincial or by natural-subregion
+  group.
+- Added
+  [`hd_sharmaparton2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmaparton2007.md),
+  the Sharma & Parton (2007) population DBH–height models for eight
+  northern Ontario boreal species using dominant height, basal area and
+  stems/ha (no source benchmark; validated against Fig. 2).
+- Added
+  [`hd_sharma2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharma2016.md),
+  the Sharma (2016) population DBH–height models for jack pine, red
+  pine, black spruce and white spruce in Ontario plantations and natural
+  stands (per-tree `variant`), using dominant height, basal area and
+  stems/ha (no source benchmark; validated against Fig. 4).
+- Added
+  [`hd_sharmazhang2004()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmazhang2004.md),
+  the Sharma & Zhang (2004) DBH–height models for Ontario jack pine and
+  black spruce, from DBH only or with basal area and stems/ha (no source
+  benchmark).
+- Added
+  [`hd_eslamdoust2026()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026.md),
+  the Eslamdoust et al. (2026) population DBH–height models for eight
+  Ontario boreal and Great Lakes–St. Lawrence species (white pine,
+  eastern white cedar, sugar maple, yellow birch, beech, tamarack,
+  basswood, eastern hemlock): M4 from DBH only, or M5 with dominant
+  height, basal area and stems/ha when supplied. The tamarack M5 rate
+  coefficient uses a corrected value (0.09793; printed 0.9793). No
+  source benchmark; M4 validated against Fig. 3a.
+- Added
+  [`hd_auger2016()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2016.md),
+  the Auger (2016; NRF 146) population DBH–height models for 27 Québec
+  species with basal area and species-specific relative DBH, climate,
+  altitude and ecological-classification effects (validated against the
+  published worked example and effect sizes, and CFSForestTools for the
+  10 species it implements as published).
+- Added
+  [`hd_fortin2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_fortin2009.md),
+  the Fortin et al. (2009; MRF 153) population DBH–height model for 20
+  Québec species with basal area, social status, mean annual
+  temperature, drainage, ecological region and light disturbance, using
+  the full-precision CFSForestTools coefficients (no source benchmark;
+  validated against CFSForestTools to 1e-8 m and against Figure 5, whose
+  panel (e) disagrees with the published coefficients).
+- Added
+  [`hd_auger2025()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_auger2025.md),
+  the Auger, DeBlois & Lambert (2025; SSS-10) DBH–height models for
+  black spruce and jack pine plantations in Québec, from DBH only, plot
+  mean DBH, or dominant height and DBH (no source benchmark).
+- Added
+  [`hd_zhang2002()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_zhang2002.md),
+  the Zhang et al. (2002) Ontario jack pine DBH–height models by
+  ecoregion, forest region or province-wide (no source benchmark).
+- Added
+  [`hd_huang2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2009.md),
+  the Huang, Meng & Yang (2009) Alberta black spruce DBH–height models
+  from DBH only, or with top height (`HTOP`) and basal area.
+- Added
+  [`hd_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang1994.md),
+  the Huang, Titus, Lakusta & Held (1994; T/291) ecologically based
+  DBH–height models for major Alberta tree species, provincial or by
+  natural-region group, including softwood (`"CONIF"`) and hardwood
+  (`"DECID"`) group models (no source benchmark).
+- Added
+  [`hd_huang2016b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang2016b.md),
+  the Huang & Yang (2016; T/610) expanded Alberta DBH–height models
+  using species-specific basal area and dominant/co-dominant height
+  (balsam fir excluded because of a source error).
+- Added
+  [`hd_temesgen2004()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_temesgen2004.md),
+  the Temesgen & von Gadow (2004) DBH–height models for eight interior
+  British Columbia species, from DBH only or with basal area in larger
+  trees, stems/ha and basal area.
+- Added
+  [`hd_staudhammerlemay2000()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_staudhammerlemay2000.md),
+  the Staudhammer & LeMay (2000) DBH–height models for four coastal
+  British Columbia species, from DBH only or with stand density.
+- Reimplemented
+  [`hd_rijal2012()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_rijal2012.md),
+  the Rijal, Weiskittel & Kershaw (2012) DBH–height models for 15
+  Acadian Region species using climate site index, crown competition
+  factor and basal area in larger trees.
+- Added the “DBH–Height Models” article: registry overview, discovery
+  helpers, predictor definitions, population-level vs calibrated
+  prediction, and model curves.
+
 ## CanadaForestAllometry 0.8.6
 
 ### Site index updates
@@ -176,11 +286,14 @@
 
 - Added `hd_huang2013()` for fixed/population-average height-diameter
   predictions for major Alberta tree species.
-- Added `hd_sharmaparton2007()` for fixed height-diameter predictions
-  for eight Ontario boreal tree species using DBH and stand covariates.
-- Added `hd_rijal2012()` for fixed height-diameter predictions for 15
-  Acadian Region tree species using DBH, site, and competition
-  covariates.
+- Added
+  [`hd_sharmaparton2007()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_sharmaparton2007.md)
+  for fixed height-diameter predictions for eight Ontario boreal tree
+  species using DBH and stand covariates.
+- Added
+  [`hd_rijal2012()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_rijal2012.md)
+  for fixed height-diameter predictions for 15 Acadian Region tree
+  species using DBH, site, and competition covariates.
 
 ## CanadaForestAllometry 0.8.3
 
@@ -308,7 +421,7 @@
 
 The Boudewyn et al. (2007) volume-to-biomass implementation has been
 fully refactored and standardized under a new high-level wrapper,
-[`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/V2B.md).
+[`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/v2b.md).
 
 This refactor preserves the original model structure (Tables 3–7) while
 improving correctness, transparency, and vectorization:
@@ -354,7 +467,7 @@ issued by default in such cases.
 ##### Important note on numerical differences
 
 Results from
-[`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/V2B.md)
+[`v2b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/v2b.md)
 may differ from earlier implementations of the Boudewyn models,
 particularly for high-volume stands.  
 These differences arise because earlier code paths applied the Table 6

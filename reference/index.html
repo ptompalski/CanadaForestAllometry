@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,8 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Height-Diameter-Models.html">DBH–Height Models</a></li>
+    <li><a class="dropdown-item" href="../articles/Site-Index-Models.html">Site Index Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Aboveground-Biomass-Models.html">Tree Aboveground Biomass Models</a></li>
     <li><a class="dropdown-item" href="../articles/Tree-Volume-Models.html">Tree Volume Models</a></li>
     <li><a class="dropdown-item" href="../articles/Volume-to-biomass.html">National volume-to-biomass conversions models</a></li>
@@ -77,13 +78,6 @@
 
       <dl><dt>
 
-          <code><a href="vol_NL.html">vol_nl()</a></code>
-
-        </dt>
-        <dd>Estimate tree volume for Newfoundland</dd>
-
-        <dt>
-
           <code><a href="vol_fortin2007.html">vol_fortin2007()</a></code>
 
         </dt>
@@ -130,6 +124,13 @@
 
         </dt>
         <dd>Calculate tree total and merchantable volume using Nigh (2016) equations (BC)</dd>
+
+        <dt>
+
+          <code><a href="vol_nl.html">vol_nl()</a></code>
+
+        </dt>
+        <dd>Estimate tree volume for Newfoundland</dd>
 
         <dt>
 
@@ -546,6 +547,148 @@
         </dt>
         <dd>Thrower et al. (1994) years-to-breast-height models</dd>
       </dl></div><div class="section level2">
+      <h2 id="dbh-height-models">DBH-height models<a class="anchor" aria-label="anchor" href="#dbh-height-models"></a></h2>
+
+      <div class="section-desc"><p>Functions predicting tree height from DBH, and model discovery helpers.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="hd.html">hd()</a></code>
+
+        </dt>
+        <dd>Predict tree height: choose best available DBH–height model or run all candidates</dd>
+
+        <dt>
+
+          <code><a href="hd_auger2016.html">hd_auger2016()</a></code>
+
+        </dt>
+        <dd>Auger (2016) DBH–height model for 27 Québec tree species</dd>
+
+        <dt>
+
+          <code><a href="hd_auger2025.html">hd_auger2025()</a></code>
+
+        </dt>
+        <dd>Auger, DeBlois &amp; Lambert (2025) DBH–height models for Québec plantations</dd>
+
+        <dt>
+
+          <code><a href="hd_eslamdoust2026.html">hd_eslamdoust2026()</a></code>
+
+        </dt>
+        <dd>Eslamdoust et al. (2026) DBH–height models for Ontario tree species</dd>
+
+        <dt>
+
+          <code><a href="hd_fortin2009.html">hd_fortin2009()</a></code>
+
+        </dt>
+        <dd>Fortin et al. (2009) DBH–height model for 20 Québec tree species</dd>
+
+        <dt>
+
+          <code><a href="hd_huang1994.html">hd_huang1994()</a></code>
+
+        </dt>
+        <dd>Huang, Titus, Lakusta and Held (1994) DBH–height models for Alberta tree species</dd>
+
+        <dt>
+
+          <code><a href="hd_huang2009.html">hd_huang2009()</a></code>
+
+        </dt>
+        <dd>Huang, Meng and Yang (2009) DBH–height models for Alberta black spruce</dd>
+
+        <dt>
+
+          <code><a href="hd_huang2016.html">hd_huang2016()</a></code>
+
+        </dt>
+        <dd>Huang, Yang and Aitkin (2016) DBH–height models for Alberta tree species</dd>
+
+        <dt>
+
+          <code><a href="hd_huang2016b.html">hd_huang2016b()</a></code>
+
+        </dt>
+        <dd>Huang and Yang (2016) expanded DBH–height models for Alberta tree species</dd>
+
+        <dt>
+
+          <code><a href="hd_model_registry.html">hd_model_registry()</a></code>
+
+        </dt>
+        <dd>DBH–height model registry</dd>
+
+        <dt>
+
+          <code><a href="hd_rijal2012.html">hd_rijal2012()</a></code>
+
+        </dt>
+        <dd>Rijal, Weiskittel and Kershaw (2012) DBH–height models for the Acadian Region</dd>
+
+        <dt>
+
+          <code><a href="hd_sharma2016.html">hd_sharma2016()</a></code>
+
+        </dt>
+        <dd>Sharma (2016) DBH–height models for Ontario plantations and natural stands</dd>
+
+        <dt>
+
+          <code><a href="hd_sharmaparton2007.html">hd_sharmaparton2007()</a></code>
+
+        </dt>
+        <dd>Sharma and Parton (2007) DBH–height models for Ontario boreal tree species</dd>
+
+        <dt>
+
+          <code><a href="hd_sharmazhang2004.html">hd_sharmazhang2004()</a></code>
+
+        </dt>
+        <dd>Sharma and Zhang (2004) DBH–height models for Ontario jack pine and black spruce</dd>
+
+        <dt>
+
+          <code><a href="hd_staudhammerlemay2000.html">hd_staudhammerlemay2000()</a></code>
+
+        </dt>
+        <dd>Staudhammer and LeMay (2000) DBH–height models for coastal British Columbia</dd>
+
+        <dt>
+
+          <code><a href="hd_temesgen2004.html">hd_temesgen2004()</a></code>
+
+        </dt>
+        <dd>Temesgen and von Gadow (2004) DBH–height models for interior British Columbia</dd>
+
+        <dt>
+
+          <code><a href="hd_zhang2002.html">hd_zhang2002()</a></code>
+
+        </dt>
+        <dd>Zhang, Peng, Huang and Zhou (2002) ecoregion-based jack pine DBH–height models for Ontario</dd>
+
+        <dt>
+
+          <code><a href="get_hd_model_info.html">get_hd_model_info()</a></code>
+
+        </dt>
+        <dd>Get information about a DBH–height model</dd>
+
+        <dt>
+
+          <code><a href="find_hd_models.html">find_hd_models()</a></code>
+
+        </dt>
+        <dd>Find DBH–height models usable with your data</dd>
+      </dl></div><div class="section level2">
       <h2 id="volume-conversions">Volume conversions<a class="anchor" aria-label="anchor" href="#volume-conversions"></a></h2>
 
       <div class="section-desc"><p>Functions convert volume to biomass, total volume to merchantable, or calculate AGB component proportions.</p></div>
@@ -557,7 +700,7 @@
 
       <dl><dt>
 
-          <code><a href="V2B.html">v2b()</a></code>
+          <code><a href="v2b.html">v2b()</a></code>
 
         </dt>
         <dd>Convert volume to aboveground biomass components (Boudewyn et al. 2007)</dd>
