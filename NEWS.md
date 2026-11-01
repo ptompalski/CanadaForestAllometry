@@ -4,32 +4,7 @@
 
 - `hd()`: wrapper that predicts tree height by selecting, per tree, the best eligible DBH–height model (by jurisdiction, species, stand origin, BC coast/interior and the predictors supplied in `...`), with fallback to lower-ranked models; `pick_best = FALSE` returns all candidates. Plantation trees fall back to natural-stand models with a warning; in BC, `bec_zone` or `bc_region` restricts coastal/interior-only models. `hd_model_registry()` gains `rank` and `bc_region` columns.
 
-## Breaking changes: consistent argument names
 
-Function arguments now follow one package-wide naming scheme (see `AGENTS.md`). The old names are removed, with no deprecation shims. Model numerics are unchanged.
-
-- `hd_auger2016()`: `SDOM` -> `bioclim_subdomain`, `MP` -> `physical_env`, `VP` -> `potential_veg`, `TMOY` -> `MAT`, `PTOT` -> `MAP`, `altitude` -> `elevation`.
-- `hd_auger2025()`: `mean_DBH` -> `DMEAN`, `dominant_DBH` -> `DDOM`.
-- `hd_auger2016()` and `hd_sharmaparton2007()` gain `keep_model_id = FALSE`.
-- Region arguments use descriptive names instead of `subregion` / `BEC_zone`:
-  - `vol_kozak94()`, `get_merch_criteria()`: `BEC_zone` -> `bec_zone`.
-  - `vol_nigh2016()`: `subregion` -> `bec_zone`.
-  - `vol_huang94()`, `si_huang1994()`: `subregion` -> `natural_subregion`.
-  - `vol_klos2007()`: `subregion` -> `ecozone`.
-  - `vol_nl()`: `subregion` -> `district`.
-  - `vol()` keeps its generic `subregion` argument and forwards it to the right argument.
-- `get_volume_params()`: `province` -> `jurisdiction`.
-- Model-variant selectors are now called `variant`:
-  - `agb_lambert_ung()`: `equation_set` -> `variant`.
-  - `si_nigh2009()`, `si_lundgrendolid1970()`, `Ung2009()`: `model` -> `variant`.
-- `Ung2009()`: `PREC` -> `MAP`. Argument order is now `(age, species, GDD, MAP, variant)`.
-- `vol_total_to_merchantable()`: `include_prop` -> `include_props`.
-- `si_nigh2004()`: argument order is now `(age, height, si, species, bec_zone)`, matching the other `si_*()` functions.
-- `vol()`: the `vol_model` output column is renamed `model_id` and now holds the registry model ID (e.g. `"regional_huang94"`) instead of the engine name.
-
-## Bug fixes
-
-- `vol(jurisdiction = "NL", subregion = ...)` now reaches the district-specific `vol_nl()` models. Before this fix, the subregion was silently dropped and the provincial model was used.
 ## DBH–height models
 
 - Added `hd_model_registry()`, `get_hd_model_info()` and `find_hd_models()` as the discovery interface for the new DBH–height (`hd_*()`) model family (no models registered yet).
