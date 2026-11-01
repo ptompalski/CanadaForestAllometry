@@ -25,7 +25,7 @@
 #' @param si Optional numeric vector. Site index (m, base age 50 years at
 #'   breast height). If provided, `height` is predicted.
 #' @param species Character vector of NFI species codes.
-#' @param subregion Character vector. Alberta natural-region grouping used by
+#' @param natural_subregion Character vector. Alberta natural-region grouping used by
 #'   Huang et al. (1994). Defaults to `"All"` (provincial parameter set).
 #'
 #' @return A tibble with columns:
@@ -52,7 +52,7 @@
 #'   age = c(20, 35, 50),
 #'   si = c(12, 16, 20),
 #'   species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-#'   subregion = c("LF", "UF", "CM")
+#'   natural_subregion = c("LF", "UF", "CM")
 #' )
 #'
 #' # Pipe example: predict SI from a tibble of age/height/species inputs
@@ -66,7 +66,7 @@
 #'       age = age,
 #'       height = height,
 #'       species = species,
-#'       subregion = "All"
+#'       natural_subregion = "All"
 #'     )
 #'   ) |>
 #'   tidyr::unnest(si)
@@ -77,7 +77,7 @@ si_huang1994 <- function(
   height = NULL,
   si = NULL,
   species,
-  subregion = "All"
+  natural_subregion = "All"
 ) {
   if (xor(is.null(height), is.null(si)) == FALSE) {
     cli::cli_abort("Provide exactly one of {.arg height} or {.arg si}.")
@@ -91,7 +91,7 @@ si_huang1994 <- function(
     age = age,
     x = x,
     species = species,
-    subregion = subregion,
+    natural_subregion = natural_subregion,
     x_name = x_name
   )
 
@@ -111,13 +111,13 @@ si_huang1994 <- function(
     if (any(!is.finite(h))) {
       cli::cli_abort(c(
         "Non-finite height prediction generated in {.fn si_huang1994}.",
-        "i" = "Check inputs and species/subregion parameter combinations."
+        "i" = "Check inputs and species/natural_subregion parameter combinations."
       ))
     }
     if (any(h < 0)) {
       cli::cli_abort(c(
         "Negative height prediction generated in {.fn si_huang1994}.",
-        "i" = "Check inputs and species/subregion parameter combinations."
+        "i" = "Check inputs and species/natural_subregion parameter combinations."
       ))
     }
 
@@ -139,13 +139,13 @@ si_huang1994 <- function(
   if (any(!is.finite(si_est))) {
     cli::cli_abort(c(
       "Non-finite site index prediction generated in {.fn si_huang1994}.",
-      "i" = "Check inputs and species/subregion parameter combinations."
+      "i" = "Check inputs and species/natural_subregion parameter combinations."
     ))
   }
   if (any(si_est < 0)) {
     cli::cli_abort(c(
       "Negative site index prediction generated in {.fn si_huang1994}.",
-      "i" = "Check inputs and species/subregion parameter combinations."
+      "i" = "Check inputs and species/natural_subregion parameter combinations."
     ))
   }
 
@@ -221,8 +221,8 @@ si_huang1994 <- function(
 
 
 # internal
-.huang1994_prepare <- function(age, x, species, subregion, x_name) {
-  n <- max(length(age), length(x), length(species), length(subregion))
+.huang1994_prepare <- function(age, x, species, natural_subregion, x_name) {
+  n <- max(length(age), length(x), length(species), length(natural_subregion))
   if (n == 0L) {
     cli::cli_abort("{.arg age} must have length > 0.")
   }
@@ -231,28 +231,28 @@ si_huang1994 <- function(
     age = age,
     x = x,
     species = species,
-    subregion = subregion,
+    natural_subregion = natural_subregion,
     .n = n,
     .recycle = TRUE
   )
   age <- recycled$age
   x <- recycled$x
   species <- recycled$species
-  subregion <- recycled$subregion
+  natural_subregion <- recycled$natural_subregion
 
   assert_numeric_vec(age, "age", finite = TRUE, gt = 0, allow_na = FALSE)
   assert_numeric_vec(x, x_name, finite = TRUE, gt = 0, allow_na = FALSE)
 
   species_std <- standardize_species_code(species)
 
-  if (!is.character(subregion)) {
-    cli::cli_abort("{.arg subregion} must be character.")
+  if (!is.character(natural_subregion)) {
+    cli::cli_abort("{.arg natural_subregion} must be character.")
   }
-  if (anyNA(subregion)) {
-    cli::cli_abort("{.arg subregion} cannot contain NA values.")
+  if (anyNA(natural_subregion)) {
+    cli::cli_abort("{.arg natural_subregion} cannot contain NA values.")
   }
 
-  subregion_std <- .huang1994_std_subregion(subregion)
+  subregion_std <- .huang1994_std_subregion(natural_subregion)
   pars <- .huang1994_parameters()
 
   req_tbl <- dplyr::tibble(
@@ -276,8 +276,8 @@ si_huang1994 <- function(
     dplyr::filter(.data$n_matches > 1L)
   if (nrow(ambig) > 0L) {
     cli::cli_abort(c(
-      "Ambiguous Huang1994 parameter match for one or more species/subregion inputs.",
-      "i" = "Use {.val All}, an exact grouped subregion string from parameter tables, or a single Alberta subregion code."
+      "Ambiguous Huang1994 parameter match for one or more species/natural_subregion inputs.",
+      "i" = "Use {.val All}, an exact grouped natural-subregion string from parameter tables, or a single Alberta natural subregion code."
     ))
   }
 
@@ -317,7 +317,7 @@ si_huang1994 <- function(
 
     cli::cli_abort(
       c(
-        "No Huang1994 parameters found for species/subregion: {bad_txt}.",
+        "No Huang1994 parameters found for species/natural_subregion: {bad_txt}.",
         "i" = "Allowed subregions by species: {allowed_txt}",
         "i" = "Aliases {.val provincial} and {.val province} are accepted as {.val All}."
       )
@@ -400,7 +400,7 @@ si_huang1994 <- function(
   if (is.null(bracket)) {
     cli::cli_abort(c(
       "Failed to bracket a site-index solution in {.fn si_huang1994}.",
-      "i" = "Check that age, height, species, and subregion are within model domain."
+      "i" = "Check that age, height, species, and natural_subregion are within model domain."
     ))
   }
 

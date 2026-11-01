@@ -3,7 +3,7 @@ testthat::test_that("si_huang1994 predicts height from si and returns single-col
     age = c(20, 35, 50),
     si = c(12, 16, 20),
     species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-    subregion = c("All", "All", "All")
+    natural_subregion = c("All", "All", "All")
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -18,7 +18,7 @@ testthat::test_that("si_huang1994 predicts si from height and returns single-col
     age = c(20, 35, 50),
     si = c(12, 16, 20),
     species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-    subregion = c("All", "All", "All")
+    natural_subregion = c("All", "All", "All")
   ) |>
     dplyr::pull(height)
 
@@ -26,7 +26,7 @@ testthat::test_that("si_huang1994 predicts si from height and returns single-col
     age = c(20, 35, 50),
     height = h_in,
     species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-    subregion = c("All", "All", "All")
+    natural_subregion = c("All", "All", "All")
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -44,7 +44,7 @@ testthat::test_that("si_huang1994 matches Huang1994 table reference points", {
       "ABIE.BAL", "PINU.CON", "ABIE.BAL", "PINU.BAN",
       "PINU.BAN", "PSEU.MEN", "PICE.MAR", "PICE.GLA"
     ),
-    subregion = rep("All", 16),
+    natural_subregion = rep("All", 16),
     age = c(25, 100, 100, 100, 25, 100, 25, 25, 25, 25, 100, 25, 100, 100, 100, 25),
     si = c(10, 18, 18, 18, 10, 18, 10, 10, 10, 10, 18, 10, 18, 18, 18, 10),
     height_table = c(5.3, 28.9, 25.4, 26.3, 5.0, 26.5, 5.0, 5.6, 5.0, 5.5, 28.1, 5.6, 24.7, 26.3, 26.5, 4.8)
@@ -54,7 +54,7 @@ testthat::test_that("si_huang1994 matches Huang1994 table reference points", {
     age = refs$age,
     si = refs$si,
     species = refs$species,
-    subregion = refs$subregion
+    natural_subregion = refs$natural_subregion
   )
 
   abs_error <- abs(pred$height - refs$height_table)
@@ -63,26 +63,26 @@ testthat::test_that("si_huang1994 matches Huang1994 table reference points", {
   testthat::expect_lte(mean(abs_error), 0.04)
 })
 
-testthat::test_that("si_huang1994 supports provincial subregion aliases", {
+testthat::test_that("si_huang1994 supports provincial natural_subregion aliases", {
   x1 <- CanadaForestAllometry::si_huang1994(
     age = 35,
     si = 16,
     species = "PICE.GLA",
-    subregion = "All"
+    natural_subregion = "All"
   )$height[[1]]
 
   x2 <- CanadaForestAllometry::si_huang1994(
     age = 35,
     si = 16,
     species = "PICE.GLA",
-    subregion = "provincial"
+    natural_subregion = "provincial"
   )$height[[1]]
 
   x3 <- CanadaForestAllometry::si_huang1994(
     age = 35,
     si = 16,
     species = "PICE.GLA",
-    subregion = "province"
+    natural_subregion = "province"
   )$height[[1]]
 
   testthat::expect_equal(x1, x2, tolerance = 1e-12)
@@ -95,7 +95,7 @@ testthat::test_that("si_huang1994 input validation is informative", {
       age = numeric(0),
       si = numeric(0),
       species = character(0),
-      subregion = character(0)
+      natural_subregion = character(0)
     ),
     "length > 0",
     ignore.case = TRUE
@@ -117,7 +117,7 @@ testthat::test_that("si_huang1994 input validation is informative", {
       age = 20,
       si = 12,
       species = "PICE.GLA",
-      subregion = "bogus"
+      natural_subregion = "bogus"
     ),
     "No Huang1994 parameters found",
     ignore.case = TRUE
@@ -128,7 +128,7 @@ testthat::test_that("si_huang1994 input validation is informative", {
       age = 20,
       si = 12,
       species = "PICE.GLA",
-      subregion = "bogus"
+      natural_subregion = "bogus"
     ),
     "Allowed subregions by species",
     ignore.case = TRUE
@@ -139,7 +139,7 @@ testthat::test_that("si_huang1994 input validation is informative", {
       age = c(20, 30),
       si = c(12, 14, 16),
       species = c("PICE.GLA", "PICE.GLA"),
-      subregion = "All"
+      natural_subregion = "All"
     ),
     "length 1 or",
     ignore.case = TRUE
@@ -217,7 +217,7 @@ testthat::test_that("si_huang1994 catches extra input edge cases", {
       age = 20,
       si = 1.3,
       species = "PICE.GLA",
-      subregion = "All"
+      natural_subregion = "All"
     ),
     "must contain values > 1.3",
     ignore.case = TRUE
@@ -228,9 +228,9 @@ testthat::test_that("si_huang1994 catches extra input edge cases", {
       age = 20,
       si = 12,
       species = "PICE.GLA",
-      subregion = 1
+      natural_subregion = 1
     ),
-    "subregion.*character",
+    "natural_subregion.*character",
     ignore.case = TRUE
   )
 
@@ -239,7 +239,7 @@ testthat::test_that("si_huang1994 catches extra input edge cases", {
       age = c(20, 21),
       si = c(12, 13),
       species = c("PICE.GLA", "PICE.GLA"),
-      subregion = c("All", NA_character_)
+      natural_subregion = c("All", NA_character_)
     ),
     "cannot contain NA",
     ignore.case = TRUE
@@ -295,7 +295,7 @@ testthat::test_that("internal Huang height solver defensive NaN guards are cover
   testthat::expect_true(is.nan(h_one(age = 25, si = 10, pars = pars_bad_ratio)))
 })
 
-testthat::test_that("internal Huang prepare catches ambiguous subregion matches", {
+testthat::test_that("internal Huang prepare catches ambiguous natural_subregion matches", {
   prepare_fn <- get(".huang1994_prepare", envir = asNamespace("CanadaForestAllometry"))
 
   mock_pars_ambig <- tibble::tibble(
@@ -319,7 +319,7 @@ testthat::test_that("internal Huang prepare catches ambiguous subregion matches"
         age = 20,
         x = 15,
         species = "PICE.GLA",
-        subregion = "ALP",
+        natural_subregion = "ALP",
         x_name = "si"
       ),
       .huang1994_parameters = function() mock_pars_ambig,

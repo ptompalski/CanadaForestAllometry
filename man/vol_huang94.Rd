@@ -4,7 +4,7 @@
 \alias{vol_huang94}
 \title{Estimate tree volume in Alberta using Kozak (1988) model form with Huang (1994) parameters}
 \usage{
-vol_huang94(DBH, height, species, subregion = "Province")
+vol_huang94(DBH, height, species, natural_subregion = "Province")
 }
 \arguments{
 \item{DBH}{Numeric vector. Diameter at breast height (cm).}
@@ -13,7 +13,9 @@ vol_huang94(DBH, height, species, subregion = "Province")
 
 \item{species}{Character vector. Species code (e.g., "PICE.MAR").}
 
-\item{subregion}{Character vector. Alberta subregion name; defaults to "Province".}
+\item{natural_subregion}{Character vector. Alberta natural subregion code
+(e.g. \code{"CM"}, \code{"LF"}, \code{"UF"}); defaults to \code{"Province"} (province-wide
+parameters). \code{"UB"} is treated as \code{"LBH"}.}
 }
 \value{
 A tibble with volumes (m^3): total and merchantable.

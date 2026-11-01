@@ -1369,6 +1369,662 @@ parameters_Batho2014 <- parameters_Batho2014 %>%
     base_age = as.numeric(base_age)
   )
 
+## Huang, Yang & Aitkin 2016 (T/609) DBH-height models, Alberta ####
+# Base (population) models: Table 4; mixed-model fixed effects + variance
+# components (Table 5) kept for future calibration only; ranges from Table 3.
+# Expanded to one row per NFI species x natural subregion (1-21); provincial
+# rows have natural_subregion = NA. Species mapped per Table 1 (e.g. PW -> PL).
+# Combined groups (Decid/Conif/All) have Species = NA and are selected through
+# species_key = "DECID"/"CONIF"/"ALL".
+hd_huang2016_natural_subregions <- read.csv(
+  "data-raw/Huang2016_hd_natural_subregions.csv"
+) %>%
+  transmute(
+    code_numeric = as.integer(code_numeric),
+    code_character = as.character(code_character),
+    natural_subregion = as.character(natural_subregion),
+    natural_region = as.character(natural_region)
+  ) %>%
+  arrange(code_numeric)
+
+huang2016_hd_species_map <- read.csv("data-raw/Huang2016_hd_species_map.csv") %>%
+  transmute(
+    Species = nfi_species,
+    species_key = nfi_species,
+    source_species = species_code_src,
+    species_group = species_group_src
+  ) %>%
+  bind_rows(tibble(
+    Species = NA_character_,
+    species_key = c("DECID", "CONIF", "ALL"),
+    source_species = c("Decid", "Conif", "All"),
+    species_group = c("Decid", "Conif", "All")
+  ))
+
+parameters_hd_Huang2016 <- read.csv("data-raw/Huang2016_hd_parameters.csv") %>%
+  as_tibble() %>%
+  mutate(
+    subregion_group = if_else(
+      subregion_group_src == "Provincial",
+      "provincial",
+      str_replace_all(
+        str_replace_all(subregion_group_src, " to ", "-"),
+        ",\\s*",
+        ","
+      )
+    ),
+    natural_subregion = if_else(
+      natural_subregion_codes == "ALL",
+      NA_character_,
+      natural_subregion_codes
+    )
+  ) %>%
+  separate_longer_delim(natural_subregion, delim = ";") %>%
+  mutate(natural_subregion = as.integer(natural_subregion)) %>%
+  rename(species_group = species_src) %>%
+  inner_join(
+    huang2016_hd_species_map,
+    by = "species_group",
+    relationship = "many-to-many"
+  ) %>%
+  transmute(
+    Species, species_key, source_species, species_group,
+    model_eq = as.integer(model_eq),
+    subregion_group, natural_subregion,
+    b1, b2, b3,
+    DBH_min, DBH_max, height_min, height_max,
+    n_trees = as.integer(n_trees), n_plots = as.integer(n_plots),
+    mixed_b1, mixed_b2, mixed_b3, var_u1, cov_u1_u2, var_u2, sigma2
+  ) %>%
+  arrange(species_key, is.na(natural_subregion), natural_subregion)
+
+stopifnot(
+  # every subregion-group species covers all 21 subregions exactly once
+  parameters_hd_Huang2016 %>%
+    filter(!is.na(natural_subregion)) %>%
+    count(species_key) %>%
+    pull(n) %>%
+    unique() == 21L,
+  !anyDuplicated(parameters_hd_Huang2016[c("species_key", "natural_subregion")]),
+  setequal(
+    na.omit(parameters_hd_Huang2016$natural_subregion),
+    hd_huang2016_natural_subregions$code_numeric
+  ),
+  all(huang2016_hd_species_map$species_key %in% parameters_hd_Huang2016$species_key)
+)
+
+## Huang, Titus, Lakusta & Held 1994 (T/291) DBH-height models, Alberta ####
+# Weighted-NLS Chapman-Richards fits: provincial (Table 2 = Table 6) and by
+# natural-region group (Table 1 = Table 5); ranges from Table 3 (provincial,
+# by species; repeated on regional rows). Expanded to one row per NFI species
+# x natural subregion; provincial rows have natural_subregion = NA. The 1994
+# natural regions 1-20 share the 2006 subregion codes in
+# hd_huang2016_natural_subregions, except that 1994 region 6 (Boreal
+# Highlands) is now split into 6 (LBH) and 21 (UBH); code 21 inherits the
+# region-6 rows. Regions 17-20 (grassland) have no regional rows. Fb and Fa
+# share one set; the Softwood/Hardwood groups (regional only) have
+# Species = NA and species_key = "CONIF"/"DECID".
+huang1994_hd_species_map <- read.csv("data-raw/Huang1994_hd_species_map.csv") %>%
+  transmute(
+    Species = nfi_species,
+    species_key = nfi_species,
+    source_species = species_code_src,
+    species_group = species_group_src
+  ) %>%
+  bind_rows(tibble(
+    Species = NA_character_,
+    species_key = c("CONIF", "DECID"),
+    source_species = c("Softwood group", "Hardwood group"),
+    species_group = c("SOFTWOOD", "HARDWOOD")
+  ))
+
+parameters_hd_Huang1994 <- read.csv("data-raw/Huang1994_hd_parameters.csv") %>%
+  as_tibble() %>%
+  mutate(
+    subregion_group = if_else(
+      variant == "provincial",
+      "provincial",
+      str_replace_all(
+        str_replace_all(region_group_src, " to ", "-"),
+        ",\\s*",
+        ","
+      )
+    ),
+    natural_subregion = if_else(
+      natural_subregion_codes == "ALL",
+      NA_character_,
+      natural_subregion_codes
+    )
+  ) %>%
+  separate_longer_delim(natural_subregion, delim = ";") %>%
+  mutate(natural_subregion = as.integer(natural_subregion))
+
+parameters_hd_Huang1994 <- parameters_hd_Huang1994 %>%
+  bind_rows(
+    parameters_hd_Huang1994 %>%
+      filter(natural_subregion == 6L) %>%
+      mutate(natural_subregion = 21L)
+  ) %>%
+  rename(species_group = species_group_src) %>%
+  select(-species_src) %>%
+  inner_join(
+    huang1994_hd_species_map,
+    by = "species_group",
+    relationship = "many-to-many"
+  ) %>%
+  transmute(
+    Species, species_key, source_species, species_group,
+    subregion_group, natural_subregion,
+    a, b, c,
+    DBH_min, DBH_max, height_min, height_max,
+    n = as.integer(n), r2, mse
+  ) %>%
+  arrange(species_key, is.na(natural_subregion), natural_subregion)
+
+stopifnot(
+  # every regional species covers subregions 1-16 and 21 exactly once
+  parameters_hd_Huang1994 %>%
+    filter(!is.na(natural_subregion)) %>%
+    count(species_key) %>%
+    pull(n) %>%
+    unique() == 17L,
+  setequal(
+    na.omit(parameters_hd_Huang1994$natural_subregion),
+    c(1:16, 21L)
+  ),
+  !anyDuplicated(parameters_hd_Huang1994[c("species_key", "natural_subregion")]),
+  all(huang1994_hd_species_map$species_key %in% parameters_hd_Huang1994$species_key),
+  sum(is.na(parameters_hd_Huang1994$natural_subregion)) == 12L, # 11 sets, Fb/Fa x2
+  !anyNA(parameters_hd_Huang1994[c("a", "b", "c")])
+)
+
+## Huang & Yang 2016 (T/610) expanded DBH-height models, Alberta ####
+# Base (population) models [1]-[2] with species-specific BA and HDC (Table A1);
+# mixed-model fixed effects + variance components kept for future calibration
+# only; ranges from Table 2. Species mapped per Table 1 (same as T/609, so the
+# T/609 species map is reused). The FB base column of Table A1 duplicates SB
+# (source error; Table 5 shows FB fit statistics differ), so FB rows
+# (base_status = "excluded_source_error") and FA (mapped to FB) are dropped.
+parameters_hd_Huang2016b <- read.csv("data-raw/Huang2016b_hd_parameters.csv") %>%
+  as_tibble() %>%
+  filter(base_status == "ok") %>%
+  rename(species_group = species_src) %>%
+  inner_join(
+    huang2016_hd_species_map,
+    by = "species_group",
+    relationship = "one-to-many"
+  ) %>%
+  transmute(
+    Species, species_key, source_species, species_group,
+    model_eq = as.integer(model_eq),
+    b1, b2, b3, b4, b5,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, HDOM_min, HDOM_max,
+    n_trees = as.integer(n_trees), n_plots = as.integer(n_plots),
+    mixed_eq = as.integer(mixed_eq), re_params,
+    mixed_b1, mixed_b2, mixed_b3, mixed_b4, mixed_b5,
+    var_u1, cov_u1_u2, var_u2, cov_u1_u3, cov_u2_u3, var_u3, sigma2
+  ) %>%
+  arrange(species_key)
+
+stopifnot(
+  !anyDuplicated(parameters_hd_Huang2016b$species_key),
+  nrow(parameters_hd_Huang2016b) == 17L, # 16 mapped species - FB/FA + 3 groups
+  !any(c("ABIE.BAL", "ABIE.LAS") %in% parameters_hd_Huang2016b$Species),
+  !anyNA(parameters_hd_Huang2016b[c("b1", "b2", "b3", "b4", "b5")])
+)
+
+## Sharma & Parton 2007 DBH-height models, Ontario boreal ####
+# Eq. 6/8 coefficients for Method 1 (fixed-effects) and Method 2 (mixed,
+# plot-x-species random asymptote; used for population prediction with u = 0),
+# Table 6. Per-species DBH ranges from Table 1 (model set); pooled plot ranges
+# (BA, N/ha, SHT) from p. 188. sigma2_u is NA for Method 1.
+parameters_hd_SharmaParton2007 <- read.csv(
+  "data-raw/SharmaParton2007_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    method = as.integer(method),
+    theta, delta, beta, phi, gamma, sigma2_e, sigma2_u,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, TPH_min, TPH_max, HDOM_min, HDOM_max,
+    n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(Species, method)
+
+stopifnot(
+  nrow(parameters_hd_SharmaParton2007) == 16L,
+  !anyDuplicated(parameters_hd_SharmaParton2007[c("Species", "method")]),
+  all(table(parameters_hd_SharmaParton2007$method) == 8L),
+  !anyNA(parameters_hd_SharmaParton2007$sigma2_u[
+    parameters_hd_SharmaParton2007$method == 2L
+  ])
+)
+
+## Sharma 2016 DBH-height models, Ontario plantations vs natural stands ####
+# Eq. 4 fixed effects (u = 0), Table 3 p. 74, per species x stand origin
+# (variant = "natural" / "plantation"). Same form as Sharma & Parton (2007).
+# White spruce plantation phi is blank in Table 3 ("not significant", p. 75)
+# and set to 0 by maintainer decision. Per-species x origin ranges: Table 1
+# (BA, TPH, SHT) and Table 2 (DBH, height), p. 72.
+parameters_hd_Sharma2016 <- read.csv(
+  "data-raw/Sharma2016_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    theta, delta, beta, phi, gamma, sigma2_e, sigma2_u,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, TPH_min, TPH_max, HDOM_min, HDOM_max,
+    n_plots = as.integer(n_plots), n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_Sharma2016) == 8L,
+  !anyDuplicated(parameters_hd_Sharma2016[c("Species", "variant")]),
+  setequal(parameters_hd_Sharma2016$variant, c("natural", "plantation")),
+  all(table(parameters_hd_Sharma2016$variant) == 4L),
+  !anyNA(parameters_hd_Sharma2016)
+)
+
+## Sharma & Zhang 2004 DBH-height models, Ontario jack pine / black spruce ####
+# OLS NLS fits, Table 3 (jack pine) and Table 4 (black spruce), p. 445. Only
+# eq. (2) (BA + stems/ha) and eq. (5) (DBH only) are implemented; eqs. (3)/(4)
+# are kept in the CSV for provenance but dropped here (degenerate as printed:
+# height is constant in DBH; see SharmaZhang2004_hd_model-spec.md). Ranges
+# cover model + validation data: Table 1 p. 443 (plots), Table 2 p. 444 (trees).
+parameters_hd_SharmaZhang2004 <- read.csv(
+  "data-raw/SharmaZhang2004_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  filter(variant %in% c("eq2", "eq5")) %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    alpha, beta, gamma, delta, phi, mse, r2,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, TPH_min, TPH_max,
+    n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_SharmaZhang2004) == 4L,
+  !anyDuplicated(parameters_hd_SharmaZhang2004[c("Species", "variant")]),
+  all(table(parameters_hd_SharmaZhang2004$variant) == 2L),
+  with(
+    parameters_hd_SharmaZhang2004,
+    all(!is.na(delta) & !is.na(phi) & is.na(gamma) | variant != "eq2") &&
+      all(!is.na(gamma) & is.na(delta) & is.na(phi) | variant != "eq5")
+  )
+)
+
+## Eslamdoust et al. 2026 DBH-height models, Ontario GLSL / hardwoods ####
+# Mixed-model fixed effects (u = 0) for M4 (Eq. 4, Table 4) and M5 (Eq. 5,
+# Table 5), p. 225; a0-a4 keep the source symbols per variant (M4: a1 rate,
+# a2 shape; M5: a2 rate, a3 TPH/BA exponent, a4 shape). a3 = 0 "ns" for
+# LARI.LAR and TILI.AME (M5). LARI.LAR M5 a2 is a maintainer correction of a
+# suspected misprint (printed 0.9793 -> 0.09793; see
+# data-raw/Eslamdoust2026_model-spec.md). Per-species ranges from Table 1
+# (stand ranges on M5 rows only).
+parameters_hd_Eslamdoust2026 <- read.csv(
+  "data-raw/Eslamdoust2026_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    a0, a1, a2, a3, a4, a3_ns = as.logical(a3_ns), sigma2_e, sigma2_u,
+    DBH_min, DBH_max, height_min, height_max,
+    HDOM_min, HDOM_max, BA_min, BA_max, TPH_min, TPH_max,
+    n_plots = as.integer(n_plots), n_trees = as.integer(n_trees)
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_Eslamdoust2026) == 16L,
+  !anyDuplicated(parameters_hd_Eslamdoust2026[c("Species", "variant")]),
+  all(table(parameters_hd_Eslamdoust2026$variant) == 8L),
+  with(
+    parameters_hd_Eslamdoust2026,
+    !anyNA(cbind(a0, a1, a2, DBH_min, DBH_max)) &&
+      !anyNA(cbind(a3, a4, HDOM_min, BA_min, TPH_min)[variant == "m5", ]) &&
+      all(is.na(cbind(a3, a4))[variant == "m4", ])
+  )
+)
+
+## Huang, Meng & Yang 2009 DBH-height models, Alberta black spruce ####
+# NLMM (FO) fixed effects (b = 0) for eqs. (9)-(11), Table 2 p.13; variance
+# components transcribed but unused. HTOP = top height (100 largest-DBH
+# trees/ha). Ranges from Table 1 p.12 (fitting data). See
+# data-raw/Huang2009_hd_model-spec.md.
+parameters_hd_Huang2009 <- read.csv(
+  "data-raw/Huang2009_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    beta1, beta2, beta3, beta4, beta5,
+    var_b1, cov_b1_b2, var_b2, sigma2,
+    DBH_min, DBH_max, height_min, height_max,
+    HTOP_min, HTOP_max, BA_min, BA_max,
+    n_plots = as.integer(n_plots), n_trees = as.integer(n_trees_fit)
+  ) %>%
+  arrange(variant)
+
+stopifnot(
+  nrow(parameters_hd_Huang2009) == 3L,
+  identical(parameters_hd_Huang2009$variant, c("m10", "m11", "m9")),
+  with(
+    parameters_hd_Huang2009,
+    !anyNA(cbind(beta1, beta2, beta3, DBH_min, DBH_max, sigma2)) &&
+      identical(is.na(beta4), variant == "m9") &&
+      identical(is.na(beta5), variant != "m11")
+  )
+)
+
+## Auger 2016 DBH-height model, Quebec (NRF 146) ####
+# Eq. [1] fixed effects (b_is = 0). Continuous effects and variance components
+# from Annexe 1 (pp. 22-23); empty = term absent for the species (BOG has no
+# LDHP^2 term). Ranges from Tableau 1 (p. 3) and Tableau 2 (p. 4). Class
+# effects (all interacting with ln(DBH + 1)) from Annexes 2-4 (MP, PERT pp.
+# 24-25; SDOM pp. 26-27; VP pp. 28-31), long format; a class absent for a
+# species was not represented in its fitting data. See
+# data-raw/Auger2016_model-spec.md.
+parameters_hd_Auger2016 <- read.csv(
+  "data-raw/Auger2016_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    b_ldhp, b_ldhp2, b_st, b_rdhp, b_alt, b_ptot, b_tmoy,
+    uses_SDOM = as.logical(uses_sdom), uses_MP = as.logical(uses_mp),
+    uses_VP = as.logical(uses_vp), uses_PERT = as.logical(uses_pert),
+    sd_plot, rho_plot, sd_resid,
+    DBH_min, DBH_max, height_min, height_max, RDHP_min, RDHP_max,
+    BA_min, BA_max, altitude_min, altitude_max,
+    TMOY_min, TMOY_max, PTOT_min, PTOT_max,
+    n_trees = as.integer(n_trees), n_plots = as.integer(n_plots)
+  ) %>%
+  arrange(Species)
+
+parameters_hd_Auger2016_classes <- read.csv(
+  "data-raw/Auger2016_hd_class_effects.csv",
+  colClasses = c(class = "character")
+) %>%
+  as_tibble() %>%
+  transmute(Species = nfi_species, variable, class, estimate) %>%
+  arrange(Species, variable, class)
+
+stopifnot(
+  nrow(parameters_hd_Auger2016) == 27L,
+  !anyDuplicated(parameters_hd_Auger2016$Species),
+  with(parameters_hd_Auger2016, !anyNA(cbind(b_ldhp, b_st, DBH_min, DBH_max, BA_min, BA_max))),
+  sum(is.na(parameters_hd_Auger2016$b_ldhp2)) == 1L,
+  nrow(parameters_hd_Auger2016_classes) == 585L,
+  !anyDuplicated(parameters_hd_Auger2016_classes[c("Species", "variable", "class")]),
+  all(parameters_hd_Auger2016_classes$variable %in% c("SDOM", "MP", "VP", "PERT")),
+  # class tables present exactly for the species flagged as using them
+  all(vapply(c("SDOM", "MP", "VP", "PERT"), function(v) {
+    setequal(
+      unique(parameters_hd_Auger2016_classes$Species[parameters_hd_Auger2016_classes$variable == v]),
+      parameters_hd_Auger2016$Species[parameters_hd_Auger2016[[paste0("uses_", v)]]]
+    )
+  }, logical(1)))
+)
+
+## Fortin et al. 2009 DBH-height model, Quebec (MRF 153) ####
+# Eq. (6) fixed effects (b_is = 0). Coefficients at full precision from
+# CFSForestTools (0_HDRelationBeta.csv, same fit; LGPL-3); the printed values
+# of Tableau 4 (p. 11) and Tableau 5 (p. 12) are kept as *_published. Ranges
+# from Tableau 2 (p. 4) and Tableau 1 (p. 3). Ecological region ->
+# subdivision lookup from CFSForestTools (cf. Figure 2, p. 8). See
+# data-raw/Fortin2009_model-spec.md.
+parameters_hd_Fortin2009 <- read.csv(
+  "data-raw/Fortin2009_hd_parameters.csv",
+  encoding = "UTF-8"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    species_group,
+    b1, b2, b8, b9, G_s,
+    DBH_min, DBH_max, height_min, height_max,
+    BA_min, BA_max, MAT_min, MAT_max,
+    n_obs = as.integer(n_obs)
+  ) %>%
+  arrange(Species)
+
+parameters_hd_Fortin2009_effects <- read.csv(
+  "data-raw/Fortin2009_hd_effects.csv",
+  encoding = "UTF-8"
+) %>%
+  as_tibble() %>%
+  filter(component == "fixed") %>%
+  transmute(parameter, variable, class = dplyr::coalesce(class, ""), estimate)
+
+hd_fortin2009_ecoregions <- read.csv(
+  "data-raw/Fortin2009_hd_ecoregions.csv",
+  encoding = "UTF-8"
+) %>%
+  as_tibble() %>%
+  transmute(ecoregion, ecological_subdivision) %>%
+  arrange(ecoregion)
+
+stopifnot(
+  nrow(parameters_hd_Fortin2009) == 20L,
+  !anyDuplicated(parameters_hd_Fortin2009$Species),
+  !anyNA(parameters_hd_Fortin2009[c("b1", "b2", "b8", "b9", "DBH_min", "DBH_max")]),
+  nrow(parameters_hd_Fortin2009_effects) == 14L,
+  !anyDuplicated(parameters_hd_Fortin2009_effects[c("parameter", "class")]),
+  nrow(hd_fortin2009_ecoregions) == 48L,
+  !anyDuplicated(hd_fortin2009_ecoregions$ecoregion),
+  setequal(
+    hd_fortin2009_ecoregions$ecological_subdivision,
+    parameters_hd_Fortin2009_effects$class[parameters_hd_Fortin2009_effects$parameter == "b5"]
+  )
+)
+
+## Auger, DeBlois & Lambert 2025 DBH-height models, Quebec plantations ####
+# SSS-10 (MRNF Quebec). Jack pine (PIG) and black spruce (EPN) plantations.
+# Variant "dbh": Korf, eq. 10 (Tableau 3, p. 11). Variant "plot_mean_dbh":
+# eq. 11 (PIG, Chapman-Richards) / eq. 12 (EPN, Hossfeld II) on mean plot DBH
+# (Tableau 7, p. 14). Variant "dominant": eq. 13 (PIG) / eq. 14 (EPN) on
+# dominant height and dominant DBH (Tableau 9, p. 17). Empty coefficient =
+# term absent. Ranges from Tableau 1 (p. 4, calibration data). See
+# data-raw/Auger2025_model-spec.md.
+parameters_hd_Auger2025 <- read.csv(
+  "data-raw/Auger2025_hd_parameters.csv"
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant, equation,
+    a1, a2, a3, a10, a11, a20, a21, a22,
+    DBH_min, DBH_max, height_min, height_max,
+    mean_DBH_min, mean_DBH_max, dominant_DBH_min, dominant_DBH_max,
+    HDOM_min, HDOM_max
+  ) %>%
+  arrange(Species, variant)
+
+stopifnot(
+  nrow(parameters_hd_Auger2025) == 6L,
+  !anyDuplicated(parameters_hd_Auger2025[c("Species", "variant")]),
+  setequal(parameters_hd_Auger2025$Species, c("PICE.MAR", "PINU.BAN")),
+  all(table(parameters_hd_Auger2025$variant) == 2L),
+  all(parameters_hd_Auger2025$equation %in% c("korf", "chapman_richards", "hossfeld_ii")),
+  with(
+    parameters_hd_Auger2025,
+    !anyNA(cbind(a3, DBH_min, DBH_max)) &&
+      !anyNA(cbind(a1, a2)[variant == "dbh", ]) &&
+      !anyNA(cbind(a10, a11, a20, a21, mean_DBH_min, mean_DBH_max)[variant == "plot_mean_dbh", ]) &&
+      !anyNA(cbind(a10, a11, a20, a22, HDOM_min, HDOM_max, dominant_DBH_min, dominant_DBH_max)[variant == "dominant", ])
+  )
+)
+
+## Zhang, Peng, Huang & Zhou 2002 jack pine DBH-height models, Ontario ####
+# Chapman-Richards eq. [1], H = 1.3 + a * (1 - exp(-b * DBH))^c, fitted by
+# NLS separately to 7 ELC ecoregions, the Boreal and Central forest regions,
+# and all data (Overall). Coefficients and MSE from Table 2 (p. 533); ranges
+# from Table 1 (p. 532). `parameter_set` is the ecoregion code, the forest
+# region, or "overall". See data-raw/Zhang2002_model-spec.md.
+parameters_hd_Zhang2002 <- read.csv(
+  "data-raw/Zhang2002_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant, ecoregion, forest_region,
+    parameter_set = dplyr::coalesce(ecoregion, forest_region, "overall"),
+    a, b, c, mse,
+    DBH_min, DBH_max, height_min, height_max,
+    n_trees = as.integer(n_trees)
+  )
+
+stopifnot(
+  nrow(parameters_hd_Zhang2002) == 10L,
+  all(parameters_hd_Zhang2002$Species == "PINU.BAN"),
+  !anyDuplicated(parameters_hd_Zhang2002$parameter_set),
+  identical(
+    as.vector(table(parameters_hd_Zhang2002$variant)[c("ecoregion", "regional", "overall")]),
+    c(7L, 2L, 1L)
+  ),
+  with(
+    parameters_hd_Zhang2002,
+    !anyNA(cbind(a, b, c, DBH_min, DBH_max)) &&
+      all(a > 0 & b > 0 & c > 0) &&
+      !anyNA(forest_region[variant != "overall"]) &&
+      all(forest_region %in% c("boreal", "central", NA))
+  )
+)
+
+## Temesgen & von Gadow 2004 DBH-height models, BC interior (IDF) ####
+# H = 1.3 + a * (1 - exp(-b * DBH^c)); Model 2 (Table 5, p. 51): a = a1,
+# c = a5. Model 7 (Table 4, p. 50): a = a1 + a2*BAL + a3*SPH + a4*BA,
+# c = a5 + a6*BAL. NA = term dropped as non-significant (0 in code). Exponent
+# sign corrected (printed exp(+b*D^c)). "Spruce" mapped to PICE.ENG, PICE.GLA
+# and PICE.ENG.GLA. Per-species ranges from Table 1 (p. 50). See
+# data-raw/Temesgen2004_model-spec.md.
+parameters_hd_Temesgen2004 <- read.csv(
+  "data-raw/Temesgen2004_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    a1, a2, a3, a4, b, a5, a6, rmse,
+    DBH_min, DBH_max, height_min, height_max,
+    n_trees = as.integer(n_trees)
+  ) %>%
+  arrange(variant, Species)
+
+stopifnot(
+  nrow(parameters_hd_Temesgen2004) == 20L,
+  !anyDuplicated(parameters_hd_Temesgen2004[c("Species", "variant")]),
+  all(table(parameters_hd_Temesgen2004$variant)[c("m2", "m7")] == 10L),
+  with(
+    parameters_hd_Temesgen2004,
+    !anyNA(cbind(a1, b, a5, DBH_min, DBH_max)) &&
+      all(a1 > 0 & b > 0 & a5 > 0) &&
+      all(is.na(cbind(a2, a3, a4, a6)[variant == "m2", ]))
+  )
+)
+
+## Rijal, Weiskittel & Kershaw 2012 DBH-height models, Acadian Region ####
+# HT = 1.37 + (c0 + CSI^c3) * (1 - exp(-c1*DBH))^(c2 + c4*ln(CCF+1) + c5*BAL)
+# (eq. 4, p. 381). Variant "gnls" = Table 5 (p. 387; recommended without
+# local calibration); "nlme" = Table 6 fixed effects (p. 387) with Table 7
+# variance components (p. 388, not used for prediction). NLME c5 for GB and
+# RO printed "-" (not significant): NA, 0 in code. Ranges from Table 1
+# (p. 381). See data-raw/Rijal2012_model-spec.md.
+parameters_hd_Rijal2012 <- read.csv(
+  "data-raw/Rijal2012_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    c0, c1, c2, c3, c4, c5,
+    var_power, res_std, r2,
+    var_source, var_stand, var_year,
+    DBH_min, DBH_max, height_min, height_max,
+    n_obs = as.integer(n_obs)
+  ) %>%
+  arrange(variant, Species)
+
+stopifnot(
+  nrow(parameters_hd_Rijal2012) == 30L,
+  !anyDuplicated(parameters_hd_Rijal2012[c("Species", "variant")]),
+  all(table(parameters_hd_Rijal2012$variant)[c("gnls", "nlme")] == 15L),
+  with(
+    parameters_hd_Rijal2012,
+    !anyNA(cbind(c0, c1, c2, c3, c4, DBH_min, DBH_max)) &&
+      all(c0 > 0 & c1 > 0 & c2 > 0 & c3 > 0) &&
+      sum(is.na(c5)) == 2L &&
+      all(is.na(c5) == (variant == "nlme" & source_species %in% c("GB", "RO")))
+  )
+)
+
+## Staudhammer & LeMay 2000 DBH-height models, BC coast (UBC MKRF) ####
+# H = 1.3 + E1 * (1 - exp(E2 * DBH^E3)). Variant "dbh" = eq 2 (Table 5,
+# p. 308): Ek = ek_0. Variant "density" = parameter prediction, Ek = ek_0 +
+# ek_TPH*TSTEMSHA + ek_BA*TBAHA (eq 2a, alder) or ek_0 + ek_rel*REL_dbh +
+# ek_rel2*REL_dbh^2 (eq 2b, cedar, Douglas-fir, hemlock). NA = term not in
+# the model (0 in code). CW eq 2b e2_rel2 = 0.01551 is a correction of the
+# printed 0.1551 (which gives negative heights). Source "D" (Alnus rubra +
+# A. tenuifolia) mapped to ALNU.RUB only. Ranges from Table 1 (p. 304). See
+# data-raw/StaudhammerLeMay2000_model-spec.md.
+parameters_hd_StaudhammerLeMay2000 <- read.csv(
+  "data-raw/StaudhammerLeMay2000_hd_parameters.csv",
+  na.strings = c("", "NA")
+) %>%
+  as_tibble() %>%
+  transmute(
+    Species = nfi_species,
+    source_species = species_src,
+    variant,
+    e1_0, e1_TPH, e1_BA, e1_rel, e1_rel2,
+    e2_0, e2_TPH, e2_BA, e2_rel, e2_rel2,
+    e3_0, e3_TPH, e3_BA, e3_rel, e3_rel2,
+    rmse,
+    DBH_min, DBH_max, height_min, height_max,
+    TPH_min, TPH_max, BA_min, BA_max, rel_DBH_min, rel_DBH_max,
+    n_trees = as.integer(n_trees)
+  ) %>%
+  arrange(variant, Species)
+
+stopifnot(
+  nrow(parameters_hd_StaudhammerLeMay2000) == 8L,
+  !anyDuplicated(parameters_hd_StaudhammerLeMay2000[c("Species", "variant")]),
+  all(table(parameters_hd_StaudhammerLeMay2000$variant)[c("dbh", "density")] == 4L),
+  with(
+    parameters_hd_StaudhammerLeMay2000,
+    !anyNA(cbind(e1_0, e2_0, e3_0, DBH_min, DBH_max)) &&
+      all(e1_0[variant == "dbh"] > 0 & e2_0[variant == "dbh"] < 0) &&
+      all(is.na(cbind(e1_TPH, e1_rel, e2_TPH, e2_rel, e3_TPH, e3_rel)[variant == "dbh", ])) &&
+      identical(!is.na(e1_TPH), variant == "density" & Species == "ALNU.RUB") &&
+      identical(!is.na(e1_rel), variant == "density" & Species != "ALNU.RUB")
+  )
+)
+
 # combine all into one ####
 
 internal_objs <- c(
@@ -1421,7 +2077,26 @@ internal_objs <- c(
   "parameters_Sharma2022",
   "parameters_Nigh1998_ht",
   "parameters_Buckman2006",
-  "parameters_Batho2014"
+  "parameters_Batho2014",
+  "parameters_hd_Huang2016",
+  "hd_huang2016_natural_subregions",
+  "parameters_hd_Huang1994",
+  "parameters_hd_Huang2016b",
+  "parameters_hd_SharmaParton2007",
+  "parameters_hd_Sharma2016",
+  "parameters_hd_SharmaZhang2004",
+  "parameters_hd_Eslamdoust2026",
+  "parameters_hd_Huang2009",
+  "parameters_hd_Auger2016",
+  "parameters_hd_Auger2016_classes",
+  "parameters_hd_Fortin2009",
+  "parameters_hd_Fortin2009_effects",
+  "hd_fortin2009_ecoregions",
+  "parameters_hd_Auger2025",
+  "parameters_hd_Zhang2002",
+  "parameters_hd_Temesgen2004",
+  "parameters_hd_StaudhammerLeMay2000",
+  "parameters_hd_Rijal2012"
 )
 
 # sanity check: make sure they exist before saving

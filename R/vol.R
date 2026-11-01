@@ -59,15 +59,16 @@
 #' @param pick_best Logical. If `TRUE` (default), pick the single best model per tree using `rank`.
 #'   If `FALSE`, compute all candidate model outputs per tree and return a list-column
 #'   (one tibble per tree) that can be unnested for comparison.
-#' @param keep_model_id Logical. If `TRUE`, include a `vol_model` column with the engine function name used.
+#' @param keep_model_id Logical. If `TRUE`, include a `model_id` column with the
+#'   volume model used (registry ID, see [volume_model_registry()]).
 #'
 #' @return
 #' If `pick_best = TRUE`, a tibble with one row per tree and columns:
-#' `vol_total`, `vol_merchantable`, and optionally `vol_model`.
+#' `vol_total`, `vol_merchantable`, and optionally `model_id`.
 #'
 #' If `pick_best = FALSE`, a list (suitable for use as a list-column in `dplyr::mutate()`)
 #' with one element per tree. Each element is a tibble of candidate model outputs
-#' (`vol_total`, `vol_merchantable`, and optionally `vol_model`).
+#' (`vol_total`, `vol_merchantable`, and optionally `model_id`).
 #' @examples
 #' ## --- Basic usage: pick best available model (default) ---
 #' vol(
@@ -402,7 +403,7 @@ vol <- function(
         .data$.row_id,
         vol_total = .data$vol_total,
         vol_merchantable = .data$vol_merchantable,
-        vol_model = if (isTRUE(keep_model_id)) .data$engine else NULL
+        model_id = if (isTRUE(keep_model_id)) .data$model_id else NULL
       )
 
     # Ensure every row has a successful model
@@ -435,14 +436,14 @@ vol <- function(
       out_list[[i]] <- tibble::tibble(
         vol_total = numeric(0),
         vol_merchantable = numeric(0),
-        vol_model = character(0)
+        model_id = character(0)
       )[0, ]
     } else {
       out_list[[i]] <- df |>
         dplyr::transmute(
           vol_total = .data$vol_total,
           vol_merchantable = .data$vol_merchantable,
-          vol_model = if (isTRUE(keep_model_id)) .data$engine else NULL
+          model_id = if (isTRUE(keep_model_id)) .data$model_id else NULL
         )
     }
   }

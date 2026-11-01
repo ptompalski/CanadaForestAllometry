@@ -4,7 +4,7 @@
 \alias{si_nigh2009}
 \title{Nigh, Thomas, Yearsley and Wang (2009) paper birch height-age (site index) model for British Columbia}
 \usage{
-si_nigh2009(age, height = NULL, si = NULL, model = 1, bec_zone = NULL)
+si_nigh2009(age, height = NULL, si = NULL, variant = 1, bec_zone = NULL)
 }
 \arguments{
 \item{age}{Numeric vector. Breast-height age (years).}
@@ -15,11 +15,11 @@ predicted.}
 \item{si}{Optional numeric vector. Site index (m, base age 50 years at breast
 height). If provided, \code{height} is predicted.}
 
-\item{model}{Model variant: \code{1} (base, default), \code{2} (operational), or \code{3}
+\item{variant}{Model variant: \code{1} (base, default), \code{2} (operational), or \code{3}
 (zonal). See Details.}
 
-\item{bec_zone}{Optional character vector selecting the zonal (\code{model = 3})
-coefficients. One of \code{"ICH"}, \code{"IDF"}, \code{"SBS"}. Required when \code{model = 3}
+\item{bec_zone}{Optional character vector selecting the zonal (\code{variant = 3})
+coefficients. One of \code{"ICH"}, \code{"IDF"}, \code{"SBS"}. Required when \code{variant = 3}
 and ignored otherwise.}
 }
 \value{
@@ -50,10 +50,10 @@ form (eq. 1)
        {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2 \ln(SI - 1.3)}}}
 differing only in their coefficients:
 \describe{
-\item{\code{model = 1}}{Base log-logistic fit (Table 2). Default.}
-\item{\code{model = 2}}{Operational form of the mixed model. Recommended by the
+\item{\code{variant = 1}}{Base log-logistic fit (Table 2). Default.}
+\item{\code{variant = 2}}{Operational form of the mixed model. Recommended by the
 authors when the biogeoclimatic zone is unknown or is not ICH/IDF/SBS.}
-\item{\code{model = 3}}{Zonal indicator-variable model. Only \eqn{a_1} carries a
+\item{\code{variant = 3}}{Zonal indicator-variable model. Only \eqn{a_1} carries a
 significant zone effect (SBS vs. ICH/IDF). Supply \code{bec_zone} (one of
 \code{"ICH"}, \code{"IDF"}, \code{"SBS"}); recommended for those zones.}
 }
@@ -76,10 +76,10 @@ si_nigh2009(age = c(25, 50, 80), si = c(12, 18, 24))
 si_nigh2009(age = c(25, 50, 80), height = c(8, 18, 26))
 
 # Operational model (recommended when zone is unknown)
-si_nigh2009(age = 60, si = 18, model = 2)
+si_nigh2009(age = 60, si = 18, variant = 2)
 
 # Zonal model
-si_nigh2009(age = 60, si = 18, model = 3, bec_zone = "SBS")
+si_nigh2009(age = 60, si = 18, variant = 3, bec_zone = "SBS")
 
 }
 \references{

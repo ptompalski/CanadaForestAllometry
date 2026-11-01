@@ -9,7 +9,7 @@ species in British Columbia: by region and biogeoclimatic zone}. Province of
 British Columbia, Technical Report 106.
 }
 \usage{
-vol_nigh2016(DBH, height, species, subregion)
+vol_nigh2016(DBH, height, species, bec_zone)
 }
 \arguments{
 \item{DBH}{Numeric vector of diameter at breast height (cm).}
@@ -18,7 +18,7 @@ vol_nigh2016(DBH, height, species, subregion)
 
 \item{species}{Character vector of species codes}
 
-\item{subregion}{Character scalar or vector defining the spatial stratum for
+\item{bec_zone}{Character scalar or vector defining the spatial stratum for
 the coefficients. Can be \code{"Coast"} / \code{"Interior"} or a BEC zone code
 (e.g., \code{"CWH"}, \code{"ICH"}, \code{"BWBS"}). Must have length 1 or the
 same length as \code{DBH}.}
@@ -38,7 +38,7 @@ breast height (DBH) and total tree height.
 \details{
 Parameters are stratified either by region (\code{"Coast"}, \code{"Interior"})
 or by BEC zone (e.g., \code{"CWH"}, \code{"ICH"}, \code{"BWBS"}), depending on
-which parameter row is requested via \code{subregion}.
+which parameter row is requested via \code{bec_zone}.
 
 Model form (Nigh 2016):
 \deqn{V = \exp(b_0) \cdot DBH^{b_1} \cdot H^{b_2}}
@@ -49,10 +49,10 @@ Merchantable volume in Nigh (2016) is defined as total volume minus stump
 definition in the original report).
 
 Nigh (2016) function parameters are available for the following species and
-\code{subregion} combinations:
+\code{bec_zone} combinations:
 
 \tabular{ll}{
-Species \tab Supported \code{subregion} values\cr
+Species \tab Supported \code{bec_zone} values\cr
 \code{ABIE.LAS} \tab AT, BWBS, ESSF, ICH, IDF, Interior, MS, SBS, SWB\cr
 \code{ABIE.SPP} \tab Coast, CWH, MH\cr
 \code{ACER.MAC} \tab Coast, CWH\cr
@@ -79,15 +79,15 @@ vol_nigh2016(
   DBH = 35,
   height = 25,
   species = "POPU.TRI",
-  subregion = "Interior"
+  bec_zone = "Interior"
 )
 
-# Multiple trees, vectorized (mixed subregions allowed)
+# Multiple trees, vectorized (mixed zones allowed)
 vol_nigh2016(
   DBH = c(22, 30, 45),
   height = c(18, 24, 33),
   species = c("PSEU.MEN", "THUJ.PLI", "POPU.TRI"),
-  subregion = c("Coast", "ICH", "Interior")
+  bec_zone = c("Coast", "ICH", "Interior")
 )
 
 }

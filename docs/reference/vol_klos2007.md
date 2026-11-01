@@ -6,7 +6,7 @@ Estimate tree volume in Manitoba using Kozak (1988) form with Klos
 ## Usage
 
 ``` r
-vol_klos2007(DBH, height, species, subregion = "Province")
+vol_klos2007(DBH, height, species, ecozone = "Province")
 ```
 
 ## Arguments
@@ -23,9 +23,11 @@ vol_klos2007(DBH, height, species, subregion = "Province")
 
   Character vector. Species code (e.g., "PICE.MAR").
 
-- subregion:
+- ecozone:
 
-  Optional Ecozone or Ecoregion identifier
+  Optional Manitoba ecozone name (`"Boreal Shield"` or
+  `"Boreal Plains"`); defaults to `"Province"` (province-wide
+  parameters).
 
 ## References
 

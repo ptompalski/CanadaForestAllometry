@@ -104,7 +104,7 @@ total_to_merch_prop <- function(vol_total, k, a, b, c) {
 #' @param species Character vector. NFI species codes (e.g. \code{"PICE.MAR"}). Only genus is used.
 #' @param jurisdiction Character vector. Jurisdiction code (e.g. \code{"AB"}).
 #' @param ecozone Ecozone identifier. Either: numeric ecozone code (1–15) or official ecozone name (English or French; case-insensitive).
-#' @param include_prop Logical. If TRUE, return the predicted merchantable proportion.
+#' @param include_props Logical. If TRUE, return the predicted merchantable proportion.
 #' @param clamp_prop Logical. If TRUE (default), clamp predicted proportion to \code{[0, 1]}.
 #' @param warn_outside Logical. If TRUE (default), warn when \code{vol_total < volmin}.
 #' @param clamp_x Logical. If TRUE, replace \code{vol_total} with \code{pmax(vol_total, volmin)}
@@ -127,7 +127,7 @@ total_to_merch_prop <- function(vol_total, k, a, b, c) {
 #'   species = "PICE.MAR",
 #'   jurisdiction = "AB",
 #'   ecozone = 4,
-#'   include_prop = TRUE
+#'   include_props = TRUE
 #' )
 #'
 #' # ---- vectorized over volume ------------------------------------------------
@@ -136,7 +136,7 @@ total_to_merch_prop <- function(vol_total, k, a, b, c) {
 #'   species = "PICE.MAR",
 #'   jurisdiction = "AB",
 #'   ecozone = 4,
-#'   include_prop = TRUE
+#'   include_props = TRUE
 #' )
 #'
 #' # ---- tidyverse workflow ----------------------------------------------------
@@ -158,7 +158,7 @@ total_to_merch_prop <- function(vol_total, k, a, b, c) {
 #'       species = species,
 #'       jurisdiction = jurisdiction,
 #'       ecozone = ecozone,
-#'       include_prop = TRUE
+#'       include_props = TRUE
 #'     )
 #'   ) |>
 #'   unnest(merch)
@@ -187,7 +187,7 @@ vol_total_to_merchantable <- function(
   species,
   jurisdiction,
   ecozone,
-  include_prop = FALSE,
+  include_props = FALSE,
   clamp_prop = TRUE,
   warn_outside = TRUE,
   clamp_x = FALSE
@@ -243,7 +243,7 @@ vol_total_to_merchantable <- function(
 
   out <- tibble::tibble(vol_merchantable = merch)
 
-  if (isTRUE(include_prop)) {
+  if (isTRUE(include_props)) {
     out <- dplyr::mutate(out, prop_merch = prop)
   }
   if (isTRUE(clamp_x)) {

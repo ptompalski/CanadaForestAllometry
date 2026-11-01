@@ -4,7 +4,7 @@
 \alias{vol_nl}
 \title{Estimate tree volume for Newfoundland}
 \usage{
-vol_nl(DBH, height, species, subregion = "Province", keep_net = FALSE)
+vol_nl(DBH, height, species, district = "Province", keep_net = FALSE)
 }
 \arguments{
 \item{DBH}{Numeric vector. Diameter at breast height (cm).}
@@ -13,7 +13,7 @@ vol_nl(DBH, height, species, subregion = "Province", keep_net = FALSE)
 
 \item{species}{Character vector of NFI species codes (e.g., \code{"PICE.MAR"}).}
 
-\item{subregion}{Character or numeric vector. Either:
+\item{district}{Character or numeric vector. NL forest district. Either:
 \itemize{
 \item \code{"Province"} (default; uses province-wide equations), or
 \item District IDs \code{1-24}.
@@ -74,21 +74,21 @@ but total volume is still computed.
 vol_nl(20, 20, "PICE.MAR")
 
 # District-level model (NX-242 used for District 2)
-vol_nl(20, 20, "PICE.MAR", subregion = 2)
+vol_nl(20, 20, "PICE.MAR", district = 2)
 
 # Return net merchantable volume (if available)
-vol_nl(20, 20, "PICE.MAR", subregion = 2, keep_net = TRUE)
+vol_nl(20, 20, "PICE.MAR", district = 2, keep_net = TRUE)
 
 # Tidyverse workflow example
 trees <- tibble::tibble(
   DBH = c(15, 20, 25, 30),
   height = c(15, 20, 21, 25),
   species = c("PICE.MAR", "ABIE.BAL","PICE.MAR", "BETU.PAP"),
-  subregion = c("Province", 2, 17, "Province")
+  district = c("Province", 2, 17, "Province")
 )
 
 trees |>
-  dplyr::mutate(vol = vol_nl(DBH, height, species, subregion)) |>
+  dplyr::mutate(vol = vol_nl(DBH, height, species, district)) |>
   tidyr::unnest(vol)
 
 }

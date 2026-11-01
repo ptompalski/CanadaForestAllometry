@@ -50,7 +50,7 @@ agb_component_proportions(
 
 - clamp_x:
 
-  Logical. Clamp x to \[x_min, x_max\] from Table 7 before evaluating.
+  Logical. Clamp x to `[x_min, x_max]` from Table 7 before evaluating.
 
 ## Value
 
@@ -110,11 +110,11 @@ agb_component_proportions(
 
 library(dplyr)
 #> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
+#> Attaching package: ‘dplyr’
+#> The following objects are masked from ‘package:stats’:
 #> 
 #>     filter, lag
-#> The following objects are masked from 'package:base':
+#> The following objects are masked from ‘package:base’:
 #> 
 #>     intersect, setdiff, setequal, union
 library(tidyr)

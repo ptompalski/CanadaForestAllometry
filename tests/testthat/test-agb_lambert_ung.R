@@ -25,7 +25,7 @@ lu_coefs <- function(species, model) {
 test_that("agb_lambert_ung returns expected columns and row counts", {
   ns <- lu_ns()
 
-  x <- ns$agb_lambert_ung(DBH = 20, species = "PICE.MAR", equation_set = "dbh")
+  x <- ns$agb_lambert_ung(DBH = 20, species = "PICE.MAR", variant = "dbh")
 
   expect_s3_class(x, "tbl_df")
   expect_equal(nrow(x), 1L)
@@ -55,7 +55,7 @@ test_that("agb_lambert_ung coerces non-character species input", {
     DBH = c(15, 20),
     height = c(12, 16),
     species = factor(c("PICE.MAR", "PICE.MAR")),
-    equation_set = "dbh_height"
+    variant = "dbh_height"
   )
 
   expect_s3_class(x, "tbl_df")
@@ -64,7 +64,7 @@ test_that("agb_lambert_ung coerces non-character species input", {
 })
 
 
-test_that("equation_set='auto' chooses DBH vs DBHHT per row based on height availability", {
+test_that("variant='auto' chooses DBH vs DBHHT per row based on height availability", {
   ns <- lu_ns()
 
   DBH <- c(22, 30, 18, 35)
@@ -75,7 +75,7 @@ test_that("equation_set='auto' chooses DBH vs DBHHT per row based on height avai
     height = height,
     species = rep("PICE.MAR", 4),
     keep_model_id = TRUE,
-    equation_set = "auto"
+    variant = "auto"
   )
 
   expect_equal(out$model_id, c("DBHHT", "DBHHT", "DBH", "DBHHT"))
@@ -97,7 +97,7 @@ test_that("output row order matches input order (no reordering across groups)", 
     height = trees$height,
     species = trees$species,
     keep_model_id = TRUE,
-    equation_set = "auto"
+    variant = "auto"
   )
 
   expect_equal(out$model_id, ifelse(is.na(trees$height), "DBH", "DBHHT"))
@@ -150,7 +150,7 @@ test_that("agb_lambert_ung matches manual DBH-only calculations (real coefficien
     DBH = DBH,
     height = NA_real_,
     species = spp,
-    equation_set = "dbh"
+    variant = "dbh"
   )
 
   expect_equal(got, expected, tolerance = 1e-10)
@@ -184,7 +184,7 @@ test_that("agb_lambert_ung matches manual DBH+height calculations (real coeffici
     DBH = DBH,
     height = H,
     species = spp,
-    equation_set = "dbh_height"
+    variant = "dbh_height"
   )
 
   expect_equal(got, expected, tolerance = 1e-10)
@@ -270,7 +270,7 @@ test_that("agb_lambert_ung checks species length against recycled common length"
 })
 
 
-test_that("agb_lambert_ung: equation_set dbh_height requires valid height", {
+test_that("agb_lambert_ung: variant dbh_height requires valid height", {
   ns <- lu_ns()
 
   expect_error(
@@ -278,7 +278,7 @@ test_that("agb_lambert_ung: equation_set dbh_height requires valid height", {
       DBH = c(10, 20),
       height = c(15, NA_real_),
       species = "PICE.MAR",
-      equation_set = "dbh_height"
+      variant = "dbh_height"
     ),
     "height.*must be provided"
   )

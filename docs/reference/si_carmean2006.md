@@ -15,22 +15,22 @@ si_carmean2006(age, height = NULL, si = NULL, species)
 
 - age:
 
-  Numeric vector. Breast-height age (years), with \`age \> 0\`.
+  Numeric vector. Breast-height age (years), with `age > 0`.
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 - species:
 
-  Character vector of NFI species codes: \`"PICE.MAR"\` (black spruce)
-  or \`"POPU.TRE"\` (trembling aspen).
+  Character vector of NFI species codes: `"PICE.MAR"` (black spruce) or
+  `"POPU.TRE"` (trembling aspen).
 
 ## Value
 
@@ -38,20 +38,20 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** black spruce (`PICE.MAR`) and
 trembling aspen (`POPU.TRE`).
 
-**Age definition note:** \`age\` is breast-height age (years). Curves
+**Age definition note:** `age` is breast-height age (years). Curves
 start at breast height (0 years at BH) and the model is constrained so
-that \`height = si\` exactly at breast-height age 50.
+that `height = si` exactly at breast-height age 50.
 
 **Base-age note:** site index is height (m) at 50 years breast-height
 age.
@@ -74,11 +74,11 @@ k^{Age/50}\right\]^{b_3 (S - 1.3)^{b_4}}\$\$ with \$\$k = 1 -
 the model has no closed-form inverse in \\S\\; when predicting site
 index the equation is solved numerically.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
 ## References
 

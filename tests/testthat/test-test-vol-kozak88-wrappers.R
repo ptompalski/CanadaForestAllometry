@@ -13,13 +13,13 @@ test_that("vol_* kozak88 wrappers return expected shape and non-negative volumes
     DBH = 20,
     height = 20,
     species = ab_sp,
-    subregion = "Province"
+    natural_subregion = "Province"
   )
   mb <- vol_klos2007(
     DBH = 20,
     height = 20,
     species = mb_sp,
-    subregion = "Province"
+    ecozone = "Province"
   )
   sk <- vol_galbella94(DBH = 20, height = 20, species = sk_sp)
 
@@ -144,7 +144,7 @@ test_that("DBH below mindbh returns zero merchantable but non-zero total", {
     DBH = dbh,
     height = 20,
     species = sp,
-    subregion = "Province"
+    natural_subregion = "Province"
   )
 
   expect_equal(out$vol_merchantable[[1]], 0)
@@ -179,7 +179,7 @@ test_that("AB subregion_map UB -> LBH behaves consistently when UB is used", {
     DBH = 25,
     height = 20,
     species = "PICE.MAR",
-    subregion = "UB"
+    natural_subregion = "UB"
   )
   expect_s3_class(out, "tbl_df")
   expect_named(out, c("vol_total", "vol_merchantable"))
@@ -230,7 +230,7 @@ test_that("Kozak88 wrappers compute total volume for small trees (below mindbh)"
     DBH = dbh_small,
     height = 15,
     species = sp,
-    subregion = "Province"
+    natural_subregion = "Province"
   )
 
   # merchantable volume must be zero

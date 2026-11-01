@@ -61,6 +61,29 @@ tolerance (e.g. ±15–25%, chosen with judgment) and consistent monotonic behav
    source itself, or your reading of it, disagrees with the rest of the package. The
    two are complementary — do both.
 
+## DBH–height (`hd_`) plausibility checks
+
+In addition to the general rules, `hd_` models should be checked for:
+
+- **Monotone increasing in DBH** over the applicability range (per species).
+- **Breast-height offset:** height → 1.3 m (or 1.37 m) as DBH → 0 when the
+  model form implies it; DBH is in cm, not mm.
+- **Plausible asymptote / maximum height** for the species and region.
+- **Expected direction for stand predictors** (e.g. height increases with
+  `HDOM`; the sign for `BA`/`TPH` follows the source's interpretation).
+- **Population prediction only:** for mixed-effects sources, predictions use
+  the fixed effects with random effects = 0; tests must not use variance
+  components.
+- **Never** validate against (or substitute) an inverted DBH-from-height
+  regression.
+- **Cross-model comparison** for overlapping species/regions (e.g. Alberta vs
+  Ontario boreal species; Québec natural vs plantation models): report
+  discrepancies, do not assert agreement.
+
+Fidelity tests should also include the source's worked example(s) where the
+source provides them, including any species mapping or back-transformation
+step.
+
 ## Coverage
 
 Target **100% line coverage** of the new function and its internal helpers. Add a

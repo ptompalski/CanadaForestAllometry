@@ -101,9 +101,9 @@ Additional columns are included when `include_props` and/or
 
 The function is vectorized over all inputs and is designed to work
 naturally inside
-[`dplyr::mutate()`](https://rdrr.io/pkg/dplyr/man/mutate.html)
+[`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)
 (typically followed by
-[`tidyr::unnest()`](https://rdrr.io/pkg/tidyr/man/unnest.html)).
+[`tidyr::unnest()`](https://tidyr.tidyverse.org/reference/unnest.html)).
 
 Proportion caps (Table 7). The Table 6 proportion models can yield
 extreme values when extrapolated beyond the calibration range. This

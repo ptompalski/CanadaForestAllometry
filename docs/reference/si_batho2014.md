@@ -19,17 +19,17 @@ si_batho2014(age, height = NULL, si = NULL, species)
 
 - height:
 
-  Optional numeric vector. Top height (m). If provided, \`si\` is
+  Optional numeric vector. Top height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 - species:
 
-  Character vector of NFI species codes (\`"PINU.CON"\`).
+  Character vector of NFI species codes (`"PINU.CON"`).
 
 ## Value
 
@@ -37,18 +37,18 @@ A tibble with columns:
 
 - height:
 
-  Predicted top height (m), returned when input \`si\` is provided.
+  Predicted top height (m), returned when input `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when input \`height\` is provided.
+  Predicted site index (m), returned when input `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** lodgepole pine, NFI code `PINU.CON`.
 
-**Age definition note:** \`age\` is breast-height age (years). The
-height curve passes through \\(t_0, H_0) = (0.5\\\mathrm{yr},
+**Age definition note:** `age` is breast-height age (years). The height
+curve passes through \\(t_0, H_0) = (0.5\\\mathrm{yr},
 1.3\\\mathrm{m})\\; the model is defined only for post-breast-height
 growth.
 
@@ -63,11 +63,11 @@ constant \\c = 0.8297\\ (Batho and García 2014, Eqs. 3–4). The site
 parameter \\q\\ has no closed form and is solved numerically from an
 observed (age, height) pair (Eq. 6).
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
 ## References
 

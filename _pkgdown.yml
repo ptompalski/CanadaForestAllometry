@@ -34,6 +34,14 @@ reference:
       - starts_with("si_")
       - starts_with("ytbh_")
 
+  - title: DBH-height models
+    desc: Functions predicting tree height from DBH, and model discovery helpers.
+    contents:
+      - hd
+      - starts_with("hd_")
+      - get_hd_model_info
+      - find_hd_models
+
   - title: Volume conversions
     desc: Functions convert volume to biomass, total volume to merchantable, or calculate AGB component proportions.
     contents:

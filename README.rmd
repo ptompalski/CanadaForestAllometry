@@ -55,6 +55,7 @@ Full documentation is available at https://ptompalski.github.io/CanadaForestAllo
 - Estimate aboveground biomass (AGB): [Aboveground biomass models](https://ptompalski.github.io/CanadaForestAllometry/articles/Tree-Aboveground-Biomass-Models.html)
 - Convert volume to biomass: [National volume-to-biomass conversions models](https://ptompalski.github.io/CanadaForestAllometry/articles/Volume-to-biomass.html)
 - Estimate site index and site productivity: [Site index models](https://ptompalski.github.io/CanadaForestAllometry/articles/Site-Index-Models.html)
+- Estimate tree height from DBH (height–diameter models for AB, BC, ON, QC, and the Maritimes), with `hd()` selecting a suitable model based on species, jurisdiction, and available predictors: [Height–diameter models](https://ptompalski.github.io/CanadaForestAllometry/articles/Height-Diameter-Models.html)
 - Convert total volume to merchantable volume
 - Apply simple growth models to estimate changes in attributes over time
 

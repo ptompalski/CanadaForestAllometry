@@ -3,14 +3,14 @@ testthat::test_that("si_lundgrendolid1970 predicts height from si for both model
     age = c(20, 40, 60),
     si = c(12, 18, 24),
     species = c("PICE.MAR", "LARI.LAR", "BETU.PAP"),
-    model = "exponential_monomolecular"
+    variant = "exponential_monomolecular"
   )
 
   out_mono <- CanadaForestAllometry::si_lundgrendolid1970(
     age = c(20, 40, 60),
     si = c(12, 18, 24),
     species = c("PICE.MAR", "LARI.LAR", "BETU.PAP"),
-    model = "monomolecular"
+    variant = "monomolecular"
   )
 
   testthat::expect_s3_class(out_exp, "tbl_df")
@@ -31,14 +31,14 @@ testthat::test_that("si_lundgrendolid1970 predicts si from height for both model
     age = c(20, 40, 60),
     height = c(8, 16, 22),
     species = c("PICE.MAR", "LARI.LAR", "BETU.PAP"),
-    model = "exponential_monomolecular"
+    variant = "exponential_monomolecular"
   )
 
   out_mono <- CanadaForestAllometry::si_lundgrendolid1970(
     age = c(20, 40, 60),
     height = c(8, 16, 22),
     species = c("PICE.MAR", "LARI.LAR", "BETU.PAP"),
-    model = "monomolecular"
+    variant = "monomolecular"
   )
 
   testthat::expect_s3_class(out_exp, "tbl_df")
@@ -83,7 +83,7 @@ testthat::test_that("si_lundgrendolid1970 matches manual equation evaluation", {
     age = age,
     si = si_m,
     species = "PICE.MAR",
-    model = "exponential_monomolecular"
+    variant = "exponential_monomolecular"
   )
   testthat::expect_equal(h_out_exp$height[[1]], h_m_exp_expected, tolerance = 1e-10)
 
@@ -97,7 +97,7 @@ testthat::test_that("si_lundgrendolid1970 matches manual equation evaluation", {
     age = age,
     si = si_m,
     species = "PICE.MAR",
-    model = "monomolecular"
+    variant = "monomolecular"
   )
   testthat::expect_equal(h_out_mono$height[[1]], h_m_mono_expected, tolerance = 1e-10)
 })
@@ -151,7 +151,7 @@ testthat::test_that("si_lundgrendolid1970 validates model choice", {
       age = 20,
       si = 15,
       species = "PICE.MAR",
-      model = "bad_model"
+      variant = "bad_model"
     ),
     "must be one of",
     ignore.case = TRUE
@@ -163,7 +163,7 @@ testthat::test_that("si_lundgrendolid1970 validates missing parameters in monomo
       age = 25,
       si = 15,
       species = "NOPE.SPP",
-      model = "monomolecular"
+      variant = "monomolecular"
     ),
     "No LundgrenDolid1970",
     ignore.case = TRUE
@@ -175,7 +175,7 @@ testthat::test_that("si_lundgrendolid1970 catches invalid denominator in monomol
       age = 1,
       height = 15,
       species = "PINU.BAN",
-      model = "monomolecular"
+      variant = "monomolecular"
     ),
     "Invalid denominator generated",
     ignore.case = TRUE
@@ -188,7 +188,7 @@ testthat::test_that("si_lundgrendolid1970 catches non-finite site-index predicti
       age = 20,
       height = 1e308,
       species = "PICE.MAR",
-      model = "exponential_monomolecular"
+      variant = "exponential_monomolecular"
     ),
     "Non-finite site index prediction",
     ignore.case = TRUE
@@ -201,7 +201,7 @@ testthat::test_that("si_lundgrendolid1970 catches negative height predictions", 
       age = 1,
       si = 10,
       species = "PINU.BAN",
-      model = "monomolecular"
+      variant = "monomolecular"
     ),
     "Negative height prediction",
     ignore.case = TRUE
@@ -214,7 +214,7 @@ testthat::test_that("si_lundgrendolid1970 catches non-finite height predictions"
       age = 20,
       si = 1e308,
       species = "PICE.MAR",
-      model = "exponential_monomolecular"
+      variant = "exponential_monomolecular"
     ),
     "Non-finite height prediction",
     ignore.case = TRUE
@@ -227,7 +227,7 @@ testthat::test_that("si_lundgrendolid1970 emits white spruce caution message onc
       age = 40,
       si = 15,
       species = "PICE.GLA",
-      model = "exponential_monomolecular"
+      variant = "exponential_monomolecular"
     )
   )
   msgs_exp_2 <- testthat::capture_messages(
@@ -235,7 +235,7 @@ testthat::test_that("si_lundgrendolid1970 emits white spruce caution message onc
       age = 40,
       si = 15,
       species = "PICE.GLA",
-      model = "exponential_monomolecular"
+      variant = "exponential_monomolecular"
     )
   )
 
@@ -250,7 +250,7 @@ testthat::test_that("si_lundgrendolid1970 emits white spruce caution message onc
       age = 40,
       si = 15,
       species = "PICE.GLA",
-      model = "monomolecular"
+      variant = "monomolecular"
     )
   )
   msgs_mono_2 <- testthat::capture_messages(
@@ -258,7 +258,7 @@ testthat::test_that("si_lundgrendolid1970 emits white spruce caution message onc
       age = 40,
       si = 15,
       species = "PICE.GLA",
-      model = "monomolecular"
+      variant = "monomolecular"
     )
   )
 

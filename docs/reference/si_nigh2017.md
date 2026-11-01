@@ -19,13 +19,13 @@ si_nigh2017(age, height = NULL, si = NULL)
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted. The paper's
+  height). If provided, `height` is predicted. The paper's
   SI-to-parameter conversion is intended for site index in the range
   5–30 m.
 
@@ -35,17 +35,17 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** lodgepole pine, NFI code `PINU.CON`.
 
-**Age definition note:** \`age\` is breast-height age (BHA, years).
+**Age definition note:** `age` is breast-height age (BHA, years).
 
 **Base-age note:** site index is site height at breast-height age 50.
 
@@ -60,21 +60,21 @@ The g-GADA localizes on the asymptote-like parameter \\\beta_0\\, not
 directly on site index. This implementation follows the paper's
 recommended base-age-50 workflow:
 
-- When \`si\` is supplied, \\\beta_0\\ is obtained from the paper's
-  cubic SI-to-\\\beta_0\\ conversion (Discussion, p. 18), then height is
+- When `si` is supplied, \\\beta_0\\ is obtained from the paper's cubic
+  SI-to-\\\beta_0\\ conversion (Discussion, p. 18), then height is
   evaluated with eq. 4. The cubic is valid for site index 5–30 m and has
-  a stated maximum \\\beta_0\\ error of 16 cm, so \`height\` equals
-  \`si\` at BHA 50 only to within that tolerance (not exactly).
+  a stated maximum \\\beta_0\\ error of 16 cm, so `height` equals `si`
+  at BHA 50 only to within that tolerance (not exactly).
 
-- When \`height\` is supplied, \\\beta_0\\ is calibrated numerically to
+- When `height` is supplied, \\\beta_0\\ is calibrated numerically to
   the (BHA, height) pair, then site index is the height predicted at BHA
   50.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
 ## References
 

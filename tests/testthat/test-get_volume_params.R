@@ -41,7 +41,7 @@ testthat::test_that("get_volume_params applies Province filter when column exist
     dplyr::filter(!is.na(.data$Province), !is.na(.data$Species)) |>
     dplyr::slice(1)
 
-  testthat::skip_if(nrow(row) == 0, "No species/province rows available.")
+  testthat::skip_if(nrow(row) == 0, "No species/jurisdiction rows available.")
 
   spp <- row$Species[[1]]
   prov <- row$Province[[1]]
@@ -49,7 +49,7 @@ testthat::test_that("get_volume_params applies Province filter when column exist
   out <- CanadaForestAllometry::get_volume_params(
     model_id = model_with_prov,
     species = spp,
-    province = prov,
+    jurisdiction = prov,
     strict = FALSE
   )
 
@@ -117,21 +117,21 @@ testthat::test_that("strict = FALSE returns empty tibble with same columns when 
   testthat::expect_identical(names(out), names(tibble::as_tibble(p)))
 })
 
-testthat::test_that("strict = TRUE includes province/subregion context in error message", {
+testthat::test_that("strict = TRUE includes jurisdiction/subregion context in error message", {
   testthat::expect_error(
     CanadaForestAllometry::get_volume_params(
       model_id = "national_ung_dbh",
       species = "PICE.SPP",
-      province = "BC",
+      jurisdiction = "BC",
       subregion = "CWH",
       strict = TRUE
     ),
-    "No parameters found for model_id='national_ung_dbh'.*province='BC'.*subregion='CWH'",
+    "No parameters found for model_id='national_ung_dbh'.*jurisdiction='BC'.*subregion='CWH'",
     perl = TRUE
   )
 })
 
-testthat::test_that("strict = TRUE message omits empty province/subregion context", {
+testthat::test_that("strict = TRUE message omits empty jurisdiction/subregion context", {
   testthat::expect_error(
     CanadaForestAllometry::get_volume_params(
       model_id = "national_ung_dbh",
@@ -203,7 +203,7 @@ testthat::test_that("variety code does not trigger GENUS.SPP fallback", {
   testthat::expect_equal(nrow(out), 0L)
 })
 
-testthat::test_that("get_volume_params applies province filter when provided and Province column exists", {
+testthat::test_that("get_volume_params applies jurisdiction filter when provided and Province column exists", {
   fake_reg <- tibble::tibble(
     model_id = "m_prov",
     params_key = "k_prov"
@@ -219,7 +219,7 @@ testthat::test_that("get_volume_params applies province filter when provided and
       CanadaForestAllometry::get_volume_params(
         model_id = "m_prov",
         species = "PICE.GLA",
-        province = "AB",
+        jurisdiction = "AB",
         strict = FALSE
       )
     },

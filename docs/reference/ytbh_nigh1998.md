@@ -17,12 +17,12 @@ ytbh_nigh1998(si = NULL, ytbh = NULL)
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`ytbh\` is predicted.
+  height). If provided, `ytbh` is predicted.
 
 - ytbh:
 
   Optional numeric vector. Years to breast height (years). If provided,
-  \`si\` is predicted.
+  `si` is predicted.
 
 ## Value
 
@@ -30,22 +30,22 @@ A tibble with a single column:
 
 - ytbh:
 
-  Predicted years to breast height (years), returned when \`si\` is
+  Predicted years to breast height (years), returned when `si` is
   provided.
 
 - si:
 
-  Predicted site index (m), returned when \`ytbh\` is provided.
+  Predicted site index (m), returned when `ytbh` is provided.
 
 ## Details
 
 The source equation (eq. 5) is: \$\$YTBH = 446.6 \times SI^{-1.432}\$\$
 
-Provide exactly one of \`si\` or \`ytbh\`:
+Provide exactly one of `si` or `ytbh`:
 
-- If \`si\` is provided, the function predicts \`ytbh\`.
+- If `si` is provided, the function predicts `ytbh`.
 
-- If \`ytbh\` is provided, the function predicts \`si\` by inverting the
+- If `ytbh` is provided, the function predicts `si` by inverting the
   equation: \\SI = (YTBH / 446.6)^{1 / -1.432}\\.
 
 ## References

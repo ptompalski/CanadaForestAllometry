@@ -33,14 +33,14 @@ A tibble with one column:
 ## Details
 
 The model form (eq. 4) is age-specific: \$\$SI = 1.3 + e^{b_1(A)} \times
-GI^{b_2(A)}\$\$ where \`A\` is breast-height age and \`GI\` is the
-growth intercept (cm/year). Following the source, parameter \\b_1\\ was
-fitted on the log scale and enters the model as \\e^{b_1}\\ (Ratkowsky
-transformation); the tabulated \\b_1\\ values (stored as \`b1_log\`) are
+GI^{b_2(A)}\$\$ where `A` is breast-height age and `GI` is the growth
+intercept (cm/year). Following the source, parameter \\b_1\\ was fitted
+on the log scale and enters the model as \\e^{b_1}\\ (Ratkowsky
+transformation); the tabulated \\b_1\\ values (stored as `b1_log`) are
 therefore exponentiated internally.
 
 Coefficients are tabulated (Table 3) for breast-height ages 5, 10, 20,
-30, 40, and 50; \`age\` must be one of these values.
+30, 40, and 50; `age` must be one of these values.
 
 ## References
 

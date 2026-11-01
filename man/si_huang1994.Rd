@@ -4,7 +4,7 @@
 \alias{si_huang1994}
 \title{Huang et al. (1994) site index model for major Alberta tree species}
 \usage{
-si_huang1994(age, height = NULL, si = NULL, species, subregion = "All")
+si_huang1994(age, height = NULL, si = NULL, species, natural_subregion = "All")
 }
 \arguments{
 \item{age}{Numeric vector. Breast-height age (years).}
@@ -17,7 +17,7 @@ breast height). If provided, \code{height} is predicted.}
 
 \item{species}{Character vector of NFI species codes.}
 
-\item{subregion}{Character vector. Alberta natural-region grouping used by
+\item{natural_subregion}{Character vector. Alberta natural-region grouping used by
 Huang et al. (1994). Defaults to \code{"All"} (provincial parameter set).}
 }
 \value{
@@ -60,7 +60,7 @@ si_huang1994(
   age = c(20, 35, 50),
   si = c(12, 16, 20),
   species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-  subregion = c("LF", "UF", "CM")
+  natural_subregion = c("LF", "UF", "CM")
 )
 
 # Pipe example: predict SI from a tibble of age/height/species inputs
@@ -74,7 +74,7 @@ dplyr::tibble(
       age = age,
       height = height,
       species = species,
-      subregion = "All"
+      natural_subregion = "All"
     )
   ) |>
   tidyr::unnest(si)

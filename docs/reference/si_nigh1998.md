@@ -18,13 +18,13 @@ si_nigh1998(age, height = NULL, si = NULL)
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 ## Value
 
@@ -32,37 +32,37 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** western hemlock, NFI code
 `TSUG.HET`.
 
-**Age definition note:** \`age\` is breast-height age (BHA, years). The
-model is conditioned to return \`height = si\` exactly at BHA 50.
+**Age definition note:** `age` is breast-height age (BHA, years). The
+model is conditioned to return `height = si` exactly at BHA 50.
 
 **Base-age note:** site index is site height at breast-height age 50.
 
 The fitted model (eq. 6) is the log-logistic form \$\$H = 1.3 + (SI -
 1.3) \times \frac{1 + e^{b_0 + b_1 \ln(49.5) + b_2 \ln(SI - 1.3)}} {1 +
 e^{b_0 + b_1 \ln(A - 0.5) + b_2 \ln(SI - 1.3)}}\$\$ with \\b_0 =
-8.998\\, \\b_1 = -1.434\\, \\b_2 = -1.051\\, where \`A\` is
-breast-height age (years).
+8.998\\, \\b_1 = -1.434\\, \\b_2 = -1.051\\, where `A` is breast-height
+age (years).
 
 Because \\SI\\ appears both as a multiplier and inside a logarithm, the
 equation has no closed-form inverse in \\SI\\; when predicting site
 index the equation is solved numerically.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
 ## References
 

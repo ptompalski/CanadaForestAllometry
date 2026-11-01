@@ -6,7 +6,7 @@ polymorphic site-index equations from Huang et al. (1994) for Alberta.
 ## Usage
 
 ``` r
-si_huang1994(age, height = NULL, si = NULL, species, subregion = "All")
+si_huang1994(age, height = NULL, si = NULL, species, natural_subregion = "All")
 ```
 
 ## Arguments
@@ -17,22 +17,22 @@ si_huang1994(age, height = NULL, si = NULL, species, subregion = "All")
 
 - height:
 
-  Optional numeric vector. Top height (m). If provided, \`si\` is
+  Optional numeric vector. Top height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 - species:
 
   Character vector of NFI species codes.
 
-- subregion:
+- natural_subregion:
 
   Character vector. Alberta natural-region grouping used by Huang et al.
-  (1994). Defaults to \`"All"\` (provincial parameter set).
+  (1994). Defaults to `"All"` (provincial parameter set).
 
 ## Value
 
@@ -40,27 +40,27 @@ A tibble with columns:
 
 - height:
 
-  Predicted top height (m), returned when input \`si\` is provided.
+  Predicted top height (m), returned when input `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when input \`height\` is provided.
+  Predicted site index (m), returned when input `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):**
 `PICE.GLA, PINU.CON, POPU.TRE, PICE.MAR, PINU.BAN, POPU.BAL, ABIE.BAL, PSEU.MEN`.
 
-**Age definition note:** \`age\` is breast-height age (years).
+**Age definition note:** `age` is breast-height age (years).
 
 **Base-age note:** site index is referenced to 50 years breast-height
 age for all species in this implementation.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
 ## References
 
@@ -89,7 +89,7 @@ si_huang1994(
   age = c(20, 35, 50),
   si = c(12, 16, 20),
   species = c("PICE.GLA", "PINU.CON", "POPU.TRE"),
-  subregion = c("LF", "UF", "CM")
+  natural_subregion = c("LF", "UF", "CM")
 )
 #> # A tibble: 3 × 1
 #>   height
@@ -109,7 +109,7 @@ dplyr::tibble(
       age = age,
       height = height,
       species = species,
-      subregion = "All"
+      natural_subregion = "All"
     )
   ) |>
   tidyr::unnest(si)

@@ -20,13 +20,13 @@ si_nigh1997(age, height = NULL, si = NULL)
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 ## Value
 
@@ -34,18 +34,18 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
 **Model scope (species coverage):** Sitka spruce, NFI code `PICE.SIT`.
 
-**Age definition note:** \`age\` is breast-height age (BHA, years). The
-model is conditioned to return \`height = si\` exactly at BHA 50.
+**Age definition note:** `age` is breast-height age (BHA, years). The
+model is conditioned to return `height = si` exactly at BHA 50.
 
 **Base-age note:** site index is site height at breast-height age 50.
 
@@ -59,11 +59,11 @@ Because \\SI\\ appears both as a multiplier and inside a logarithm, the
 equation has no closed-form inverse in \\SI\\; when predicting site
 index the equation is solved numerically.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
 ## References
 

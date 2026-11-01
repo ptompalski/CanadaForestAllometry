@@ -10,7 +10,7 @@
 - **Citation:** <full citation>
 - **BibTeX key:** @<Author><Year>
 - **Document in `sources/`:** `sources/<file>.pdf`
-- **Model family:** <vol | si | agb | ytbh>
+- **Model family:** <vol | si | agb | ytbh | hd>
 - **Target function:** `<fn_name>`
 
 ## Scope / domain of applicability
@@ -39,6 +39,39 @@ Transcribe every equation exactly. Note direction(s) supported.
 
 - **Direction(s):** <predict height from age+SI; invert to predict SI from age+height; ...>
 - **Notes on form:** <piecewise? per-species form differences? adjustment terms?>
+
+## DBH–height (hd) models only
+
+Delete this section for other families.
+
+- **Height convention:** <total height | height above breast height>;
+  breast-height offset <1.3 | 1.37 m> (where it enters the formula)
+- **Fit type:** <OLS/NLS fixed-effects | nonlinear mixed | linear mixed>
+- **Coefficients used for population prediction:** <Table X fixed fit | Table Y
+  mixed fixed effects with u = 0>; source recommendation: <quote + page, or
+  "none stated → fixed-effects fit by default">
+- **Random-effects structure:** <which parameters carry random effects; grouping
+  level (plot/stand/source); residual correlation>
+- **Variance components transcribed:** <Table/page; columns in CSV> (not used in v1)
+- **Back-transformation:** <none | exp(...) with/without correction, as source>
+- **Variants and how they are selected:** <inferred from supplied predictors
+  (hierarchy) | explicit `variant` arg (disjoint inputs)>
+- **Source species mappings:** <e.g. PW, PF → PL (Table 1, p. 4) | none>
+
+### Predictor table
+
+One row per argument (excluding `species`); becomes `.hd_model_predictors()`.
+
+| Arg | Source name | Level | Units | Required | Definition (verbatim) | Locator |
+|-----|-------------|-------|-------|----------|-----------------------|---------|
+| DBH | DBH | tree | cm | TRUE | <...> | p. X |
+| HDOM | <...> | plot | m | <TRUE/FALSE> | <top-height definition> | p. X |
+| BA | <...> | plot | m2/ha | <...> | <threshold; all-species vs species-specific> | p. X |
+
+### Applicability ranges
+
+<per species / variant: DBH, height and stand-predictor ranges, Table/page, or
+"not published">
 
 ## Parameters
 

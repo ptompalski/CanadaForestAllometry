@@ -99,6 +99,38 @@ dominant failure mode here.
 - Record the **domain of applicability**: species covered, region/jurisdiction,
   valid DBH/height/age ranges, and any stated caveats.
 
+## DBH–height (`hd_`) models — extra items to record
+
+- **Height convention:** total height vs above-breast-height; breast-height
+  offset (1.3 or 1.37 m) and where it appears in the formula.
+- **Every predictor**, one row each in the spec's predictor table: name in the
+  source, package argument name (AGENTS.md case rule: acronyms upper case —
+  `DBH`, `BA`, `TPH`, `HDOM`, `QMD`, `BAL`, `CCF`; words lower case; site index
+  `si`; region/class args use model-specific descriptive names such as
+  `natural_subregion`, `ecoregion`, `bec_zone`), level (tree/plot), units, and
+  the source's **definition verbatim with page** (size threshold, all-species
+  vs species-specific, top-height definition). If the source quantity differs
+  materially from the shared meaning, use a distinct name (e.g. `HDC`, not
+  `HDOM`).
+- **Fit type:** fixed-effects vs mixed. For mixed models record which
+  parameters carry random effects and **transcribe the variance components**
+  (var–cov of random effects, residual variance, correlation structure) even
+  though v1 predicts at the population level only (u = 0).
+- **Population coefficients:** if both a fixed-effects fit and mixed-model
+  fixed effects are published, record both and which one the source
+  recommends for prediction without local data; if it gives no
+  recommendation, the default is the fixed-effects (non-mixed) fit — confirm
+  at human review.
+- **Back-transformation** for log-scale models, exactly as the source applies
+  it (with or without a bias correction).
+- **Applicability ranges** per species/variant (DBH, height, stand
+  predictors) → `*_min` / `*_max` columns in the params CSV.
+- **"ns" / zero coefficients:** flag any coefficient reported as not
+  significant, set to zero, or dropped for some species; record exactly what
+  the table shows.
+- **Source species mappings** (e.g. minor species assigned to a major
+  species' equation): record verbatim with page; apply only these.
+
 ## Species codes
 
 - Map the source's species names to NFI codes (`GENUS.SPEC`, e.g. `PICE.MAR`).

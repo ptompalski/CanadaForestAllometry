@@ -1,10 +1,10 @@
-testthat::test_that("Ung2009 returns expected columns for model='both'", {
+testthat::test_that("Ung2009 returns expected columns for variant='both'", {
   out <- CanadaForestAllometry::Ung2009(
     species = "ABIE.BAL",
     age = c(10, 20, 30),
     GDD = 1500,
-    PREC = 800,
-    model = "both"
+    MAP = 800,
+    variant = "both"
   )
 
   testthat::expect_s3_class(out, "tbl_df")
@@ -21,15 +21,15 @@ testthat::test_that("Ung2009 supports Nat1 and Nat2 output modes", {
     species = "ABIE.BAL",
     age = 15:17,
     GDD = 1200,
-    PREC = 700,
-    model = "Nat1"
+    MAP = 700,
+    variant = "Nat1"
   )
   o2 <- CanadaForestAllometry::Ung2009(
     species = "ABIE.BAL",
     age = 15:17,
     GDD = 1200,
-    PREC = 700,
-    model = "Nat2"
+    MAP = 700,
+    variant = "Nat2"
   )
 
   testthat::expect_identical(names(o1), c("age", "H", "BA", "V"))
@@ -42,7 +42,7 @@ testthat::test_that("Ung2009 validates inputs", {
       species = "ABIE.BAL",
       age = c(0, 5),
       GDD = 1500,
-      PREC = 800
+      MAP = 800
     ),
     "Age must be greater than 0",
     fixed = TRUE
@@ -53,9 +53,9 @@ testthat::test_that("Ung2009 validates inputs", {
       species = "ABIE.BAL",
       age = 1:5,
       GDD = "bad",
-      PREC = 800
+      MAP = 800
     ),
-    "GDD and PREC must be numeric",
+    "GDD and MAP must be numeric",
     fixed = TRUE
   )
 
@@ -64,7 +64,7 @@ testthat::test_that("Ung2009 validates inputs", {
       species = 1,
       age = 1:5,
       GDD = 1500,
-      PREC = 800
+      MAP = 800
     ),
     "Species must be a character string",
     fixed = TRUE
@@ -75,7 +75,7 @@ testthat::test_that("Ung2009 validates inputs", {
       species = "NOT.A.SPP",
       age = 1:5,
       GDD = 1500,
-      PREC = 800
+      MAP = 800
     ),
     "Invalid species",
     fixed = TRUE

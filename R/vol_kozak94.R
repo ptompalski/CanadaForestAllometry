@@ -8,7 +8,7 @@
 #' @param DBH Numeric vector of diameter at breast height (cm).
 #' @param height Numeric vector of total tree height (m).
 #' @param species Character vector of species codes (e.g. "TSUG.HET").
-#' @param BEC_zone Character vector of BEC zone codes (e.g., "CWH", "ICH", "IDF").
+#' @param bec_zone Character vector of BEC zone codes (e.g., "CWH", "ICH", "IDF").
 #'
 #' @details
 #' Kozak (1994) function parameters are available for the following species and
@@ -40,7 +40,7 @@
 #'   DBH = 35,
 #'   height = 25,
 #'   species = "PSEU.MEN",
-#'   BEC_zone = "CWH"
+#'   bec_zone = "CWH"
 #' )
 #'
 #' # Multiple trees, vectorized
@@ -48,21 +48,21 @@
 #'   DBH = c(22, 30, 45),
 #'   height = c(18, 24, 33),
 #'   species = c("PSEU.MEN", "THUJ.PLI", "POPU.BAL"),
-#'   BEC_zone = c("CWH", "ICH", "SBS")
+#'   bec_zone = c("CWH", "ICH", "SBS")
 #' )
 #'
 #' @return A tibble with volumes (m^3): total, merchantable.
 #' @export
-vol_kozak94 <- function(DBH, height, species, BEC_zone) {
+vol_kozak94 <- function(DBH, height, species, bec_zone) {
   n <- length(DBH)
-  if (length(height) != n || length(species) != n || length(BEC_zone) != n) {
+  if (length(height) != n || length(species) != n || length(bec_zone) != n) {
     rlang::abort(
-      "DBH, height, species, and BEC_zone must have the same length."
+      "DBH, height, species, and bec_zone must have the same length."
     )
   }
 
   species_std <- standardize_species_code(species)
-  bec_std <- stringr::str_squish(stringr::str_to_upper(BEC_zone))
+  bec_std <- stringr::str_squish(stringr::str_to_upper(bec_zone))
 
   # ---- constants from original Kozak94 implementation ----
   SECLENGTH <- 1
@@ -77,7 +77,7 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
       i,
       " (species=",
       species_std[i],
-      ", BEC_zone=",
+      ", bec_zone=",
       bec_std[i],
       ", DBH_cm=",
       DBH[i],
@@ -217,7 +217,7 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
     hm1
   }
 
-  # ---- cache merch criteria once per species x BEC_zone ----
+  # ---- cache merch criteria once per species x bec_zone ----
   # Use `.data$...` inside dplyr verbs to avoid R CMD check NSE notes.
   mc_cache <- dplyr::tibble(
     .species_key = species_std,
@@ -231,7 +231,7 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
         ~ get_merch_criteria(
           "BC",
           species = .x,
-          BEC_zone = .y,
+          bec_zone = .y,
           verbose = FALSE
         ) |>
           dplyr::slice(1)
@@ -307,7 +307,7 @@ vol_kozak94 <- function(DBH, height, species, BEC_zone) {
     )
 
     if (nrow(p) == 0) {
-      abort_i(i, "No Kozak94 parameters found for this species x BEC_zone.")
+      abort_i(i, "No Kozak94 parameters found for this species x bec_zone.")
     }
     if (nrow(p) > 1) {
       abort_i(

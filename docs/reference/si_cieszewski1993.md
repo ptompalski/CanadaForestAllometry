@@ -20,13 +20,13 @@ si_cieszewski1993(age, height = NULL, si = NULL, species)
 
 - height:
 
-  Optional numeric vector. Site height (m). If provided, \`si\` is
+  Optional numeric vector. Site height (m). If provided, `si` is
   predicted.
 
 - si:
 
   Optional numeric vector. Site index (m, base age 50 years at breast
-  height). If provided, \`height\` is predicted.
+  height). If provided, `height` is predicted.
 
 - species:
 
@@ -38,11 +38,11 @@ A tibble with a single column:
 
 - height:
 
-  Predicted site height (m), returned when \`si\` is provided.
+  Predicted site height (m), returned when `si` is provided.
 
 - si:
 
-  Predicted site index (m), returned when \`height\` is provided.
+  Predicted site index (m), returned when `height` is provided.
 
 ## Details
 
@@ -53,9 +53,9 @@ codes `ABIE.BAL` (balsam fir), `POPU.BAL` (balsam poplar), `PICE.MAR`
 (tamarack), `BETU.PAP` (white birch), `ULMU.AME` (white elm), and
 `PICE.GLA` (white spruce).
 
-**Age definition note:** \`age\` is breast-height age (years). Curves
-pass through breast height (1.3 m) at age 0; the model is defined only
-for post-breast-height growth.
+**Age definition note:** `age` is breast-height age (years). Curves pass
+through breast height (1.3 m) at age 0; the model is defined only for
+post-breast-height growth.
 
 **Base-age note:** site index is site height at breast-height age 50.
 
@@ -69,11 +69,11 @@ reference age equals the base age (50), both directions are closed form:
 at \\t = 50\\ the curve returns \\H = SI\\ exactly, and site index is
 recovered analytically from an observed (age, height) pair.
 
-Provide exactly one of \`height\` or \`si\`:
+Provide exactly one of `height` or `si`:
 
-- If \`si\` is provided, the function predicts \`height\`.
+- If `si` is provided, the function predicts `height`.
 
-- If \`height\` is provided, the function predicts \`si\`.
+- If `height` is provided, the function predicts `si`.
 
 ## References
 

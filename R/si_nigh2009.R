@@ -19,10 +19,10 @@
 #'        {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2 \ln(SI - 1.3)}}}
 #' differing only in their coefficients:
 #' \describe{
-#'   \item{`model = 1`}{Base log-logistic fit (Table 2). Default.}
-#'   \item{`model = 2`}{Operational form of the mixed model. Recommended by the
+#'   \item{`variant = 1`}{Base log-logistic fit (Table 2). Default.}
+#'   \item{`variant = 2`}{Operational form of the mixed model. Recommended by the
 #'     authors when the biogeoclimatic zone is unknown or is not ICH/IDF/SBS.}
-#'   \item{`model = 3`}{Zonal indicator-variable model. Only \eqn{a_1} carries a
+#'   \item{`variant = 3`}{Zonal indicator-variable model. Only \eqn{a_1} carries a
 #'     significant zone effect (SBS vs. ICH/IDF). Supply `bec_zone` (one of
 #'     `"ICH"`, `"IDF"`, `"SBS"`); recommended for those zones.}
 #' }
@@ -42,10 +42,10 @@
 #'   predicted.
 #' @param si Optional numeric vector. Site index (m, base age 50 years at breast
 #'   height). If provided, `height` is predicted.
-#' @param model Model variant: `1` (base, default), `2` (operational), or `3`
+#' @param variant Model variant: `1` (base, default), `2` (operational), or `3`
 #'   (zonal). See Details.
-#' @param bec_zone Optional character vector selecting the zonal (`model = 3`)
-#'   coefficients. One of `"ICH"`, `"IDF"`, `"SBS"`. Required when `model = 3`
+#' @param bec_zone Optional character vector selecting the zonal (`variant = 3`)
+#'   coefficients. One of `"ICH"`, `"IDF"`, `"SBS"`. Required when `variant = 3`
 #'   and ignored otherwise.
 #'
 #' @return A tibble with a single column:
@@ -67,17 +67,17 @@
 #' si_nigh2009(age = c(25, 50, 80), height = c(8, 18, 26))
 #'
 #' # Operational model (recommended when zone is unknown)
-#' si_nigh2009(age = 60, si = 18, model = 2)
+#' si_nigh2009(age = 60, si = 18, variant = 2)
 #'
 #' # Zonal model
-#' si_nigh2009(age = 60, si = 18, model = 3, bec_zone = "SBS")
+#' si_nigh2009(age = 60, si = 18, variant = 3, bec_zone = "SBS")
 #'
 #' @export
 si_nigh2009 <- function(
   age,
   height = NULL,
   si = NULL,
-  model = 1,
+  variant = 1,
   bec_zone = NULL
 ) {
   if (xor(is.null(height), is.null(si)) == FALSE) {
@@ -91,7 +91,7 @@ si_nigh2009 <- function(
   df <- .nigh2009_prepare(
     age = age,
     x = x,
-    model = model,
+    model = variant,
     bec_zone = bec_zone,
     x_name = x_name
   )
@@ -134,7 +134,7 @@ si_nigh2009 <- function(
 .nigh2009_prepare <- function(age, x, model, bec_zone, x_name) {
   model <- as.integer(model)
   if (length(model) != 1L || !model %in% c(1L, 2L, 3L)) {
-    cli::cli_abort("{.arg model} must be one of 1, 2, or 3.")
+    cli::cli_abort("{.arg variant} must be one of 1, 2, or 3.")
   }
 
   n <- max(length(age), length(x), length(bec_zone %||% character(0)))
@@ -148,7 +148,7 @@ si_nigh2009 <- function(
   if (model == 3L) {
     if (is.null(bec_zone)) {
       cli::cli_abort(c(
-        "{.arg bec_zone} is required when {.arg model} is 3.",
+        "{.arg bec_zone} is required when {.arg variant} is 3.",
         "i" = "Supply one of \"ICH\", \"IDF\", or \"SBS\"."
       ))
     }
@@ -157,7 +157,7 @@ si_nigh2009 <- function(
   } else {
     if (!is.null(bec_zone)) {
       cli::cli_warn(
-        "{.arg bec_zone} is ignored when {.arg model} is {model}."
+        "{.arg bec_zone} is ignored when {.arg variant} is {model}."
       )
     }
     zone <- NA_character_
@@ -186,7 +186,7 @@ si_nigh2009 <- function(
     if (length(bad) > 0) {
       cli::cli_abort(c(
         "Unknown {.arg bec_zone}: {paste(bad, collapse = ', ')}.",
-        "i" = "Valid zones for {.arg model} 3: {paste(valid_zones, collapse = ', ')}."
+        "i" = "Valid zones for {.arg variant} 3: {paste(valid_zones, collapse = ', ')}."
       ))
     }
     key <- data.frame(model = "model3", bec_zone = zone)

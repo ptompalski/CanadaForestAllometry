@@ -19,7 +19,7 @@ testthat::test_that("get_merch_criteria: ON uses species/genus criteria when ava
     CanadaForestAllometry::get_merch_criteria(
       "ON",
       species = "PICE.GLA",
-      BEC_zone = "CWH"
+      bec_zone = "CWH"
     ),
     warning = function(w) {
       warns <<- c(warns, conditionMessage(w))
@@ -57,9 +57,9 @@ testthat::test_that("get_merch_criteria: ON uses species/genus criteria when ava
 testthat::test_that("get_merch_criteria: BC allows missing species (falls back to ALL) and warns when verbose", {
   testthat::skip_if_not(exists("merchcrit", inherits = TRUE))
 
-  # BC with missing species and missing BEC_zone emits TWO warnings:
+  # BC with missing species and missing bec_zone emits TWO warnings:
   # - species not provided -> ALL
-  # - BEC_zone missing -> UNKNOWN
+  # - bec_zone missing -> UNKNOWN
   warns <- character(0)
   out <- withCallingHandlers(
     CanadaForestAllometry::get_merch_criteria("BC"),
@@ -79,7 +79,7 @@ testthat::test_that("get_merch_criteria: BC allows missing species (falls back t
     "species.*not provided|Species='ALL'",
     warns
   )))
-  testthat::expect_true(any(grepl("BEC_zone missing|UNKNOWN", warns)))
+  testthat::expect_true(any(grepl("bec_zone missing|UNKNOWN", warns)))
 
   # If verbose=FALSE, no warning
   testthat::expect_silent(
@@ -89,7 +89,7 @@ testthat::test_that("get_merch_criteria: BC allows missing species (falls back t
   testthat::expect_equal(out2$species, "ALL")
 })
 
-testthat::test_that("get_merch_criteria: BC missing BEC_zone uses conservative UNKNOWN and warns (verbose=TRUE)", {
+testthat::test_that("get_merch_criteria: BC missing bec_zone uses conservative UNKNOWN and warns (verbose=TRUE)", {
   testthat::skip_if_not(exists("merchcrit", inherits = TRUE))
 
   testthat::expect_warning(
@@ -97,7 +97,7 @@ testthat::test_that("get_merch_criteria: BC missing BEC_zone uses conservative U
       "BC",
       species = "PSEU.MEN"
     ),
-    "BEC_zone missing|UNKNOWN",
+    "bec_zone missing|UNKNOWN",
     fixed = FALSE
   )
   testthat::expect_equal(out$jurisdiction, "BC")
@@ -115,14 +115,14 @@ testthat::test_that("get_merch_criteria: BC missing BEC_zone uses conservative U
   testthat::expect_equal(out2$species, "PSEU.MEN")
 })
 
-testthat::test_that("get_merch_criteria: BC unknown BEC_zone string falls back to UNKNOWN and warns (verbose=TRUE)", {
+testthat::test_that("get_merch_criteria: BC unknown bec_zone string falls back to UNKNOWN and warns (verbose=TRUE)", {
   testthat::skip_if_not(exists("merchcrit", inherits = TRUE))
 
   testthat::expect_warning(
     out <- CanadaForestAllometry::get_merch_criteria(
       "BC",
       species = "PSEU.MEN",
-      BEC_zone = "NOT_A_BEC"
+      bec_zone = "NOT_A_BEC"
     ),
     "could not be mapped|UNKNOWN",
     fixed = FALSE
@@ -138,7 +138,7 @@ testthat::test_that("get_merch_criteria: BC BEC mapping routes through multiple 
   out_cdf <- CanadaForestAllometry::get_merch_criteria(
     "BC",
     species = "ALNU.RUB",
-    BEC_zone = "CDF",
+    bec_zone = "CDF",
     verbose = FALSE
   )
   testthat::expect_equal(out_cdf$jurisdiction, "BC")
@@ -148,7 +148,7 @@ testthat::test_that("get_merch_criteria: BC BEC mapping routes through multiple 
   out_ich <- CanadaForestAllometry::get_merch_criteria(
     "BC",
     species = "PICE.SPP",
-    BEC_zone = "ICH",
+    bec_zone = "ICH",
     verbose = FALSE
   )
   testthat::expect_equal(out_ich$jurisdiction, "BC")
@@ -157,7 +157,7 @@ testthat::test_that("get_merch_criteria: BC BEC mapping routes through multiple 
   out_essf <- CanadaForestAllometry::get_merch_criteria(
     "BC",
     species = "ABIE.LAS",
-    BEC_zone = "ESSF",
+    bec_zone = "ESSF",
     verbose = FALSE
   )
   testthat::expect_equal(out_essf$jurisdiction, "BC")
@@ -167,7 +167,7 @@ testthat::test_that("get_merch_criteria: BC BEC mapping routes through multiple 
     out_all <- CanadaForestAllometry::get_merch_criteria(
       "BC",
       species = "ZYZZ.ABC",
-      BEC_zone = "CDF",
+      bec_zone = "CDF",
       verbose = TRUE
     ),
     "using BC fallback Species='ALL'",
@@ -183,7 +183,7 @@ testthat::test_that("get_merch_criteria: BC Interior_dry BEC mapping branch work
   out_pp <- CanadaForestAllometry::get_merch_criteria(
     "BC",
     species = "PSEU.MEN",
-    BEC_zone = "PP",
+    bec_zone = "PP",
     verbose = FALSE
   )
   testthat::expect_equal(out_pp$jurisdiction, "BC")
@@ -267,7 +267,7 @@ testthat::test_that("get_merch_criteria: BC errors when no candidate row exists"
       CanadaForestAllometry::get_merch_criteria(
         "BC",
         species = "ABIE.BAL",
-        BEC_zone = "UNKNOWN_CODE",
+        bec_zone = "UNKNOWN_CODE",
         verbose = FALSE
       ),
       "No merchantability criteria found for BC",
@@ -293,7 +293,7 @@ testthat::test_that("get_merch_criteria: BC errors on duplicate match rows", {
       CanadaForestAllometry::get_merch_criteria(
         "BC",
         species = "PSEU.MEN",
-        BEC_zone = "CWH",
+        bec_zone = "CWH",
         verbose = FALSE
       ),
       "Multiple merchantability rows found for BC",
@@ -320,7 +320,7 @@ testthat::test_that("get_merch_criteria: BC errors on duplicate match rows", {
 #     out <- CanadaForestAllometry::get_merch_criteria(
 #       "BC",
 #       species = "PICE.GLA",
-#       BEC_zone = "CWH"
+#       bec_zone = "CWH"
 #     ),
 #     "genus-level fallback|PICE\\.SPP",
 #     fixed = FALSE

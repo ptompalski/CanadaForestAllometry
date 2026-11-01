@@ -4,18 +4,18 @@
 \alias{Ung2009}
 \title{Ung2009 Growth and Yield Model}
 \usage{
-Ung2009(species, age, GDD, PREC, model = c("both", "Nat1", "Nat2"))
+Ung2009(age, species, GDD, MAP, variant = c("both", "Nat1", "Nat2"))
 }
 \arguments{
-\item{species}{Character. A valid species name as defined in the parameter table of the model.}
-
 \item{age}{Numeric vector. The age(s) of the stand in years. Must be greater than 0.}
+
+\item{species}{Character. A valid species name as defined in the parameter table of the model.}
 
 \item{GDD}{Numeric. Growth degree days.}
 
-\item{PREC}{Numeric. Precipitation.}
+\item{MAP}{Numeric. Annual precipitation (source "PREC").}
 
-\item{model}{Character. Which model(s) to use. One of \code{"Nat1"}, \code{"Nat2"}, or
+\item{variant}{Character. Which model(s) to use. One of \code{"Nat1"}, \code{"Nat2"}, or
 \code{"both"}. Defaults to \code{"both"}.}
 }
 \value{
@@ -33,14 +33,14 @@ This function implements the models described in Ung et al. (2009).
 Two models (Nat1 and Nat2) are available:
 \itemize{
 \item{\strong{Nat1:} A multi-equation system predicting tree height (H), basal area (BA),
-and volume (V) based on stand age, growth degree days (GDD), precipitation (PREC),
+and volume (V) based on stand age, growth degree days (GDD), annual precipitation (MAP),
 and species-specific parameters.}
 \item{\strong{Nat2:} A single equation that focuses on predicting stand volume (V)
-using age, GDD, and PREC.}
+using age, GDD, and MAP.}
 }
 }
 \details{
-In the Nat1 model, height and basal area are each modeled using age, GDD, and PREC in a
+In the Nat1 model, height and basal area are each modeled using age, GDD, and MAP in a
 Chapman-Richards formulation, and volume is derived via an allometric equation. In contrast,
 Nat2 is more streamlined, modeling volume directly as a function of these same variables
 but without explicit height and basal area components.
@@ -51,7 +51,7 @@ res_both <- Ung2009(
   species = "ABIE.BAL",
   age = 1:150,
   GDD = 1500,
-  PREC = 800
+  MAP = 800
 )
 res_both
 
@@ -60,8 +60,8 @@ res_nat1 <- Ung2009(
   species = "ABIE.BAL",
   age = 1:150,
   GDD = 1500,
-  PREC = 800,
-  model = "Nat1"
+  MAP = 800,
+  variant = "Nat1"
 )
 res_nat1
 
@@ -70,8 +70,8 @@ res_nat2 <- Ung2009(
   species = "ABIE.BAL",
   age = 1:150,
   GDD = 1500,
-  PREC = 800,
-  model = "Nat2"
+  MAP = 800,
+  variant = "Nat2"
 )
 res_nat2
 

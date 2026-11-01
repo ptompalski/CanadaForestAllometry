@@ -6,7 +6,7 @@
 #'
 #' Parameters are stratified either by region (\code{"Coast"}, \code{"Interior"})
 #' or by BEC zone (e.g., \code{"CWH"}, \code{"ICH"}, \code{"BWBS"}), depending on
-#' which parameter row is requested via \code{subregion}.
+#' which parameter row is requested via \code{bec_zone}.
 #'
 #' Model form (Nigh 2016):
 #' \deqn{V = \exp(b_0) \cdot DBH^{b_1} \cdot H^{b_2}}
@@ -19,17 +19,17 @@
 #' @param DBH Numeric vector of diameter at breast height (cm).
 #' @param height Numeric vector of total tree height (m).
 #' @param species Character vector of species codes
-#' @param subregion Character scalar or vector defining the spatial stratum for
+#' @param bec_zone Character scalar or vector defining the spatial stratum for
 #'   the coefficients. Can be \code{"Coast"} / \code{"Interior"} or a BEC zone code
 #'   (e.g., \code{"CWH"}, \code{"ICH"}, \code{"BWBS"}). Must have length 1 or the
 #'   same length as \code{DBH}.
 #'
 #' @details
 #' Nigh (2016) function parameters are available for the following species and
-#' \code{subregion} combinations:
+#' \code{bec_zone} combinations:
 #'
 #' \tabular{ll}{
-#' Species \tab Supported \code{subregion} values\cr
+#' Species \tab Supported \code{bec_zone} values\cr
 #' \code{ABIE.LAS} \tab AT, BWBS, ESSF, ICH, IDF, Interior, MS, SBS, SWB\cr
 #' \code{ABIE.SPP} \tab Coast, CWH, MH\cr
 #' \code{ACER.MAC} \tab Coast, CWH\cr
@@ -68,36 +68,36 @@
 #'   DBH = 35,
 #'   height = 25,
 #'   species = "POPU.TRI",
-#'   subregion = "Interior"
+#'   bec_zone = "Interior"
 #' )
 #'
-#' # Multiple trees, vectorized (mixed subregions allowed)
+#' # Multiple trees, vectorized (mixed zones allowed)
 #' vol_nigh2016(
 #'   DBH = c(22, 30, 45),
 #'   height = c(18, 24, 33),
 #'   species = c("PSEU.MEN", "THUJ.PLI", "POPU.TRI"),
-#'   subregion = c("Coast", "ICH", "Interior")
+#'   bec_zone = c("Coast", "ICH", "Interior")
 #' )
 #'
 #' @export
-vol_nigh2016 <- function(DBH, height, species, subregion) {
+vol_nigh2016 <- function(DBH, height, species, bec_zone) {
   n <- length(DBH)
 
   if (length(height) != n || length(species) != n) {
     rlang::abort("DBH, height, and species must have the same length.")
   }
-  if (missing(subregion)) {
+  if (missing(bec_zone)) {
     rlang::abort(
-      "subregion is required for vol_nigh2016() (e.g., 'Coast', 'Interior', or a BEC zone)."
+      "bec_zone is required for vol_nigh2016() (e.g., 'Coast', 'Interior', or a BEC zone)."
     )
   }
-  if (!(length(subregion) %in% c(1, n))) {
-    rlang::abort("subregion must have length 1 or the same length as DBH.")
+  if (!(length(bec_zone) %in% c(1, n))) {
+    rlang::abort("bec_zone must have length 1 or the same length as DBH.")
   }
 
-  # recycle scalar subregion
-  if (length(subregion) == 1) {
-    subregion <- rep(subregion, n)
+  # recycle scalar bec_zone
+  if (length(bec_zone) == 1) {
+    bec_zone <- rep(bec_zone, n)
   }
 
   species_std <- standardize_species_code(species)
@@ -109,8 +109,8 @@ vol_nigh2016 <- function(DBH, height, species, subregion) {
       i,
       " (species=",
       species_std[i],
-      ", subregion=",
-      subregion[i],
+      ", bec_zone=",
+      bec_zone[i],
       ", DBH_cm=",
       DBH[i],
       ", ht_m=",
@@ -124,10 +124,10 @@ vol_nigh2016 <- function(DBH, height, species, subregion) {
   vol_total <- numeric(n)
   vol_merch <- numeric(n)
 
-  # ---- cache params once per (species, subregion) ----
+  # ---- cache params once per (species, bec_zone) ----
   key_tbl <- dplyr::tibble(
     .species_key = species_std,
-    .subregion_key = subregion
+    .subregion_key = bec_zone
   ) |>
     dplyr::distinct()
 
@@ -178,13 +178,13 @@ vol_nigh2016 <- function(DBH, height, species, subregion) {
     p <- params_tbl |>
       dplyr::filter(
         .data$.species_key == species_std[i],
-        .data$.subregion_key == subregion[i]
+        .data$.subregion_key == bec_zone[i]
       )
 
     if (nrow(p) == 0) {
       abort_i(
         i,
-        "No Nigh2016 parameters found for this species + subregion (regional_nigh2016)."
+        "No Nigh2016 parameters found for this species + bec_zone (regional_nigh2016)."
       )
     }
 
@@ -196,13 +196,13 @@ vol_nigh2016 <- function(DBH, height, species, subregion) {
     if (nrow(p_tot) != 1) {
       abort_i(
         i,
-        "Expected exactly one 'total' parameter row for this species + subregion."
+        "Expected exactly one 'total' parameter row for this species + bec_zone."
       )
     }
     if (nrow(p_mer) != 1) {
       abort_i(
         i,
-        "Expected exactly one 'merchantable' parameter row for this species + subregion."
+        "Expected exactly one 'merchantable' parameter row for this species + bec_zone."
       )
     }
 
