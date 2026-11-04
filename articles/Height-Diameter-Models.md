@@ -36,6 +36,9 @@ species-specific totals, dominant-height definitions). For this reason:
   ([Eslamdoust et al., 2026](#ref-Eslamdoust2026)). Coverage: ON,
   natural stands. 8 species. Model ID(s): `eslamdoust2026_m4`,
   `eslamdoust2026_m5`.
+- [`hd_eslamdoust2026b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026b.md)
+  ([Eslamdoust, 2026](#ref-Eslamdoust2026b)). Coverage: ON, plantations.
+  1 species. Model ID(s): `eslamdoust2026b`.
 - [`hd_fortin2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_fortin2009.md)
   ([Fortin et al., 2009](#ref-Fortin2009)). Coverage: QC, natural
   stands. 20 species. Model ID(s): `fortin2009`.
@@ -308,6 +311,7 @@ fitted to the tree’s region and stand origin:
 | rijal2012_gnls | 55 | NS | natural | NA | DBH, CSI, CCF, BAL |
 | rijal2012_nlme | 40 | NS | natural | NA | DBH, CSI, CCF, BAL |
 | eslamdoust2026_m5 | 90 | ON | natural | NA | DBH, HDOM, BA, TPH |
+| eslamdoust2026b | 90 | ON | plantation | NA | DBH, HDOM, BA, TPH |
 | sharma2016_natural | 85 | ON | natural | NA | DBH, HDOM, BA, TPH |
 | sharma2016_plantation | 85 | ON | plantation | NA | DBH, HDOM, BA, TPH |
 | sharmaparton2007 | 80 | ON | both | NA | DBH, HDOM, BA, TPH |
@@ -471,6 +475,24 @@ and M5 with `HDOM` = 20 m, `BA` = 25 m²/ha, `TPH` = 1,500 stems/ha.
 
 Figure 7
 
+### `hd_eslamdoust2026b()`
+
+Ontario white pine plantations ([Eslamdoust,
+2026](#ref-Eslamdoust2026b)), using the TR-79 population model with
+`HDOM`, `BA` and `TPH`. This is separate from the natural-stand model in
+[`hd_eslamdoust2026()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026.md).
+
+``` r
+
+hd_eslamdoust2026b(DBH = c(10, 20, 30), HDOM = 18, BA = 30, TPH = 1500)
+#> # A tibble: 3 × 1
+#>   height
+#>    <dbl>
+#> 1   12.0
+#> 2   15.7
+#> 3   17.7
+```
+
 ### `hd_huang2009()`
 
 Alberta black spruce ([Huang et al., 2009](#ref-Huang2009hd)). Model 9
@@ -578,6 +600,11 @@ l’epinette noire et le pin gris en plantation au quebec (Avis technique
 No. SSS-10). Gouvernement du Quebec, ministere des Ressources naturelles
 et des Forets, Direction de la recherche forestiere, Quebec.
 <https://doi.org/10.82204/dcwg-5v65>
+
+Eslamdoust, J., 2026. Height–diameter model for white pine plantations
+in Ontario (Science and Research Technical Report No. TR-79). Ontario
+Ministry of Natural Resources, Science; Research Branch, Peterborough,
+ON.
 
 Eslamdoust, J., Vasiliauskas, S., Little, T., Ashiq, M.W., 2026.
 Height–diameter modeling of tree species in boreal and mixed forests

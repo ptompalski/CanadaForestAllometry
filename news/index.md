@@ -17,6 +17,10 @@
 ### DBH–height models
 
 - Added
+  [`hd_eslamdoust2026b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026b.md),
+  the Eslamdoust (2026; TR-79) population DBH-height model for Ontario
+  white pine plantations.
+- Added
   [`hd_model_registry()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_model_registry.md),
   [`get_hd_model_info()`](https://ptompalski.github.io/CanadaForestAllometry/reference/get_hd_model_info.md)
   and

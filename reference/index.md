@@ -201,6 +201,9 @@ Functions predicting tree height from DBH, and model discovery helpers.
   plantations
 - [`hd_eslamdoust2026()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026.md)
   : Eslamdoust et al. (2026) DBH–height models for Ontario tree species
+- [`hd_eslamdoust2026b()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026b.md)
+  : Eslamdoust (2026; TR-79) DBH-height model for Ontario white pine
+  plantations
 - [`hd_fortin2009()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_fortin2009.md)
   : Fortin et al. (2009) DBH–height model for 20 Québec tree species
 - [`hd_huang1994()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_huang1994.md)
