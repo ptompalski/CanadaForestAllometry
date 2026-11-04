@@ -484,6 +484,16 @@ m5 <- dplyr::mutate(
 plot_hd_curves(dplyr::bind_rows(m4, m5), colour = "model", colour_lab = "Model")
 ```
 
+## `hd_eslamdoust2026b()`
+
+Ontario white pine plantations [@Eslamdoust2026b], using the TR-79
+population model with `HDOM`, `BA` and `TPH`. This is separate from the
+natural-stand model in `hd_eslamdoust2026()`.
+
+```{r}
+hd_eslamdoust2026b(DBH = c(10, 20, 30), HDOM = 18, BA = 30, TPH = 1500)
+```
+
 ## `hd_huang2009()`
 
 Alberta black spruce [@Huang2009hd]. Model 9 (DBH only), 10 (`HTOP` = 16 m) and 11 (`HTOP` = 16 m, `BA` = 15 m²/ha).

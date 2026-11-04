@@ -7,6 +7,7 @@
 
 ## DBH–height models
 
+- Added `hd_eslamdoust2026b()`, the Eslamdoust (2026; TR-79) population DBH-height model for Ontario white pine plantations.
 - Added `hd_model_registry()`, `get_hd_model_info()` and `find_hd_models()` as the discovery interface for the new DBH–height (`hd_*()`) model family (no models registered yet).
 - Added `hd_huang2016()`, the Huang, Yang & Aitkin (2016; T/609) population DBH–height models for major Alberta tree species, provincial or by natural-subregion group.
 - Added `hd_sharmaparton2007()`, the Sharma & Parton (2007) population DBH–height models for eight northern Ontario boreal species using dominant height, basal area and stems/ha (no source benchmark; validated against Fig. 2).
