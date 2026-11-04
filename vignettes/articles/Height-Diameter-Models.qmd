@@ -487,11 +487,26 @@ plot_hd_curves(dplyr::bind_rows(m4, m5), colour = "model", colour_lab = "Model")
 ## `hd_eslamdoust2026b()`
 
 Ontario white pine plantations [@Eslamdoust2026b], using the TR-79
-population model with `HDOM`, `BA` and `TPH`. This is separate from the
-natural-stand model in `hd_eslamdoust2026()`.
+population model with `HDOM` = 10, 15, 20 and 25 m, `BA` = 30 m²/ha and
+`TPH` = 1,500 stems/ha. Curves cover the fitting DBH range (2.9–58.5 cm).
+This is separate from the natural-stand model in `hd_eslamdoust2026()`.
 
 ```{r}
-hd_eslamdoust2026b(DBH = c(10, 20, 30), HDOM = 18, BA = 30, TPH = 1500)
+#| label: fig-eslamdoust2026b
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 5
+#| fig-height: 3.5
+grid <- tidyr::expand_grid(
+  species = hd_species("eslamdoust2026b"),
+  HDOM = c(10, 15, 20, 25),
+  DBH = seq(2.9, 58.5, length.out = 120)
+)
+grid$height <- hd_eslamdoust2026b(
+  grid$DBH, grid$species, HDOM = grid$HDOM, BA = 30, TPH = 1500
+)$height
+plot_hd_curves(grid, colour = "HDOM", colour_lab = "HDOM (m)")
 ```
 
 ## `hd_huang2009()`
