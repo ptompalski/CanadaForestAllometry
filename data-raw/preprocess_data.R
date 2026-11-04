@@ -1700,6 +1700,24 @@ stopifnot(
   )
 )
 
+## Eslamdoust 2026 TR-79 DBH-height model, Ontario white pine plantations ####
+parameters_hd_Eslamdoust2026b <- read.csv(
+  "data-raw/Eslamdoust2026b_hd_parameters.csv"
+) |>
+  as_tibble() |>
+  rename(Species = nfi_species, source_species = species_src)
+
+stopifnot(
+  nrow(parameters_hd_Eslamdoust2026b) == 1L,
+  identical(parameters_hd_Eslamdoust2026b$Species, "PINU.STR"),
+  with(
+    parameters_hd_Eslamdoust2026b,
+    !anyNA(cbind(a0, a1, a2, a3, a4, sigma2_e, sigma2_u,
+                DBH_min, DBH_max, HDOM_min, HDOM_max,
+                BA_min, BA_max, TPH_min, TPH_max))
+  )
+)
+
 ## Huang, Meng & Yang 2009 DBH-height models, Alberta black spruce ####
 # NLMM (FO) fixed effects (b = 0) for eqs. (9)-(11), Table 2 p.13; variance
 # components transcribed but unused. HTOP = top height (100 largest-DBH
@@ -2086,6 +2104,7 @@ internal_objs <- c(
   "parameters_hd_Sharma2016",
   "parameters_hd_SharmaZhang2004",
   "parameters_hd_Eslamdoust2026",
+  "parameters_hd_Eslamdoust2026b",
   "parameters_hd_Huang2009",
   "parameters_hd_Auger2016",
   "parameters_hd_Auger2016_classes",
