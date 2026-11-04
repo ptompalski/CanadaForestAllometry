@@ -479,19 +479,14 @@ Figure 7
 
 Ontario white pine plantations ([Eslamdoust,
 2026](#ref-Eslamdoust2026b)), using the TR-79 population model with
-`HDOM`, `BA` and `TPH`. This is separate from the natural-stand model in
+`HDOM` = 10, 15, 20 and 25 m, `BA` = 30 m²/ha and `TPH` = 1,500
+stems/ha. Curves cover the fitting DBH range (2.9–58.5 cm). This is
+separate from the natural-stand model in
 [`hd_eslamdoust2026()`](https://ptompalski.github.io/CanadaForestAllometry/reference/hd_eslamdoust2026.md).
 
-``` r
+![](Height-Diameter-Models_files/figure-html/fig-eslamdoust2026b-1.png)
 
-hd_eslamdoust2026b(DBH = c(10, 20, 30), HDOM = 18, BA = 30, TPH = 1500)
-#> # A tibble: 3 × 1
-#>   height
-#>    <dbl>
-#> 1   12.0
-#> 2   15.7
-#> 3   17.7
-```
+Figure 8
 
 ### `hd_huang2009()`
 
@@ -500,7 +495,7 @@ Alberta black spruce ([Huang et al., 2009](#ref-Huang2009hd)). Model 9
 
 ![](Height-Diameter-Models_files/figure-html/fig-huang2009-1.png)
 
-Figure 8
+Figure 9
 
 ### `hd_zhang2002()`
 
@@ -509,7 +504,7 @@ forest-region and Ontario-wide fits.
 
 ![](Height-Diameter-Models_files/figure-html/fig-zhang2002-1.png)
 
-Figure 9
+Figure 10
 
 ### `hd_temesgen2004()`
 
@@ -519,7 +514,7 @@ m²/ha, `TPH` = 800 stems/ha, `BAL` = 10 m²/ha.
 
 ![](Height-Diameter-Models_files/figure-html/fig-temesgen2004-1.png)
 
-Figure 10
+Figure 11
 
 ### `hd_staudhammerlemay2000()`
 
@@ -538,7 +533,7 @@ published coefficients.
 
 ![](Height-Diameter-Models_files/figure-html/fig-staudhammerlemay2000-1.png)
 
-Figure 11
+Figure 12
 
 ### `hd_rijal2012()`
 
@@ -547,7 +542,7 @@ coefficients with `BAL` = 10 m²/ha, `CCF` = 150, `CSI` = 15 m.
 
 ![](Height-Diameter-Models_files/figure-html/fig-rijal2012-1.png)
 
-Figure 12
+Figure 13
 
 ### `hd_auger2016()`
 
@@ -557,7 +552,7 @@ Québec ([Auger, 2016](#ref-Auger2016)). `BA` = 20 m²/ha, `QMD` = 20 cm,
 
 ![](Height-Diameter-Models_files/figure-html/fig-auger2016-1.png)
 
-Figure 13
+Figure 14
 
 ### `hd_fortin2009()`
 
@@ -568,7 +563,7 @@ Québec ([Fortin et al., 2009](#ref-Fortin2009)); superseded by
 
 ![](Height-Diameter-Models_files/figure-html/fig-fortin2009-1.png)
 
-Figure 14
+Figure 15
 
 ### `hd_auger2025()`
 
@@ -584,7 +579,7 @@ plots:
 
 ![](Height-Diameter-Models_files/figure-html/fig-auger2025-1.png)
 
-Figure 15
+Figure 16
 
 ## References
 
