@@ -2,9 +2,19 @@
 % Please edit documentation in R/si_huang2026.R
 \name{si_huang2026}
 \alias{si_huang2026}
-\title{Huang et al. (2026) non-climate height-age models for Alberta}
+\title{Huang et al. (2026) height-age models for Alberta with or without climate}
 \usage{
-si_huang2026(age, height = NULL, si = NULL, species)
+si_huang2026(
+  age,
+  height = NULL,
+  si = NULL,
+  species,
+  MAP = NULL,
+  MWMT = NULL,
+  MAP_normal = NULL,
+  MWMT_normal = NULL,
+  variant = c("non_climate", "climate")
+)
 }
 \arguments{
 \item{age}{Numeric vector. Positive total tree age (years).}
@@ -12,19 +22,35 @@ si_huang2026(age, height = NULL, si = NULL, species)
 \item{height}{Optional numeric vector. Positive dominant/codominant tree
 height (m). If supplied, \code{si} is predicted.}
 
-\item{si}{Optional numeric vector. Site index (m), equivalent to the source's
-height index at 50 years total age. If supplied, \code{height} is predicted.}
+\item{si}{Optional numeric vector. Site index (m) at 50 years total age for
+the non-climate variant; inherent HI (m) for the climate variant.
+If supplied, \code{height} is predicted.}
 
 \item{species}{Character vector of NFI species codes; compact codes are
 normalized (e.g. \code{"PICEGLA"} becomes \code{"PICE.GLA"}).}
+
+\item{MAP, MWMT}{Optional numeric vectors, required for the climate variant.
+Respectively the average annual precipitation (mm) and average mean warmest
+month temperature (degrees C) over the species-specific previous-years
+window described above. Both must be positive and finite. \code{MWMT} is not
+mean annual temperature; do not convert to kelvin.}
+
+\item{MAP_normal, MWMT_normal}{Optional numeric vectors, required for the
+climate variant. Location-specific 1961--1990 normals for annual
+precipitation (mm) and mean warmest month temperature (degrees C).
+Both must be positive and finite; no provincial defaults are assumed.}
+
+\item{variant}{Character scalar. \code{"non_climate"} (default) or \code{"climate"}.
+Climate inputs supplied to the non-climate variant raise an error.}
 }
 \value{
 A tibble with one column: \code{height} (m) when \code{si} is supplied, or
 \code{si} (m) when \code{height} is supplied.
 }
 \description{
-Vectorized implementation of equations 3.2, 3.4, 3.6 and 3.8,
-with the separately fitted non-climate coefficients in Table 3.4.
+Vectorized implementation of the non-climate equations 3.2, 3.4, 3.6 and 3.8
+(Table 3.4 coefficients), or climate equations 3.1, 3.3, 3.5 and 3.7
+(Table 3.1 coefficients).
 Covers aspen (\code{POPU.TRE}), white spruce (\code{PICE.GLA}), lodgepole pine
 (\code{PINU.CON}), black spruce (\code{PICE.MAR}), balsam poplar (\code{POPU.BAL}),
 balsam fir (\code{ABIE.BAL}), Douglas-fir (\code{PSEU.MEN}) and jack pine (\code{PINU.BAN}).
@@ -34,8 +60,9 @@ Provide exactly one of \code{height} or \code{si}. Height is predicted directly 
 age and site index; site index is recovered numerically from age and height.
 Both age and the reference age use \strong{total age}, not breast-height age.
 
-The source's height index (HI), exposed here as \code{si}, is tree height at
-50 years total age. Models were fitted to stem-analysis trajectories of
+For the default non-climate variant, the source's height index (HI), exposed
+as \code{si}, is tree height at 50 years total age. Models were fitted to
+stem-analysis trajectories of
 dominant and codominant trees up to 180 total years. Predictions at older
 ages generate a warning. Inversion from young trees, especially before
 approximately 15--20 years, can be inaccurate.
@@ -49,13 +76,43 @@ The balsam poplar, balsam fir, Douglas-fir and jack pine fits pool data with
 aspen, white spruce, lodgepole pine and lodgepole pine, respectively, but
 each species has its own coefficients. No larch proxy is applied.
 
-These are not the report's climate-sensitive models evaluated at baseline
-climate: the non-climate models were fitted separately. Source validation
-uses plotted curves; no exact tabulated prediction benchmark is available.
+With \code{variant = "climate"}, \code{si} is the source's \strong{inherent HI}, not
+necessarily realized height at age 50. The climate equations multiply a
+baseline height curve by a modifier \eqn{C}, so \eqn{H(50) = C \times HI}.
+Inversion returns inherent HI. The precipitation exponent in \eqn{C} is
+\code{c1} for aspen, balsam poplar, white spruce and balsam fir, \code{1/b1} for
+lodgepole pine, Douglas-fir and jack pine, and \code{1/b0} for black spruce;
+the temperature exponent is \code{c2} for every species.
+
+Climate averages exclude the current year and use the previous 20 years for
+aspen, balsam poplar, white spruce and balsam fir; previous 10 years for black
+spruce; and all previous years since initiation for lodgepole pine,
+Douglas-fir and jack pine. For young trees, use only previous years since
+initiation, not climate before the tree existed. The caller must supply
+correctly aggregated inputs; their temporal coverage cannot be verified from
+aggregate values alone. Missing required history must not be silently omitted.
+Normals are location-specific 1961--1990 values and remain fixed in future
+scenarios. Climate values outside Table 3.3's observed ranges generate a
+warning without clipping; minor-species ranges exclude the pooled main species.
+
+This function evaluates points; it does not construct annual growth
+trajectories. Changing climate year by year while keeping inherent HI fixed
+can introduce height jumps. The source's continuous trajectory method
+re-anchors HI at the current height before each climate-period projection.
+
+The non-climate models were fitted separately: setting \eqn{C = 1} in a
+climate fit does not reproduce the non-climate fit. Non-climate source
+validation uses plotted curves (no exact tabulated benchmark); climate
+validation includes the numerical examples in Section 4.
 }
 \examples{
 si_huang2026(age = c(25, 50, 80), si = 15, species = "PICE.GLA")
 si_huang2026(age = c(40, 70), height = c(12, 20), species = "POPU.TRE")
+si_huang2026(
+  age = c(20, 50, 80), si = 16, species = "POPU.TRE",
+  MAP = 400, MWMT = 18, MAP_normal = 500, MWMT_normal = 15.5,
+  variant = "climate"
+)
 
 }
 \references{

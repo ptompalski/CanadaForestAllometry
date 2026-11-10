@@ -13,7 +13,7 @@ models for Canadian forests: tree **volume** (total and merchantable),
 productivity**, and supporting utilities. Models are implemented faithfully to
 their source publications and exposed through a consistent, vectorized API.
 
-- **Version**: see [DESCRIPTION](DESCRIPTION) (currently 0.8.7)
+- **Version**: see [DESCRIPTION](DESCRIPTION) (currently 0.8.8)
 - **License**: LGPL (>= 3); Copyright His Majesty the King in Right of Canada (NRCan)
 - **R**: >= 4.1.0
 - **Imports**: dplyr, tibble, tidyr, stringr, cli, rlang, purrr, stats, stringi, glue

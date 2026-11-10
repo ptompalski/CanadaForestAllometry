@@ -1,7 +1,8 @@
-#' Huang et al. (2026) non-climate height-age models for Alberta
+#' Huang et al. (2026) height-age models for Alberta with or without climate
 #'
-#' Vectorized implementation of equations 3.2, 3.4, 3.6 and 3.8,
-#' with the separately fitted non-climate coefficients in Table 3.4.
+#' Vectorized implementation of the non-climate equations 3.2, 3.4, 3.6 and 3.8
+#' (Table 3.4 coefficients), or climate equations 3.1, 3.3, 3.5 and 3.7
+#' (Table 3.1 coefficients).
 #' Covers aspen (`POPU.TRE`), white spruce (`PICE.GLA`), lodgepole pine
 #' (`PINU.CON`), black spruce (`PICE.MAR`), balsam poplar (`POPU.BAL`),
 #' balsam fir (`ABIE.BAL`), Douglas-fir (`PSEU.MEN`) and jack pine (`PINU.BAN`).
@@ -11,8 +12,9 @@
 #' Both age and the reference age use **total age**, not breast-height age.
 #'
 #' @details
-#' The source's height index (HI), exposed here as `si`, is tree height at
-#' 50 years total age. Models were fitted to stem-analysis trajectories of
+#' For the default non-climate variant, the source's height index (HI), exposed
+#' as `si`, is tree height at 50 years total age. Models were fitted to
+#' stem-analysis trajectories of
 #' dominant and codominant trees up to 180 total years. Predictions at older
 #' ages generate a warning. Inversion from young trees, especially before
 #' approximately 15--20 years, can be inaccurate.
@@ -26,17 +28,54 @@
 #' aspen, white spruce, lodgepole pine and lodgepole pine, respectively, but
 #' each species has its own coefficients. No larch proxy is applied.
 #'
-#' These are not the report's climate-sensitive models evaluated at baseline
-#' climate: the non-climate models were fitted separately. Source validation
-#' uses plotted curves; no exact tabulated prediction benchmark is available.
+#' With `variant = "climate"`, `si` is the source's **inherent HI**, not
+#' necessarily realized height at age 50. The climate equations multiply a
+#' baseline height curve by a modifier \eqn{C}, so \eqn{H(50) = C \times HI}.
+#' Inversion returns inherent HI. The precipitation exponent in \eqn{C} is
+#' `c1` for aspen, balsam poplar, white spruce and balsam fir, `1/b1` for
+#' lodgepole pine, Douglas-fir and jack pine, and `1/b0` for black spruce;
+#' the temperature exponent is `c2` for every species.
+#'
+#' Climate averages exclude the current year and use the previous 20 years for
+#' aspen, balsam poplar, white spruce and balsam fir; previous 10 years for black
+#' spruce; and all previous years since initiation for lodgepole pine,
+#' Douglas-fir and jack pine. For young trees, use only previous years since
+#' initiation, not climate before the tree existed. The caller must supply
+#' correctly aggregated inputs; their temporal coverage cannot be verified from
+#' aggregate values alone. Missing required history must not be silently omitted.
+#' Normals are location-specific 1961--1990 values and remain fixed in future
+#' scenarios. Climate values outside Table 3.3's observed ranges generate a
+#' warning without clipping; minor-species ranges exclude the pooled main species.
+#'
+#' This function evaluates points; it does not construct annual growth
+#' trajectories. Changing climate year by year while keeping inherent HI fixed
+#' can introduce height jumps. The source's continuous trajectory method
+#' re-anchors HI at the current height before each climate-period projection.
+#'
+#' The non-climate models were fitted separately: setting \eqn{C = 1} in a
+#' climate fit does not reproduce the non-climate fit. Non-climate source
+#' validation uses plotted curves (no exact tabulated benchmark); climate
+#' validation includes the numerical examples in Section 4.
 #'
 #' @param age Numeric vector. Positive total tree age (years).
 #' @param height Optional numeric vector. Positive dominant/codominant tree
 #'   height (m). If supplied, `si` is predicted.
-#' @param si Optional numeric vector. Site index (m), equivalent to the source's
-#'   height index at 50 years total age. If supplied, `height` is predicted.
+#' @param si Optional numeric vector. Site index (m) at 50 years total age for
+#'   the non-climate variant; inherent HI (m) for the climate variant.
+#'   If supplied, `height` is predicted.
 #' @param species Character vector of NFI species codes; compact codes are
 #'   normalized (e.g. `"PICEGLA"` becomes `"PICE.GLA"`).
+#' @param MAP,MWMT Optional numeric vectors, required for the climate variant.
+#'   Respectively the average annual precipitation (mm) and average mean warmest
+#'   month temperature (degrees C) over the species-specific previous-years
+#'   window described above. Both must be positive and finite. `MWMT` is not
+#'   mean annual temperature; do not convert to kelvin.
+#' @param MAP_normal,MWMT_normal Optional numeric vectors, required for the
+#'   climate variant. Location-specific 1961--1990 normals for annual
+#'   precipitation (mm) and mean warmest month temperature (degrees C).
+#'   Both must be positive and finite; no provincial defaults are assumed.
+#' @param variant Character scalar. `"non_climate"` (default) or `"climate"`.
+#'   Climate inputs supplied to the non-climate variant raise an error.
 #'
 #' @return A tibble with one column: `height` (m) when `si` is supplied, or
 #'   `si` (m) when `height` is supplied.
@@ -50,22 +89,34 @@
 #' @examples
 #' si_huang2026(age = c(25, 50, 80), si = 15, species = "PICE.GLA")
 #' si_huang2026(age = c(40, 70), height = c(12, 20), species = "POPU.TRE")
+#' si_huang2026(
+#'   age = c(20, 50, 80), si = 16, species = "POPU.TRE",
+#'   MAP = 400, MWMT = 18, MAP_normal = 500, MWMT_normal = 15.5,
+#'   variant = "climate"
+#' )
 #'
 #' @export
-si_huang2026 <- function(age, height = NULL, si = NULL, species) {
+si_huang2026 <- function(age, height = NULL, si = NULL, species,
+                         MAP = NULL, MWMT = NULL,
+                         MAP_normal = NULL, MWMT_normal = NULL,
+                         variant = c("non_climate", "climate")) {
+  variant <- rlang::arg_match(variant)
   if (!xor(is.null(height), is.null(si))) {
     cli::cli_abort("Provide exactly one of {.arg height} or {.arg si}.")
   }
   predict_height <- is.null(height)
   x_name <- if (predict_height) "si" else "height"
   df <- .huang2026_prepare(
-    age, if (predict_height) si else height, species, x_name
+    age, if (predict_height) si else height, species, x_name, variant,
+    list(MAP = MAP, MWMT = MWMT, MAP_normal = MAP_normal, MWMT_normal = MWMT_normal)
   )
 
   out <- vapply(seq_len(nrow(df)), function(i) {
     pars <- df[i, , drop = FALSE]
     if (!predict_height) {
-      return(.huang2026_solve_si_one(df$age[[i]], df$x[[i]], pars))
+      return(.huang2026_solve_si_one(
+        df$age[[i]], df$x[[i]], pars, df$log_climate[[i]]
+      ))
     }
     log_si <- log(df$x[[i]])
     if (pars$model_form == "log_logistic_asymptote" &&
@@ -75,7 +126,7 @@ si_huang2026 <- function(age, height = NULL, si = NULL, species) {
     if (pars$model_form == "log_logistic_log_power" && log_si < 0) {
       cli::cli_abort("{.arg si} must be at least 1 m for {pars$Species}.")
     }
-    exp(.huang2026_log_height(df$age[[i]], log_si, pars))
+    exp(.huang2026_log_height(df$age[[i]], log_si, pars) + df$log_climate[[i]])
   }, numeric(1))
 
   if (any(!is.finite(out) | out <= 0)) {
@@ -84,14 +135,31 @@ si_huang2026 <- function(age, height = NULL, si = NULL, species) {
   if (predict_height) tibble::tibble(height = out) else tibble::tibble(si = out)
 }
 
-.huang2026_prepare <- function(age, x, species, x_name) {
-  if (any(c(length(age), length(x), length(species)) == 0L)) {
+.huang2026_prepare <- function(age, x, species, x_name, variant, climate) {
+  supplied <- !vapply(climate, is.null, logical(1))
+  if (variant == "climate" && !all(supplied)) {
+    cli::cli_abort(
+      'The climate variant requires all four climate inputs: {.arg MAP}, {.arg MWMT}, {.arg MAP_normal}, {.arg MWMT_normal}.'
+    )
+  }
+  if (variant == "non_climate" && any(supplied)) {
+    cli::cli_abort('Climate inputs are only accepted with {.code variant = "climate"}.')
+  }
+  if (variant == "non_climate") {
+    climate <- list()
+  }
+  inputs <- c(list(age = age, x = x, species = species), climate)
+  if (any(lengths(inputs) == 0L)) {
     cli::cli_abort("Inputs must have length > 0.")
   }
-  v <- assert_len_compat(age = age, x = x, species = species)
+  v <- do.call(assert_len_compat, inputs)
   assert_numeric_vec(v$age, "age", gt = 0)
   assert_numeric_vec(v$x, x_name, gt = 0)
-  pars <- .get_internal_data("parameters_Huang2026")
+  for (arg in names(climate)) {
+    assert_numeric_vec(v[[arg]], arg, gt = 0)
+  }
+  key <- if (variant == "climate") "parameters_Huang2026_climate" else "parameters_Huang2026"
+  pars <- .get_internal_data(key)
   df <- tibble::tibble(
     age = v$age, x = v$x, Species = standardize_species_code(v$species)
   ) |>
@@ -101,6 +169,30 @@ si_huang2026 <- function(age, height = NULL, si = NULL, species) {
     cli::cli_abort(
       "No Huang2026 parameters found for species: {paste(bad, collapse = ', ')}."
     )
+  }
+  df$log_climate <- 0
+  if (variant == "climate") {
+    df <- dplyr::bind_cols(df, tibble::as_tibble(v[names(climate)]))
+    outside <- character()
+    for (arg in names(climate)) {
+      if (any(df[[arg]] < df[[paste0(arg, "_min")]] |
+              df[[arg]] > df[[paste0(arg, "_max")]])) {
+        outside <- c(outside, arg)
+      }
+    }
+    if (length(outside)) {
+      cli::cli_warn(
+        "Climate inputs outside the Huang2026 observed ranges (Table 3.3): {paste(outside, collapse = ', ')}. Predictions extrapolate without clipping.",
+        class = "cfa_huang2026_climate_extrapolation"
+      )
+    }
+    p <- df$c1
+    use_b1 <- df$map_power == "1/b1"
+    use_b0 <- df$map_power == "1/b0"
+    p[use_b1] <- 1 / df$b1[use_b1]
+    p[use_b0] <- 1 / df$b0[use_b0]
+    df$log_climate <- p * (log(df$MAP) - log(df$MAP_normal)) +
+      df$c2 * (log(df$MWMT) - log(df$MWMT_normal))
   }
   if (any(df$age > 180)) {
     cli::cli_warn(
@@ -129,7 +221,7 @@ si_huang2026 <- function(age, height = NULL, si = NULL, species) {
     stats::plogis(-eta50, log.p = TRUE)
 }
 
-.huang2026_solve_si_one <- function(age, height, pars) {
+.huang2026_solve_si_one <- function(age, height, pars, log_climate) {
   asymptote <- pars$model_form == "log_logistic_asymptote"
   lower <- if (pars$model_form == "log_logistic_log_power") {
     0
@@ -137,7 +229,7 @@ si_huang2026 <- function(age, height = NULL, si = NULL, species) {
     log(.Machine$double.xmin) + log(.Machine$double.eps)
   }
   upper <- if (asymptote) log(pars$b0) / (1 - pars$b1) else log(.Machine$double.xmax)
-  target <- log(height)
+  target <- log(height) - log_climate
   f <- function(log_si) .huang2026_log_height(age, log_si, pars) - target
   if (asymptote && target >= upper) {
     cli::cli_abort("No site-index solution within the Huang2026 model domain.")
@@ -175,7 +267,7 @@ si_huang2026 <- function(age, height = NULL, si = NULL, species) {
 }
 
 .huang2026_turning_points <- function(age, pars, lower, upper) {
-  # Table 3.4's asymptote and sqrt-log fits are monotone in SI on their domains.
+  # Both tables' asymptote and sqrt-log fits are monotone in SI on their domains.
   if (age <= 50 || pars$model_form != "log_logistic_log") {
     return(numeric())
   }

@@ -30,6 +30,17 @@ testthat::test_that("si_model_registry has expected structure and key models", {
   ) %in% reg$model_id))
 })
 
+testthat::test_that("si_model_registry fixed arguments match engine signatures", {
+  reg <- CanadaForestAllometry::si_model_registry()
+  for (i in seq_len(nrow(reg))) {
+    engine <- get(reg$engine[[i]], envir = asNamespace("CanadaForestAllometry"))
+    testthat::expect_true(
+      all(names(reg$fixed_args[[i]]) %in% names(formals(engine))),
+      info = reg$model_id[[i]]
+    )
+  }
+})
+
 testthat::test_that("si_model_registry includes AugerWard2021 metadata", {
   reg <- CanadaForestAllometry::si_model_registry()
 

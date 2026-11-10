@@ -60,7 +60,8 @@ si_model_registry <- function() {
       "chenklinka2000",
       "huang2009_bh_age",
       "huang2009_total_age",
-      "huang2026"
+      "huang2026",
+      "huang2026_climate"
     ),
     reference = c(
       "@Buckman2006",
@@ -112,6 +113,7 @@ si_model_registry <- function() {
       "@ChenKlinka2000",
       "@Huang2009gypsy",
       "@Huang2009gypsy",
+      "@HuangEtAl2026",
       "@HuangEtAl2026"
     ),
     engine = c(
@@ -164,6 +166,7 @@ si_model_registry <- function() {
       "si_chenklinka2000",
       "si_huang2009",
       "si_huang2009",
+      "si_huang2026",
       "si_huang2026"
     ),
     fixed_args = list(
@@ -173,8 +176,8 @@ si_model_registry <- function() {
       list(),
       list(),
       list(),
-      list(model = "exponential_monomolecular"),
-      list(model = "monomolecular"),
+      list(variant = "exponential_monomolecular"),
+      list(variant = "monomolecular"),
       list(),
       list(),
       list(si50 = FALSE),
@@ -216,7 +219,8 @@ si_model_registry <- function() {
       list(), # chenklinka2000
       list(index_age = "breast_height"), # huang2009_bh_age
       list(index_age = "total"), # huang2009_total_age
-      list() # huang2026
+      list(), # huang2026
+      list(variant = "climate") # huang2026_climate
     ),
     plot_si_values = list(
       NULL,
@@ -268,7 +272,8 @@ si_model_registry <- function() {
       c(8, 12, 16, 20, 24), # chenklinka2000
       NULL, # huang2009_bh_age
       NULL, # huang2009_total_age
-      NULL # huang2026
+      NULL, # huang2026
+      NULL # huang2026_climate
     ),
     age_basis = c(
       "total_age", # buckman2006
@@ -320,7 +325,8 @@ si_model_registry <- function() {
       "breast_height_age", # chenklinka2000
       "total_age", # huang2009_bh_age (age input is total age)
       "total_age", # huang2009_total_age
-      "total_age" # huang2026
+      "total_age", # huang2026
+      "total_age" # huang2026_climate
     ),
     age_domain_max = c(
       NA_real_,
@@ -372,7 +378,8 @@ si_model_registry <- function() {
       150, # chenklinka2000 (tables published to BH age 150)
       NA_real_, # huang2009_bh_age
       NA_real_, # huang2009_total_age
-      180 # huang2026
+      180, # huang2026
+      180 # huang2026_climate
     ),
     requires_species = c(
       FALSE, # buckman2006
@@ -424,7 +431,8 @@ si_model_registry <- function() {
       TRUE, # chenklinka2000 (species arg selects fir/spruce/pine)
       TRUE, # huang2009_bh_age
       TRUE, # huang2009_total_age
-      TRUE # huang2026
+      TRUE, # huang2026
+      TRUE # huang2026_climate
     ),
     requires_gi = c(
       FALSE,
@@ -476,7 +484,8 @@ si_model_registry <- function() {
       FALSE, # chenklinka2000
       FALSE, # huang2009_bh_age
       FALSE, # huang2009_total_age
-      FALSE # huang2026
+      FALSE, # huang2026
+      FALSE # huang2026_climate
     ),
     supports_predict_si = c(
       rep(TRUE, 25),
@@ -504,7 +513,8 @@ si_model_registry <- function() {
       TRUE, # chenklinka2000
       TRUE, # huang2009_bh_age
       TRUE, # huang2009_total_age
-      TRUE # huang2026
+      TRUE, # huang2026
+      TRUE # huang2026_climate
     ),
     supports_predict_height = c(
       TRUE, # buckman2006 (supports_predict_height start)
@@ -556,11 +566,13 @@ si_model_registry <- function() {
       TRUE, # chenklinka2000
       TRUE, # huang2009_bh_age
       TRUE, # huang2009_total_age
-      TRUE # huang2026
+      TRUE, # huang2026
+      TRUE # huang2026_climate
     ),
     scope = c(
       rep("regional", 44),
       "national",
+      "regional",
       "regional",
       "regional",
       "regional",
@@ -617,7 +629,8 @@ si_model_registry <- function() {
       c("BC"), # chenklinka2000
       c("AB"), # huang2009_bh_age
       c("AB"), # huang2009_total_age
-      c("AB") # huang2026
+      c("AB"), # huang2026
+      c("AB") # huang2026_climate
     ),
     subregion_type = c(
       "none",
@@ -669,9 +682,10 @@ si_model_registry <- function() {
       "none", # chenklinka2000
       "none", # huang2009_bh_age
       "none", # huang2009_total_age
-      "none" # huang2026
+      "none", # huang2026
+      "none" # huang2026_climate
     ),
-    subregion_required = rep(FALSE, 50),
+    subregion_required = rep(FALSE, 51),
     subregion_arg = c(
       NA_character_,
       NA_character_,
@@ -722,7 +736,8 @@ si_model_registry <- function() {
       NA_character_, # chenklinka2000
       NA_character_, # huang2009_bh_age
       NA_character_, # huang2009_total_age
-      NA_character_ # huang2026
+      NA_character_, # huang2026
+      NA_character_ # huang2026_climate
     ),
     subregion_scope = list(
       NA_character_,
@@ -774,7 +789,8 @@ si_model_registry <- function() {
       NA_character_, # chenklinka2000
       NA_character_, # huang2009_bh_age
       NA_character_, # huang2009_total_age
-      NA_character_ # huang2026
+      NA_character_, # huang2026
+      NA_character_ # huang2026_climate
     ),
     subregion_desc = c(
       "none",
@@ -826,7 +842,8 @@ si_model_registry <- function() {
       "none", # chenklinka2000
       "none", # huang2009_bh_age
       "none", # huang2009_total_age
-      "none" # huang2026
+      "none", # huang2026
+      "none" # huang2026_climate
     ),
     description = c(
       "Buckman et al. (2006) piecewise red pine site-index model",
@@ -878,7 +895,8 @@ si_model_registry <- function() {
       "Chen and Klinka (2000) conditioned Chapman-Richards height-age (site index) model for subalpine fir, Engelmann spruce, and lodgepole pine in the ESSF zone of British Columbia",
       "Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years breast-height age)",
       "Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years total age)",
-      "Huang et al. (2026) non-climate height-age model for eight Alberta species (height index at 50 years total age)"
+      "Huang et al. (2026) non-climate height-age model for eight Alberta species (height index at 50 years total age)",
+      "Huang et al. (2026) climate height-age model for eight Alberta species (inherent HI; requires species-specific previous-years MAP and MWMT averages and location-specific 1961-1990 MAP_normal and MWMT_normal)"
     ),
     rank = c(
       72,
@@ -926,6 +944,7 @@ si_model_registry <- function() {
       88,
       85,
       60,
+      88,
       88,
       88,
       88,
@@ -982,7 +1001,8 @@ si_model_registry <- function() {
       "parameters_ChenKlinka1998",
       "parameters_Huang2009",
       "parameters_Huang2009",
-      "parameters_Huang2026"
+      "parameters_Huang2026",
+      "parameters_Huang2026_climate"
     ),
     species_manual = list(
       c("PINU.RES"),
@@ -1070,7 +1090,8 @@ si_model_registry <- function() {
       c("ABIE.LAS", "PICE.ENG", "PINU.CON"), # chenklinka2000
       c("POPU.TRE", "PICE.MAR", "PINU.CON", "PICE.GLA"), # huang2009_bh_age
       c("POPU.TRE", "PICE.MAR", "PINU.CON", "PICE.GLA"), # huang2009_total_age
-      NULL # huang2026 (coverage from parameters)
+      NULL, # huang2026 (coverage from parameters)
+      NULL # huang2026_climate (coverage from parameters)
     )
   )
 }

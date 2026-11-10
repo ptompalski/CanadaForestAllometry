@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CanadaForestAllometry</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,537 +76,924 @@
 
     <section class="section level2"><h2 id="site-index-models-included-in-the-package">Site index models included in the package<a class="anchor" aria-label="anchor" href="#site-index-models-included-in-the-package"></a>
 </h2>
+<p>Models are grouped by function, with separate subsections for registered variants. Curve labels give the site-index levels used with each variant. Additional predictors and illustrative scenarios are stated where required; they are not defaults supplied by the model functions.</p>
 <section class="level2"><h3 id="si_alemdag1991">
 <code>si_alemdag1991()</code><a class="anchor" aria-label="anchor" href="#si_alemdag1991"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_alemdag1991.html"><code>si_alemdag1991()</code></a>
-</li>
-<li>Description: Alemdag (1991) national (Canada-wide) modified Chapman-Richards site-index and height-growth model for white spruce in natural stands</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: Canada (all provinces/territories)</li>
-<li>Species coverage: PICE.GLA</li>
+<li><p>Function reference: <a href="../reference/si_alemdag1991.html"><code>si_alemdag1991()</code></a></p></li>
+<li><p>Model ID: <code>alemdag1991</code></p></li>
+<li><p>Description: Alemdag (1991) national (Canada-wide) modified Chapman-Richards site-index and height-growth model for white spruce in natural stands</p></li>
+<li><p>Reference: <span class="citation" data-cites="Alemdag1991">Alemdag (<a href="#ref-Alemdag1991" role="doc-biblioref">1991</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: Canada (all provinces/territories)</p></li>
+<li><p>Species coverage: PICE.GLA</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_alemdag1991.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-alemdag1991-default.png"></p>
 </section><section class="level2"><h3 id="si_augerward2021">
 <code>si_augerward2021()</code><a class="anchor" aria-label="anchor" href="#si_augerward2021"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_augerward2021.html"><code>si_augerward2021()</code></a>
-</li>
-<li>Description: Auger and Ward (2021) Quebec plantation site-index model</li>
-<li>Age type: Total age</li>
-<li>Coverage: QC</li>
-<li>Species coverage: PICE.MAR, PINU.BAN</li>
+<li><p>Function reference: <a href="../reference/si_augerward2021.html"><code>si_augerward2021()</code></a></p></li>
+<li><p>Model ID: <code>augerward2021</code></p></li>
+<li><p>Description: Auger and Ward (2021) Quebec plantation site-index model</p></li>
+<li><p>Reference: <span class="citation" data-cites="AugerWard2021">Auger and Ward (<a href="#ref-AugerWard2021" role="doc-biblioref">2021</a>)</span></p></li>
+<li><p>Age type: Total age</p></li>
+<li><p>Coverage: QC</p></li>
+<li><p>Species coverage: PICE.MAR, PINU.BAN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_augerward2021.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-augerward2021-default.png"></p>
 </section><section class="level2"><h3 id="si_batho2014">
 <code>si_batho2014()</code><a class="anchor" aria-label="anchor" href="#si_batho2014"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_batho2014.html"><code>si_batho2014()</code></a>
-</li>
-<li>Description: Batho and Garcia (2014) polymorphic Bertalanffy-Richards height-age (site index) model for lodgepole pine in the Sub-Boreal Spruce zone of British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: PINU.CON</li>
+<li><p>Function reference: <a href="../reference/si_batho2014.html"><code>si_batho2014()</code></a></p></li>
+<li><p>Model ID: <code>batho2014</code></p></li>
+<li><p>Description: Batho and Garcia (2014) polymorphic Bertalanffy-Richards height-age (site index) model for lodgepole pine in the Sub-Boreal Spruce zone of British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="Batho2014">Batho and García (<a href="#ref-Batho2014" role="doc-biblioref">2014</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: PINU.CON</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_batho2014.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-batho2014-default.png"></p>
 </section><section class="level2"><h3 id="si_brisco2002">
 <code>si_brisco2002()</code><a class="anchor" aria-label="anchor" href="#si_brisco2002"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_brisco2002.html"><code>si_brisco2002()</code></a>
-</li>
-<li>Description: Brisco, Klinka and Nigh (2002) Chapman-Richards height-age (site index) model for western larch in British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: LARI.OCC</li>
+<li><p>Function reference: <a href="../reference/si_brisco2002.html"><code>si_brisco2002()</code></a></p></li>
+<li><p>Model ID: <code>brisco2002</code></p></li>
+<li><p>Description: Brisco, Klinka and Nigh (2002) Chapman-Richards height-age (site index) model for western larch in British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="Brisco2002">Brisco et al. (<a href="#ref-Brisco2002" role="doc-biblioref">2002</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: LARI.OCC</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_brisco2002.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-brisco2002-default.png"></p>
 </section><section class="level2"><h3 id="si_buckman2006">
 <code>si_buckman2006()</code><a class="anchor" aria-label="anchor" href="#si_buckman2006"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_buckman2006.html"><code>si_buckman2006()</code></a>
-</li>
-<li>Description: Buckman et al. (2006) piecewise red pine site-index model</li>
-<li>Age type: Total age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PINU.RES</li>
+<li><p>Function reference: <a href="../reference/si_buckman2006.html"><code>si_buckman2006()</code></a></p></li>
+<li><p>Model ID: <code>buckman2006</code></p></li>
+<li><p>Description: Buckman et al. (2006) piecewise red pine site-index model</p></li>
+<li><p>Reference: <span class="citation" data-cites="Buckman2006">Buckmann et al. (<a href="#ref-Buckman2006" role="doc-biblioref">2006</a>)</span></p></li>
+<li><p>Age type: Total age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PINU.RES</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_buckman2006.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-buckman2006-default.png"></p>
 </section><section class="level2"><h3 id="si_carmean1989">
 <code>si_carmean1989()</code><a class="anchor" aria-label="anchor" href="#si_carmean1989"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_carmean1989.html"><code>si_carmean1989()</code></a>
-</li>
-<li>Description: Carmean et al. (1989) eastern species site-index model set</li>
-<li>Age type: Total age</li>
-<li>Coverage: NB, NL, NS, ON, PE, QC</li>
-<li>Species coverage: ACER.SAH, BETU.ALL, CHAM.THY, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER, QUER.RUB, TILI.AME, TSUG.CAN, ULMU.AME</li>
+<li><p>Function reference: <a href="../reference/si_carmean1989.html"><code>si_carmean1989()</code></a></p></li>
+<li><p>Model ID: <code>carmean1989</code></p></li>
+<li><p>Description: Carmean et al. (1989) eastern species site-index model set</p></li>
+<li><p>Reference: <span class="citation" data-cites="Carmean1989">Carmean et al. (<a href="#ref-Carmean1989" role="doc-biblioref">1989</a>)</span></p></li>
+<li><p>Age type: Total age</p></li>
+<li><p>Coverage: ON, QC, NB, NS, PE, NL</p></li>
+<li><p>Species coverage: ACER.SAH, BETU.ALL, CHAM.THY, FAGU.GRA, FRAX.AME, FRAX.NIG, PRUN.SER, QUER.RUB, TILI.AME, TSUG.CAN, ULMU.AME</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_carmean1989.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-carmean1989-default.png"></p>
 </section><section class="level2"><h3 id="si_carmean1996">
 <code>si_carmean1996()</code><a class="anchor" aria-label="anchor" href="#si_carmean1996"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_carmean1996.html"><code>si_carmean1996()</code></a>
-</li>
-<li>Description: Carmean (1996) northwest Ontario site-index model set</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: ABIE.BAL, BETU.PAP, LARI.LAR, PICE.GLA, PICE.MAR, PINU.BAN, POPU.TRE</li>
+<li><p>Function reference: <a href="../reference/si_carmean1996.html"><code>si_carmean1996()</code></a></p></li>
+<li><p>Model ID: <code>carmean1996</code></p></li>
+<li><p>Description: Carmean (1996) northwest Ontario site-index model set</p></li>
+<li><p>Reference: <span class="citation" data-cites="Carmean1996">Carmean (<a href="#ref-Carmean1996" role="doc-biblioref">1996</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: ABIE.BAL, BETU.PAP, LARI.LAR, PICE.GLA, PICE.MAR, PINU.BAN, POPU.TRE</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_carmean1996.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-carmean1996-default.png"></p>
 </section><section class="level2"><h3 id="si_carmean2001">
 <code>si_carmean2001()</code><a class="anchor" aria-label="anchor" href="#si_carmean2001"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_carmean2001.html"><code>si_carmean2001()</code></a>
-</li>
-<li>Description: Carmean, Niznowski and Hazenberg (2001) polymorphic (Newnham) site-index model for jack pine in northern Ontario</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PINU.BAN</li>
+<li><p>Function reference: <a href="../reference/si_carmean2001.html"><code>si_carmean2001()</code></a></p></li>
+<li><p>Model ID: <code>carmean2001</code></p></li>
+<li><p>Description: Carmean, Niznowski and Hazenberg (2001) polymorphic (Newnham) site-index model for jack pine in northern Ontario</p></li>
+<li><p>Reference: <span class="citation" data-cites="Carmean2001">Carmean et al. (<a href="#ref-Carmean2001" role="doc-biblioref">2001</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PINU.BAN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_carmean2001.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-carmean2001-default.png"></p>
 </section><section class="level2"><h3 id="si_carmean2006">
 <code>si_carmean2006()</code><a class="anchor" aria-label="anchor" href="#si_carmean2006"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_carmean2006.html"><code>si_carmean2006()</code></a>
-</li>
-<li>Description: Carmean, Hazenberg and Deschamps (2006) polymorphic (Newnham) site-index model for black spruce and trembling aspen in northwest Ontario</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PICE.MAR, POPU.TRE</li>
+<li><p>Function reference: <a href="../reference/si_carmean2006.html"><code>si_carmean2006()</code></a></p></li>
+<li><p>Model ID: <code>carmean2006</code></p></li>
+<li><p>Description: Carmean, Hazenberg and Deschamps (2006) polymorphic (Newnham) site-index model for black spruce and trembling aspen in northwest Ontario</p></li>
+<li><p>Reference: <span class="citation" data-cites="Carmean2006">Carmean et al. (<a href="#ref-Carmean2006" role="doc-biblioref">2006</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PICE.MAR, POPU.TRE</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_carmean2006.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-carmean2006-default.png"></p>
 </section><section class="level2"><h3 id="si_carmeanhahn1981">
 <code>si_carmeanhahn1981()</code><a class="anchor" aria-label="anchor" href="#si_carmeanhahn1981"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_carmeanhahn1981.html"><code>si_carmeanhahn1981()</code></a>
-</li>
-<li>Description: Lake States site-index model for balsam fir and white spruce</li>
-<li>Age type: Total age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: ABIE.BAL, PICE.GLA</li>
+<li><p>Function reference: <a href="../reference/si_carmeanhahn1981.html"><code>si_carmeanhahn1981()</code></a></p></li>
+<li><p>Model ID: <code>carmeanhahn1981</code></p></li>
+<li><p>Description: Lake States site-index model for balsam fir and white spruce</p></li>
+<li><p>Reference: <span class="citation" data-cites="CarmeanHahn1981">Carmean and Hahn (<a href="#ref-CarmeanHahn1981" role="doc-biblioref">1981</a>)</span></p></li>
+<li><p>Age type: Total age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: ABIE.BAL, PICE.GLA</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_carmeanhahn1981.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-carmeanhahn1981-default.png"></p>
 </section><section class="level2"><h3 id="si_chenklinka2000">
 <code>si_chenklinka2000()</code><a class="anchor" aria-label="anchor" href="#si_chenklinka2000"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_chenklinka2000.html"><code>si_chenklinka2000()</code></a>
-</li>
-<li>Description: Chen and Klinka (2000) conditioned Chapman-Richards height-age (site index) model for subalpine fir, Engelmann spruce, and lodgepole pine in the ESSF zone of British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: ABIE.LAS, PICE.ENG, PINU.CON</li>
+<li><p>Function reference: <a href="../reference/si_chenklinka2000.html"><code>si_chenklinka2000()</code></a></p></li>
+<li><p>Model ID: <code>chenklinka2000</code></p></li>
+<li><p>Description: Chen and Klinka (2000) conditioned Chapman-Richards height-age (site index) model for subalpine fir, Engelmann spruce, and lodgepole pine in the ESSF zone of British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="ChenKlinka2000">Chen and Klinka (<a href="#ref-ChenKlinka2000" role="doc-biblioref">2000</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: ABIE.LAS, PICE.ENG, PINU.CON</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_chenklinka2000.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-chenklinka2000-default.png"></p>
 </section><section class="level2"><h3 id="si_cieszewski1993">
 <code>si_cieszewski1993()</code><a class="anchor" aria-label="anchor" href="#si_cieszewski1993"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_cieszewski1993.html"><code>si_cieszewski1993()</code></a>
-</li>
-<li>Description: Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: SK</li>
-<li>Species coverage: ABIE.BAL, ACER.NEG, BETU.PAP, LARI.LAR, PICE.GLA, PICE.MAR, PINU.BAN, PINU.CON, POPU.BAL, POPU.TRE, ULMU.AME</li>
+<li><p>Function reference: <a href="../reference/si_cieszewski1993.html"><code>si_cieszewski1993()</code></a></p></li>
+<li><p>Model ID: <code>cieszewski1993</code></p></li>
+<li><p>Description: Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species</p></li>
+<li><p>Reference: <span class="citation" data-cites="Cieszewski1993">Cieszewski et al. (<a href="#ref-Cieszewski1993" role="doc-biblioref">1993</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: SK</p></li>
+<li><p>Species coverage: ABIE.BAL, ACER.NEG, BETU.PAP, LARI.LAR, PICE.GLA, PICE.MAR, PINU.BAN, PINU.CON, POPU.BAL, POPU.TRE, ULMU.AME</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_cieszewski1993.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-cieszewski1993-default.png"></p>
 </section><section class="level2"><h3 id="si_cieszewskibella1991">
 <code>si_cieszewskibella1991()</code><a class="anchor" aria-label="anchor" href="#si_cieszewskibella1991"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_cieszewskibella1991.html"><code>si_cieszewskibella1991()</code></a>
-</li>
-<li>Description: Alberta polymorphic variable-age site-index model for four major tree species</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: AB</li>
-<li>Species coverage: PICE.GLA, PICE.MAR, PINU.CON, POPU.TRE</li>
+<li><p>Function reference: <a href="../reference/si_cieszewskibella1991.html"><code>si_cieszewskibella1991()</code></a></p></li>
+<li><p>Model ID: <code>cieszewskibella1991</code></p></li>
+<li><p>Description: Alberta polymorphic variable-age site-index model for four major tree species</p></li>
+<li><p>Reference: <span class="citation" data-cites="CieszewskiBella1991">Cieszewski and Bella (<a href="#ref-CieszewskiBella1991" role="doc-biblioref">1991</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: AB</p></li>
+<li><p>Species coverage: PICE.GLA, PICE.MAR, PINU.CON, POPU.TRE</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_cieszewskibella1991.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-cieszewskibella1991-default.png"></p>
 </section><section class="level2"><h3 id="si_goelz1992">
 <code>si_goelz1992()</code><a class="anchor" aria-label="anchor" href="#si_goelz1992"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_goelz1992.html"><code>si_goelz1992()</code></a>
-</li>
-<li>Description: Goelz and Burk (1992) base-age invariant Chapman-Richards site-index model for jack pine in north central Ontario</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PINU.BAN</li>
+<li><p>Function reference: <a href="../reference/si_goelz1992.html"><code>si_goelz1992()</code></a></p></li>
+<li><p>Model ID: <code>goelz1992</code></p></li>
+<li><p>Description: Goelz and Burk (1992) base-age invariant Chapman-Richards site-index model for jack pine in north central Ontario</p></li>
+<li><p>Reference: <span class="citation" data-cites="Goelz1992">Goelz and Burk (<a href="#ref-Goelz1992" role="doc-biblioref">1992</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PINU.BAN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_goelz1992.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-goelz1992-default.png"></p>
 </section><section class="level2"><h3 id="si_goudie1984">
 <code>si_goudie1984()</code><a class="anchor" aria-label="anchor" href="#si_goudie1984"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_goudie1984.html"><code>si_goudie1984()</code></a>
-</li>
-<li>Description: Goudie (1984) logistic height-age (site-index) model for lodgepole pine and white spruce in British Columbia (SAS-reference implementation; pine dry-site coefficients)</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: PICE.GLA, PINU.CON</li>
+<li><p>Function reference: <a href="../reference/si_goudie1984.html"><code>si_goudie1984()</code></a></p></li>
+<li><p>Model ID: <code>goudie1984</code></p></li>
+<li><p>Description: Goudie (1984) logistic height-age (site-index) model for lodgepole pine and white spruce in British Columbia (SAS-reference implementation; pine dry-site coefficients)</p></li>
+<li><p>Reference: <span class="citation" data-cites="Goudie1984">Goudie (<a href="#ref-Goudie1984" role="doc-biblioref">1984</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: PICE.GLA, PINU.CON</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_goudie1984.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-goudie1984-default.png"></p>
 </section><section class="level2"><h3 id="si_huang1994">
 <code>si_huang1994()</code><a class="anchor" aria-label="anchor" href="#si_huang1994"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_huang1994.html"><code>si_huang1994()</code></a>
-</li>
-<li>Description: Huang et al. (1994) Alberta polymorphic site-index model set</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: AB</li>
-<li>Species coverage: ABIE.BAL, PICE.GLA, PICE.MAR, PINU.BAN, PINU.CON, POPU.BAL, POPU.TRE, PSEU.MEN</li>
+<li><p>Function reference: <a href="../reference/si_huang1994.html"><code>si_huang1994()</code></a></p></li>
+<li><p>Model ID: <code>huang1994</code></p></li>
+<li><p>Description: Huang et al. (1994) Alberta polymorphic site-index model set</p></li>
+<li><p>Reference: <span class="citation" data-cites="Huang1994si">Huang et al. (<a href="#ref-Huang1994si" role="doc-biblioref">1994</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: AB</p></li>
+<li><p>Species coverage: ABIE.BAL, PICE.GLA, PICE.MAR, PINU.BAN, PINU.CON, POPU.BAL, POPU.TRE, PSEU.MEN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_huang1994.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-huang1994-default.png"></p>
 </section><section class="level2"><h3 id="si_huang2009">
 <code>si_huang2009()</code><a class="anchor" aria-label="anchor" href="#si_huang2009"></a>
 </h3>
 <ul>
 <li>Function reference: <a href="../reference/si_huang2009.html"><code>si_huang2009()</code></a>
 </li>
+</ul>
+<section class="level3"><h4 id="huang2009_bh_age">
+<code>huang2009_bh_age</code><a class="anchor" aria-label="anchor" href="#huang2009_bh_age"></a>
+</h4>
+<ul>
+<li>Model ID: <code>huang2009_bh_age</code>
+</li>
 <li>Description: Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years breast-height age)</li>
+<li>Reference: <span class="citation" data-cites="Huang2009gypsy">Huang et al. (<a href="#ref-Huang2009gypsy" role="doc-biblioref">2009</a>)</span>
+</li>
 <li>Age type: Total age</li>
 <li>Coverage: AB</li>
 <li>Species coverage: PICE.GLA, PICE.MAR, PINU.CON, POPU.TRE</li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_huang2009.png"></p>
-</section><section class="level2"><h3 id="si_hugarcia2009">
+<p><img src="Site-Index-Models_files/figure-html//si-curves-huang2009_bh_age-default.png"></p>
+</section><section class="level3"><h4 id="huang2009_total_age">
+<code>huang2009_total_age</code><a class="anchor" aria-label="anchor" href="#huang2009_total_age"></a>
+</h4>
+<ul>
+<li>Model ID: <code>huang2009_total_age</code>
+</li>
+<li>Description: Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years total age)</li>
+<li>Reference: <span class="citation" data-cites="Huang2009gypsy">Huang et al. (<a href="#ref-Huang2009gypsy" role="doc-biblioref">2009</a>)</span>
+</li>
+<li>Age type: Total age</li>
+<li>Coverage: AB</li>
+<li>Species coverage: PICE.GLA, PICE.MAR, PINU.CON, POPU.TRE</li>
+</ul>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-huang2009_total_age-default.png"></p>
+</section></section><section class="level2"><h3 id="si_huang2026">
+<code>si_huang2026()</code><a class="anchor" aria-label="anchor" href="#si_huang2026"></a>
+</h3>
+<ul>
+<li>Function reference: <a href="../reference/si_huang2026.html"><code>si_huang2026()</code></a>
+</li>
+</ul>
+<section class="level3"><h4 id="non-climate">Non-climate<a class="anchor" aria-label="anchor" href="#non-climate"></a>
+</h4>
+<ul>
+<li>Model ID: <code>huang2026</code>
+</li>
+<li>Description: Huang et al. (2026) non-climate height-age model for eight Alberta species (height index at 50 years total age)</li>
+<li>Reference: <span class="citation" data-cites="HuangEtAl2026">Huang et al. (<a href="#ref-HuangEtAl2026" role="doc-biblioref">2026</a>)</span>
+</li>
+<li>Age type: Total age</li>
+<li>Coverage: AB</li>
+<li>Species coverage: ABIE.BAL, PICE.GLA, PICE.MAR, PINU.BAN, PINU.CON, POPU.BAL, POPU.TRE, PSEU.MEN</li>
+</ul>
+<p>The default, separately fitted non-climate model uses height index at 50 years <strong>total age</strong>. Heights describe dominant/codominant trees, not a standardized plot mean of the largest-DBH stems. Ages above 180 years warn about extrapolation; ambiguous inversions are rejected.</p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-huang2026-default.png"></p>
+</section><section class="level3"><h4 id="climate-sensitive">Climate-sensitive<a class="anchor" aria-label="anchor" href="#climate-sensitive"></a>
+</h4>
+<ul>
+<li>Model ID: <code>huang2026_climate</code>
+</li>
+<li>Description: Huang et al. (2026) climate height-age model for eight Alberta species (inherent HI; requires species-specific previous-years MAP and MWMT averages and location-specific 1961-1990 MAP_normal and MWMT_normal)</li>
+<li>Reference: <span class="citation" data-cites="HuangEtAl2026">Huang et al. (<a href="#ref-HuangEtAl2026" role="doc-biblioref">2026</a>)</span>
+</li>
+<li>Age type: Total age</li>
+<li>Coverage: AB</li>
+<li>Species coverage: ABIE.BAL, PICE.GLA, PICE.MAR, PINU.BAN, PINU.CON, POPU.BAL, POPU.TRE, PSEU.MEN</li>
+</ul>
+<p>Climate inputs are explicit, pre-aggregated values. <code>MAP</code> (mm) and <code>MWMT</code> (degrees C; not mean annual temperature) exclude the current year: use the previous 20 years for aspen, white spruce, balsam poplar and balsam fir; 10 years for black spruce; and all previous years since initiation for lodgepole pine, Douglas-fir and jack pine. For young trees, use only previous years since initiation, without silently omitting missing history. <code>MAP_normal</code> and <code>MWMT_normal</code> are location-specific <strong>1961-1990 normals</strong>, kept fixed between scenarios.</p>
+<p>Curve labels are <strong>inherent HI</strong>, so realized height at age 50 is <code>C * HI</code>. Equal HI does not mean equal realized height across scenarios. The climate fit at <code>C = 1</code> differs from the separately fitted non-climate model. These dominant/codominant-height curves evaluate fixed-climate points, <strong>not changing-climate annual trajectories</strong>; continuous projection would require re-anchoring HI at each step and is not implemented here.</p>
+<p>The illustrative normals below are the species-specific reference values used in Tables A33-A40 of the report, <strong>not provincial defaults</strong>. The second scenario has 10% lower <code>MAP</code> and 1 degree C higher <code>MWMT</code>, with normals unchanged. Neither scenario represents an observed site or a forecast.</p>
+<table class="table caption-top">
+<thead><tr class="header">
+<th style="text-align: left;">species</th>
+<th style="text-align: right;">MAP_normal</th>
+<th style="text-align: right;">MWMT_normal</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">POPU.TRE</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">15.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PICE.GLA</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">15.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PINU.CON</td>
+<td style="text-align: right;">625</td>
+<td style="text-align: right;">14.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PICE.MAR</td>
+<td style="text-align: right;">550</td>
+<td style="text-align: right;">15.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">POPU.BAL</td>
+<td style="text-align: right;">550</td>
+<td style="text-align: right;">15.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ABIE.BAL</td>
+<td style="text-align: right;">625</td>
+<td style="text-align: right;">14.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PSEU.MEN</td>
+<td style="text-align: right;">625</td>
+<td style="text-align: right;">14.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PINU.BAN</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">16.5</td>
+</tr>
+</tbody>
+</table>
+<p>For example, the aspen point predictions in Section 4.1 use:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/si_huang2026.html">si_huang2026</a></span><span class="op">(</span></span>
+<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">80</span><span class="op">)</span>, si <span class="op">=</span> <span class="fl">16</span>, species <span class="op">=</span> <span class="st">"POPU.TRE"</span>,</span>
+<span>  MAP <span class="op">=</span> <span class="fl">400</span>, MWMT <span class="op">=</span> <span class="fl">18</span>, MAP_normal <span class="op">=</span> <span class="fl">500</span>, MWMT_normal <span class="op">=</span> <span class="fl">15.5</span>,</span>
+<span>  variant <span class="op">=</span> <span class="st">"climate"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<section class="level4"><h5 id="climate-averages-equal-the-reference-normals">Climate averages equal the reference normals<a class="anchor" aria-label="anchor" href="#climate-averages-equal-the-reference-normals"></a>
+</h5>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-huang2026_climate-at_normals.png"></p>
+</section><section class="level4"><h5 id="warmerdrier-map-10-lower-mwmt-1-degree-c-higher">Warmer/drier: MAP 10% lower, MWMT 1 degree C higher<a class="anchor" aria-label="anchor" href="#warmerdrier-map-10-lower-mwmt-1-degree-c-higher"></a>
+</h5>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-huang2026_climate-warmer_drier.png"></p>
+</section></section></section><section class="level2"><h3 id="si_hugarcia2009">
 <code>si_hugarcia2009()</code><a class="anchor" aria-label="anchor" href="#si_hugarcia2009"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_hugarcia2009.html"><code>si_hugarcia2009()</code></a>
-</li>
-<li>Description: Hu and Garcia (2009) interior spruce height-growth and site-index model (BC SBS zone)</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: PICE.ENG, PICE.GLA</li>
+<li><p>Function reference: <a href="../reference/si_hugarcia2009.html"><code>si_hugarcia2009()</code></a></p></li>
+<li><p>Model ID: <code>hugarcia2009</code></p></li>
+<li><p>Description: Hu and Garcia (2009) interior spruce height-growth and site-index model (BC SBS zone)</p></li>
+<li><p>Reference: <span class="citation" data-cites="HuGarcia2009">Hu and García (<a href="#ref-HuGarcia2009" role="doc-biblioref">2010</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: PICE.ENG, PICE.GLA</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_hugarcia2009.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-hugarcia2009-default.png"></p>
 </section><section class="level2"><h3 id="si_kerbowling1991">
 <code>si_kerbowling1991()</code><a class="anchor" aria-label="anchor" href="#si_kerbowling1991"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_kerbowling1991.html"><code>si_kerbowling1991()</code></a>
-</li>
-<li>Description: New Brunswick polymorphic site-index model for softwoods</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: NB</li>
-<li>Species coverage: ABIE.BAL, PICE.GLA, PICE.MAR, PINU.BAN</li>
+<li><p>Function reference: <a href="../reference/si_kerbowling1991.html"><code>si_kerbowling1991()</code></a></p></li>
+<li><p>Model ID: <code>kerbowling1991</code></p></li>
+<li><p>Description: New Brunswick polymorphic site-index model for softwoods</p></li>
+<li><p>Reference: <span class="citation" data-cites="KerBowling1991">Ker and Bowling (<a href="#ref-KerBowling1991" role="doc-biblioref">1991</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: NB</p></li>
+<li><p>Species coverage: ABIE.BAL, PICE.GLA, PICE.MAR, PINU.BAN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_kerbowling1991.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-kerbowling1991-default.png"></p>
 </section><section class="level2"><h3 id="si_lafleche2013">
 <code>si_lafleche2013()</code><a class="anchor" aria-label="anchor" href="#si_lafleche2013"></a>
 </h3>
 <ul>
 <li>Function reference: <a href="../reference/si_lafleche2013.html"><code>si_lafleche2013()</code></a>
 </li>
+</ul>
+<section class="level3"><h4 id="lafleche2013_observed">
+<code>lafleche2013_observed</code><a class="anchor" aria-label="anchor" href="#lafleche2013_observed"></a>
+</h4>
+<ul>
+<li>Model ID: <code>lafleche2013_observed</code>
+</li>
+<li>Description: Lafleche et al. (2013) Quebec ecological-site observed-height IQS curves</li>
+<li>Reference: <span class="citation" data-cites="LaflecheEtAl2013">Lafleche et al. (<a href="#ref-LaflecheEtAl2013" role="doc-biblioref">2013</a>)</span>
+</li>
+<li>Age type: Breast-height age</li>
+<li>Coverage: QC</li>
+<li>Species coverage: ABIE.BAL, BETU.PAP, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.STR, POPU.GRA, POPU.TRE, THUJ.OCC</li>
+</ul>
+<p>This model uses fixed ecological-site curves rather than arbitrary site-index levels. The figure below shows selected example combinations of species and ecological keys for the observed curve set.</p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-lafleche2013_observed-default.png"></p>
+</section><section class="level3"><h4 id="lafleche2013_potential">
+<code>lafleche2013_potential</code><a class="anchor" aria-label="anchor" href="#lafleche2013_potential"></a>
+</h4>
+<ul>
+<li>Model ID: <code>lafleche2013_potential</code>
+</li>
 <li>Description: Lafleche et al. (2013) Quebec ecological-site potential-height IQS curves</li>
+<li>Reference: <span class="citation" data-cites="LaflecheEtAl2013">Lafleche et al. (<a href="#ref-LaflecheEtAl2013" role="doc-biblioref">2013</a>)</span>
+</li>
 <li>Age type: Breast-height age</li>
 <li>Coverage: QC</li>
 <li>Species coverage: ABIE.BAL, BETU.PAP, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.STR, POPU.GRA, POPU.TRE, THUJ.OCC</li>
 </ul>
 <p>This model uses fixed ecological-site curves rather than arbitrary site-index levels. The figure below shows selected example combinations of species and ecological keys for the potential curve set.</p>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_lafleche2013.png"></p>
-</section><section class="level2"><h3 id="si_lundgrendolid1970">
+<p><img src="Site-Index-Models_files/figure-html//si-curves-lafleche2013_potential-default.png"></p>
+</section></section><section class="level2"><h3 id="si_lundgrendolid1970">
 <code>si_lundgrendolid1970()</code><a class="anchor" aria-label="anchor" href="#si_lundgrendolid1970"></a>
 </h3>
 <ul>
 <li>Function reference: <a href="../reference/si_lundgrendolid1970.html"><code>si_lundgrendolid1970()</code></a>
 </li>
+</ul>
+<section class="level3"><h4 id="lundgrendolid1970_exponential_monomolecular">
+<code>lundgrendolid1970_exponential_monomolecular</code><a class="anchor" aria-label="anchor" href="#lundgrendolid1970_exponential_monomolecular"></a>
+</h4>
+<ul>
+<li>Model ID: <code>lundgrendolid1970_exponential_monomolecular</code>
+</li>
 <li>Description: Lundgren and Dolid model (exponential monomolecular form)</li>
+<li>Reference: <span class="citation" data-cites="LundgrenDolid1970">Lundgren and Dolid (<a href="#ref-LundgrenDolid1970" role="doc-biblioref">1970</a>)</span>
+</li>
 <li>Age type: Breast-height age</li>
 <li>Coverage: ON</li>
 <li>Species coverage: ABIE.BAL, BETU.PAP, LARI.LAR, PICE.GLA, PICE.MAR, PINU.BAN, PINU.RES, PINU.STR, POPU.TRE, QUER.RUB, THUJ.OCC</li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_lundgrendolid1970.png"></p>
-</section><section class="level2"><h3 id="si_nigh1997">
+<p><img src="Site-Index-Models_files/figure-html//si-curves-lundgrendolid1970_exponential_monomolecular-default.png"></p>
+</section><section class="level3"><h4 id="lundgrendolid1970_monomolecular">
+<code>lundgrendolid1970_monomolecular</code><a class="anchor" aria-label="anchor" href="#lundgrendolid1970_monomolecular"></a>
+</h4>
+<ul>
+<li>Model ID: <code>lundgrendolid1970_monomolecular</code>
+</li>
+<li>Description: Lundgren and Dolid model (monomolecular form)</li>
+<li>Reference: <span class="citation" data-cites="LundgrenDolid1970">Lundgren and Dolid (<a href="#ref-LundgrenDolid1970" role="doc-biblioref">1970</a>)</span>
+</li>
+<li>Age type: Breast-height age</li>
+<li>Coverage: ON</li>
+<li>Species coverage: ABIE.BAL, BETU.PAP, LARI.LAR, PICE.GLA, PICE.MAR, PINU.BAN, PINU.RES, PINU.STR, POPU.TRE, QUER.RUB, THUJ.OCC</li>
+</ul>
+<p><strong>Some curve points were omitted after prediction errors:</strong> Negative height prediction generated in <code><a href="../reference/si_lundgrendolid1970.html">si_lundgrendolid1970()</a></code>. ℹ Check inputs and species-specific parameters.</p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-lundgrendolid1970_monomolecular-default.png"></p>
+</section></section><section class="level2"><h3 id="si_nigh1997">
 <code>si_nigh1997()</code><a class="anchor" aria-label="anchor" href="#si_nigh1997"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh1997.html"><code>si_nigh1997()</code></a>
-</li>
-<li>Description: Nigh (1997) logistic height-age (site index) model for Sitka spruce in coastal British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: PICE.SIT</li>
+<li><p>Function reference: <a href="../reference/si_nigh1997.html"><code>si_nigh1997()</code></a></p></li>
+<li><p>Model ID: <code>nigh1997</code></p></li>
+<li><p>Description: Nigh (1997) logistic height-age (site index) model for Sitka spruce in coastal British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh1997">Nigh (<a href="#ref-Nigh1997" role="doc-biblioref">1997</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: PICE.SIT</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh1997.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nigh1997-default.png"></p>
 </section><section class="level2"><h3 id="si_nigh1998">
 <code>si_nigh1998()</code><a class="anchor" aria-label="anchor" href="#si_nigh1998"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh1998.html"><code>si_nigh1998()</code></a>
-</li>
-<li>Description: Nigh (1998) log-logistic height-age (site index) model for western hemlock in the interior of British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: TSUG.HET</li>
+<li><p>Function reference: <a href="../reference/si_nigh1998.html"><code>si_nigh1998()</code></a></p></li>
+<li><p>Model ID: <code>nigh1998</code></p></li>
+<li><p>Description: Nigh (1998) log-logistic height-age (site index) model for western hemlock in the interior of British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh1998">Nigh (<a href="#ref-Nigh1998" role="doc-biblioref">1998</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: TSUG.HET</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh1998.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nigh1998-default.png"></p>
 </section><section class="level2"><h3 id="si_nigh1998_gi">
 <code>si_nigh1998_gi()</code><a class="anchor" aria-label="anchor" href="#si_nigh1998_gi"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh1998_gi.html"><code>si_nigh1998_gi()</code></a>
-</li>
-<li>Description: Nigh (1998) growth-intercept site-index model for western hemlock in the interior of British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: TSUG.HET</li>
+<li><p>Function reference: <a href="../reference/si_nigh1998_gi.html"><code>si_nigh1998_gi()</code></a></p></li>
+<li><p>Model ID: <code>nigh1998_gi</code></p></li>
+<li><p>Description: Nigh (1998) growth-intercept site-index model for western hemlock in the interior of British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh1998">Nigh (<a href="#ref-Nigh1998" role="doc-biblioref">1998</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: TSUG.HET</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh1998_gi.png"></p>
+<p><em>No height curve graphic is available for this variant.</em></p>
 </section><section class="level2"><h3 id="si_nigh2000">
 <code>si_nigh2000()</code><a class="anchor" aria-label="anchor" href="#si_nigh2000"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh2000.html"><code>si_nigh2000()</code></a>
-</li>
-<li>Description: Nigh (2000) polymorphic site-index model for interior western redcedar</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: THUJ.PLI</li>
+<li><p>Function reference: <a href="../reference/si_nigh2000.html"><code>si_nigh2000()</code></a></p></li>
+<li><p>Model ID: <code>nigh2000</code></p></li>
+<li><p>Description: Nigh (2000) polymorphic site-index model for interior western redcedar</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh2000">Nigh (<a href="#ref-Nigh2000" role="doc-biblioref">2000</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: THUJ.PLI</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh2000.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nigh2000-default.png"></p>
 </section><section class="level2"><h3 id="si_nigh2000_gi">
 <code>si_nigh2000_gi()</code><a class="anchor" aria-label="anchor" href="#si_nigh2000_gi"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh2000_gi.html"><code>si_nigh2000_gi()</code></a>
-</li>
-<li>Description: Nigh (2000) growth-intercept site-index model for interior western redcedar</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: THUJ.PLI</li>
+<li><p>Function reference: <a href="../reference/si_nigh2000_gi.html"><code>si_nigh2000_gi()</code></a></p></li>
+<li><p>Model ID: <code>nigh2000_gi</code></p></li>
+<li><p>Description: Nigh (2000) growth-intercept site-index model for interior western redcedar</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh2000">Nigh (<a href="#ref-Nigh2000" role="doc-biblioref">2000</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: THUJ.PLI</p></li>
 </ul>
-<p><em>No curve graphic shown for growth-intercept model.</em></p>
+<p><em>No height curve graphic is available for this variant.</em></p>
 </section><section class="level2"><h3 id="si_nigh2002">
 <code>si_nigh2002()</code><a class="anchor" aria-label="anchor" href="#si_nigh2002"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh2002.html"><code>si_nigh2002()</code></a>
-</li>
-<li>Description: Nigh et al. (2002) trembling aspen height-age (site index) model for British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: POPU.TRE</li>
+<li><p>Function reference: <a href="../reference/si_nigh2002.html"><code>si_nigh2002()</code></a></p></li>
+<li><p>Model ID: <code>nigh2002</code></p></li>
+<li><p>Description: Nigh et al. (2002) trembling aspen height-age (site index) model for British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh2002">Nigh et al. (<a href="#ref-Nigh2002" role="doc-biblioref">2002</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: POPU.TRE</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh2002.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nigh2002-default.png"></p>
 </section><section class="level2"><h3 id="si_nigh2004">
 <code>si_nigh2004()</code><a class="anchor" aria-label="anchor" href="#si_nigh2004"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh2004.html"><code>si_nigh2004()</code></a>
-</li>
-<li>Description: Nigh (2004) juvenile height-age (site index) model for lodgepole pine and interior spruce in British Columbia (province-wide and biogeoclimatic-zone parameter sets)</li>
-<li>Age type: Total age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: PICE.GLA, PINU.CON</li>
+<li><p>Function reference: <a href="../reference/si_nigh2004.html"><code>si_nigh2004()</code></a></p></li>
+<li><p>Model ID: <code>nigh2004</code></p></li>
+<li><p>Description: Nigh (2004) juvenile height-age (site index) model for lodgepole pine and interior spruce in British Columbia (province-wide and biogeoclimatic-zone parameter sets)</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh2004">Nigh (<a href="#ref-Nigh2004" role="doc-biblioref">2004</a>)</span></p></li>
+<li><p>Age type: Total age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: PICE.GLA, PINU.CON</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh2004.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nigh2004-default.png"></p>
 </section><section class="level2"><h3 id="si_nigh2009">
 <code>si_nigh2009()</code><a class="anchor" aria-label="anchor" href="#si_nigh2009"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh2009.html"><code>si_nigh2009()</code></a>
-</li>
-<li>Description: Nigh et al. (2009) paper birch log-logistic height-age (site index) model for British Columbia (base, operational, and zonal variants)</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: BETU.PAP</li>
+<li><p>Function reference: <a href="../reference/si_nigh2009.html"><code>si_nigh2009()</code></a></p></li>
+<li><p>Model ID: <code>nigh2009</code></p></li>
+<li><p>Description: Nigh et al. (2009) paper birch log-logistic height-age (site index) model for British Columbia (base, operational, and zonal variants)</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh2009">Nigh et al. (<a href="#ref-Nigh2009" role="doc-biblioref">2009</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: BETU.PAP</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh2009.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nigh2009-default.png"></p>
 </section><section class="level2"><h3 id="si_nigh2017">
 <code>si_nigh2017()</code><a class="anchor" aria-label="anchor" href="#si_nigh2017"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_nigh2017.html"><code>si_nigh2017()</code></a>
-</li>
-<li>Description: Nigh (2017) grounded-GADA (Chapman-Richards) height-age (site index) model for lodgepole pine in British Columbia</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: PINU.CON</li>
+<li><p>Function reference: <a href="../reference/si_nigh2017.html"><code>si_nigh2017()</code></a></p></li>
+<li><p>Model ID: <code>nigh2017</code></p></li>
+<li><p>Description: Nigh (2017) grounded-GADA (Chapman-Richards) height-age (site index) model for lodgepole pine in British Columbia</p></li>
+<li><p>Reference: <span class="citation" data-cites="Nigh2017">Nigh (<a href="#ref-Nigh2017" role="doc-biblioref">2017</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: PINU.CON</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nigh2017.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nigh2017-default.png"></p>
 </section><section class="level2"><h3 id="si_nighcourtin1998">
 <code>si_nighcourtin1998()</code><a class="anchor" aria-label="anchor" href="#si_nighcourtin1998"></a>
 </h3>
 <ul>
 <li>Function reference: <a href="../reference/si_nighcourtin1998.html"><code>si_nighcourtin1998()</code></a>
 </li>
+</ul>
+<section class="level3"><h4 id="nighcourtin1998_si25">
+<code>nighcourtin1998_si25</code><a class="anchor" aria-label="anchor" href="#nighcourtin1998_si25"></a>
+</h4>
+<ul>
+<li>Model ID: <code>nighcourtin1998_si25</code>
+</li>
 <li>Description: Nigh and Courtin (1998) red alder model, SI25 scale</li>
+<li>Reference: <span class="citation" data-cites="NighCourtin1998">Nigh and Courtin (<a href="#ref-NighCourtin1998" role="doc-biblioref">1998</a>)</span>
+</li>
 <li>Age type: Breast-height age</li>
 <li>Coverage: BC</li>
 <li>Species coverage: ALNU.RUB</li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_nighcourtin1998.png"></p>
-</section><section class="level2"><h3 id="si_parresolvissage1998">
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nighcourtin1998_si25-default.png"></p>
+</section><section class="level3"><h4 id="nighcourtin1998_si50">
+<code>nighcourtin1998_si50</code><a class="anchor" aria-label="anchor" href="#nighcourtin1998_si50"></a>
+</h4>
+<ul>
+<li>Model ID: <code>nighcourtin1998_si50</code>
+</li>
+<li>Description: Nigh and Courtin (1998) red alder model, SI50 scale</li>
+<li>Reference: <span class="citation" data-cites="NighCourtin1998">Nigh and Courtin (<a href="#ref-NighCourtin1998" role="doc-biblioref">1998</a>)</span>
+</li>
+<li>Age type: Breast-height age</li>
+<li>Coverage: BC</li>
+<li>Species coverage: ALNU.RUB</li>
+</ul>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-nighcourtin1998_si50-default.png"></p>
+</section></section><section class="level2"><h3 id="si_parresolvissage1998">
 <code>si_parresolvissage1998()</code><a class="anchor" aria-label="anchor" href="#si_parresolvissage1998"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_parresolvissage1998.html"><code>si_parresolvissage1998()</code></a>
-</li>
-<li>Description: Parresol and Vissage (1998) base-age invariant eastern white pine model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: NB, NL, NS, ON, PE, QC</li>
-<li>Species coverage: PINU.STR</li>
+<li><p>Function reference: <a href="../reference/si_parresolvissage1998.html"><code>si_parresolvissage1998()</code></a></p></li>
+<li><p>Model ID: <code>parresolvissage1998</code></p></li>
+<li><p>Description: Parresol and Vissage (1998) base-age invariant eastern white pine model</p></li>
+<li><p>Reference: <span class="citation" data-cites="ParresolVissage1998">Parresol and Vissage (<a href="#ref-ParresolVissage1998" role="doc-biblioref">1998</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: NB, NS, PE, NL, QC, ON</p></li>
+<li><p>Species coverage: PINU.STR</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_parresolvissage1998.png"></p>
+<p><strong>Some curve points were omitted after prediction errors:</strong> <code>age</code> must contain values &gt;= 10.</p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-parresolvissage1998-default.png"></p>
 </section><section class="level2"><h3 id="si_payandeh1974">
 <code>si_payandeh1974()</code><a class="anchor" aria-label="anchor" href="#si_payandeh1974"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_payandeh1974.html"><code>si_payandeh1974()</code></a>
-</li>
-<li>Description: Payandeh (1974) nonlinear site-index equations</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: Canada (all provinces/territories)</li>
-<li>Species coverage: ABIE.BAL, PICE.GLA, PICE.RUB, PICE.SIT, PINU.CON, PINU.MON, PINU.PON, PSEU.MEN, TSUG.HET</li>
+<li><p>Function reference: <a href="../reference/si_payandeh1974.html"><code>si_payandeh1974()</code></a></p></li>
+<li><p>Model ID: <code>payandeh1974</code></p></li>
+<li><p>Description: Payandeh (1974) nonlinear site-index equations</p></li>
+<li><p>Reference: <span class="citation" data-cites="Payandeh1974">Payandeh (<a href="#ref-Payandeh1974" role="doc-biblioref">1974</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: Canada (all provinces/territories)</p></li>
+<li><p>Species coverage: ABIE.BAL, PICE.GLA, PICE.RUB, PICE.SIT, PINU.CON, PINU.MON, PINU.PON, PSEU.MEN, TSUG.HET</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_payandeh1974.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-payandeh1974-default.png"></p>
 </section><section class="level2"><h3 id="si_pregent2010">
 <code>si_pregent2010()</code><a class="anchor" aria-label="anchor" href="#si_pregent2010"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_pregent2010.html"><code>si_pregent2010()</code></a>
-</li>
-<li>Description: Pregent et al. (2010) white spruce plantation site-index model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: QC</li>
-<li>Species coverage: PICE.GLA</li>
+<li><p>Function reference: <a href="../reference/si_pregent2010.html"><code>si_pregent2010()</code></a></p></li>
+<li><p>Model ID: <code>pregent2010</code></p></li>
+<li><p>Description: Pregent et al. (2010) white spruce plantation site-index model</p></li>
+<li><p>Reference: <span class="citation" data-cites="Pregent2010">Pregent et al. (<a href="#ref-Pregent2010" role="doc-biblioref">2010</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: QC</p></li>
+<li><p>Species coverage: PICE.GLA</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_pregent2010.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-pregent2010-default.png"></p>
 </section><section class="level2"><h3 id="si_pregent2016">
 <code>si_pregent2016()</code><a class="anchor" aria-label="anchor" href="#si_pregent2016"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_pregent2016.html"><code>si_pregent2016()</code></a>
-</li>
-<li>Description: Pregent et al. (2016) Norway spruce plantation site-index model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: QC</li>
-<li>Species coverage: PICE.ABI</li>
+<li><p>Function reference: <a href="../reference/si_pregent2016.html"><code>si_pregent2016()</code></a></p></li>
+<li><p>Model ID: <code>pregent2016</code></p></li>
+<li><p>Description: Pregent et al. (2016) Norway spruce plantation site-index model</p></li>
+<li><p>Reference: <span class="citation" data-cites="Pregent2016">Pregent and Auger (<a href="#ref-Pregent2016" role="doc-biblioref">2016</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: QC</p></li>
+<li><p>Species coverage: PICE.ABI</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_pregent2016.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-pregent2016-default.png"></p>
 </section><section class="level2"><h3 id="si_scottvoorhis1986">
 <code>si_scottvoorhis1986()</code><a class="anchor" aria-label="anchor" href="#si_scottvoorhis1986"></a>
 </h3>
 <ul>
 <li>Function reference: <a href="../reference/si_scottvoorhis1986.html"><code>si_scottvoorhis1986()</code></a>
 </li>
+</ul>
+<section class="level3"><h4 id="scottvoorhis1986_bh_age">
+<code>scottvoorhis1986_bh_age</code><a class="anchor" aria-label="anchor" href="#scottvoorhis1986_bh_age"></a>
+</h4>
+<ul>
+<li>Model ID: <code>scottvoorhis1986_bh_age</code>
+</li>
 <li>Description: Scott and Voorhis (1986) model using breast-height age directly</li>
+<li>Reference: <span class="citation" data-cites="ScottVoorhis1986">Scott and Voorhis (<a href="#ref-ScottVoorhis1986" role="doc-biblioref">1986</a>)</span>
+</li>
 <li>Age type: Breast-height age</li>
-<li>Coverage: NB, NL, NS, ON, PE, QC</li>
+<li>Coverage: NB, NS, PE, NL, QC, ON</li>
 <li>Species coverage: ABIE.BAL, ACER.SAH, BETU.ALL, BETU.PAP, FRAX.AME, LIQU.STY, LIRI.TUL, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.ECH, PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, POPU.GRA, QUER.ALB, THUJ.OCC</li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_scottvoorhis1986.png"></p>
-</section><section class="level2"><h3 id="si_sharma2015">
+<p><img src="Site-Index-Models_files/figure-html//si-curves-scottvoorhis1986_bh_age-default.png"></p>
+</section><section class="level3"><h4 id="scottvoorhis1986_total_age">
+<code>scottvoorhis1986_total_age</code><a class="anchor" aria-label="anchor" href="#scottvoorhis1986_total_age"></a>
+</h4>
+<ul>
+<li>Model ID: <code>scottvoorhis1986_total_age</code>
+</li>
+<li>Description: Scott and Voorhis (1986) model with internal conversion to total age</li>
+<li>Reference: <span class="citation" data-cites="ScottVoorhis1986">Scott and Voorhis (<a href="#ref-ScottVoorhis1986" role="doc-biblioref">1986</a>)</span>
+</li>
+<li>Age type: Total age</li>
+<li>Coverage: NB, NS, PE, NL, QC, ON</li>
+<li>Species coverage: ABIE.BAL, ACER.SAH, BETU.ALL, BETU.PAP, FRAX.AME, LIQU.STY, LIRI.TUL, PICE.GLA, PICE.MAR, PICE.RUB, PINU.BAN, PINU.ECH, PINU.RES, PINU.STR, PINU.TAE, PINU.VIR, POPU.GRA, QUER.ALB, THUJ.OCC</li>
+</ul>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-scottvoorhis1986_total_age-default.png"></p>
+</section></section><section class="level2"><h3 id="si_sharma2015">
 <code>si_sharma2015()</code><a class="anchor" aria-label="anchor" href="#si_sharma2015"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_sharma2015.html"><code>si_sharma2015()</code></a>
-</li>
-<li>Description: Sharma et al. (2015) no-climate plantation model for jack pine and black spruce</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PICE.MAR, PINU.BAN</li>
+<li><p>Function reference: <a href="../reference/si_sharma2015.html"><code>si_sharma2015()</code></a></p></li>
+<li><p>Model ID: <code>sharma2015</code></p></li>
+<li><p>Description: Sharma et al. (2015) no-climate plantation model for jack pine and black spruce</p></li>
+<li><p>Reference: <span class="citation" data-cites="SharmaEtAl2015">Sharma et al. (<a href="#ref-SharmaEtAl2015" role="doc-biblioref">2015</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PICE.MAR, PINU.BAN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_sharma2015.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-sharma2015-default.png"></p>
 </section><section class="level2"><h3 id="si_sharma2021">
 <code>si_sharma2021()</code><a class="anchor" aria-label="anchor" href="#si_sharma2021"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_sharma2021.html"><code>si_sharma2021()</code></a>
-</li>
-<li>Description: Sharma (2021) fixed-effects no-climate mixed-stand site-index model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PICE.MAR, PINU.BAN</li>
+<li><p>Function reference: <a href="../reference/si_sharma2021.html"><code>si_sharma2021()</code></a></p></li>
+<li><p>Model ID: <code>sharma2021</code></p></li>
+<li><p>Description: Sharma (2021) fixed-effects no-climate mixed-stand site-index model</p></li>
+<li><p>Reference: <span class="citation" data-cites="Sharma2021SI">Sharma (<a href="#ref-Sharma2021SI" role="doc-biblioref">2021</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PICE.MAR, PINU.BAN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_sharma2021.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-sharma2021-default.png"></p>
 </section><section class="level2"><h3 id="si_sharma2022">
 <code>si_sharma2022()</code><a class="anchor" aria-label="anchor" href="#si_sharma2022"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_sharma2022.html"><code>si_sharma2022()</code></a>
-</li>
-<li>Description: Sharma (2022) fixed-effects no-climate mixed-stand site-index model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PICE.MAR, POPU.TRE</li>
+<li><p>Function reference: <a href="../reference/si_sharma2022.html"><code>si_sharma2022()</code></a></p></li>
+<li><p>Model ID: <code>sharma2022</code></p></li>
+<li><p>Description: Sharma (2022) fixed-effects no-climate mixed-stand site-index model</p></li>
+<li><p>Reference: <span class="citation" data-cites="Sharma2022">Sharma (<a href="#ref-Sharma2022" role="doc-biblioref">2022</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PICE.MAR, POPU.TRE</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_sharma2022.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-sharma2022-default.png"></p>
 </section><section class="level2"><h3 id="si_sharmaparton2018a">
 <code>si_sharmaparton2018a()</code><a class="anchor" aria-label="anchor" href="#si_sharmaparton2018a"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_sharmaparton2018a.html"><code>si_sharmaparton2018a()</code></a>
-</li>
-<li>Description: Sharma and Parton (2018) non-climate white spruce plantation model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PICE.GLA</li>
+<li><p>Function reference: <a href="../reference/si_sharmaparton2018a.html"><code>si_sharmaparton2018a()</code></a></p></li>
+<li><p>Model ID: <code>sharmaparton2018a</code></p></li>
+<li><p>Description: Sharma and Parton (2018) non-climate white spruce plantation model</p></li>
+<li><p>Reference: <span class="citation" data-cites="SharmaParton2018a">Sharma and Parton (<a href="#ref-SharmaParton2018a" role="doc-biblioref">2018a</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PICE.GLA</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_sharmaparton2018a.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-sharmaparton2018a-default.png"></p>
 </section><section class="level2"><h3 id="si_sharmaparton2018b">
 <code>si_sharmaparton2018b()</code><a class="anchor" aria-label="anchor" href="#si_sharmaparton2018b"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_sharmaparton2018b.html"><code>si_sharmaparton2018b()</code></a>
-</li>
-<li>Description: Sharma and Parton (2018) non-climate red pine plantation model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PINU.RES</li>
+<li><p>Function reference: <a href="../reference/si_sharmaparton2018b.html"><code>si_sharmaparton2018b()</code></a></p></li>
+<li><p>Model ID: <code>sharmaparton2018b</code></p></li>
+<li><p>Description: Sharma and Parton (2018) non-climate red pine plantation model</p></li>
+<li><p>Reference: <span class="citation" data-cites="SharmaParton2018b">Sharma and Parton (<a href="#ref-SharmaParton2018b" role="doc-biblioref">2018b</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PINU.RES</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_sharmaparton2018b.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-sharmaparton2018b-default.png"></p>
 </section><section class="level2"><h3 id="si_sharmaparton2019">
 <code>si_sharmaparton2019()</code><a class="anchor" aria-label="anchor" href="#si_sharmaparton2019"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_sharmaparton2019.html"><code>si_sharmaparton2019()</code></a>
-</li>
-<li>Description: Sharma and Parton (2019) non-climate white pine plantation model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PINU.STR</li>
+<li><p>Function reference: <a href="../reference/si_sharmaparton2019.html"><code>si_sharmaparton2019()</code></a></p></li>
+<li><p>Model ID: <code>sharmaparton2019</code></p></li>
+<li><p>Description: Sharma and Parton (2019) non-climate white pine plantation model</p></li>
+<li><p>Reference: <span class="citation" data-cites="SharmaParton2019">Sharma and Parton (<a href="#ref-SharmaParton2019" role="doc-biblioref">2019</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PINU.STR</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_sharmaparton2019.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-sharmaparton2019-default.png"></p>
 </section><section class="level2"><h3 id="si_sharmareid2018">
 <code>si_sharmareid2018()</code><a class="anchor" aria-label="anchor" href="#si_sharmareid2018"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_sharmareid2018.html"><code>si_sharmareid2018()</code></a>
-</li>
-<li>Description: Sharma and Reid (2018) fixed-effects natural-stand site-index model</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: ON</li>
-<li>Species coverage: PICE.MAR, PINU.BAN</li>
+<li><p>Function reference: <a href="../reference/si_sharmareid2018.html"><code>si_sharmareid2018()</code></a></p></li>
+<li><p>Model ID: <code>sharmareid2018</code></p></li>
+<li><p>Description: Sharma and Reid (2018) fixed-effects natural-stand site-index model</p></li>
+<li><p>Reference: <span class="citation" data-cites="SharmaReid2018">Sharma and Reid (<a href="#ref-SharmaReid2018" role="doc-biblioref">2018</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: ON</p></li>
+<li><p>Species coverage: PICE.MAR, PINU.BAN</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_sharmareid2018.png"></p>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-sharmareid2018-default.png"></p>
 </section><section class="level2"><h3 id="si_thrower1994">
 <code>si_thrower1994()</code><a class="anchor" aria-label="anchor" href="#si_thrower1994"></a>
 </h3>
 <ul>
-<li>Function reference: <a href="../reference/si_thrower1994.html"><code>si_thrower1994()</code></a>
-</li>
-<li>Description: Thrower et al. (1994) BC interior species model set</li>
-<li>Age type: Breast-height age</li>
-<li>Coverage: BC</li>
-<li>Species coverage: ABIE.LAS, BETU.PAP, LARI.OCC, PICE.GLA, PINU.CON, PINU.MON, PINU.PON, POPU.TRE, PSEU.MEN, THUJ.PLI, TSUG.HET</li>
+<li><p>Function reference: <a href="../reference/si_thrower1994.html"><code>si_thrower1994()</code></a></p></li>
+<li><p>Model ID: <code>thrower1994</code></p></li>
+<li><p>Description: Thrower et al. (1994) BC interior species model set</p></li>
+<li><p>Reference: <span class="citation" data-cites="Thrower1994">Thrower et al. (<a href="#ref-Thrower1994" role="doc-biblioref">1994</a>)</span></p></li>
+<li><p>Age type: Breast-height age</p></li>
+<li><p>Coverage: BC</p></li>
+<li><p>Species coverage: ABIE.LAS, BETU.PAP, LARI.OCC, PICE.GLA, PINU.CON, PINU.MON, PINU.PON, POPU.TRE, PSEU.MEN, THUJ.PLI, TSUG.HET</p></li>
 </ul>
-<p><img src="Site-Index-Models_files/figure-html//si-curves-si_thrower1994.png"></p>
-</section></section><section class="section level2"><h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<p><img src="Site-Index-Models_files/figure-html//si-curves-thrower1994-default.png"></p>
+</section></section><section class="section level2"><h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Alemdag1991" class="csl-entry" role="listitem">
+Alemdag, I.S., 1991. National site-index and height-growth curves for white spruce growing in natural stands in <span>Canada</span>. Canadian Journal of Forest Research 21, 1466–1474. <a href="https://doi.org/10.1139/x91-206" class="external-link">https://doi.org/10.1139/x91-206</a>
+</div>
+<div id="ref-AugerWard2021" class="csl-entry" role="listitem">
+Auger, I., Ward, C., 2021. Tables de rendement pour les plantations d’epinette noire et les plantations de pin gris au quebec (No. SSS-06), Avis technique. Gouvernement du Quebec, Quebec.
+</div>
+<div id="ref-Batho2014" class="csl-entry" role="listitem">
+Batho, A., García, O., 2014. A site index model for lodgepole pine in <span>British Columbia</span>. Forest Science 60, 982–987. <a href="https://doi.org/10.5849/forsci.13-509" class="external-link">https://doi.org/10.5849/forsci.13-509</a>
+</div>
+<div id="ref-Brisco2002" class="csl-entry" role="listitem">
+Brisco, D., Klinka, K., Nigh, G., 2002. Height growth models for western larch in <span>British Columbia</span>. Western Journal of Applied Forestry 17, 66–74. <a href="https://doi.org/10.1093/wjaf/17.2.66" class="external-link">https://doi.org/10.1093/wjaf/17.2.66</a>
+</div>
+<div id="ref-Buckman2006" class="csl-entry" role="listitem">
+Buckmann, R.E., Bishaw, B., Hanson, T.J., Benford, F.A., 2006. Growth and yield of red pine in the lake states (No. NC-271), General technical report. U.S. Department of Agriculture, Forest Service.
+</div>
+<div id="ref-Carmean1996" class="csl-entry" role="listitem">
+Carmean, W.H., 1996. Site-quality evaluation, site-quality maintenance, and site-specific management for forest land in northwest ontario (No. TR-105), NWST technical report. Ontario Ministry of Natural Resources, Northwest Science; Technology, Thunder Bay, Ontario.
+</div>
+<div id="ref-CarmeanHahn1981" class="csl-entry" role="listitem">
+Carmean, W.H., Hahn, J.T., 1981. Revised <span>Site Index Curves</span> for <span>Balsam Fir</span> and <span>White Spruce</span> in the <span>Lake States</span>. Research Note NC-269. St. Paul, MN: U.S. Dept. of Agriculture, Forest Service, North Central Forest Experiment Station 269. <a href="https://doi.org/10.2737/NC-RN-269" class="external-link">https://doi.org/10.2737/NC-RN-269</a>
+</div>
+<div id="ref-Carmean1989" class="csl-entry" role="listitem">
+Carmean, W.H., Hahn, J.T., Jacobs, R.D., 1989. Site index curves for forest tree species in the eastern united states (No. NC-128), General technical report. U.S. Department of Agriculture, Forest Service, North Central Forest Experiment Station.
+</div>
+<div id="ref-Carmean2006" class="csl-entry" role="listitem">
+Carmean, W.H., Hazenberg, G., Deschamps, K.C., 2006. Polymorphic site index curves for black spruce and trembling aspen in northwest <span>Ontario</span>. The Forestry Chronicle 82, 213–231. <a href="https://doi.org/10.5558/tfc82213-2" class="external-link">https://doi.org/10.5558/tfc82213-2</a>
+</div>
+<div id="ref-Carmean2001" class="csl-entry" role="listitem">
+Carmean, W.H., Niznowski, G.P., Hazenberg, G., 2001. Polymorphic site index curves for jack pine in northern <span>Ontario</span>. The Forestry Chronicle 77, 141–150. <a href="https://doi.org/10.5558/tfc77141-1" class="external-link">https://doi.org/10.5558/tfc77141-1</a>
+</div>
+<div id="ref-ChenKlinka2000" class="csl-entry" role="listitem">
+Chen, H.Y.H., Klinka, K., 2000. Height growth models for high-elevation subalpine fir, engelmann spruce, and lodgepole pine in british columbia. Western Journal of Applied Forestry 15, 62–69.
+</div>
+<div id="ref-CieszewskiBella1991" class="csl-entry" role="listitem">
+Cieszewski, C.J., Bella, I.E., 1991. Polymorphic height and site index curves for the major tree species in alberta (No. 51), Forest management note. Forestry Canada, Northwest Region, Northern Forestry Centre, Edmonton, Alberta.
+</div>
+<div id="ref-Cieszewski1993" class="csl-entry" role="listitem">
+Cieszewski, C.J., Bella, I.E., Yeung, D.P., 1993. Preliminary site-index height growth curves for eleven timber species in <span>Saskatchewan</span> (Draft unpublished project report). Natural Resources Canada, Canadian Forest Service, Prince Albert, Saskatchewan.
+</div>
+<div id="ref-Goelz1992" class="csl-entry" role="listitem">
+Goelz, J.C.G., Burk, T.E., 1992. Development of a well-behaved site index equation: Jack pine in north central <span>Ontario</span>. Canadian Journal of Forest Research 22, 776–784. <a href="https://doi.org/10.1139/x92-105" class="external-link">https://doi.org/10.1139/x92-105</a>
+</div>
+<div id="ref-Goudie1984" class="csl-entry" role="listitem">
+Goudie, J.W., 1984. Height growth and site index curves for lodgepole pine and white spruce and interim managed stand yield tables for lodgepole pine in <span>British Columbia</span> (Final Report FY-1983-84). Research Branch, British Columbia Ministry of Forests, Victoria, B.C.
+</div>
+<div id="ref-HuGarcia2009" class="csl-entry" role="listitem">
+Hu, Z., García, O., 2010. A height-growth and site-index model for interior spruce in the <span>Sub-Boreal Spruce</span> biogeoclimatic zone of <span>British Columbia</span>. Canadian Journal of Forest Research 40, 1175–1183. <a href="https://doi.org/10.1139/X10-076" class="external-link">https://doi.org/10.1139/X10-076</a>
+</div>
+<div id="ref-Huang2009gypsy" class="csl-entry" role="listitem">
+Huang, S., Meng, S.X., Yang, Y., 2009. A growth and yield projection system (<span>GYPSY</span>) for natural and post-harvest stands in <span>Alberta</span> (No. Tech. Rep. Pub. No. T/216). Forest Management Branch, Alberta Sustainable Resource Development, Edmonton, Alberta.
+</div>
+<div id="ref-HuangEtAl2026" class="csl-entry" role="listitem">
+Huang, S., Stadt, K., Hossain, K., Odell, R., 2026. <a href="https://open.alberta.ca/publications/improved-height-growth-models-for-major-alberta-tree-species" class="external-link">Improved height growth models for major <span>Alberta</span> tree species with and without climate variables</a> (No. T/2026-RIBS01). Alberta Ministry of Forestry; Parks, Government of Alberta, Edmonton, Alberta.
+</div>
+<div id="ref-Huang1994si" class="csl-entry" role="listitem">
+Huang, S., Titus, S.J., Lakusta, T.W., 1994. Ecologically based site index curves and tables for major <span>Alberta</span> tree species. Tech. Report No. T307.
+</div>
+<div id="ref-KerBowling1991" class="csl-entry" role="listitem">
+Ker, M.F., Bowling, C., 1991. Polymorphic site index equations for four <span>New Brunswick</span> softwood species. Canadian Journal of Forest Research 21, 728–732. <a href="https://doi.org/10.1139/x91-103" class="external-link">https://doi.org/10.1139/x91-103</a>
+</div>
+<div id="ref-LaflecheEtAl2013" class="csl-entry" role="listitem">
+Lafleche, V., Bernier, S., Saucier, J.-P., Gagne, C., 2013. Indices de qualite de station des principales essences commerciales en fonction des types ecologiques du quebec meridional. Ministere des Ressources naturelles, Direction des inventaires forestiers, Quebec.
+</div>
+<div id="ref-LundgrenDolid1970" class="csl-entry" role="listitem">
+Lundgren, A.L., Dolid, W.A., 1970. Biological growth functions describe published site index curves for <span>Lake States</span> timber species. Research Paper NC-36. St. Paul, MN: U.S. Dept. of Agriculture, Forest Service, North Central Forest Experiment Station 36.
+</div>
+<div id="ref-Nigh2017" class="csl-entry" role="listitem">
+Nigh, G.D., 2017. <a href="https://www.for.gov.bc.ca/hfd/pubs/Docs/Rr/Rr31.htm" class="external-link">Development of a lodgepole pine site index model with the grounded-<span>Generalized Algebraic Difference Approach</span> (g-<span>GADA</span>)</a> (Research Report No. 31). Province of British Columbia, Victoria, B.C.
+</div>
+<div id="ref-Nigh2004" class="csl-entry" role="listitem">
+Nigh, G.D., 2004. <a href="https://www.for.gov.bc.ca/hfd/pubs/Docs/Rr/Rr25.htm" class="external-link">Juvenile height models for lodgepole pine and interior spruce: Validation of existing models and development of new models</a> (Research Report No. 25). Province of British Columbia, Victoria, B.C.
+</div>
+<div id="ref-Nigh2000" class="csl-entry" role="listitem">
+Nigh, G.D., 2000. Western redcedar site index models for the interior of <span>British Columbia</span> (No. Rep. 18). BC Ministry of Forests, Research Branch, Victoria, B.C.
+</div>
+<div id="ref-Nigh1998" class="csl-entry" role="listitem">
+Nigh, G.D., 1998. A system for estimating height and site index of western hemlock in the interior of <span>British Columbia</span>. The Forestry Chronicle 74, 588–596.
+</div>
+<div id="ref-Nigh1997" class="csl-entry" role="listitem">
+Nigh, G.D., 1997. A <span>Sitka</span> spruce height-age model with improved extrapolation properties. The Forestry Chronicle 73, 363–369.
+</div>
+<div id="ref-NighCourtin1998" class="csl-entry" role="listitem">
+Nigh, G.D., Courtin, P.J., 1998. Height models for <span>Red Alder</span> (<span>Alnus</span> rubra <span>Bong</span>.) in <span>British Columbia</span>. New Forests 16, 59–70. <a href="https://doi.org/10.1023/A:1006561502635" class="external-link">https://doi.org/10.1023/A:1006561502635</a>
+</div>
+<div id="ref-Nigh2002" class="csl-entry" role="listitem">
+Nigh, G.D., Krestov, P.V., Klinka, K., 2002. Trembling aspen height-age models for <span>British Columbia</span>. Northwest Science 76, 202–212.
+</div>
+<div id="ref-Nigh2009" class="csl-entry" role="listitem">
+Nigh, G.D., Thomas, K.D., Yearsley, K., Wang, J., 2009. Site-dependent height-age models for paper birch in <span>British Columbia</span>. Northwest Science 83, 253–261. <a href="https://doi.org/10.3955/046.083.0308" class="external-link">https://doi.org/10.3955/046.083.0308</a>
+</div>
+<div id="ref-ParresolVissage1998" class="csl-entry" role="listitem">
+Parresol, B.R., Vissage, J.S., 1998. White pine site index for the southern forest survey (No. Research Paper SRS-10). U.S. Department of Agriculture, Forest Service, Southern Research Station, Asheville, NC.
+</div>
+<div id="ref-Payandeh1974" class="csl-entry" role="listitem">
+Payandeh, B., 1974. Nonlinear site index equations for several major <span>Canadian</span> timber species. The Forestry Chronicle 50, 194–196. <a href="https://doi.org/10.5558/tfc50194-5" class="external-link">https://doi.org/10.5558/tfc50194-5</a>
+</div>
+<div id="ref-Pregent2016" class="csl-entry" role="listitem">
+Pregent, G., Auger, I., 2016. Tarif de cubage, tables de rendement et modeles de croissance pour les plantations d’epinette de norvege au quebec (No. 176), Memoire de recherche forestiere. Ministere des Forets, de la Faune et des Parcs, Direction de la recherche forestiere, Quebec.
+</div>
+<div id="ref-Pregent2010" class="csl-entry" role="listitem">
+Pregent, G., Picher, G., Auger, I., 2010. Tarif de cubage, tables de rendement et modeles de croissance pour les plantations d’epinette blanche au quebec (No. 160), Memoire de recherche forestiere. Ministere des Ressources naturelles et de la Faune, Direction de la recherche forestiere, Quebec.
+</div>
+<div id="ref-ScottVoorhis1986" class="csl-entry" role="listitem">
+Scott, C.T., Voorhis, N.G., 1986. Northeastern <span>Forest Survey Site Index Equations</span> and <span>Site Productivity Classes</span>. Northern Journal of Applied Forestry 3, 144–148. <a href="https://doi.org/10.1093/njaf/3.4.144" class="external-link">https://doi.org/10.1093/njaf/3.4.144</a>
+</div>
+<div id="ref-Sharma2022" class="csl-entry" role="listitem">
+Sharma, M., 2022. Climate effects on black spruce and trembling aspen productivity in natural origin mixed stands. Forests 13, 430. <a href="https://doi.org/10.3390/f13030430" class="external-link">https://doi.org/10.3390/f13030430</a>
+</div>
+<div id="ref-Sharma2021SI" class="csl-entry" role="listitem">
+Sharma, M., 2021. Climate effects on jack pine and black spruce productivity in natural origin mixed stands and site index conversion equations. Trees, Forests and People 5, 100089. <a href="https://doi.org/10.1016/j.tfp.2021.100089" class="external-link">https://doi.org/10.1016/j.tfp.2021.100089</a>
+</div>
+<div id="ref-SharmaParton2019" class="csl-entry" role="listitem">
+Sharma, M., Parton, J., 2019. Modelling the effects of climate on site productivity of white pine plantations. Canadian Journal of Forest Research 49, 1289–1297. <a href="https://doi.org/10.1139/cjfr-2019-0165" class="external-link">https://doi.org/10.1139/cjfr-2019-0165</a>
+</div>
+<div id="ref-SharmaParton2018a" class="csl-entry" role="listitem">
+Sharma, M., Parton, J., 2018a. Analyzing and modelling effects of climate on site productivity of white spruce plantations. The Forestry Chronicle 94, 173–182.
+</div>
+<div id="ref-SharmaParton2018b" class="csl-entry" role="listitem">
+Sharma, M., Parton, J., 2018b. Climatic effects on site productivity of red pine plantations. Forest Science 64, 544–554.
+</div>
+<div id="ref-SharmaReid2018" class="csl-entry" role="listitem">
+Sharma, M., Reid, D.E.B., 2018. Stand height/site index equations for jack pine and black spruce trees grown in natural stands. Forest Science 64, 33–40. <a href="https://doi.org/10.5849/FS-2016-133" class="external-link">https://doi.org/10.5849/FS-2016-133</a>
+</div>
+<div id="ref-SharmaEtAl2015" class="csl-entry" role="listitem">
+Sharma, M., Subedi, N., Ter-Mikaelian, M., Parton, J., 2015. Modeling climatic effects on stand height/site index of plantation-grown jack pine and black spruce trees. Forest Science 61, 25–34. <a href="https://doi.org/10.5849/forsci.13-190" class="external-link">https://doi.org/10.5849/forsci.13-190</a>
+</div>
+<div id="ref-Thrower1994" class="csl-entry" role="listitem">
+Thrower, J.S., Nussbaum, A.F., Di Lucca, C.M., 1994. Site index curves and tables for british columbia: Interior species (No. Field Guide Insert 6), Land management handbook. B.C. Ministry of Forests.
+</div>
+</div>
 </section><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

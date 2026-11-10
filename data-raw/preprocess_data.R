@@ -923,6 +923,19 @@ stopifnot(
   sum(!is.na(parameters_Huang2026[paste0("b", 0:4)])) == 29L
 )
 
+## Huang et al. 2026 (climate Alberta height-age / inherent height index) ####
+parameters_Huang2026_climate <- read.csv("data-raw/Huang2026_climate_parameters.csv") |>
+  dplyr::select(
+    Species, source_label, model_form, climate_window, climate_years, map_power,
+    b0:c2, MAP_min:MWMT_normal_max
+  )
+stopifnot(
+  nrow(parameters_Huang2026_climate) == 8L,
+  !anyDuplicated(parameters_Huang2026_climate$Species),
+  sum(!is.na(parameters_Huang2026_climate[c(paste0("b", 0:4), "c1", "c2")])) == 41L,
+  all(parameters_Huang2026_climate$map_power %in% c("c1", "1/b0", "1/b1"))
+)
+
 ## Chen & Klinka 2000 (ESSF height growth / site index) ####
 parameters_ChenKlinka1998 <- read.csv("data-raw/ChenKlinka1998_parameters.csv")
 parameters_ChenKlinka1998 <- parameters_ChenKlinka1998 %>%
@@ -2083,6 +2096,7 @@ internal_objs <- c(
   "parameters_HuGarcia2009",
   "parameters_Huang2009",
   "parameters_Huang2026",
+  "parameters_Huang2026_climate",
   "parameters_Alemdag1991",
   "parameters_Nigh1997",
   "parameters_Nigh2002",
