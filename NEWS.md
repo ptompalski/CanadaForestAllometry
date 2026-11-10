@@ -2,6 +2,8 @@
 
 ## New features
 
+- Added `si_huang2026()`, the Huang et al. (2026) non-climate height-age and site-index models for eight Alberta tree species.
+
 - `hd()`: wrapper that predicts tree height by selecting, per tree, the best eligible DBH–height model (by jurisdiction, species, stand origin, BC coast/interior and the predictors supplied in `...`), with fallback to lower-ranked models; `pick_best = FALSE` returns all candidates. Plantation trees fall back to natural-stand models with a warning; in BC, `bec_zone` or `bc_region` restricts coastal/interior-only models. `hd_model_registry()` gains `rank` and `bc_region` columns.
 
 

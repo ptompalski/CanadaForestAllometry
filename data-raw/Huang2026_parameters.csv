@@ -1,0 +1,9 @@
+Species,source_label,species_common,jurisdiction,age_basis,base_age,model_form,equation,b0,b1,b2,b3,b4,source_table,page,pdf_page,source_short
+POPU.TRE,AW,Aspen,AB,total,50,log_logistic_asymptote,3.2,13.5656,0.3340,-1.4218,,,3.4 part 1,20,26,HuangEtAl2026
+PICE.GLA,SW,White spruce,AB,total,50,log_logistic_log_power,3.4,,11.5289,-2.2032,-0.5703,4.0253,3.4 part 1,20,26,HuangEtAl2026
+PINU.CON,PL,Lodgepole pine,AB,total,50,log_logistic_log,3.6,,10.4148,-1.7700,-1.3348,1.4063,3.4 part 1,20,26,HuangEtAl2026
+PICE.MAR,SB,Black spruce,AB,total,50,log_logistic_asymptote,3.8,15.9554,0.2358,-1.7753,,,3.4 part 1,20,26,HuangEtAl2026
+POPU.BAL,PB,Balsam poplar,AB,total,50,log_logistic_asymptote,3.2,17.0128,0.2619,-1.4208,,,3.4 part 1,20,26,HuangEtAl2026
+ABIE.BAL,FB,Balsam fir,AB,total,50,log_logistic_log_power,3.4,,11.5248,-2.2221,-0.5499,4.3494,3.4 part 2,21,27,HuangEtAl2026
+PSEU.MEN,FD,Douglas-fir,AB,total,50,log_logistic_log,3.6,,10.4726,-1.7729,-1.3517,1.4385,3.4 part 2,21,27,HuangEtAl2026
+PINU.BAN,PJ,Jack pine,AB,total,50,log_logistic_log,3.6,,10.3674,-1.7421,-1.3563,1.4447,3.4 part 2,21,27,HuangEtAl2026

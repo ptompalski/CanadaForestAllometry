@@ -914,6 +914,15 @@ parameters_Huang2009 <- read.csv("data-raw/Huang2009_parameters.csv")
 parameters_Huang2009 <- parameters_Huang2009 %>%
   select(Species, source_label, model_form, age_squared, lnS_power, b1:b4)
 
+## Huang et al. 2026 (non-climate Alberta height-age / site index) ####
+parameters_Huang2026 <- read.csv("data-raw/Huang2026_parameters.csv") |>
+  dplyr::select(Species, source_label, model_form, b0:b4)
+stopifnot(
+  nrow(parameters_Huang2026) == 8L,
+  !anyDuplicated(parameters_Huang2026$Species),
+  sum(!is.na(parameters_Huang2026[paste0("b", 0:4)])) == 29L
+)
+
 ## Chen & Klinka 2000 (ESSF height growth / site index) ####
 parameters_ChenKlinka1998 <- read.csv("data-raw/ChenKlinka1998_parameters.csv")
 parameters_ChenKlinka1998 <- parameters_ChenKlinka1998 %>%
@@ -2073,6 +2082,7 @@ internal_objs <- c(
   "parameters_ChenKlinka1998",
   "parameters_HuGarcia2009",
   "parameters_Huang2009",
+  "parameters_Huang2026",
   "parameters_Alemdag1991",
   "parameters_Nigh1997",
   "parameters_Nigh2002",
