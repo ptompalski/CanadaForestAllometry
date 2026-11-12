@@ -1,33 +1,63 @@
 test_that("native SI dispatch matches engines without applying plot overrides", {
   result <- si(
     age = c(20, 30), height = c(10, 15), species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation"
+    input_age_basis = "total_age", stand_origin = "plantation"
   )
   expect_equal(result$si, si_pregent2010(age = c(20, 30), height = c(10, 15))$si)
   expect_identical(result$model_id, rep("pregent2010", 2))
   expect_identical(result$reference_age, c(25, 25))
-  expect_identical(result$reference_age_basis, rep("plantation_age", 2))
+  expect_identical(result$reference_age_basis, rep("total_age", 2))
   expect_identical(result$si_datum, rep("total_height", 2))
   expect_true(all(result$status == "success"))
   expect_true(all(lengths(result$diagnostics) > 0L))
 })
 
+test_that("plantation models use total-age labels without changing predictions", {
+  models <- c(
+    augerward2021 = "PICE.MAR",
+    pregent2010 = "PICE.GLA",
+    pregent2016 = "PICE.ABI"
+  )
+  for (id in names(models)) {
+    species <- models[[id]]
+    engine <- get(paste0("si_", id))
+    for (input in c("height", "si")) {
+      args <- list(
+        age = c(20, 30), species = species, jurisdiction = "QC",
+        input_age_basis = "total_age", stand_origin = "plantation"
+      )
+      args[[input]] <- c(12, 16)
+      if (input == "si") args$model_id <- id
+      result <- do.call(si, args)
+      direct <- list(age = args$age)
+      direct[[input]] <- args[[input]]
+      if ("species" %in% names(formals(engine))) direct$species <- species
+      output <- if (input == "height") "si" else "height"
+      expect_equal(result[[output]], do.call(engine, direct)[[output]], info = id)
+      expect_identical(result$model_id, rep(id, 2))
+      expect_identical(result$input_age_basis, rep("total_age", 2))
+      expect_identical(result$reference_age_basis, rep("total_age", 2))
+      expect_true(all(result$status == "success"), info = id)
+    }
+  }
+})
+
 test_that("supplied SI is defined explicitly and stays on its originating model", {
   result <- si(
     age = c(20, 40), si = 18, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", model_id = "pregent2010",
+    input_age_basis = "total_age", model_id = "pregent2010",
     stand_origin = "plantation"
   )
   expect_equal(result$height, si_pregent2010(age = c(20, 40), si = 18)$height)
   expect_identical(result$model_id, rep("pregent2010", 2))
   expect_error(si(
     age = 30, si = 18, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation"
+    input_age_basis = "total_age", stand_origin = "plantation"
   ), "definition")
   expect_warning(defined <- si(
     age = 30, si = 18, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation",
-    reference_age = 25, reference_age_basis = "plantation_age",
+    input_age_basis = "total_age", stand_origin = "plantation",
+    reference_age = 25, reference_age_basis = "total_age",
     si_datum = "total_height", productivity_quantity = "site_index"
   ), class = "cfa_si_unpinned_si")
   expect_equal(defined$height, si_pregent2010(age = 30, si = 18)$height)
@@ -36,7 +66,7 @@ test_that("supplied SI is defined explicitly and stays on its originating model"
 test_that("scientific mismatches and missing rows never trigger clock conversions", {
   expect_warning(result <- si(
     age = c(25, 25, NA), height = 12, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = c("total_age", "plantation_age", "plantation_age"),
+    input_age_basis = c("breast_height_age", "total_age", "total_age"),
     stand_origin = "plantation"
   ), class = "cfa_si_no_prediction")
   expect_true(is.na(result$si[[1]]))
@@ -45,7 +75,7 @@ test_that("scientific mismatches and missing rows never trigger clock conversion
   expect_identical(result$status[[3]], "missing_input")
   expect_warning(mismatch <- si(
     age = 25, height = 12, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation", reference_age = 50
+    input_age_basis = "total_age", stand_origin = "plantation", reference_age = 50
   ), class = "cfa_si_no_prediction")
   expect_true(is.na(mismatch$si))
 })
@@ -276,7 +306,7 @@ test_that("specialized models cannot enter dispatch even by explicit ID", {
   }
   result <- si(
     age = 30, height = 12, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation",
+    input_age_basis = "total_age", stand_origin = "plantation",
     pick_best = FALSE
   )[[1]]
   expect_identical(result$status[result$model_id == "lafleche2013_potential"], "excluded")
@@ -287,12 +317,12 @@ test_that("comparison mode and mutate retain provenance and row identities", {
   result <- data |>
     dplyr::mutate(si(
       age, height, species = "PICE.GLA", jurisdiction = "QC",
-      input_age_basis = "plantation_age", stand_origin = "plantation"
+      input_age_basis = "total_age", stand_origin = "plantation"
     ))
   expect_equal(nrow(result), 2)
   comparison <- si(
     age = data$age, height = data$height, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation", pick_best = FALSE
+    input_age_basis = "total_age", stand_origin = "plantation", pick_best = FALSE
   )
   expect_length(comparison, 2)
   for (i in seq_along(comparison)) {
@@ -303,7 +333,7 @@ test_that("comparison mode and mutate retain provenance and row identities", {
   }
   no_id <- si(
     age = 20, height = 10, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation", keep_model_id = FALSE
+    input_age_basis = "total_age", stand_origin = "plantation", keep_model_id = FALSE
   )
   expect_false("model_id" %in% names(no_id))
   expect_true("model_id" %in% names(no_id$diagnostics[[1]]))
@@ -432,7 +462,7 @@ test_that("non-climate HI remains labelled separately and engine values are unch
 test_that("engine warnings and extrapolation remain visible with the result", {
   expect_warning(result <- si(
     age = 65, height = 25, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation", model_id = "pregent2010"
+    input_age_basis = "total_age", stand_origin = "plantation", model_id = "pregent2010"
   ))
   expect_equal(result$si, suppressWarnings(si_pregent2010(age = 65, height = 25))$si)
   expect_identical(result$status, "success_with_warnings")
@@ -465,7 +495,7 @@ test_that("BC source geography is required automatically and known mismatches ex
 test_that("wrapper validates lengths, choices, flags, selectors and positive inputs", {
   args <- list(
     age = 30, height = 12, species = "PICE.GLA", jurisdiction = "QC",
-    input_age_basis = "plantation_age", stand_origin = "plantation"
+    input_age_basis = "total_age", stand_origin = "plantation"
   )
   expect_error(do.call(si, c(args, list(si = 20))), "exactly one")
   expect_error(do.call(si, utils::modifyList(args, list(age = numeric()))), "length")

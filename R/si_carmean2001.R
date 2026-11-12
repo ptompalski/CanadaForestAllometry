@@ -1,14 +1,13 @@
-#' Carmean, Niznowski and Hazenberg (2001) polymorphic site index model for northern Ontario
+#' Carmean, Niznowski and Hazenberg (2001) site index model for northern Ontario
 #'
-#' Unified, vectorized implementation of the Newnham (1988) constrained
-#' polymorphic height-age (site index) model published in Carmean, Niznowski
+#' Implementation of the Newnham (1988) height-age model published in Carmean, Niznowski
 #' and Hazenberg (2001) for jack pine (\emph{Pinus banksiana}) in northern
 #' Ontario.
 #'
 #' \strong{Model scope (species coverage):} jack pine (\code{PINU.BAN}).
 #'
 #' \strong{Age definition note:} `age` is breast-height age (years). Curves
-#' start at breast height (0 years at BH) and the model is constrained so that
+#' start at breast height (age 0) and the model returns
 #' `height = si` exactly at breast-height age 50.
 #'
 #' \strong{Base-age note:} site index is total height (m) of dominant and
@@ -26,9 +25,8 @@
 #' with
 #' \deqn{k = 1 - \left[\frac{SI - 1.3}{b_1 (SI - 1.3)^{b_2}}\right]^
 #'   {1 / (b_3 (SI - 1.3)^{b_4})}.}
-#' Because \eqn{SI} appears in several nonlinear positions the model has no
-#' closed-form inverse in \eqn{SI}; when predicting site index the equation is
-#' solved numerically.
+#' To estimate site index, the function finds the \eqn{SI} value that
+#' reproduces the supplied height at the given age.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{

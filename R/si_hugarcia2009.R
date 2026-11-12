@@ -16,13 +16,13 @@
 #' \strong{Base-age note:} site index is the predicted top height at 50 years
 #' breast-height age.
 #'
-#' The selected model (Hu and García 2009, "combined model 4") is the
-#' polymorphic Bertalanffy--Richards form
+#' The function uses the published Bertalanffy--Richards equation:
 #' \deqn{H = a\left\{1 - \left[1 - (H_0/a)^c\right]
 #'   \exp[-b(t - t_0)]\right\}^{1/c},}
-#' with a site-dependent asymptote \eqn{a = 283.9\,q^{0.5137}}, rate
-#' \eqn{b = q}, and global shape constant \eqn{c = 0.5829}. The site parameter
-#' \eqn{q} has no closed form and is solved numerically.
+#' where \eqn{a = 283.9\,q^{0.5137}} is the height approached at very old ages,
+#' \eqn{b = q} controls growth rate, and \eqn{c = 0.5829} controls curve shape.
+#' The function calculates \eqn{q} from the supplied age and height, or from
+#' site index and its reference age.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{

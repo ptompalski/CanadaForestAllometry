@@ -36,6 +36,23 @@ test_that("scope discovery normalizes codes and keeps scientific near-misses", {
   expect_identical(carmean$missing_predictors[[1]], character())
 })
 
+test_that("plantation discovery uses total age and retains years-since-planting definitions", {
+  found <- find_si_models(
+    jurisdiction = "QC", operation = "infer_si_from_height",
+    available = c("age", "height", "species"),
+    input_age_basis = "total_age", reference_age = 25,
+    reference_age_basis = "total_age", stand_origin = "plantation"
+  )
+  for (id in c("augerward2021", "pregent2010", "pregent2016")) {
+    row <- found[found$model_id == id, ]
+    expect_identical(row$scientific_compatibility, "compatible", info = id)
+    expect_identical(row$discovery_status, "names_complete", info = id)
+    expect_match(row$native_scientific_definitions[[1]]$age_definition, "Years since planting")
+    age_input <- row$operation_inputs[[1]]
+    expect_match(age_input$definition[age_input$arg == "age"], "Years since planting")
+  }
+})
+
 test_that("operations separate inputs without treating available columns as supplied", {
   gi <- find_si_models(
     species = "THUJ.PLI", jurisdiction = "BC", operation = "infer_si_from_gi",

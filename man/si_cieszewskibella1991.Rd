@@ -25,8 +25,8 @@ A tibble with columns:
 }
 }
 \description{
-Vectorized implementation of the polymorphic, variable-age site-index (VASI)
-model described by Cieszewski and Bella (1991) for four major Alberta tree
+Implementation of the site-index model described by Cieszewski and
+Bella (1991) for four major Alberta tree
 species.
 }
 \details{

@@ -9,15 +9,15 @@
 #' \strong{Geographic use:} Quebec Norway spruce plantations.
 #'
 #' \strong{Age definition note:} `age` is plantation age (years since planting),
-#' not breast-height age.
+#' not breast-height age. [si()] groups this under `input_age_basis = "total_age"`,
+#' without adding or subtracting nursery years.
 #'
 #' \strong{Height definition note:} the model uses dominant height (m) based on
 #' the mean height of the 100 tallest trees per hectare.
 #'
 #' \strong{Base-age note:} site index is dominant height at plantation age
-#' 25 years by default, matching the source study. The underlying difference
-#' equation is base-age invariant, so other positive `base_age` values can also
-#' be used. The package article plots this model with `base_age = 50` for
+#' 25 years by default. Other positive `base_age` values can also be used.
+#' The package article plots this model with `base_age = 50` for
 #' visual comparison with other curves.
 #'
 #' \strong{Domain note:} the source tables and curves are presented for

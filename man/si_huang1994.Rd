@@ -28,9 +28,8 @@ A tibble with columns:
 }
 }
 \description{
-Implementation of the ecologically based, reference-age
-invariant polymorphic site-index equations from Huang et al. (1994) for
-Alberta.
+Estimates site index or height for major Alberta tree species using
+the equations from Huang et al. (1994).
 }
 \details{
 \strong{Model scope (species coverage):} \code{PICE.GLA, PINU.CON,

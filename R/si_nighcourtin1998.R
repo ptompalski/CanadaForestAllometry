@@ -1,6 +1,6 @@
 #' Nigh and Courtin (1998) site index model for red alder (BC coast)
 #'
-#' Implementation of the Nigh and Courtin (1998) anamorphic
+#' Implementation of the Nigh and Courtin (1998)
 #' height-age/site-index equations for red alder (\code{ALNU.RUB}) in
 #' coastal British Columbia.
 #'
@@ -17,10 +17,11 @@
 #'   \item If `si` is provided, the function predicts `height`.
 #' }
 #'
-#' Both directions are explicit closed forms from the source publication.
+#' Height and site index are calculated directly from the published equations.
 #' Equation 7 (p. 66) publishes the SI25-to-SI50 conversion used here.
 #' Both indices are total height at their respective breast-height reference
-#' ages. The rounded conversion is not an exact `height(50) = SI50` constraint.
+#' ages. The conversion is approximate, so predicted height at breast-height
+#' age 50 need not equal SI50 exactly.
 #'
 #' @param age Numeric vector. Breast-height age (years).
 #' @param height Optional numeric vector. Dominant height (m). If provided, `si`

@@ -1,7 +1,6 @@
-#' Carmean, Hazenberg and Deschamps (2006) polymorphic site index models for northwest Ontario
+#' Carmean, Hazenberg and Deschamps (2006) site index models for northwest Ontario
 #'
-#' Unified, vectorized implementation of the Newnham (1988) constrained
-#' polymorphic height-age (site index) model published in Carmean, Hazenberg
+#' Implementation of the Newnham (1988) height-age model published in Carmean, Hazenberg
 #' and Deschamps (2006) for black spruce (\emph{Picea mariana}) and trembling
 #' aspen (\emph{Populus tremuloides}) in northwest Ontario.
 #'
@@ -9,7 +8,7 @@
 #' trembling aspen (\code{POPU.TRE}).
 #'
 #' \strong{Age definition note:} `age` is breast-height age (years). Curves
-#' start at breast height (0 years at BH) and the model is constrained so that
+#' start at breast height (age 0) and the model returns
 #' `height = si` exactly at breast-height age 50.
 #'
 #' \strong{Base-age note:} site index is height (m) at 50 years breast-height
@@ -32,9 +31,8 @@
 #' with
 #' \deqn{k = 1 - \left[\frac{S - 1.3}{b_1 (S - 1.3)^{b_2}}\right]^
 #'   {1 / (b_3 (S - 1.3)^{b_4})}.}
-#' Because \eqn{S} appears in several nonlinear positions the model has no
-#' closed-form inverse in \eqn{S}; when predicting site index the equation is
-#' solved numerically.
+#' To estimate site index, the function finds the \eqn{S} value that
+#' reproduces the supplied height at the given age.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/si_model_discovery.R
 \name{get_si_model_info}
 \alias{get_si_model_info}
-\title{Get scientific and input information about a site-index model}
+\title{Look up a site-index model and its required inputs}
 \usage{
 get_si_model_info(model_id)
 }
@@ -10,34 +10,35 @@ get_si_model_info(model_id)
 \item{model_id}{Single identifier from \code{\link[=si_model_registry]{si_model_registry()}}.}
 }
 \value{
-A named list with registry list-columns unwrapped, plus:
+A named list containing the model's registry information, including:
 \itemize{
-\item \code{species}: exact registered NFI coverage.
-\item \code{operations}: supported operation names.
-\item \code{effective_args}: native defaults with variant-defining arguments applied,
-excluding plot-only overrides.
-\item \code{native_scientific_definitions}: definitions at those effective arguments,
-retaining species-specific rows. \code{scientific_definitions} also retains
-alternative documented conditions.
-\item \code{unresolved_evidence}: claims with non-verified evidence status.
-\item \code{limitations}: scientific caveats and the limits of discovery.
+\item \code{species}: supported NFI species codes.
+\item \code{operations}: calculations the model supports.
+\item \code{effective_args}: default argument values with settings for the selected
+model version applied, excluding settings used only for plots.
+\item \code{native_scientific_definitions}: age, height and SI definitions under
+those settings, with separate rows where species differ.
+\code{scientific_definitions} also includes other documented settings.
+\item \code{unresolved_evidence}: information that has not been fully confirmed.
+\item \code{limitations}: usage limits and points needing further review.
 }
 
-\code{operation_inputs} describes predictor roles, units, definitions and
-evidence separately for each operation. \code{input_constraints} retains exact
-ecological keys, conditional requirements, discrete GI support and climate
-aggregation semantics. Empty applicability metadata means unknown, not
-unrestricted. Native SI scales are not automatically interchangeable.
+\code{operation_inputs} lists the inputs, units and definitions for each
+calculation. \code{input_constraints} records supported ages, ecological-code
+combinations, additional requirements and climate-input requirements.
+Missing information about where a model can be used does not mean it is
+suitable everywhere. SI values from different models should not be treated
+as interchangeable.
 }
 \description{
-Returns the registry fields for one registered variant, including species
-coverage, operation-aware predictors, constraints, source evidence and
-limitations. No model is executed.
+Returns information about one model version, including its species,
+age and height definitions, required inputs and usage limits.
+Does not calculate predictions.
 }
 \examples{
 info <- get_si_model_info("pregent2010")
 info$native_scientific_definitions
-info$native_defaults$base_age # 25, unlike the plot-only override of 50
+info$native_defaults$base_age # Default reference age: 25, not the 50 used in plots
 get_si_model_info("huang2026_climate")$input_constraints
 }
 \seealso{

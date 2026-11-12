@@ -2,12 +2,12 @@
 .si_scientific_definitions <- function() {
   defs <- tibble::tribble(
     ~model_id, ~input_age_basis, ~reference_age, ~reference_age_basis, ~productivity_quantity, ~si_datum, ~height_datum, ~reference_age_role, ~limitations,
-    "augerward2021", "plantation_age", NA_real_, "plantation_age", "site_index", "total_height", "total_height", "configurable_engine_default",
-    "Years since planting, not germination; no nursery-age conversion is implied.",
-    "pregent2010", "plantation_age", NA_real_, "plantation_age", "site_index", "total_height", "total_height", "configurable_engine_default",
-    "Native SI25; registry base_age=50 is a plotting override only.",
-    "pregent2016", "plantation_age", NA_real_, "plantation_age", "site_index", "total_height", "total_height", "configurable_engine_default",
-    "Native SI25; registry base_age=50 is a plotting override only.",
+    "augerward2021", "total_age", NA_real_, "total_age", "site_index", "total_height", "total_height", "configurable_engine_default",
+    "Classified as total_age; supply years since planting without a nursery-age adjustment.",
+    "pregent2010", "total_age", NA_real_, "total_age", "site_index", "total_height", "total_height", "configurable_engine_default",
+    "Classified as total_age; supply years since planting without a nursery-age adjustment. Native SI25; registry base_age=50 is a plotting override only.",
+    "pregent2016", "total_age", NA_real_, "total_age", "site_index", "total_height", "total_height", "configurable_engine_default",
+    "Classified as total_age; supply years since planting without a nursery-age adjustment. Native SI25; registry base_age=50 is a plotting override only.",
     "sharma2015", "breast_height_age", NA_real_, "breast_height_age", "site_index", "above_breast_height", "total_height", "configurable_engine_default",
     "Source reference is 25 years; native engine default is 50. total_height changes height only.",
     "sharma2021", "breast_height_age", NA_real_, "breast_height_age", "site_index", "above_breast_height", "total_height", "configurable_engine_default",
@@ -318,7 +318,6 @@
   clocks <- c(
     total_age = "Total age from germination/seed, not breast-height age.",
     breast_height_age = "Breast-height age under the engine's documented convention.",
-    plantation_age = "Years since planting; no nursery-age or germination conversion is implied.",
     corrected_age_above_1m = "Source-corrected age above 1 m, removing suppression; not simply elapsed years above 1 m.",
     species_dependent = "Species-specific age clock; consult the species definition.",
     unresolved = "Source age clock is unresolved; do not infer scientific compatibility."
@@ -330,6 +329,9 @@
       cli::cli_abort("No scientific definition declared for SI model {.val {reg$model_id[[i]]}}.")
     }
     defs$age_definition <- unname(clocks[defs$input_age_basis])
+    if (reg$model_id[[i]] %in% c("augerward2021", "pregent2010", "pregent2016")) {
+      defs$age_definition <- "Years since planting, classified as total_age; no nursery-age adjustment is applied."
+    }
     defs$height_definition <- paste(
       "Height datum:", defs$height_datum,
       "; engine-specific measurement/sampling convention, not a universal top-height definition.",

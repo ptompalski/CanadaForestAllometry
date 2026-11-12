@@ -1,7 +1,7 @@
 #' Cieszewski and Bella (1991) site-index model for major Alberta tree species
 #'
-#' Vectorized implementation of the polymorphic, variable-age site-index (VASI)
-#' model described by Cieszewski and Bella (1991) for four major Alberta tree
+#' Implementation of the site-index model described by Cieszewski and
+#' Bella (1991) for four major Alberta tree
 #' species.
 #'
 #' \strong{Model scope (species coverage):} \code{PINU.CON, PICE.GLA,

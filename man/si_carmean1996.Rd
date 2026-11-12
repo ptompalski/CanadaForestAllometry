@@ -40,10 +40,9 @@ Carmean (1996) and the appendix equations transcribed from that report.
 \strong{Base-age note:} site index is defined as total height (m) at
 50 years breast-height age.
 
-\strong{Forward/inverse consistency note:} for \code{PICE.MAR},
+\strong{Height and site-index calculations:} for \code{PICE.MAR},
 \code{ABIE.BAL}, and \code{BETU.PAP}, the published site-index prediction
-equations used for \code{height -> si} are separate fitted equations from
-Appendix IV rather than exact algebraic inverses of the forward height-curve
+equations used for \code{height -> si} were fitted separately from the height
 equations. As a result, predictions from \code{height -> si} may differ slightly
 from the input height even when \code{age = 50}.
 
@@ -54,8 +53,7 @@ Provide exactly one of \code{height} or \code{si}:
 }
 
 Inputs and outputs are metric (m). Some source equations were published in
-mixed unit form and are converted internally using the species-specific
-metadata stored in the internal parameter table.
+different units; the function converts them internally.
 }
 \examples{
 si_carmean1996(

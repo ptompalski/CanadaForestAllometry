@@ -1,5 +1,10 @@
 # SI registry, discovery, and wrapper improvement plan
 
+**Current age-category policy:** Auger-Ward and Prégent models use `total_age`
+for input and reference ages. Their ages remain years since planting, without
+a nursery-age adjustment. This supersedes the separate `plantation_age`
+category described in the historical planning notes below.
+
 ## Goal
 
 Make site-index model selection scientifically explicit and maintainable, then

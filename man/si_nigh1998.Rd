@@ -32,7 +32,7 @@ the interior of British Columbia.
 \code{TSUG.HET}.
 
 \strong{Age definition note:} \code{age} is breast-height age (BHA, years). The
-model is conditioned to return \code{height = si} exactly at BHA 50.
+model returns \code{height = si} exactly at breast-height age 50.
 
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
@@ -43,9 +43,8 @@ The fitted model (eq. 6) is the log-logistic form
 with \eqn{b_0 = 8.998}, \eqn{b_1 = -1.434}, \eqn{b_2 = -1.051}, where \code{A} is
 breast-height age (years).
 
-Because \eqn{SI} appears both as a multiplier and inside a logarithm, the
-equation has no closed-form inverse in \eqn{SI}; when predicting site index
-the equation is solved numerically.
+To estimate site index, the function finds the \eqn{SI} value that
+reproduces the supplied height at the given age.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{

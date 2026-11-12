@@ -37,7 +37,7 @@ A tibble with columns:
 }
 }
 \description{
-Implementation of the non-climate-sensitive McDill-Amateis dynamic height
+Implementation of the McDill-Amateis height-age
 equation reported by Sharma and Parton (2018) for plantation-grown white
 spruce (\code{PICE.GLA}) in Ontario.
 }
@@ -48,18 +48,13 @@ spruce (\code{PICE.GLA}) in Ontario.
 
 \strong{Age definition note:} \code{age} is breast-height age (years).
 
-\strong{Height definition note:} this implementation assumes the source
-model uses heights above breast height (m), not total height. For
-consistency with other site-index functions in this package, it defaults to
-using total height in the public API (\code{total_height = TRUE}) and converts
-internally by subtracting or adding 1.3 m as needed. Set
-\code{total_height = FALSE} to work on the source scale directly.
+\strong{Height definition note:} the implementation assumes the published
+equation uses height above 1.3 m. By default, supply and predict height
+measured from the ground (\code{total_height = TRUE}). Set \code{total_height = FALSE}
+to use height above 1.3 m instead. Site index is always height above 1.3 m.
 
-\strong{Base-age note:} the underlying dynamic equation is written in a
-base-age invariant paired-age form. For consistency with other site-index
-functions in this package, this implementation defaults to a base age of 50
-years breast-height age, while still allowing users to supply any positive
-\code{base_age}.
+\strong{Base-age note:} the default reference age is 50 years breast-height
+age. Other positive reference ages can be supplied through \code{base_age}.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{
@@ -69,8 +64,8 @@ Provide exactly one of \code{height} or \code{si}:
 
 Inputs and outputs are metric and match the source model scale.
 
-Both directions are explicit closed forms derived from the same dynamic
-equation.
+Height and site index are calculated directly from the equation, without
+climate inputs.
 }
 \examples{
 # Predict site index from age + height

@@ -1,10 +1,11 @@
-#' Lafleche et al. (2013) ecological-site IQS curves for southern Quebec
+#' Lafleche et al. (2013) ecological-site height curves for southern Quebec
 #'
 #' Implementation of the fixed ecological-site height curves published by
 #' Lafleche et al. (2013) for major commercial tree species in southern Quebec.
-#' Unlike the polymorphic `si_*` models in this package, these curves are
-#' selected by ecological key and use fixed coefficients for each
-#' species-region-(subregion)-type combination.
+#' Unlike most `si_*()` functions, this function selects a height curve using
+#' species and ecological classification, rather than a supplied site index.
+#' Each combination of species, region, subregion and ecological type has its
+#' own curve.
 #'
 #' \strong{Species coverage:} `ABIE.BAL`, `BETU.PAP`, `PICE.GLA`, `PICE.MAR`,
 #' `PICE.RUB`, `PINU.BAN`, `PINU.STR`, `POPU.GRA`, `POPU.TRE`, `THUJ.OCC`.
@@ -17,7 +18,7 @@
 #' \strong{Height definition note:} the source curves predict stand height in
 #' metres, constrained to pass through `(age = 0, height = 1)`.
 #'
-#' \strong{Base-age note:} IQS is defined as predicted height at 50 years above
+#' \strong{Base-age note:} the site-quality index (IQS) is predicted height at 50 years above
 #' 1 m. `base_age` defaults to `50`, but any positive scalar can be supplied.
 #'
 #' This function always predicts height from `age`; it also returns the
@@ -29,11 +30,8 @@
 #' separate curves fitted to observed height growth (`IQSobserved`). In the
 #' source tables these appear as `IQSstation` and `IQSobserved`, respectively.
 #'
-#' At present, `CR`, `WE`, and `LIN` equation forms are implemented directly
-#' from the publication and validated against the published `IQSstation`
-#' summaries. The single `LOGIST3` row is kept in the parameter data but raises
-#' an error here because its printed equation/coefficients have not yet been
-#' reconciled with the published table values.
+#' The `LOGIST3` curve is not supported and raises an error because its printed
+#' equation and coefficients could not be matched to the published values.
 #'
 #' @param age Numeric vector. Corrected age above 1 m (years), with `age > 0`.
 #' @param species Character vector of NFI species codes
@@ -50,8 +48,8 @@
 #'   sets `IQSstation` and `IQSobserved`, respectively.
 #' @param base_age Positive numeric scalar. IQS reference age (years above
 #'   1 m). Defaults to `50`.
-#' @param include_metadata Logical scalar. If `TRUE`, append lookup metadata and
-#'   fitted-curve metadata to the returned tibble.
+#' @param include_metadata Logical scalar. If `TRUE`, include information about
+#'   the selected ecological classification and height curve in the result.
 #'
 #' @return A tibble with columns:
 #' \describe{
@@ -59,7 +57,7 @@
 #'   \item{si}{Fixed-curve IQS value (m) at `base_age`.}
 #' }
 #' When `include_metadata = TRUE`, additional columns describing the matched
-#' ecological key and parameter row are included.
+#' ecological classification and curve are included.
 #'
 #' @references
 #' Lafleche, V., S. Bernier, J.-P. Saucier, and C. Gagne. 2013. \emph{Indices

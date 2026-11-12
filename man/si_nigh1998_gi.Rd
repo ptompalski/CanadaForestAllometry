@@ -28,9 +28,8 @@ separate parameter pair for each breast-height age.
 The model form (eq. 4) is age-specific:
 \deqn{SI = 1.3 + e^{b_1(A)} \times GI^{b_2(A)}}
 where \code{A} is breast-height age and \code{GI} is the growth intercept (cm/year).
-Following the source, parameter \eqn{b_1} was fitted on the log scale and
-enters the model as \eqn{e^{b_1}} (Ratkowsky transformation); the tabulated
-\eqn{b_1} values (stored as \code{b1_log}) are therefore exponentiated internally.
+The function applies \eqn{e^{b_1}} to the published \eqn{b_1} values
+internally; supply growth intercept in cm/year, not its logarithm.
 
 Coefficients are tabulated (Table 3) for breast-height ages 5, 10, 20, 30,
 40, and 50; \code{age} must be one of these values.

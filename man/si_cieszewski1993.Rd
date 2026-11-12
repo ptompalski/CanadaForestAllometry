@@ -25,10 +25,10 @@ A tibble with a single column:
 }
 }
 \description{
-Unified, vectorized implementation of the preliminary variable-age
+Implementation of the preliminary
 height-growth / site-index model of Cieszewski, Bella and Yeung (1993) for
 eleven timber species in Saskatchewan. The model is a simplified form
-(their eq. 2) of the Cieszewski and Bella (1989) polymorphic variable-age
+(their eq. 2) of the Cieszewski and Bella (1989)
 height-growth model.
 }
 \details{
@@ -52,9 +52,8 @@ The height-growth form (their eq. 2) is
 where \eqn{h_x = SI - 1.3} is the reference height above breast height at the
 reference age \eqn{t_r = 50}, \eqn{t} is the prediction (breast-height) age,
 and \eqn{a, b} are species-specific fitted coefficients. Because the reference
-age equals the base age (50), both directions are closed form: at \eqn{t = 50}
-the curve returns \eqn{H = SI} exactly, and site index is recovered
-analytically from an observed (age, height) pair.
+age is 50, the curve returns \eqn{H = SI} exactly at \eqn{t = 50}.
+Both height and site index can be calculated directly from the equations.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{

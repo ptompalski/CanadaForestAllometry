@@ -23,7 +23,7 @@ A tibble with columns:
 }
 }
 \description{
-Implementation of the Nigh (2000) polymorphic
+Implementation of the Nigh (2000)
 site-index equation for interior western redcedar (\code{THUJ.PLI}).
 }
 \details{
@@ -44,8 +44,9 @@ Provide exactly one of \code{height} or \code{si}:
 
 Inputs/outputs are metric (m), matching the source model.
 
-Predicting \code{height} from \code{si} is direct. Predicting \code{si} from \code{height} is
-implicit and solved numerically with \code{stats::uniroot()}.
+Height is calculated directly from the equation. To estimate site index,
+the function finds the value that reproduces the supplied height at the
+given age.
 }
 \examples{
 # Predict site index from age + height

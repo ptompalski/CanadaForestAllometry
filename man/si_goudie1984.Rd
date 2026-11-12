@@ -36,7 +36,7 @@ spruce (\emph{Picea glauca}) in British Columbia.
 \code{PINU.CON}; white spruce, NFI code \code{PICE.GLA}.
 
 \strong{Age definition note:} \code{age} is breast-height age (BHA, years). The
-curve is conditioned so that \code{height = si} at BHA 50.
+curve returns \code{height = si} at breast-height age 50.
 
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
@@ -60,10 +60,9 @@ The height-age curve is
 \deqn{HT = 1.3 + (SI - 1.3) \times
   \frac{1 + e^{b_1 + b_2 \ln(49.5) - b_3 \ln(SI - 1.3)}}
        {1 + e^{b_1 + b_2 \ln(BHA - 0.5) - b_3 \ln(SI - 1.3)}}}
-with per-species coefficients \eqn{b_1, b_2, b_3}. Because \eqn{SI} appears
-both as a multiplier and inside a logarithm, the curve has no closed-form
-inverse in \eqn{SI}; when predicting site index the equation is solved
-numerically.
+with species-specific coefficients \eqn{b_1, b_2, b_3}. To estimate site
+index, the function finds the \eqn{SI} value that reproduces the supplied
+height at the given age.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{

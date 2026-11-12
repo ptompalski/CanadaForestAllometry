@@ -41,7 +41,7 @@ A tibble with columns:
 }
 }
 \description{
-Implementation of the non-climate-sensitive McDill-Amateis dynamic height
+Implementation of the McDill-Amateis height-age
 equation reported by Sharma et al. (2015) for plantation-grown jack pine
 (\code{PINU.BAN}) and black spruce (\code{PICE.MAR}) in northern Ontario.
 }
@@ -52,19 +52,14 @@ equation reported by Sharma et al. (2015) for plantation-grown jack pine
 
 \strong{Age definition note:} \code{age} is breast-height age (years).
 
-\strong{Height definition note:} the source model uses heights above breast
-height (m), not total height. For consistency with other site-index
-functions in this package, this implementation defaults to using total
-height in the public API (\code{total_height = TRUE}) and converts internally by
-subtracting or adding 1.3 m as needed. Set \code{total_height = FALSE} to work on
-the original source scale directly.
+\strong{Height definition note:} height is measured from the ground by
+default (\code{total_height = TRUE}). Set \code{total_height = FALSE} to supply and
+predict height above 1.3 m instead. Site index is always height above 1.3 m.
 
 \strong{Base-age note:} the source paper defines site index at a base age
-of 25 years breast-height age. The equation itself is a dynamic
-McDill-Amateis form written in terms of paired ages and heights, so this
-implementation treats \code{base_age} as user-configurable. For consistency with
-other site-index functions in this package, the default is 50 years
-breast-height age.
+of 25 years breast-height age. The function defaults to 50 years
+breast-height age; use \code{base_age = 25} for the published reference age.
+Other positive reference ages can also be supplied.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{
@@ -72,8 +67,8 @@ Provide exactly one of \code{height} or \code{si}:
 \item If \code{si} is provided, the function predicts \code{height}.
 }
 
-This implementation uses the fixed-effects no-climate form (Equation 1)
-that the paper recommends when climate variables are unavailable.
+The function uses Equation 1, which requires no climate inputs or
+adjustments based on repeated measurements from an individual stand.
 }
 \examples{
 # Predict site index from age + total height

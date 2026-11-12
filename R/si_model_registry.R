@@ -1,74 +1,61 @@
 #' Site-index model registry
 #'
-#' Returns a registry (metadata table) describing site-index models available in
-#' CanadaForestAllometry. The registry supports model discovery and can be used
-#' by higher-level wrappers to select candidate models by jurisdiction/species
-#' and required inputs.
+#' Lists the available site-index models, their species and geographic
+#' coverage, age and height definitions, and required inputs.
+#' Used by [find_si_models()], [get_si_model_info()] and [si()].
 #'
 #' @details
-#' `age_basis` describes the input age clock, not the SI reference clock.
-#' In addition to total and breast-height age, `plantation_age` means years
-#' since planting and `corrected_age_above_1m` means the source's corrected
-#' age above 1 m (not simply elapsed years above 1 m). `unresolved` must not
-#' be treated as evidence of compatibility.
+#' `age_basis` describes the input age type, not the SI reference age type.
+#' `total_age` includes years since planting for Auger-Ward and Prégent models;
+#' their supplied ages and equations are unchanged and no nursery-age adjustment
+#' is applied. `corrected_age_above_1m` means the source's corrected age above
+#' 1 m, adjusted to remove periods of suppressed growth (not simply years
+#' since reaching 1 m). `species_dependent` means the age type varies by
+#' species; `unresolved` means it has not been established.
 #'
-#' The `scientific_definitions`, `applicability`, `metadata_evidence` and
-#' `age_constraints` list-columns contain focused scientific metadata.
-#' Empty child tables mean metadata has not yet been encoded, not unrestricted
-#' applicability. Evidence status applies to individual claims; disputed
-#' source interpretations remain unresolved, even where an engine documents
-#' an age or height convention. `species_dependent` identifies models whose
-#' clocks require species-specific scientific definitions.
+#' Several columns contain a separate table for each model:
+#' * `scientific_definitions`: the input age type, SI reference age, and whether
+#'   height and SI are measured from the ground or above breast height.
+#' * `applicability`: information about where and for which stands a model
+#'   can be used.
+#' * `metadata_evidence`: references supporting the recorded information,
+#'   including assumptions and points that remain uncertain.
+#' * `age_constraints`: supported ages and age-related restrictions.
+#' An empty table means information is missing, not that there are no limits.
 #'
-#' Stand origin defaults to natural when the encoded source applicability does
-#' not identify plantations or a mixed-origin population. Such defaults carry
-#' an explicit, non-publication-verified `stand_origin_assumption` evidence
-#' record; known plantation and mixed-origin classifications are preserved.
-#' This policy does not infer the origin of a user's observation or establish
-#' unrestricted geographic, sampling or stand-structure applicability.
-#' Lundgren-Dolid published recommendations are retained in `input_constraints`.
+#' Models not identified as plantation or mixed-origin models are recorded as
+#' natural-stand models by assumption. This is noted in `metadata_evidence`;
+#' it does not determine the stand type of a user's observations.
 #'
-#' Scientific definitions distinguish input/reference clocks, SI/height datums,
-#' and conventional SI, height index, inherent HI and ecological IQS.
-#' Configurable reference ages describe engine-native defaults, derived from
-#' formals; changing `base_age` changes that reference. Conditions on
-#' `total_height` affect height datum only, not SI datum.
-#' No universal base-age identity, inverse identity or SI-scale conversion
-#' is implied. Applicability describes source populations, not engine inputs
-#' or a newly approved geographic transfer domain.
+#' Input age and SI reference age can use different age types. Likewise, the
+#' height definition used for SI can differ from that used for predicted or
+#' measured height. For models with `total_height`, that option changes height,
+#' not the definition of SI. Site indices from different models should not
+#' be treated as interchangeable.
 #'
-#' Raw `fixed_args` are preserved for existing plotting consumers.
-#' `fixed_arg_roles` labels selectors as `variant`, except the two Pregent
-#' `base_age = 50` overrides, which are `plot_only`; their native default is 25.
-#' `age_domain_max` remains a legacy plotting summary, not an eligibility rule.
-#' The legacy height-capability flag includes ecological curve evaluation,
-#' which does not accept arbitrary SI. Growth-intercept models predict SI only.
+#' `fixed_args` and `fixed_arg_roles` distinguish settings that select a
+#' model version (`variant`) from settings used only for plotting (`plot_only`).
+#' The Prégent models use a reference age of 25 by default, although their
+#' article plots use 50. `age_domain_max` is also used for plotting; it does
+#' not decide whether a model can be selected.
 #'
-#' `operation_inputs` is the authoritative operation-aware input table.
-#' Roles are `required`, `optional`, `fixed` or `forbidden`; height and SI
-#' belong to separate operations and must not both be supplied. Ecological
-#' curves accept neither, and climate HI retains its distinct quantity.
-#' Each requirement carries units, a scientific definition and evidence.
-#' A non-missing `condition_id` refers to `input_constraints`, whose
-#' `selectors` are conjunctions of exact named scalar selector/species/key
-#' matches, not executable expressions. An explicit missing ecological
-#' subregion matches a missing key, not every subregion.
+#' `operation_inputs` lists the inputs needed for each calculation, with roles
+#' `required`, `optional`, `fixed` or `forbidden`. For ordinary age-height
+#' models, supply height to estimate SI or SI to predict height, not both.
+#' Growth-intercept models estimate SI from early height growth; ecological-site
+#' curves predict height from age, species and ecological classification.
 #'
-#' `input_constraints` describes discrete support, exact joint ecological
-#' keys, conditional subregions, unsupported forms, and climate domains,
-#' observed ranges and aggregation semantics. `engine_action` records current
-#' enforcement, not a discovery/selection policy. Aggregate climate values
-#' cannot verify their temporal coverage. These tables do not evaluate inputs
-#' or establish scientific compatibility.
+#' `input_constraints` records supported ages, ecological-code combinations,
+#' additional requirements and climate-input ranges. A `condition_id` links an
+#' input to the relevant rule. All named values in a rule's `selectors` must
+#' match; a missing ecological subregion matches a missing entry, not every
+#' subregion. `engine_action` describes how the individual model handles that
+#' rule. These tables describe requirements; they do not check observations.
 #'
-#' `native_defaults` is derived from engine formals, resolving multi-choice
-#' selectors to their first (native) choice. `variant_args` contains only
-#' variant-defining arguments; `plot_args` additionally applies the legacy
-#' plot overrides. The legacy `nigh2009` ID explicitly denotes base variant 1,
-#' and `huang2026` denotes the non-climate fit. No new variants are registered.
-#' Engine-documented scientific definitions are present for every variant;
-#' this is not independent publication verification or resolution of disputed
-#' claims in `metadata_evidence`.
+#' `native_defaults` contains each function's default argument values.
+#' `variant_args` contains settings selecting a model version; `plot_args`
+#' also includes plotting settings. The `nigh2009` model ID selects version 1,
+#' and `huang2026` selects the version without climate inputs.
 #'
 #' @return A tibble with one row per site-index model variant and metadata
 #'   fields used for model selection.
@@ -306,7 +293,7 @@ si_model_registry <- function() {
       model_id = "augerward2021",
       reference = "@AugerWard2021",
       engine = "si_augerward2021",
-      age_basis = "plantation_age",
+      age_basis = "total_age",
       requires_species = TRUE,
       province_scope = "QC",
       description = "Auger and Ward (2021) Quebec plantation site-index model",
@@ -319,7 +306,7 @@ si_model_registry <- function() {
       model_id = "pregent2010",
       reference = "@Pregent2010",
       engine = "si_pregent2010",
-      age_basis = "plantation_age",
+      age_basis = "total_age",
       requires_species = FALSE,
       province_scope = "QC",
       description = "Pregent et al. (2010) white spruce plantation site-index model",
@@ -333,7 +320,7 @@ si_model_registry <- function() {
       model_id = "pregent2016",
       reference = "@Pregent2016",
       engine = "si_pregent2016",
-      age_basis = "plantation_age",
+      age_basis = "total_age",
       requires_species = FALSE,
       province_scope = "QC",
       description = "Pregent et al. (2016) Norway spruce plantation site-index model",

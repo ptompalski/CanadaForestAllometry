@@ -66,10 +66,9 @@ Provide exactly one of \code{height} or \code{si}:
 top height.
 }
 
-The top-height model is not closed-form invertible in site index; predicting
-\code{si} from \code{height} is solved by the damped fixed-point iteration used in the
-source SAS program. When \code{index_age = "breast_height"}, recovering \eqn{SI_t}
-from a supplied \eqn{SI_{bh}} is solved numerically with \code{stats::uniroot()}.
+To estimate site index, the function repeatedly adjusts its estimate until
+the equation matches the supplied height. With \code{index_age = "breast_height"},
+it also calculates the corresponding total-age site index internally.
 }
 \examples{
 # Predict site index (SIbh) from total age + top height

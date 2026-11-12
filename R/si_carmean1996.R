@@ -14,10 +14,9 @@
 #' \strong{Base-age note:} site index is defined as total height (m) at
 #' 50 years breast-height age.
 #'
-#' \strong{Forward/inverse consistency note:} for \code{PICE.MAR},
+#' \strong{Height and site-index calculations:} for \code{PICE.MAR},
 #' \code{ABIE.BAL}, and \code{BETU.PAP}, the published site-index prediction
-#' equations used for `height -> si` are separate fitted equations from
-#' Appendix IV rather than exact algebraic inverses of the forward height-curve
+#' equations used for `height -> si` were fitted separately from the height
 #' equations. As a result, predictions from `height -> si` may differ slightly
 #' from the input height even when `age = 50`.
 #'
@@ -28,8 +27,7 @@
 #' }
 #'
 #' Inputs and outputs are metric (m). Some source equations were published in
-#' mixed unit form and are converted internally using the species-specific
-#' metadata stored in the internal parameter table.
+#' different units; the function converts them internally.
 #'
 #' @param age Numeric vector. Breast-height age (years), with `age > 0`.
 #' @param height Optional numeric vector. Total tree height (m). If provided,

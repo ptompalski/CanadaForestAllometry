@@ -41,7 +41,8 @@ spruce plantations (\code{PICE.MAR}) in Quebec.
 \strong{Geographic use:} Quebec plantations.
 
 \strong{Age definition note:} \code{age} is plantation age (years since planting),
-not breast-height age.
+not breast-height age. \code{\link[=si]{si()}} groups this under \code{input_age_basis = "total_age"},
+without adding or subtracting nursery years.
 
 \strong{Height definition note:} the model uses dominant height (m) based on
 the mean height of the 100 tallest planted trees per hectare.

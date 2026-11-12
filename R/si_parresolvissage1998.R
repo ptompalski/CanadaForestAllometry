@@ -1,6 +1,6 @@
 #' Parresol and Vissage (1998) site index model for eastern white pine
 #'
-#' Implementation of the base-age invariant polymorphic site-index equations
+#' Implementation of the site-index equations
 #' published by Parresol and Vissage (1998) for eastern white pine
 #' (\code{PINU.STR}).
 #'
@@ -14,9 +14,8 @@
 #' \strong{Age definition note:} `age` is total age (years), not breast-height age.
 #' The antecedent Frothingham (1914) data include growth from germination.
 #'
-#' \strong{Base-age note:} the source paper derives a base-age invariant system.
-#' This implementation accepts any positive `base_age`; the default is 50 years
-#' total age.
+#' \strong{Base-age note:} the default reference age is 50 years total age.
+#' Other `base_age` values of at least 10 years can be supplied.
 #'
 #' \strong{Domain note:} although the algebraic form can be evaluated below age
 #' 10, the source data and paper discussion indicate reliable behavior for ages
@@ -32,7 +31,7 @@
 #' Inputs/outputs are metric; the original equations are in imperial units, so
 #' the function converts internally.
 #'
-#' Both directions are explicit closed forms from the source publication.
+#' Height and site index are calculated directly from the published equations.
 #'
 #' @param age Numeric vector. Total age (years), with `age >= 10`.
 #' @param height Optional numeric vector. Dominant/codominant height (m). If

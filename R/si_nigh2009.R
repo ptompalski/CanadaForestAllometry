@@ -8,7 +8,7 @@
 #' \code{BETU.PAP}.
 #'
 #' \strong{Age definition note:} `age` is breast-height age (BHA, years). The
-#' model is conditioned to return `height = si` exactly at BHA 50.
+#' model returns `height = si` exactly at breast-height age 50.
 #'
 #' \strong{Base-age note:} site index is site height at breast-height age 50.
 #'
@@ -19,17 +19,15 @@
 #'        {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2 \ln(SI - 1.3)}}}
 #' differing only in their coefficients:
 #' \describe{
-#'   \item{`variant = 1`}{Base log-logistic fit (Table 2). Default.}
-#'   \item{`variant = 2`}{Operational form of the mixed model. Recommended by the
-#'     authors when the biogeoclimatic zone is unknown or is not ICH/IDF/SBS.}
-#'   \item{`variant = 3`}{Zonal indicator-variable model. Only \eqn{a_1} carries a
-#'     significant zone effect (SBS vs. ICH/IDF). Supply `bec_zone` (one of
-#'     `"ICH"`, `"IDF"`, `"SBS"`); recommended for those zones.}
+#'   \item{`variant = 1`}{The basic version, used by default.}
+#'   \item{`variant = 2`}{A general version recommended when the biogeoclimatic
+#'     zone is unknown or is not ICH, IDF or SBS.}
+#'   \item{`variant = 3`}{A zone-specific version. Supply `bec_zone` as
+#'     `"ICH"`, `"IDF"` or `"SBS"`; recommended for those zones.}
 #' }
 #'
-#' Because \eqn{SI} appears both as a multiplier and inside a logarithm, eq. 1
-#' has no closed-form inverse in \eqn{SI}; when predicting site index the
-#' equation is solved numerically.
+#' To estimate site index, the function finds the \eqn{SI} value that
+#' reproduces the supplied height at the given age.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{
@@ -42,8 +40,8 @@
 #'   predicted.
 #' @param si Optional numeric vector. Site index (m, base age 50 years at breast
 #'   height). If provided, `height` is predicted.
-#' @param variant Model variant: `1` (base, default), `2` (operational), or `3`
-#'   (zonal). See Details.
+#' @param variant Model version: `1` (basic, default), `2` (general), or `3`
+#'   (zone-specific). See Details.
 #' @param bec_zone Optional character vector selecting the zonal (`variant = 3`)
 #'   coefficients. One of `"ICH"`, `"IDF"`, `"SBS"`. Required when `variant = 3`
 #'   and ignored otherwise.

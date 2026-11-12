@@ -19,7 +19,7 @@ total age for all other supported species (years).}
 \item{height}{Optional numeric vector. Total tree height (m). If provided, \code{si} is predicted.}
 
 \item{si}{Optional numeric vector. Site index (m total height at age 50 on
-the species-specific clock described above). If provided, \code{height} is predicted.}
+the age type listed for that species above). If provided, \code{height} is predicted.}
 
 \item{species}{Character vector of species codes (e.g., \code{"PICE.MAR"}).}
 
@@ -52,10 +52,9 @@ Provide exactly one of \code{height} or \code{si}:
 Inputs/outputs are metric; the original equations are in imperial units, so
 the function converts internally.
 
-Table 1 (pp. 3-4) and the antecedent species curve notes distinguish age
-clocks. Balsam fir (\code{ABIE.BAL}) and white spruce (\code{PICE.GLA}) use
-breast-height age; all other supported species use total age.
-The reference age is 50 years on that same species-specific clock.
+Balsam fir (\code{ABIE.BAL}) and white spruce (\code{PICE.GLA}) use breast-height age;
+all other supported species use total age. The reference age is 50 years,
+measured using the same age type as the input.
 No age conversion is performed.
 
 Neither fitted form is recommended for white spruce (Tables 2-3,

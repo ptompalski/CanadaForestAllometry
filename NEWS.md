@@ -8,6 +8,7 @@
 
 ## Site index metadata corrections
 
+- Simplified SI age categories: Auger-Ward and Prégent models now use `total_age` instead of `plantation_age` for both input and reference ages. Continue supplying years since planting for these models; equations and age values are unchanged, with no nursery-age adjustment.
 - Reconciled the remaining conventional SI clocks/conversion provenance, applied the disclosed non-plantation natural-origin default, and enforced Lundgren-Dolid automatic-use recommendations while preserving native equations and legacy IDs.
 - Resolved Sharma-Reid (2018) height/SI datums from Figure 2, enabling native above-breast-height BHA50 dispatch and compatible natural-origin selection without changing equations.
 - Corrected Payandeh (1974) input/reference clocks to total age, retaining species-specific SI50/80/100 scales and explicitly disclosing assumed clocks for balsam fir/white spruce and the Douglas-fir edition caveat, without changing numerical equations.

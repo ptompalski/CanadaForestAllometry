@@ -24,8 +24,7 @@ A tibble with a single column:
 }
 }
 \description{
-Unified, vectorized implementation of the grounded-Generalized Algebraic
-Difference Approach (g-GADA) height-age (site index) model in Nigh (2017) for
+Implementation of the height-age model in Nigh (2017) for
 lodgepole pine (\emph{Pinus contorta} var. \emph{latifolia}) in British
 Columbia.
 }
@@ -37,24 +36,22 @@ Columbia.
 
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
-\strong{Model form:} the fitted g-GADA model (eq. 4) is
+\strong{Model equation:} height is calculated as
 \deqn{HT = 1.3 + \beta_0 \left(1 - e^{(\beta_{10} + \beta_{11}\beta_0)
   (BHA - 0.5)}\right)^{\beta_{20} + \beta_{21}\beta_0}}
-where \eqn{\beta_0} is a tree-specific parameter that localizes the curve and
-\eqn{\beta_{10}, \beta_{11}, \beta_{20}, \beta_{21}} are the fitted global
-parameters (Table 2).
+where \eqn{\beta_0} varies between trees and
+\eqn{\beta_{10}, \beta_{11}, \beta_{20}, \beta_{21}} are the same for all trees.
 
-The g-GADA localizes on the asymptote-like parameter \eqn{\beta_0}, not
-directly on site index. This implementation follows the paper's recommended
-base-age-50 workflow:
+The function first calculates \eqn{\beta_0}, then uses it to predict height
+or site index:
 \itemize{
-\item When \code{si} is supplied, \eqn{\beta_0} is obtained from the paper's
-cubic SI-to-\eqn{\beta_0} conversion (Discussion, p. 18), then height is
-evaluated with eq. 4. The cubic is valid for site index 5--30 m and has a
-stated maximum \eqn{\beta_0} error of 16 cm, so \code{height} equals \code{si} at
-BHA 50 only to within that tolerance (not exactly).
-\item When \code{height} is supplied, \eqn{\beta_0} is calibrated numerically to
-the (BHA, height) pair, then site index is the height predicted at BHA 50.
+\item When \code{si} is supplied, the function uses the published approximation
+to calculate \eqn{\beta_0}. It is intended for site indices of 5--30 m.
+Because this step is approximate, height at breast-height age 50 may not
+exactly equal the supplied site index.
+\item When \code{height} is supplied, the function finds the \eqn{\beta_0}
+value that reproduces that height at the given age, then predicts height
+at breast-height age 50 to obtain site index.
 }
 
 Provide exactly one of \code{height} or \code{si}:

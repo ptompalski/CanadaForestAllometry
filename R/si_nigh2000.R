@@ -1,6 +1,6 @@
 #' Nigh (2000) site index model for interior western redcedar (BC)
 #'
-#' Implementation of the Nigh (2000) polymorphic
+#' Implementation of the Nigh (2000)
 #' site-index equation for interior western redcedar (\code{THUJ.PLI}).
 #'
 #' \strong{Species coverage:} \code{THUJ.PLI}.
@@ -20,8 +20,9 @@
 #'
 #' Inputs/outputs are metric (m), matching the source model.
 #'
-#' Predicting `height` from `si` is direct. Predicting `si` from `height` is
-#' implicit and solved numerically with `stats::uniroot()`.
+#' Height is calculated directly from the equation. To estimate site index,
+#' the function finds the value that reproduces the supplied height at the
+#' given age.
 #'
 #' @param age Numeric vector. Breast-height age (years).
 #' @param height Optional numeric vector. Top height (m). If provided, `si` is

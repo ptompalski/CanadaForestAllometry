@@ -1,7 +1,7 @@
 #' Scott and Voorhis (1986) site index model
 #'
 #' Unified, vectorized implementation of the Scott and Voorhis (1986)
-#' polymorphic site-index equation for northeastern species.
+#' site-index equation for northeastern species.
 #'
 #' \strong{Model scope (species coverage):} this implementation includes
 #' parameter sets for 19 species:
@@ -29,20 +29,17 @@
 #'   \item If `si` is provided, the function predicts `height`.
 #' }
 #'
-#' In the conversion mode, total age is the sum of breast-height age and age-to-breast-height.
-#' Age-to-breast-height is itself a function of site index, so predicting `si` from
-#' `height` is implicit and solved numerically with `stats::uniroot()`.
+#' In the conversion mode, total age is breast-height age plus the estimated
+#' years needed to reach breast height. The function calculates site index
+#' by finding the value that reproduces the supplied height.
 #'
 #' Inputs/outputs are metric; the original equations are in imperial units, so
 #' the function converts internally.
 #'
 #' @details
-#' Equation 4 and Table 2 (p. 145) define total-age SI50. The discussion on
-#' p. 146 and BASIC appendix (pp. 147-148) describe converting BHA to total
-#' age when necessary. The wrapper's legacy IDs are preserved:
-#' `scottvoorhis1986_bh_age` selects `FALSE` and takes total age;
-#' `scottvoorhis1986_total_age` selects `TRUE` and takes BHA.
-#' The suffixes do not identify the input clocks.
+#' When using [si()], note that the existing model IDs do not describe the
+#' required input age type: `scottvoorhis1986_bh_age` takes total age, while
+#' `scottvoorhis1986_total_age` takes breast-height age.
 #'
 #' @param age Numeric vector. Total age (years) when `convert_to_total_age`
 #'   is `FALSE`; breast-height age when it is `TRUE`.

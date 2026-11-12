@@ -2,7 +2,7 @@
 % Please edit documentation in R/si_model_discovery.R
 \name{find_si_models}
 \alias{find_si_models}
-\title{Discover site-index models and scientific near-misses}
+\title{Find site-index models and check their input requirements}
 \usage{
 find_si_models(
   jurisdiction = NULL,
@@ -21,62 +21,63 @@ find_si_models(
 \arguments{
 \item{jurisdiction}{Optional character vector of province/territory codes.
 Coverage of any requested jurisdiction is sufficient. \code{NULL} does not
-restrict coverage. Registry coverage is not proof of source calibration
-or geographic transfer suitability.}
+restrict coverage. Listed coverage alone does not establish that a model
+is suitable for a particular stand.}
 
 \item{species}{Optional character vector of NFI codes, including compact
-codes such as \code{"PICEMAR"}. Matching is exact after normalization, without
-genus fallback. Each covered requested species has a separate result row,
-so species-specific definitions cannot be combined accidentally.}
+codes such as \code{"PICEMAR"}. Codes are standardized, then matched exactly;
+a genus-level model is not substituted automatically.
+Results have separate rows for each covered requested species.}
 
 \item{operation}{Optional single operation: \code{"infer_si_from_height"},
 \code{"predict_height_from_si"}, \code{"infer_si_from_gi"} or
 \code{"evaluate_ecological_curve"}. \code{NULL} lists each supported operation.
 With an explicit operation, unsupported models remain as exclusions.}
 
-\item{available}{Character vector of case-sensitive engine argument names
+\item{available}{Character vector of case-sensitive model argument names
 you could supply, defaulting to none. A requested \code{species} also supplies
 that input name. Extra column names are allowed and do not mean those
-arguments will actually be passed to an engine.}
+arguments will actually be passed to a model.}
 
-\item{input_age_basis, reference_age_basis}{Optional requested age clocks:
-\code{"total_age"}, \code{"breast_height_age"}, \code{"plantation_age"} or
-\code{"corrected_age_above_1m"}. Input and SI-reference clocks are independent.}
+\item{input_age_basis, reference_age_basis}{Optional requested age types:
+\code{"total_age"}, \code{"breast_height_age"} or \code{"corrected_age_above_1m"}.
+\code{"total_age"} includes years since planting for models defined that way.
+Input and SI-reference age types are independent.}
 
 \item{reference_age}{Optional single positive finite SI reference age in
-years, compared with the native variant scale, not a plotting override.
-This does not set an engine's \code{base_age}.}
+years, compared with the selected model version's reference age.
+This does not change \code{base_age} or use the reference age chosen for plots.}
 
 \item{productivity_quantity}{Optional requested quantity: \code{"site_index"},
 \code{"height_index"}, \code{"inherent_height_index"} or \code{"ecological_iqs"}.}
 
-\item{si_datum, height_datum}{Optional requested vertical datum:
-\code{"total_height"} or \code{"above_breast_height"}. These do not describe the
-height sampling population or authorize a height offset.}
+\item{si_datum, height_datum}{Optional height definitions for SI and
+measured or predicted height: \code{"total_height"} (from the ground) or
+\code{"above_breast_height"} (above 1.3 m). Heights are not converted.}
 
-\item{stand_origin}{Optional requested origin: \code{"natural"} or \code{"plantation"}.
-Models without an explicit plantation or mixed-origin classification use
-the approved assumed-natural default. Evidence distinguishes assumptions
-from source-verified classifications; observation origin is not inferred.}
+\item{stand_origin}{Optional stand type: \code{"natural"} or \code{"plantation"}.
+Models not identified as plantation or mixed-origin models are recorded as
+natural-stand models by assumption. This does not determine the stand
+type of a user's observations.}
 }
 \value{
-A tibble retaining registry/species metadata, in registry order
-(legacy \code{rank} is not used), with one row per model, operation and covered
+A tibble containing registry and species information, in registry
+order (not ranked), with one row per model, calculation and covered
 requested species (\code{query_species} is \code{NA} if species is unspecified).
 Additional columns are:
 \itemize{
 \item \code{operation}, \code{operation_supported}, \code{productivity_quantity}.
-\item \code{native_scientific_definitions}: species/condition-resolved native
-definitions; original definitions and evidence remain available.
-\item \code{missing_predictors}: unconditional required names not available.
-\item \code{conditional_requirements}: potentially applicable conditional rules,
-restricted by the requested species when known.
-\item \code{conditional_missing_predictors}: names missing only under those rules.
+\item \code{native_scientific_definitions}: age, height and SI definitions for the
+selected species and model version.
+\item \code{missing_predictors}: required input names absent from \code{available}.
+\item \code{conditional_requirements}: additional rules that may apply, depending
+on other settings and the requested species.
+\item \code{conditional_missing_predictors}: input names missing under those rules.
 \item \code{forbidden_predictors}: available names that must not be passed in this
 operation. Their presence does not make \code{inputs_available} false.
 \item \code{inputs_available}: \code{FALSE} for unsupported operations or missing
-unconditional names; \code{NA} for missing potentially required conditional
-names; otherwise \code{TRUE}. Even \code{TRUE} is not row-level eligibility.
+required names; \code{NA} when additional inputs may be needed under a rule;
+otherwise \code{TRUE}. Even \code{TRUE} does not mean observations have been checked.
 \item \code{compatibility}: per-field comparison table with requested and actual
 values, status and reason.
 \item \code{scientific_compatibility}: \code{"incompatible"} if any requested comparison
@@ -84,41 +85,36 @@ mismatches; otherwise \code{"unknown"} if any is unresolved; otherwise
 \code{"compatible"}, or \code{"not_requested"} when no scientific fields are set.
 \item \code{incompatibility_reasons}, \code{missing_information}: explanatory lists.
 \item \code{discovery_status}: \code{"incompatible"}, \code{"missing_inputs"}, \code{"needs_review"}
-or \code{"names_complete"}, in that precedence order. None means usable.
+or \code{"names_complete"}, in that order of priority. None guarantees that
+the model can be used for your observations.
 \item \code{eligibility}: always \code{"not_evaluated"}.
-\item \code{limitations}: scientific caveats, including unencoded applicability.
+\item \code{limitations}: usage limits and information that still needs review.
 }
 }
 \description{
-Browses all SI model families without executing, ranking or selecting a model.
-Species and jurisdiction restrict registered coverage. Scientific requests
-annotate candidates rather than hiding incompatible or unresolved near-misses.
+Lists models covering the requested species and jurisdictions without
+calculating predictions or selecting a model. Models that do not match the
+requested age, height or stand definitions remain in the results with an
+explanation.
 }
 \details{
-All comparisons use native defaults plus variant-defining selectors.
-Alternative \code{total_height} settings remain visible in
-\code{scientific_definitions}, but discovery never changes a selector to achieve a
-match. Likewise Pregent native SI25 is not replaced by the SI50 plot setting.
+Comparisons use the default arguments for the selected model version.
+The function does not change options such as \code{total_height} to make a model
+match. Prégent models are checked using their default reference age of 25,
+not the age of 50 used in article plots.
 
-Scientific compatibility refers only to the explicitly requested fields.
-Unresolved or contradictory source claims cannot establish either a match
-or a known mismatch for the affected field. Multiple possible definitions
-without a species selection can also leave a comparison unknown.
-A compatible comparison does not establish equivalent SI across models,
-population/composition/sampling suitability, or publication verification.
-Free-text applicability and evidence must still be reviewed.
-A known species-level published non-recommendation is retained as a
-discovery exclusion even when requested clock/datum labels match.
-Age-dependent recommendations remain visible in constraints/limitations;
-name-only discovery cannot evaluate their numeric age conditions.
+Only the requested definitions are compared. Missing or uncertain model
+information can leave a comparison unknown. A match does not mean SI values
+can be exchanged between models or that the model is suitable for every stand.
+Published advice against using a model for a species is reported even when
+its age and height definitions match. Age-related limits are listed but not
+checked against observations.
 
-Input availability is a name-level screen, not validation of observations.
-It does not check numeric values, missing rows, discrete ages, joint
-ecological keys, selector values, calibration ranges, or climate histories.
-Conditional requirements whose selector values are not known remain visible;
-no ecological subregion or coefficient mode is selected automatically.
-Available columns forbidden in an operation are reported as arguments not to
-pass, not as evidence that the data itself is incompatible.
+\code{available} checks input names only, not their values, missing observations,
+supported ages, ecological-code combinations or climate histories.
+Requirements that depend on other settings remain listed for review.
+Inputs not accepted for a calculation are reported as arguments not to pass;
+having those columns in your data does not by itself rule out the model.
 }
 \examples{
 candidates <- find_si_models(

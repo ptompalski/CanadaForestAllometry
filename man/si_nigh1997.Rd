@@ -34,7 +34,7 @@ of its improved extrapolation to old ages.
 \code{PICE.SIT}.
 
 \strong{Age definition note:} \code{age} is breast-height age (BHA, years). The
-model is conditioned to return \code{height = si} exactly at BHA 50.
+model returns \code{height = si} exactly at breast-height age 50.
 
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
@@ -45,9 +45,8 @@ The recommended model (Nigh 1997, eq. 8) is the integral logistic form
 with \eqn{a_0 = 8.947}, \eqn{a_1 = -1.357}, \eqn{a_2 = -1.013} (Table 3, model
 [7]).
 
-Because \eqn{SI} appears both as a multiplier and inside a logarithm, the
-equation has no closed-form inverse in \eqn{SI}; when predicting site index the
-equation is solved numerically.
+To estimate site index, the function finds the \eqn{SI} value that
+reproduces the supplied height at the given age.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{

@@ -1,7 +1,6 @@
 #' Sharma (2022) site index model for black spruce and trembling aspen
 #'
-#' Implementation of the fixed-effects component of the no-climate
-#' McDill-Amateis mixed-effects stand height model published by Sharma (2022)
+#' Implementation of the McDill-Amateis stand-height model published by Sharma (2022)
 #' for black spruce (\code{PICE.MAR}) and trembling aspen (\code{POPU.TRE})
 #' growing in natural-origin mixed stands in Ontario.
 #'
@@ -15,9 +14,8 @@
 #' (top height) in metres.
 #'
 #' \strong{Base-age note:} the paper defines site index as stand height at
-#' 50 years breast-height age. The underlying dynamic equation is base-age
-#' invariant, so any positive `base_age` can be supplied; the default remains
-#' 50 to match the source definition.
+#' 50 years breast-height age, which is the function's default.
+#' Other positive reference ages can be supplied through `base_age`.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{
@@ -25,9 +23,8 @@
 #'   \item If `si` is provided, the function predicts `height`.
 #' }
 #'
-#' This implementation uses the fixed-effects component of Sharma's
-#' no-climate mixed-effects model (Equation 2), with stand-level random effects
-#' set to zero.
+#' The function uses Equation 2 without climate inputs or adjustments based
+#' on repeated measurements from an individual stand.
 #'
 #' @param age Numeric vector. Breast-height age (years), with `age > 0`.
 #' @param height Optional numeric vector. Stand height (m). If provided, `si`

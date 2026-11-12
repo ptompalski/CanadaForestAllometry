@@ -312,7 +312,7 @@
         any(!defs$status %in% c("verified", "secondary_only", "unresolved", "contradicted"))) {
       report(paste0(id, ": missing scientific evidence/definitions."))
     }
-    clocks <- c("total_age", "breast_height_age", "plantation_age",
+    clocks <- c("total_age", "breast_height_age",
                 "corrected_age_above_1m", "species_dependent", "unresolved")
     datums <- c("total_height", "above_breast_height", "unresolved")
     if (!row$age_basis %in% clocks || any(!defs$input_age_basis %in% clocks) ||

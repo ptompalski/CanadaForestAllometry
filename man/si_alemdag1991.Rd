@@ -39,8 +39,8 @@ counted at 1.30 m. Both equations use height and site index measured above
 breast height (\eqn{H - 1.30}, \eqn{S - 1.30}).
 
 \strong{Base-age note:} site index is total tree height at index (base) age
-\eqn{A_1 = 50} years breast-height age. Both equations are conditioned so that
-the predicted value equals the input at \eqn{A = 50} (\eqn{S = H} there).
+\eqn{A_1 = 50} years breast-height age. At \eqn{A = 50}, both equations
+return a value equal to the supplied height or site index (\eqn{S = H}).
 
 The site-index equation (Alemdag 1991, model [9], \eqn{c} coefficients) is
 \deqn{S = 1.30 + \frac{1}{c_1 (H - 1.30)^{c_2}
@@ -56,9 +56,8 @@ with (model [5])
 \deqn{k = 1 - \left[\frac{S - 1.30}{b_1 (S - 1.30)^{b_2}}\right]
   ^{1 / (b_4 (S - 1.30)^{b_5})}.}
 
-The two equations were fitted independently (they are not exact inverses of
-one another), each on the combined national data. Both directions are
-closed-form.
+Height and site index use separately fitted equations. Converting one to
+the other and back may therefore not recover the starting value exactly.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{

@@ -38,7 +38,7 @@ A tibble with columns:
 }
 \description{
 Unified, vectorized implementation of the Scott and Voorhis (1986)
-polymorphic site-index equation for northeastern species.
+site-index equation for northeastern species.
 }
 \details{
 \strong{Model scope (species coverage):} this implementation includes
@@ -67,19 +67,16 @@ Provide exactly one of \code{height} or \code{si}:
 \item If \code{si} is provided, the function predicts \code{height}.
 }
 
-In the conversion mode, total age is the sum of breast-height age and age-to-breast-height.
-Age-to-breast-height is itself a function of site index, so predicting \code{si} from
-\code{height} is implicit and solved numerically with \code{stats::uniroot()}.
+In the conversion mode, total age is breast-height age plus the estimated
+years needed to reach breast height. The function calculates site index
+by finding the value that reproduces the supplied height.
 
 Inputs/outputs are metric; the original equations are in imperial units, so
 the function converts internally.
 
-Equation 4 and Table 2 (p. 145) define total-age SI50. The discussion on
-p. 146 and BASIC appendix (pp. 147-148) describe converting BHA to total
-age when necessary. The wrapper's legacy IDs are preserved:
-\code{scottvoorhis1986_bh_age} selects \code{FALSE} and takes total age;
-\code{scottvoorhis1986_total_age} selects \code{TRUE} and takes BHA.
-The suffixes do not identify the input clocks.
+When using \code{\link[=si]{si()}}, note that the existing model IDs do not describe the
+required input age type: \code{scottvoorhis1986_bh_age} takes total age, while
+\code{scottvoorhis1986_total_age} takes breast-height age.
 }
 \examples{
 # Predict site index from age + height

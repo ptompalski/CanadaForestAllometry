@@ -35,9 +35,8 @@ index) model in Brisco, Klinka and Nigh (2002) for western larch
 
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
-\strong{Model form:} the authors compared four model forms and recommend the
-unconstrained Chapman-Richards model (their eq. 3) refit to the complete data
-set (their eq. 6):
+\strong{Model equation:} the function uses the recommended
+Chapman-Richards equation (eq. 6):
 \deqn{H = 1.3 + b_1 (S - 1.3)^{b_2}
   \left(1 - e^{b_3 (A - 0.5)}\right)^{b_4 (S - 1.3)^{b_5}}}
 with \eqn{b_1 = 3.875}, \eqn{b_2 = 0.7850}, \eqn{b_3 = -0.01497},
@@ -49,10 +48,8 @@ Provide exactly one of \code{height} or \code{si}:
 \itemize{
 \item If \code{si} is provided, the function predicts \code{height} directly from
 eq. 6.
-\item If \code{height} is provided, the function predicts \code{si}. Because \eqn{S}
-appears in the base, the leading power, and the outer exponent of eq. 6,
-it cannot be isolated in closed form and is obtained by numerically
-inverting eq. 6 for each (age, height) pair.
+\item If \code{height} is provided, the function finds the site-index value
+that reproduces that height at the given age.
 }
 }
 \examples{

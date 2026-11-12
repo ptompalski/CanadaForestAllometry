@@ -15,8 +15,8 @@ predicted.}
 \item{si}{Optional numeric vector. Site index (m, base age 50 years at breast
 height). If provided, \code{height} is predicted.}
 
-\item{variant}{Model variant: \code{1} (base, default), \code{2} (operational), or \code{3}
-(zonal). See Details.}
+\item{variant}{Model version: \code{1} (basic, default), \code{2} (general), or \code{3}
+(zone-specific). See Details.}
 
 \item{bec_zone}{Optional character vector selecting the zonal (\code{variant = 3})
 coefficients. One of \code{"ICH"}, \code{"IDF"}, \code{"SBS"}. Required when \code{variant = 3}
@@ -39,7 +39,7 @@ index) model in Nigh, Thomas, Yearsley and Wang (2009) for paper birch
 \code{BETU.PAP}.
 
 \strong{Age definition note:} \code{age} is breast-height age (BHA, years). The
-model is conditioned to return \code{height = si} exactly at BHA 50.
+model returns \code{height = si} exactly at breast-height age 50.
 
 \strong{Base-age note:} site index is site height at breast-height age 50.
 
@@ -50,17 +50,15 @@ form (eq. 1)
        {1 + e^{a_0 + a_1 \ln(BHA - 0.5) + a_2 \ln(SI - 1.3)}}}
 differing only in their coefficients:
 \describe{
-\item{\code{variant = 1}}{Base log-logistic fit (Table 2). Default.}
-\item{\code{variant = 2}}{Operational form of the mixed model. Recommended by the
-authors when the biogeoclimatic zone is unknown or is not ICH/IDF/SBS.}
-\item{\code{variant = 3}}{Zonal indicator-variable model. Only \eqn{a_1} carries a
-significant zone effect (SBS vs. ICH/IDF). Supply \code{bec_zone} (one of
-\code{"ICH"}, \code{"IDF"}, \code{"SBS"}); recommended for those zones.}
+\item{\code{variant = 1}}{The basic version, used by default.}
+\item{\code{variant = 2}}{A general version recommended when the biogeoclimatic
+zone is unknown or is not ICH, IDF or SBS.}
+\item{\code{variant = 3}}{A zone-specific version. Supply \code{bec_zone} as
+\code{"ICH"}, \code{"IDF"} or \code{"SBS"}; recommended for those zones.}
 }
 
-Because \eqn{SI} appears both as a multiplier and inside a logarithm, eq. 1
-has no closed-form inverse in \eqn{SI}; when predicting site index the
-equation is solved numerically.
+To estimate site index, the function finds the \eqn{SI} value that
+reproduces the supplied height at the given age.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{

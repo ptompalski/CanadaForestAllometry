@@ -1,6 +1,6 @@
-#' Goelz and Burk (1992) base-age invariant site index model for jack pine in north central Ontario
+#' Goelz and Burk (1992) site index model for jack pine in north central Ontario
 #'
-#' Unified, vectorized implementation of the base-age invariant version of the
+#' Implementation of the
 #' Chapman-Richards difference equation (eq. 16) published in Goelz and Burk
 #' (1992) for jack pine (\emph{Pinus banksiana}) in north central Ontario.
 #'
@@ -9,7 +9,7 @@
 #' \strong{Age definition note:} `age` is breast-height age (years). Heights are
 #' referenced to a breast height of 1.3 m.
 #'
-#' \strong{Base-age note:} the equation is base-age invariant. Site index is
+#' \strong{Base-age note:} site index is
 #' returned as the predicted height (m) at a breast-height age of 50 years, the
 #' reference base age used throughout Goelz and Burk (1992).
 #'
@@ -22,16 +22,14 @@
 #' \deqn{\hat{H}_2 = 1.3 + (H_1 - 1.3)
 #'   \frac{\left[1 - \exp\left(-b_1 (H_1/A_1)^{b_2} A_1^{b_3} A_2\right)\right]^{b_4}}
 #'        {\left[1 - \exp\left(-b_1 (H_1/A_1)^{b_2} A_1^{b_3} A_1\right)\right]^{b_4}}.}
-#' Because the equation is base-age invariant, the same form is used in both
-#' directions: site index is obtained by setting \eqn{A_2 = 50}, and height at a
+#' The same equation is used in both directions:
+#' site index is obtained by setting \eqn{A_2 = 50}, and height at a
 #' given age is obtained by setting \eqn{H_1 = SI}, \eqn{A_1 = 50}.
 #'
-#' \strong{Note on approximate invariance:} eq. 16 was not constrained to be
-#' exactly base-age invariant (Goelz and Burk 1992, criterion 7). Predicting
-#' height from site index and then predicting site index back from that height
-#' therefore need not recover the original value exactly; the round-trip
-#' discrepancy is small (the source reports curve differences across base ages of
-#' less than 0.5 m).
+#' \strong{Converting between height and site index:} predicting height from
+#' site index and then estimating site index from that height may not recover
+#' the starting value exactly. The paper reports differences of less than
+#' 0.5 m between curves calculated using different reference ages.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{

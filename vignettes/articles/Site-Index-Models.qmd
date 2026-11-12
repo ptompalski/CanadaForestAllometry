@@ -32,7 +32,8 @@ Huang et al.'s **2026** models [@HuangEtAl2026].
 Most follow the same logic: estimate site index from age and height, or
 predict height from age and site index. However, the definitions differ.
 Some use **total age**, others **breast-height age** (years since reaching
-1.3 m), and plantation models may use years since planting. The reference
+1.3 m). The package also groups years since planting under total age for
+models that use it, including Auger-Ward and Prégent. The reference
 age is most commonly **50 years**, but some models use 25 years or another
 age. Height may mean top height measured from the ground, or height above
 breast height. These differences matter when choosing a model and
@@ -48,14 +49,18 @@ each observation from the available age-height models. In addition to
 `age`, `height` or `si`, and `species`, it needs:
 
 - `jurisdiction`: the province or territory, such as `"QC"` or `"BC"`;
-- `input_age_basis`: how age was measured, usually `"total_age"`,
-  `"breast_height_age"` or `"plantation_age"`;
+- `input_age_basis`: how age was measured, usually `"total_age"` or
+  `"breast_height_age"`;
 - `stand_origin`: `"natural"` or `"plantation"` for automatic selection.
 
 Some models also need regional information, such as `bec_zone` in British
 Columbia or `natural_subregion` in Alberta. Ages are in years; heights and
 site indices are in metres. Species use NFI codes, such as `"PICE.GLA"`
 for white spruce.
+
+For Auger-Ward and Prégent models, use `input_age_basis = "total_age"` and
+supply years since planting. The function uses these ages as supplied,
+without adding or subtracting nursery years.
 
 ## Estimate site index from measured height
 
@@ -69,7 +74,7 @@ si_estimates <- si(
   height = c(10, 15),
   species = "PICE.GLA",
   jurisdiction = "QC",
-  input_age_basis = "plantation_age",
+  input_age_basis = "total_age",
   stand_origin = "plantation"
 )
 
@@ -101,7 +106,7 @@ si(
   si = 18,
   species = "PICE.GLA",
   jurisdiction = "QC",
-  input_age_basis = "plantation_age",
+  input_age_basis = "total_age",
   stand_origin = "plantation",
   model_id = "pregent2010"
 ) |>
@@ -137,7 +142,7 @@ find_si_models(
   species = "PICE.GLA",
   operation = "infer_si_from_height",
   available = c("age", "height"),
-  input_age_basis = "plantation_age",
+  input_age_basis = "total_age",
   stand_origin = "plantation"
 ) |>
   dplyr::select(model_id, discovery_status, missing_predictors)
@@ -179,6 +184,9 @@ values. Follow the function-reference links for arguments and usage details.
 #| results: asis
 
 si_age_axis_label <- function(model_row) {
+  if (model_row$model_id[[1]] %in% c("augerward2021", "pregent2010", "pregent2016")) {
+    return("Total age (years since planting)")
+  }
   evidence <- model_row$metadata_evidence[[1]]
   disputed_input <- evidence$status == "unresolved" & evidence$subject %in% c(
     "input_age_basis", "input_and_reference_age", "input_and_reference_age_basis",
@@ -191,7 +199,6 @@ si_age_axis_label <- function(model_row) {
     model_row$age_basis[[1]],
     total_age = "Total age (years)",
     breast_height_age = "Breast-height age (years)",
-    plantation_age = "Plantation age (years since planting)",
     corrected_age_above_1m = "Corrected age above 1 m (years)",
     species_dependent = "Age (years; type varies by species)",
     unresolved = "Age (years)",

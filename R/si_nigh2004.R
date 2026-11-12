@@ -10,23 +10,19 @@
 #' \code{PICE.GLA}), following the source publication.
 #'
 #' \strong{Age definition note:} `age` is \emph{total} age (years), not
-#' breast-height age. The model is conditioned to predict a height of zero at
+#' breast-height age. The model predicts a height of zero at
 #' total age zero.
 #'
 #' \strong{SI definition note:} SI is total site height at 50 years
-#' breast-height age, despite total-age observations. The source estimated
-#' SI through the lodgepole-pine and spruce growth-intercept models
-#' (Nigh 1997, EN11; Nigh 2004, TR013, tracing spruce to Nigh 1999, EN37).
-#' This juvenile model is not constrained to satisfy `height(50) = si`
-#' and should not be extrapolated to mature ages to test that identity.
+#' breast-height age, although the supplied `age` is total age.
+#' This model is for young trees; it should not be used to predict height
+#' at mature ages or assumed to return `height = si` at input age 50.
 #'
 #' \strong{Model form:} the base model (eq. 3) is
 #' \deqn{H = a_1 \times SI \times A^{a_2 + a_3 SI} \times a_4^{A}}
 #' where \eqn{H} is height (m), \eqn{SI} is site index (m), \eqn{A} is total age
 #' (years), and \eqn{a_1, a_2, a_3, a_4} are fitted parameters. The parameters
-#' were fitted province-wide (Table 2) and then allowed to vary by biogeoclimatic
-#' zone via additive indicator terms (eqs. 4-6, Table 3). This implementation
-#' stores the resolved per-zone \eqn{a_1, a_2, a_3, a_4} plus a province-wide set.
+#' are available for the whole province or for individual biogeoclimatic zones.
 #'
 #' \strong{Zone selection:} supply `bec_zone` to use a zone-specific parameter
 #' set (one of `"BWBS"`, `"ESSF"`, `"ICH"`, `"IDF"`, `"MS"`, `"SBS"`, `"SBPS"`).
@@ -34,9 +30,8 @@
 #' are used, as recommended by the author when the zone is unknown or was not
 #' sampled.
 #'
-#' Because \eqn{SI} appears both as a multiplier and inside the exponent of
-#' \eqn{A}, eq. 3 has no closed-form inverse in \eqn{SI}; when predicting site
-#' index the equation is solved numerically.
+#' To estimate site index, the function finds the \eqn{SI} value that
+#' reproduces the supplied height at the given age.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{

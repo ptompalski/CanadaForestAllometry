@@ -9,7 +9,8 @@
 #' \strong{Geographic use:} Quebec plantations.
 #'
 #' \strong{Age definition note:} `age` is plantation age (years since planting),
-#' not breast-height age.
+#' not breast-height age. [si()] groups this under `input_age_basis = "total_age"`,
+#' without adding or subtracting nursery years.
 #'
 #' \strong{Height definition note:} the model uses dominant height (m) based on
 #' the mean height of the 100 tallest planted trees per hectare.

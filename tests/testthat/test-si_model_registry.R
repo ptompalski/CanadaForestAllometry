@@ -76,10 +76,10 @@ testthat::test_that("si_model_registry fixed arguments match engine signatures",
   }
 })
 
-testthat::test_that("verified SI input clocks and required species match engines", {
+testthat::test_that("SI input age categories and required species match engines", {
   reg <- si_model_registry()
   plantation <- reg$model_id %in% c("augerward2021", "pregent2010", "pregent2016")
-  testthat::expect_true(all(reg$age_basis[plantation] == "plantation_age"))
+  testthat::expect_true(all(reg$age_basis[plantation] == "total_age"))
   testthat::expect_identical(
     reg$age_basis[reg$model_id == "lafleche2013_potential"],
     "corrected_age_above_1m"
@@ -105,7 +105,7 @@ testthat::test_that("plot-only SI arguments do not redefine native reference age
     testthat::expect_identical(row$fixed_args[[1]], list(base_age = 50))
     testthat::expect_identical(row$fixed_arg_roles[[1]], c(base_age = "plot_only"))
     testthat::expect_equal(row$scientific_definitions[[1]]$reference_age, 25)
-    testthat::expect_equal(row$scientific_definitions[[1]]$reference_age_basis, "plantation_age")
+    testthat::expect_equal(row$scientific_definitions[[1]]$reference_age_basis, "total_age")
   }
   alder <- reg[reg$model_id == "nighcourtin1998_si50", ]
   testthat::expect_identical(alder$fixed_arg_roles[[1]], c(si50 = "variant"))
@@ -238,7 +238,7 @@ testthat::test_that("SI applicability is distinct from geographic engine argumen
   }
 })
 
-testthat::test_that("SI article consumers label corrected clocks and height datums", {
+testthat::test_that("SI article consumers label age types and height definitions", {
   testthat::skip_if_not_installed("ggplot2")
   testthat::skip_if_not_installed("patchwork")
   article <- testthat::test_path("..", "..", "vignettes", "articles", "Site-Index-Models.qmd")
@@ -252,22 +252,27 @@ testthat::test_that("SI article consumers label corrected clocks and height datu
   row <- function(id) reg[reg$model_id == id, ]
 
   testthat::expect_identical(
-    env$si_age_axis_label(row("pregent2010")), "Plantation age (years since planting)"
+    env$si_age_axis_label(row("pregent2010")), "Total age (years since planting)"
   )
   testthat::expect_identical(
     env$si_age_axis_label(row("lafleche2013_potential")), "Corrected age above 1 m (years)"
   )
   for (id in "lafleche2013_observed") {
-    testthat::expect_match(env$si_age_axis_label(row(id)), "source clock unresolved")
+    testthat::expect_identical(env$si_age_axis_label(row(id)), "Age (years)")
   }
   testthat::expect_identical(env$si_age_axis_label(row("payandeh1974")), "Total age (years)")
   testthat::expect_identical(env$si_age_axis_label(row("scottvoorhis1986_bh_age")), "Total age (years)")
   testthat::expect_identical(env$si_age_axis_label(row("scottvoorhis1986_total_age")), "Breast-height age (years)")
-  testthat::expect_match(env$si_age_axis_label(row("lundgrendolid1970_monomolecular")), "species-specific")
+  testthat::expect_match(env$si_age_axis_label(row("lundgrendolid1970_monomolecular")), "varies by species")
   for (basis in c("species_dependent", "unresolved")) {
-    example <- row("pregent2010")
+    example <- row("carmean1989")
     example$age_basis <- basis
-    testthat::expect_match(env$si_age_axis_label(example), "species-specific|unresolved")
+    expected <- if (basis == "species_dependent") {
+      "Age (years; type varies by species)"
+    } else {
+      "Age (years)"
+    }
+    testthat::expect_identical(env$si_age_axis_label(example), expected)
   }
   above <- env$plot_si_curves(
     row("sharma2022"), si_values = 15, age_min = 49, age_max = 50

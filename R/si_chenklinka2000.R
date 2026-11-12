@@ -1,6 +1,6 @@
 #' Chen and Klinka (2000) height-growth / site-index model for ESSF species
 #'
-#' Unified, vectorized implementation of the conditioned Chapman-Richards
+#' Implementation of the Chapman-Richards
 #' height-growth models of Chen and Klinka (2000) for high-elevation subalpine
 #' fir, Engelmann spruce, and lodgepole pine in the Engelmann Spruce-Subalpine
 #' Fir (ESSF) zone of British Columbia.
@@ -21,8 +21,8 @@
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{
-#'   \item If `height` is provided, the function predicts `si` (solved
-#'     numerically; the model has no closed-form inverse).
+#'   \item If `height` is provided, the function finds the site-index value
+#'     that reproduces that height at the given age.
 #'   \item If `si` is provided, the function predicts `height`.
 #' }
 #'

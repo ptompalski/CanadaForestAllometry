@@ -2,7 +2,7 @@
 % Please edit documentation in R/si_lafleche2013.R
 \name{si_lafleche2013}
 \alias{si_lafleche2013}
-\title{Lafleche et al. (2013) ecological-site IQS curves for southern Quebec}
+\title{Lafleche et al. (2013) ecological-site height curves for southern Quebec}
 \usage{
 si_lafleche2013(
   age,
@@ -38,8 +38,8 @@ sets \code{IQSstation} and \code{IQSobserved}, respectively.}
 \item{base_age}{Positive numeric scalar. IQS reference age (years above
 1 m). Defaults to \code{50}.}
 
-\item{include_metadata}{Logical scalar. If \code{TRUE}, append lookup metadata and
-fitted-curve metadata to the returned tibble.}
+\item{include_metadata}{Logical scalar. If \code{TRUE}, include information about
+the selected ecological classification and height curve in the result.}
 }
 \value{
 A tibble with columns:
@@ -48,14 +48,15 @@ A tibble with columns:
 \item{si}{Fixed-curve IQS value (m) at \code{base_age}.}
 }
 When \code{include_metadata = TRUE}, additional columns describing the matched
-ecological key and parameter row are included.
+ecological classification and curve are included.
 }
 \description{
 Implementation of the fixed ecological-site height curves published by
 Lafleche et al. (2013) for major commercial tree species in southern Quebec.
-Unlike the polymorphic \verb{si_*} models in this package, these curves are
-selected by ecological key and use fixed coefficients for each
-species-region-(subregion)-type combination.
+Unlike most \verb{si_*()} functions, this function selects a height curve using
+species and ecological classification, rather than a supplied site index.
+Each combination of species, region, subregion and ecological type has its
+own curve.
 }
 \details{
 \strong{Species coverage:} \code{ABIE.BAL}, \code{BETU.PAP}, \code{PICE.GLA}, \code{PICE.MAR},
@@ -69,7 +70,7 @@ species-region-(subregion)-type combination.
 \strong{Height definition note:} the source curves predict stand height in
 metres, constrained to pass through \verb{(age = 0, height = 1)}.
 
-\strong{Base-age note:} IQS is defined as predicted height at 50 years above
+\strong{Base-age note:} the site-quality index (IQS) is predicted height at 50 years above
 1 m. \code{base_age} defaults to \code{50}, but any positive scalar can be supplied.
 
 This function always predicts height from \code{age}; it also returns the
@@ -81,11 +82,8 @@ derive \code{IQSstation} in the report, whereas \code{"observed"} corresponds to
 separate curves fitted to observed height growth (\code{IQSobserved}). In the
 source tables these appear as \code{IQSstation} and \code{IQSobserved}, respectively.
 
-At present, \code{CR}, \code{WE}, and \code{LIN} equation forms are implemented directly
-from the publication and validated against the published \code{IQSstation}
-summaries. The single \code{LOGIST3} row is kept in the parameter data but raises
-an error here because its printed equation/coefficients have not yet been
-reconciled with the published table values.
+The \code{LOGIST3} curve is not supported and raises an error because its printed
+equation and coefficients could not be matched to the published values.
 }
 \examples{
 si_lafleche2013(

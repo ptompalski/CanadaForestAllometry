@@ -23,7 +23,8 @@ si_huang2026(
 height (m). If supplied, \code{si} is predicted.}
 
 \item{si}{Optional numeric vector. Site index (m) at 50 years total age for
-the non-climate variant; inherent HI (m) for the climate variant.
+the non-climate version; height index before climate adjustment (m) for
+the climate version, as described above.
 If supplied, \code{height} is predicted.}
 
 \item{species}{Character vector of NFI species codes; compact codes are
@@ -32,11 +33,11 @@ normalized (e.g. \code{"PICEGLA"} becomes \code{"PICE.GLA"}).}
 \item{MAP, MWMT}{Optional numeric vectors, required for the climate variant.
 Respectively the average annual precipitation (mm) and average mean warmest
 month temperature (degrees C) over the species-specific previous-years
-window described above. Both must be positive and finite. \code{MWMT} is not
+period described above. Both must be positive and finite. \code{MWMT} is not
 mean annual temperature; do not convert to kelvin.}
 
 \item{MAP_normal, MWMT_normal}{Optional numeric vectors, required for the
-climate variant. Location-specific 1961--1990 normals for annual
+climate variant. The location's 1961--1990 averages for annual
 precipitation (mm) and mean warmest month temperature (degrees C).
 Both must be positive and finite; no provincial defaults are assumed.}
 
@@ -57,53 +58,46 @@ balsam fir (\code{ABIE.BAL}), Douglas-fir (\code{PSEU.MEN}) and jack pine (\code
 }
 \details{
 Provide exactly one of \code{height} or \code{si}. Height is predicted directly from
-age and site index; site index is recovered numerically from age and height.
+age and site index. To estimate site index, the function finds the value
+that reproduces the supplied height at the given age.
 Both age and the reference age use \strong{total age}, not breast-height age.
 
-For the default non-climate variant, the source's height index (HI), exposed
-as \code{si}, is tree height at 50 years total age. Models were fitted to
-stem-analysis trajectories of
-dominant and codominant trees up to 180 total years. Predictions at older
-ages generate a warning. Inversion from young trees, especially before
-approximately 15--20 years, can be inaccurate.
+For the default non-climate version, \code{si} is tree height at 50 years total
+age. Predictions beyond total age 180 generate a warning. Estimating site
+index from young trees, especially before approximately 15--20 years,
+can be inaccurate.
 
 For aspen, balsam poplar and black spruce, the published logarithm requires
 \eqn{b_0 SI^{b_1-1} > 1}. For white spruce and balsam fir, the square root
 of \eqn{\ln(SI)} requires \code{si >= 1}. Impossible height-age pairs and multiple
 site-index solutions under extrapolation raise explicit errors.
 
-The balsam poplar, balsam fir, Douglas-fir and jack pine fits pool data with
-aspen, white spruce, lodgepole pine and lodgepole pine, respectively, but
-each species has its own coefficients. No larch proxy is applied.
-
-With \code{variant = "climate"}, \code{si} is the source's \strong{inherent HI}, not
-necessarily realized height at age 50. The climate equations multiply a
-baseline height curve by a modifier \eqn{C}, so \eqn{H(50) = C \times HI}.
-Inversion returns inherent HI. The precipitation exponent in \eqn{C} is
-\code{c1} for aspen, balsam poplar, white spruce and balsam fir, \code{1/b1} for
-lodgepole pine, Douglas-fir and jack pine, and \code{1/b0} for black spruce;
-the temperature exponent is \code{c2} for every species.
+With \code{variant = "climate"}, \code{si} describes height before the climate
+adjustment, not necessarily actual height at age 50. The climate equations
+multiply the height curve by a factor \eqn{C}, so
+\eqn{H(50) = C \times HI}, where \eqn{HI} is the supplied or estimated \code{si}.
+Site-index values from the climate and non-climate versions therefore have
+different meanings.
 
 Climate averages exclude the current year and use the previous 20 years for
 aspen, balsam poplar, white spruce and balsam fir; previous 10 years for black
-spruce; and all previous years since initiation for lodgepole pine,
+spruce; and all previous years since tree establishment for lodgepole pine,
 Douglas-fir and jack pine. For young trees, use only previous years since
-initiation, not climate before the tree existed. The caller must supply
-correctly aggregated inputs; their temporal coverage cannot be verified from
-aggregate values alone. Missing required history must not be silently omitted.
-Normals are location-specific 1961--1990 values and remain fixed in future
-scenarios. Climate values outside Table 3.3's observed ranges generate a
-warning without clipping; minor-species ranges exclude the pooled main species.
+tree establishment, not climate before the tree existed. Supply averages
+calculated over the correct years; the function cannot check those years
+from an average alone. Do not omit missing years when calculating them.
+The reference climate averages are for 1961--1990 at the location and remain
+fixed between scenarios. Values outside the published climate ranges produce
+a warning but are used as supplied.
 
-This function evaluates points; it does not construct annual growth
-trajectories. Changing climate year by year while keeping inherent HI fixed
-can introduce height jumps. The source's continuous trajectory method
-re-anchors HI at the current height before each climate-period projection.
+The function predicts height at a given age and climate setting, not a
+year-by-year growth sequence. Changing climate inputs between ages while
+holding \code{si} fixed can produce abrupt height changes. A continuous growth
+projection would require recalculating \code{si} from the current height before
+each new climate period; that procedure is not implemented here.
 
-The non-climate models were fitted separately: setting \eqn{C = 1} in a
-climate fit does not reproduce the non-climate fit. Non-climate source
-validation uses plotted curves (no exact tabulated benchmark); climate
-validation includes the numerical examples in Section 4.
+The two model versions were fitted separately. Setting the climate factor
+\eqn{C = 1} does not reproduce the non-climate model.
 }
 \examples{
 si_huang2026(age = c(25, 50, 80), si = 15, species = "PICE.GLA")

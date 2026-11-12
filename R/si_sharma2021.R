@@ -1,7 +1,7 @@
 #' Sharma (2021) site index model for jack pine and black spruce in mixed natural stands
 #'
-#' Implementation of the fixed-effects non-climate McDill-Amateis dynamic
-#' height equation reported by Sharma (2021) for jack pine (\code{PINU.BAN})
+#' Implementation of the McDill-Amateis height-age
+#' equation reported by Sharma (2021) for jack pine (\code{PINU.BAN})
 #' and black spruce (\code{PICE.MAR}) growing in natural-origin mixed stands
 #' in Ontario.
 #'
@@ -11,17 +11,12 @@
 #'
 #' \strong{Age definition note:} `age` is breast-height age (years).
 #'
-#' \strong{Height definition note:} the source model uses heights above breast
-#' height (m), not total height. For consistency with other site-index
-#' functions in this package, this implementation defaults to using total
-#' height in the public API (`total_height = TRUE`) and converts internally by
-#' subtracting or adding 1.3 m as needed. Set `total_height = FALSE` to work on
-#' the source scale directly.
+#' \strong{Height definition note:} height is measured from the ground by
+#' default (`total_height = TRUE`). Set `total_height = FALSE` to supply and
+#' predict height above 1.3 m instead. Site index is always height above 1.3 m.
 #'
 #' \strong{Base-age note:} site index is defined at 50 years breast-height age.
-#' The underlying dynamic equation is written in paired-age form, so this
-#' implementation allows any positive `base_age`; the default remains `50` to
-#' match the source definition.
+#' Other positive reference ages can be supplied through `base_age`.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{
@@ -29,8 +24,8 @@
 #'   \item If `si` is provided, the function predicts `height`.
 #' }
 #'
-#' This implementation uses the fixed-effects no-climate form (Equation 8)
-#' with stand-level random effects omitted.
+#' The function uses Equation 8 without climate inputs or adjustments based
+#' on repeated measurements from an individual stand.
 #'
 #' @param age Numeric vector. Breast-height age (years), with `age > 0`.
 #' @param height Optional numeric vector. Stand height (m). If

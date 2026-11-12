@@ -19,10 +19,9 @@
 #' the function converts internally.
 #'
 #' @details
-#' Table 1 (pp. 3-4) and the antecedent species curve notes distinguish age
-#' clocks. Balsam fir (`ABIE.BAL`) and white spruce (`PICE.GLA`) use
-#' breast-height age; all other supported species use total age.
-#' The reference age is 50 years on that same species-specific clock.
+#' Balsam fir (`ABIE.BAL`) and white spruce (`PICE.GLA`) use breast-height age;
+#' all other supported species use total age. The reference age is 50 years,
+#' measured using the same age type as the input.
 #' No age conversion is performed.
 #'
 #' Neither fitted form is recommended for white spruce (Tables 2-3,
@@ -35,7 +34,7 @@
 #'   total age for all other supported species (years).
 #' @param height Optional numeric vector. Total tree height (m). If provided, `si` is predicted.
 #' @param si Optional numeric vector. Site index (m total height at age 50 on
-#'   the species-specific clock described above). If provided, `height` is predicted.
+#'   the age type listed for that species above). If provided, `height` is predicted.
 #' @param species Character vector of species codes (e.g., `"PICE.MAR"`).
 #' @param variant Character scalar. One of `"exponential_monomolecular"` or `"monomolecular"`.
 #'

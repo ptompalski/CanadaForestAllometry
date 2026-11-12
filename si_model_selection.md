@@ -155,7 +155,7 @@ flowchart LR
 
     conventional --> automatic["Automatic selection possible for all 46<br/>Scientific compatibility, origin, geography<br/>and recommendations still screen each observation"]
 
-    automatic --> plantations["Plantation origin; plantation age; SI25<br/>Height and SI: total height<br/>augerward2021<br/>pregent2010<br/>pregent2016"]
+    automatic --> plantations["Plantation origin; total_age (years since planting); SI25<br/>Height and SI: total height<br/>augerward2021<br/>pregent2010<br/>pregent2016"]
     automatic --> plantedbha["Plantation origin; BHA; SI50<br/>Height: total; SI: above BH<br/>sharma2015<br/>sharmaparton2018a<br/>sharmaparton2018b<br/>sharmaparton2019"]
     automatic --> eitherorigin["Natural or plantation origin; BHA; SI50<br/>Height and SI: total; BC SBS zone required<br/>batho2014"]
 
@@ -182,7 +182,8 @@ Important details behind this map:
 
 - **BHA** means breast-height age. Height and SI datums in the automatic
   branches are the native wrapper settings, not optional direct-engine modes.
-- The three plantation-age models use native SI25. Registry SI50 plotting
+- The three models using years since planting are classified as `total_age`,
+  without a nursery-age adjustment, and use native SI25. Registry SI50 plotting
   overrides do not change dispatch.
 - The automatic breast-height-age group does **not** share one height/SI datum:
   Sharma/Parton SI is above breast height; `sharma2022` and `sharmareid2018` require

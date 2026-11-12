@@ -26,7 +26,7 @@ A tibble with columns:
 }
 }
 \description{
-Unified, vectorized implementation of the conditioned Chapman-Richards
+Implementation of the Chapman-Richards
 height-growth models of Chen and Klinka (2000) for high-elevation subalpine
 fir, Engelmann spruce, and lodgepole pine in the Engelmann Spruce-Subalpine
 Fir (ESSF) zone of British Columbia.
@@ -48,8 +48,8 @@ where
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{
-\item If \code{height} is provided, the function predicts \code{si} (solved
-numerically; the model has no closed-form inverse).
+\item If \code{height} is provided, the function finds the site-index value
+that reproduces that height at the given age.
 \item If \code{si} is provided, the function predicts \code{height}.
 }
 }

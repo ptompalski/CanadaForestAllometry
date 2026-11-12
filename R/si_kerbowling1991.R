@@ -1,7 +1,7 @@
 #' Ker and Bowling (1991) site index model
 #'
-#' Unified, vectorized implementation of the Ker and Bowling (1991)
-#' polymorphic site-index equation (model 1, conditioned form; eq. 9) for New
+#' Implementation of the Ker and Bowling (1991)
+#' site-index equation (eq. 9) for New
 #' Brunswick softwoods.
 #'
 #' Provide exactly one of `height` or `si`:
@@ -10,13 +10,11 @@
 #'   \item If `si` is provided, the function predicts `height`.
 #' }
 #'
-#' This implementation uses the conditioned equation at index age 50 years
-#' (breast-height age), so predicted height equals site index at `age = 50`.
+#' Predicted height equals site index at `age = 50` years breast-height age.
 #'
-#' Predicting `height` from `si` is direct. Predicting `si` from `height` is
-#' implicit (site index also appears in the exponent term), so there is no
-#' closed-form algebraic inverse. For that mode, this implementation solves for
-#' `si` numerically with `stats::uniroot()`.
+#' Height is calculated directly from the equation. To estimate site index,
+#' the function finds the value that reproduces the supplied height at the
+#' given age.
 #'
 #' Inputs/outputs are metric (m), matching the source model.
 #'

@@ -1,33 +1,34 @@
-#' Get scientific and input information about a site-index model
+#' Look up a site-index model and its required inputs
 #'
-#' Returns the registry fields for one registered variant, including species
-#' coverage, operation-aware predictors, constraints, source evidence and
-#' limitations. No model is executed.
+#' Returns information about one model version, including its species,
+#' age and height definitions, required inputs and usage limits.
+#' Does not calculate predictions.
 #'
 #' @param model_id Single identifier from [si_model_registry()].
 #'
-#' @return A named list with registry list-columns unwrapped, plus:
-#'   * `species`: exact registered NFI coverage.
-#'   * `operations`: supported operation names.
-#'   * `effective_args`: native defaults with variant-defining arguments applied,
-#'     excluding plot-only overrides.
-#'   * `native_scientific_definitions`: definitions at those effective arguments,
-#'     retaining species-specific rows. `scientific_definitions` also retains
-#'     alternative documented conditions.
-#'   * `unresolved_evidence`: claims with non-verified evidence status.
-#'   * `limitations`: scientific caveats and the limits of discovery.
+#' @return A named list containing the model's registry information, including:
+#'   * `species`: supported NFI species codes.
+#'   * `operations`: calculations the model supports.
+#'   * `effective_args`: default argument values with settings for the selected
+#'     model version applied, excluding settings used only for plots.
+#'   * `native_scientific_definitions`: age, height and SI definitions under
+#'     those settings, with separate rows where species differ.
+#'     `scientific_definitions` also includes other documented settings.
+#'   * `unresolved_evidence`: information that has not been fully confirmed.
+#'   * `limitations`: usage limits and points needing further review.
 #'
-#'   `operation_inputs` describes predictor roles, units, definitions and
-#'   evidence separately for each operation. `input_constraints` retains exact
-#'   ecological keys, conditional requirements, discrete GI support and climate
-#'   aggregation semantics. Empty applicability metadata means unknown, not
-#'   unrestricted. Native SI scales are not automatically interchangeable.
+#'   `operation_inputs` lists the inputs, units and definitions for each
+#'   calculation. `input_constraints` records supported ages, ecological-code
+#'   combinations, additional requirements and climate-input requirements.
+#'   Missing information about where a model can be used does not mean it is
+#'   suitable everywhere. SI values from different models should not be treated
+#'   as interchangeable.
 #'
 #' @seealso [si_model_registry()], [find_si_models()]
 #' @examples
 #' info <- get_si_model_info("pregent2010")
 #' info$native_scientific_definitions
-#' info$native_defaults$base_age # 25, unlike the plot-only override of 50
+#' info$native_defaults$base_age # Default reference age: 25, not the 50 used in plots
 #' get_si_model_info("huang2026_climate")$input_constraints
 #' @export
 get_si_model_info <- function(model_id) {
@@ -51,86 +52,81 @@ get_si_model_info <- function(model_id) {
   info
 }
 
-#' Discover site-index models and scientific near-misses
+#' Find site-index models and check their input requirements
 #'
-#' Browses all SI model families without executing, ranking or selecting a model.
-#' Species and jurisdiction restrict registered coverage. Scientific requests
-#' annotate candidates rather than hiding incompatible or unresolved near-misses.
+#' Lists models covering the requested species and jurisdictions without
+#' calculating predictions or selecting a model. Models that do not match the
+#' requested age, height or stand definitions remain in the results with an
+#' explanation.
 #'
 #' @param jurisdiction Optional character vector of province/territory codes.
 #'   Coverage of any requested jurisdiction is sufficient. `NULL` does not
-#'   restrict coverage. Registry coverage is not proof of source calibration
-#'   or geographic transfer suitability.
+#'   restrict coverage. Listed coverage alone does not establish that a model
+#'   is suitable for a particular stand.
 #' @param species Optional character vector of NFI codes, including compact
-#'   codes such as `"PICEMAR"`. Matching is exact after normalization, without
-#'   genus fallback. Each covered requested species has a separate result row,
-#'   so species-specific definitions cannot be combined accidentally.
+#'   codes such as `"PICEMAR"`. Codes are standardized, then matched exactly;
+#'   a genus-level model is not substituted automatically.
+#'   Results have separate rows for each covered requested species.
 #' @param operation Optional single operation: `"infer_si_from_height"`,
 #'   `"predict_height_from_si"`, `"infer_si_from_gi"` or
 #'   `"evaluate_ecological_curve"`. `NULL` lists each supported operation.
 #'   With an explicit operation, unsupported models remain as exclusions.
-#' @param available Character vector of case-sensitive engine argument names
+#' @param available Character vector of case-sensitive model argument names
 #'   you could supply, defaulting to none. A requested `species` also supplies
 #'   that input name. Extra column names are allowed and do not mean those
-#'   arguments will actually be passed to an engine.
-#' @param input_age_basis,reference_age_basis Optional requested age clocks:
-#'   `"total_age"`, `"breast_height_age"`, `"plantation_age"` or
-#'   `"corrected_age_above_1m"`. Input and SI-reference clocks are independent.
+#'   arguments will actually be passed to a model.
+#' @param input_age_basis,reference_age_basis Optional requested age types:
+#'   `"total_age"`, `"breast_height_age"` or `"corrected_age_above_1m"`.
+#'   `"total_age"` includes years since planting for models defined that way.
+#'   Input and SI-reference age types are independent.
 #' @param reference_age Optional single positive finite SI reference age in
-#'   years, compared with the native variant scale, not a plotting override.
-#'   This does not set an engine's `base_age`.
+#'   years, compared with the selected model version's reference age.
+#'   This does not change `base_age` or use the reference age chosen for plots.
 #' @param productivity_quantity Optional requested quantity: `"site_index"`,
 #'   `"height_index"`, `"inherent_height_index"` or `"ecological_iqs"`.
-#' @param si_datum,height_datum Optional requested vertical datum:
-#'   `"total_height"` or `"above_breast_height"`. These do not describe the
-#'   height sampling population or authorize a height offset.
-#' @param stand_origin Optional requested origin: `"natural"` or `"plantation"`.
-#'   Models without an explicit plantation or mixed-origin classification use
-#'   the approved assumed-natural default. Evidence distinguishes assumptions
-#'   from source-verified classifications; observation origin is not inferred.
+#' @param si_datum,height_datum Optional height definitions for SI and
+#'   measured or predicted height: `"total_height"` (from the ground) or
+#'   `"above_breast_height"` (above 1.3 m). Heights are not converted.
+#' @param stand_origin Optional stand type: `"natural"` or `"plantation"`.
+#'   Models not identified as plantation or mixed-origin models are recorded as
+#'   natural-stand models by assumption. This does not determine the stand
+#'   type of a user's observations.
 #'
 #' @details
-#' All comparisons use native defaults plus variant-defining selectors.
-#' Alternative `total_height` settings remain visible in
-#' `scientific_definitions`, but discovery never changes a selector to achieve a
-#' match. Likewise Pregent native SI25 is not replaced by the SI50 plot setting.
+#' Comparisons use the default arguments for the selected model version.
+#' The function does not change options such as `total_height` to make a model
+#' match. Prégent models are checked using their default reference age of 25,
+#' not the age of 50 used in article plots.
 #'
-#' Scientific compatibility refers only to the explicitly requested fields.
-#' Unresolved or contradictory source claims cannot establish either a match
-#' or a known mismatch for the affected field. Multiple possible definitions
-#' without a species selection can also leave a comparison unknown.
-#' A compatible comparison does not establish equivalent SI across models,
-#' population/composition/sampling suitability, or publication verification.
-#' Free-text applicability and evidence must still be reviewed.
-#' A known species-level published non-recommendation is retained as a
-#' discovery exclusion even when requested clock/datum labels match.
-#' Age-dependent recommendations remain visible in constraints/limitations;
-#' name-only discovery cannot evaluate their numeric age conditions.
+#' Only the requested definitions are compared. Missing or uncertain model
+#' information can leave a comparison unknown. A match does not mean SI values
+#' can be exchanged between models or that the model is suitable for every stand.
+#' Published advice against using a model for a species is reported even when
+#' its age and height definitions match. Age-related limits are listed but not
+#' checked against observations.
 #'
-#' Input availability is a name-level screen, not validation of observations.
-#' It does not check numeric values, missing rows, discrete ages, joint
-#' ecological keys, selector values, calibration ranges, or climate histories.
-#' Conditional requirements whose selector values are not known remain visible;
-#' no ecological subregion or coefficient mode is selected automatically.
-#' Available columns forbidden in an operation are reported as arguments not to
-#' pass, not as evidence that the data itself is incompatible.
+#' `available` checks input names only, not their values, missing observations,
+#' supported ages, ecological-code combinations or climate histories.
+#' Requirements that depend on other settings remain listed for review.
+#' Inputs not accepted for a calculation are reported as arguments not to pass;
+#' having those columns in your data does not by itself rule out the model.
 #'
-#' @return A tibble retaining registry/species metadata, in registry order
-#'   (legacy `rank` is not used), with one row per model, operation and covered
+#' @return A tibble containing registry and species information, in registry
+#'   order (not ranked), with one row per model, calculation and covered
 #'   requested species (`query_species` is `NA` if species is unspecified).
 #'   Additional columns are:
 #'   * `operation`, `operation_supported`, `productivity_quantity`.
-#'   * `native_scientific_definitions`: species/condition-resolved native
-#'     definitions; original definitions and evidence remain available.
-#'   * `missing_predictors`: unconditional required names not available.
-#'   * `conditional_requirements`: potentially applicable conditional rules,
-#'     restricted by the requested species when known.
-#'   * `conditional_missing_predictors`: names missing only under those rules.
+#'   * `native_scientific_definitions`: age, height and SI definitions for the
+#'     selected species and model version.
+#'   * `missing_predictors`: required input names absent from `available`.
+#'   * `conditional_requirements`: additional rules that may apply, depending
+#'     on other settings and the requested species.
+#'   * `conditional_missing_predictors`: input names missing under those rules.
 #'   * `forbidden_predictors`: available names that must not be passed in this
 #'     operation. Their presence does not make `inputs_available` false.
 #'   * `inputs_available`: `FALSE` for unsupported operations or missing
-#'     unconditional names; `NA` for missing potentially required conditional
-#'     names; otherwise `TRUE`. Even `TRUE` is not row-level eligibility.
+#'     required names; `NA` when additional inputs may be needed under a rule;
+#'     otherwise `TRUE`. Even `TRUE` does not mean observations have been checked.
 #'   * `compatibility`: per-field comparison table with requested and actual
 #'     values, status and reason.
 #'   * `scientific_compatibility`: `"incompatible"` if any requested comparison
@@ -138,9 +134,10 @@ get_si_model_info <- function(model_id) {
 #'     `"compatible"`, or `"not_requested"` when no scientific fields are set.
 #'   * `incompatibility_reasons`, `missing_information`: explanatory lists.
 #'   * `discovery_status`: `"incompatible"`, `"missing_inputs"`, `"needs_review"`
-#'     or `"names_complete"`, in that precedence order. None means usable.
+#'     or `"names_complete"`, in that order of priority. None guarantees that
+#'     the model can be used for your observations.
 #'   * `eligibility`: always `"not_evaluated"`.
-#'   * `limitations`: scientific caveats, including unencoded applicability.
+#'   * `limitations`: usage limits and information that still needs review.
 #'
 #' @seealso [si_model_registry()], [get_si_model_info()]
 #' @examples
@@ -170,7 +167,7 @@ find_si_models <- function(
     species <- unique(standardize_species_code(species, keep_all = FALSE))
   }
   .si_discovery_names(available, "available")
-  clocks <- c("total_age", "breast_height_age", "plantation_age", "corrected_age_above_1m")
+  clocks <- c("total_age", "breast_height_age", "corrected_age_above_1m")
   datums <- c("total_height", "above_breast_height")
   .si_discovery_choice(operation, "operation", c(
     "infer_si_from_height", "predict_height_from_si",

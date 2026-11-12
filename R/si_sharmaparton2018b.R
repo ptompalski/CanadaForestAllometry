@@ -1,6 +1,6 @@
 #' Sharma and Parton (2018) site index model for red pine plantations
 #'
-#' Implementation of the non-climate-sensitive McDill-Amateis dynamic height
+#' Implementation of the McDill-Amateis height-age
 #' equation reported by Sharma and Parton (2018) for plantation-grown red pine
 #' (\code{PINU.RES}) in Ontario.
 #'
@@ -10,18 +10,13 @@
 #'
 #' \strong{Age definition note:} `age` is breast-height age (years).
 #'
-#' \strong{Height definition note:} this implementation assumes the source
-#' model uses heights above breast height (m), not total height. For
-#' consistency with other site-index functions in this package, it defaults to
-#' using total height in the public API (`total_height = TRUE`) and converts
-#' internally by subtracting or adding 1.3 m as needed. Set
-#' `total_height = FALSE` to work on the source scale directly.
+#' \strong{Height definition note:} the implementation assumes the published
+#' equation uses height above 1.3 m. By default, supply and predict height
+#' measured from the ground (`total_height = TRUE`). Set `total_height = FALSE`
+#' to use height above 1.3 m instead. Site index is always height above 1.3 m.
 #'
-#' \strong{Base-age note:} the underlying dynamic equation is written in a
-#' base-age invariant paired-age form. For consistency with other site-index
-#' functions in this package, this implementation defaults to a base age of 50
-#' years breast-height age, while still allowing users to supply any positive
-#' `base_age`.
+#' \strong{Base-age note:} the default reference age is 50 years breast-height
+#' age. Other positive reference ages can be supplied through `base_age`.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{
@@ -31,8 +26,8 @@
 #'
 #' Inputs and outputs are metric and match the source model scale.
 #'
-#' Both directions are explicit closed forms derived from the same dynamic
-#' equation.
+#' Height and site index are calculated directly from the equation, without
+#' climate inputs.
 #'
 #' @param age Numeric vector. Breast-height age (years), with `age > 0`.
 #' @param height Optional numeric vector. Stand height (m). If

@@ -23,21 +23,15 @@
 #' Both input age and the site-index reference use total age, not breast-height
 #' age. No years-to-breast-height adjustment is applied.
 #'
-#' Total-age definitions were established in Haig (1932, pp. 2, 7) for western
-#' white pine, Smithers (1961, pp. 54, 143) for lodgepole pine, and Meyer
-#' (1929, p. 5; 1937, pp. 7-8; 1938, pp. 7-8) for red spruce, Sitka spruce/
-#' western hemlock, and ponderosa pine, respectively. Douglas-fir total age is
-#' corroborated by McArdle's 1949/1961 revisions, but the cited 1941 revision
-#' has not been verified. Total age for balsam fir and white spruce is an
-#' explicit implementation assumption: their antecedent full texts were not
-#' obtained, so these two clocks are not publication-verified.
+#' Total age is assumed for balsam fir and white spruce; this could not be
+#' confirmed from their original publications. For Douglas-fir, the age
+#' definition was checked against later editions rather than the cited edition.
 #'
-#' Stand-age statistics and height sampling remain source-specific: Haig uses
-#' the oldest dominant tree's age. Smithers cautions that lodgepole pine SI
-#' combines site quality and density and should not predict stands radically
-#' changed by thinning. Payandeh converted red-spruce SI65 to SI50 without
-#' changing the total-age clock. Height and SI directions are separately fitted
-#' and are not exact inverses.
+#' For western white pine, use the age of the oldest dominant tree. For
+#' lodgepole pine, site index also reflects stand density and should not be
+#' used for stands substantially changed by thinning. Height and site index
+#' use separately fitted equations, so converting one to the other and back
+#' may not recover the starting value exactly.
 #'
 #' @param age Numeric vector. Total age (years), not breast-height age.
 #' @param height Optional numeric vector. Total tree height (m). If provided, `si` is predicted.

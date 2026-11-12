@@ -10,7 +10,7 @@
 #' \code{PICE.SIT}.
 #'
 #' \strong{Age definition note:} `age` is breast-height age (BHA, years). The
-#' model is conditioned to return `height = si` exactly at BHA 50.
+#' model returns `height = si` exactly at breast-height age 50.
 #'
 #' \strong{Base-age note:} site index is site height at breast-height age 50.
 #'
@@ -21,9 +21,8 @@
 #' with \eqn{a_0 = 8.947}, \eqn{a_1 = -1.357}, \eqn{a_2 = -1.013} (Table 3, model
 #' \[7\]).
 #'
-#' Because \eqn{SI} appears both as a multiplier and inside a logarithm, the
-#' equation has no closed-form inverse in \eqn{SI}; when predicting site index the
-#' equation is solved numerically.
+#' To estimate site index, the function finds the \eqn{SI} value that
+#' reproduces the supplied height at the given age.
 #'
 #' Provide exactly one of `height` or `si`:
 #' \itemize{

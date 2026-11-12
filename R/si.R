@@ -1,117 +1,121 @@
-#' Dispatch conventional site-index and height-age models
+#' Estimate site index or height with automatic model selection
 #'
-#' Estimates site index from age and height, or height from age and a defined
-#' site index, using the conventional non-climate models in
-#' [si_model_registry()]. Selection is observation-wise. No age-clock, datum
-#' or cross-model SI conversion is performed.
+#' Estimates site index from age and height, or height from age and site index.
+#' Selects a suitable non-climate age-height model for each observation using
+#' species, jurisdiction, stand type and age type. Does not convert between
+#' age types, height definitions or site indices from different models.
 #'
-#' @param age Numeric vector of positive ages in years. Its clock must be
-#'   declared with `input_age_basis`.
+#' @param age Numeric vector of positive ages in years. Its type must be
+#'   declared with `input_age_basis`. For Auger-Ward and Prégent models, use
+#'   years since planting with `input_age_basis = "total_age"`; no nursery-age
+#'   adjustment is applied.
 #' @param height,si Supply exactly one positive numeric vector, in metres.
-#'   `height` estimates native-scale SI; `si` predicts height. For supplied SI,
-#'   either `model_id` declares that model's native SI, or all four SI-definition
-#'   fields (`reference_age`, `reference_age_basis`, `si_datum` and
-#'   `productivity_quantity`) must be supplied. Matching labels alone do not
-#'   establish cross-model SI interchangeability; supplying SI without an
-#'   originating model ID emits a warning and disables model fallback.
+#'   Supply `height` to estimate site index, or `si` to predict height.
+#'   When supplying `si`, the simplest option is to provide the `model_id`
+#'   of the model used to estimate it. Alternatively, supply `reference_age`,
+#'   `reference_age_basis`, `si_datum` and `productivity_quantity` to describe
+#'   the value. Without a model ID, a warning is issued because models sharing
+#'   these definitions can still predict different heights at other ages.
 #' @param species Character vector of NFI species codes. Compact codes are
-#'   normalized; no genus fallback is used.
+#'   accepted. Species must match a model's supported codes; a genus-level
+#'   model is not substituted automatically.
 #' @param jurisdiction Character vector of province/territory codes.
-#' @param ... Named additional engine predictors, currently `natural_subregion`.
-#'   Missing optional values use native defaults. Definition-changing selectors
-#'   such as `base_age`, `total_height` and `variant` are not accepted: use a
-#'   registered model variant or call the engine directly.
+#' @param ... Named additional model inputs, currently `natural_subregion`.
+#'   Optional inputs use the selected model's defaults when missing.
+#'   To change settings such as `base_age`, `total_height` or `variant`,
+#'   choose a registered model version or call the individual model function.
 #' @param input_age_basis Character vector: `"total_age"`,
-#'   `"breast_height_age"`, `"plantation_age"` or `"corrected_age_above_1m"`.
-#'   Required; never inferred from an SI reference clock or converted.
+#'   `"breast_height_age"` or `"corrected_age_above_1m"`.
+#'   Required: describes how the supplied age was measured. Breast-height age
+#'   is years since reaching 1.3 m. Ages are used as supplied, not converted.
+#'   `"total_age"` also covers years since planting for models defined that way.
 #' @param reference_age Optional positive numeric vector of requested SI
-#'   reference ages. `NULL` preserves native reference ages when estimating SI.
-#'   This filters models; it never changes `base_age` or uses plot overrides.
-#' @param reference_age_basis Optional character vector of SI reference clocks,
-#'   with the same choices as `input_age_basis`, independent of the input clock.
+#'   reference ages, in years. For example, `50` requests site index at age 50.
+#'   `NULL` uses the selected model's reference age when estimating SI.
+#'   This restricts model selection; it does not change a model's reference age.
+#' @param reference_age_basis Optional character vector describing how the
+#'   SI reference age is measured, with the same choices as `input_age_basis`.
+#'   It can differ from the type of age supplied in `age`.
 #' @param productivity_quantity Optional character vector: `"site_index"` or
-#'   `"height_index"` (non-climate realized HI). `NULL` allows either, always
-#'   labelled in the output.
+#'   `"height_index"`, depending on the quantity used by the model.
+#'   `NULL` allows either; the result identifies which was used.
 #' @param si_datum Optional character vector: `"total_height"` or
-#'   `"above_breast_height"`, describing the requested/supplied SI.
-#' @param height_datum Character vector describing measured or predicted height:
-#'   `"total_height"` (default) or `"above_breast_height"`. This is independent
-#'   of SI datum and does not specify the sampling population.
+#'   `"above_breast_height"`. Describes whether the height defining the
+#'   requested or supplied SI is measured from the ground or above 1.3 m.
+#' @param height_datum Character vector describing how measured or predicted
+#'   height is expressed: `"total_height"` (from the ground, the default) or
+#'   `"above_breast_height"` (above 1.3 m). This can differ from the height
+#'   definition used for SI.
 #' @param stand_origin Character vector: `"natural"`, `"plantation"` or `NA`.
-#'   Automatic selection requires a supplied matching observation origin.
-#'   Models not explicitly classified as plantation or mixed-origin default
-#'   to assumed natural origin, disclosed in evidence and limitations.
-#'   Missing observation origin is not inferred.
-#' @param bec_zone Optional character vector of BC BEC zone codes. Used for
-#'   known coastal/interior and SBS/ESSF applicability restrictions, and passed
-#'   to engines accepting it (explicitly selecting their supplied-zone mode).
-#'   Missing values do not automatically select a zonal fit.
-#' @param model_id Optional character vector of registered conventional model
-#'   IDs, fixing each observation's model and native SI definition. `NA` uses
-#'   automatic selection. Unknown applicability may be accepted for an explicit
-#'   model with a warning and recorded limitations, but known mismatches and
-#'   unresolved SI definitions are never overridden. Use the same ID and
-#'   regional settings throughout a trajectory to avoid switching models.
+#'   Specify whether the stand is natural or planted for automatic selection.
+#'   Missing stand type is not inferred.
+#' @param bec_zone Optional character vector of British Columbia
+#'   biogeoclimatic zone codes. Helps select models for the appropriate region
+#'   and is passed to model functions that accept it.
+#' @param model_id Optional character vector of model IDs from
+#'   [si_model_registry()]. Selects a specific model for each observation;
+#'   `NA` uses automatic selection. The model must still match your inputs.
+#'   Some models need an explicit ID and issue a warning when suitability
+#'   cannot be fully checked. Keep the same model ID and regional settings
+#'   when predicting heights at different ages.
 #' @param pick_best Logical scalar. `TRUE` returns one row per observation;
 #'   `FALSE` returns a list of candidate tibbles, one per observation, including
 #'   exclusions and failures rather than only successful predictions.
 #' @param keep_model_id Logical scalar. Include the top-level `model_id`
-#'   column (default `TRUE`). IDs remain in best-mode diagnostics and native
-#'   `definition_id` provenance even if this is `FALSE`.
+#'   column (default `TRUE`). Model IDs remain available in `diagnostics`
+#'   and the `definition_id` column still identifies the model and its settings
+#'   when this is `FALSE`.
 #'
 #' @details
-#' Automatic selection checks registered species/jurisdiction coverage, input
-#' clock, native SI definition, requested scientific fields, stand origin and
-#' encoded geographic restrictions before ranking. Unresolved definitions or
-#' source disputes are excluded. Remaining models use decreasing registry
-#' `rank`, with lexical `model_id` tie-breaking. Rank is a pragmatic preference,
-#' not evidence of statistical superiority. Sparse applicability metadata means
-#' many models require explicit, source-reviewed use rather than automatic use.
-#' Free-text composition, stand structure, local geography and height sampling
-#' still require review using [get_si_model_info()].
-#' Published Lundgren-Dolid recommendation violations exclude automatic use;
-#' explicit-ID use warns and records the limitation, preserving direct values.
+#' Automatic selection first checks which models match the supplied species,
+#' jurisdiction, stand type, age type and requested SI and height definitions.
+#' It then chooses the matching model with the highest registry `rank`.
+#' Ties are resolved alphabetically by model ID. Rank is a selection preference,
+#' not a guarantee of better predictions. Use [find_si_models()] to explore
+#' models and [get_si_model_info()] to check an individual model's requirements.
 #'
-#' SI estimation without a requested scale uses the preferred eligible model's
-#' native definition. If it returns an invalid prediction, fallback is restricted
-#' to that same definition (including quantity, reference age/clock and datums);
-#' measured height is independently evaluated, never a failed model's SI.
-#' Comparison mode can show different native scales, labelled separately.
-#' Supplied SI is never moved to another model after a failed prediction.
+#' When estimating SI without a requested reference age, the result uses the
+#' selected model's own definition. If a model returns an unusable SI prediction,
+#' only models with the same SI quantity, reference age, age type and height
+#' definitions can be tried instead. Supplied SI is never passed to another
+#' model after an unsuccessful prediction. Site-index values from different
+#' models should not be treated as interchangeable.
 #'
-#' Native engine warnings, including extrapolation warnings, pass through and
-#' are recorded; values are not clipped and new empirical bounds are not
-#' invented. Engine errors abort with model/observation context and the original
-#' error as parent: arbitrary errors are not swallowed to trigger fallback.
-#' A malformed engine return also aborts. Non-finite/non-positive returned
-#' predictions are explicit candidate failures. Missing observations return
-#' missing predictions and a warning; invalid types, incompatible lengths and
-#' non-positive/non-finite supplied numeric values are errors.
+#' Warnings from individual models are shown and saved in `diagnostics`.
+#' Missing inputs or no usable prediction produce missing values and a warning;
+#' inspect `status`, `reason` and `diagnostics` for an explanation.
+#' Invalid inputs and errors reported by individual model functions stop the
+#' calculation rather than silently selecting a different model.
+#'
+#' Growth-intercept models (using annual height growth), ecological-site curves
+#' and climate-dependent models are not selected by `si()`. Call their individual
+#' functions instead.
 #'
 #' @return With `pick_best = TRUE`, a tibble with `si` or `height`, optional
-#'   `model_id`, and scientific provenance: `definition_id`, `input_age_basis`,
+#'   `model_id`, and information describing the model and the result:
+#'   `definition_id`, `input_age_basis`,
 #'   `reference_age`, `reference_age_basis`, `productivity_quantity`, `si_datum`,
 #'   `height_datum`, and `reference_age_role`. `status` and `reason` report
 #'   success, success with warnings, missing inputs, failed predictions or no
-#'   eligible model. `diagnostics` contains per-observation candidate tibbles
-#'   with exclusions, untried candidates, failures, actual `engine_args`,
-#'   warnings and limitations.
+#'   suitable model. For each observation, `diagnostics` lists the models
+#'   considered, why any were excluded, predictions attempted, model inputs
+#'   (`engine_args`), warnings and limitations.
 #'
-#'   With `pick_best = FALSE`, returns those per-observation candidate tibbles
-#'   directly. Candidates are ordered by rank then ID; empty scope matches
-#'   produce typed empty tibbles. Inputs recycle to their common length.
-#'   GI, ecological IQS and climate inherent HI are excluded even for explicit
-#'   IDs; they remain available through their engines and discovery helpers.
+#'   With `pick_best = FALSE`, returns a list of these model-comparison tibbles,
+#'   one per observation, ordered by rank then model ID. An observation with no
+#'   models covering its species and jurisdiction has an empty tibble.
+#'   Single input values are repeated to match longer vectors; incompatible
+#'   vector lengths cause an error.
 #'
 #' @seealso [find_si_models()], [get_si_model_info()], [si_model_registry()]
 #' @examples
 #' si(age = c(20, 30), height = c(10, 15),
 #'    species = "PICE.GLA", jurisdiction = "QC",
-#'    input_age_basis = "plantation_age", stand_origin = "plantation")
+#'    input_age_basis = "total_age", stand_origin = "plantation")
 #'
-#' # Explicit ID declares supplied SI on that model's native SI25 scale.
+#' # Use the model that defines SI as height at 25 years since planting.
 #' si(age = c(20, 40), si = 18, species = "PICE.GLA", jurisdiction = "QC",
-#'    input_age_basis = "plantation_age", stand_origin = "plantation",
+#'    input_age_basis = "total_age", stand_origin = "plantation",
 #'    model_id = "pregent2010")
 #' @export
 si <- function(
@@ -138,7 +142,7 @@ si <- function(
   if (!is.null(reference_age)) {
     assert_numeric_vec(reference_age, "reference_age", gt = 0, allow_na = TRUE)
   }
-  clocks <- c("total_age", "breast_height_age", "plantation_age", "corrected_age_above_1m")
+  clocks <- c("total_age", "breast_height_age", "corrected_age_above_1m")
   datums <- c("total_height", "above_breast_height")
   assert_choice(input_age_basis, "input_age_basis", clocks, multiple = TRUE, allow_na = TRUE)
   choices <- list(

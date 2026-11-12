@@ -29,7 +29,7 @@ A tibble with columns:
 }
 }
 \description{
-Implementation of the fixed-effects McDill-Amateis dynamic stand-height
+Implementation of the McDill-Amateis stand-height
 model published by Sharma and Reid (2018) for natural-origin jack pine
 (\code{PINU.BAN}) and black spruce (\code{PICE.MAR}) stands in northern
 Ontario.
@@ -43,12 +43,11 @@ Ontario.
 
 \strong{Height definition note:} the source model uses stand height
 (top height) in metres above breast height (1.3 m), not total height.
-Site index uses the same above-breast-height datum.
+Site index is also measured above breast height.
 
 \strong{Base-age note:} the source paper recommends breast-height age 50
-years as the operational base age for both species in Ontario. The
-underlying dynamic equation is base-age invariant, so any positive
-\code{base_age} can be supplied.
+years as the reference age for both species in Ontario.
+Other positive \code{base_age} values can also be supplied.
 
 Provide exactly one of \code{height} or \code{si}:
 \itemize{
@@ -56,19 +55,16 @@ Provide exactly one of \code{height} or \code{si}:
 \item If \code{si} is provided, the function predicts \code{height}.
 }
 
-This implementation uses Equation 1 from Sharma and Reid (2018), i.e. the
-fixed-effects form without random effects or autocorrelation. The paper
-recommends this form when stand-level repeated measurements are unavailable.
+This implementation uses Equation 1, which does not require repeated
+measurements to adjust predictions for an individual stand.
 
-Figure 2 (p. 38) explicitly identifies Equation 1 heights for both species
-as measured from breast height. Heights at the reference age define SI
-on that same datum. No 1.3 m offset is added or subtracted by this engine.
-The antecedent Carmean models' SI definitions must not be substituted for
-this native above-breast-height scale.
+Both height and site index are measured above 1.3 m, not from the ground.
+The function does not add or subtract 1.3 m. Do not substitute site-index
+values from models that use total height.
 
 When using \code{\link[=si]{si()}}, specify \code{height_datum = "above_breast_height"} for both
 prediction directions. The wrapper does not convert total height or SI
-to this datum.
+to height above breast height.
 }
 \examples{
 # Predict site index from age + height

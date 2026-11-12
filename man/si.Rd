@@ -2,7 +2,7 @@
 % Please edit documentation in R/si.R
 \name{si}
 \alias{si}
-\title{Dispatch conventional site-index and height-age models}
+\title{Estimate site index or height with automatic model selection}
 \usage{
 si(
   age,
@@ -25,134 +25,138 @@ si(
 )
 }
 \arguments{
-\item{age}{Numeric vector of positive ages in years. Its clock must be
-declared with \code{input_age_basis}.}
+\item{age}{Numeric vector of positive ages in years. Its type must be
+declared with \code{input_age_basis}. For Auger-Ward and Prégent models, use
+years since planting with \code{input_age_basis = "total_age"}; no nursery-age
+adjustment is applied.}
 
 \item{height, si}{Supply exactly one positive numeric vector, in metres.
-\code{height} estimates native-scale SI; \code{si} predicts height. For supplied SI,
-either \code{model_id} declares that model's native SI, or all four SI-definition
-fields (\code{reference_age}, \code{reference_age_basis}, \code{si_datum} and
-\code{productivity_quantity}) must be supplied. Matching labels alone do not
-establish cross-model SI interchangeability; supplying SI without an
-originating model ID emits a warning and disables model fallback.}
+Supply \code{height} to estimate site index, or \code{si} to predict height.
+When supplying \code{si}, the simplest option is to provide the \code{model_id}
+of the model used to estimate it. Alternatively, supply \code{reference_age},
+\code{reference_age_basis}, \code{si_datum} and \code{productivity_quantity} to describe
+the value. Without a model ID, a warning is issued because models sharing
+these definitions can still predict different heights at other ages.}
 
 \item{species}{Character vector of NFI species codes. Compact codes are
-normalized; no genus fallback is used.}
+accepted. Species must match a model's supported codes; a genus-level
+model is not substituted automatically.}
 
 \item{jurisdiction}{Character vector of province/territory codes.}
 
-\item{...}{Named additional engine predictors, currently \code{natural_subregion}.
-Missing optional values use native defaults. Definition-changing selectors
-such as \code{base_age}, \code{total_height} and \code{variant} are not accepted: use a
-registered model variant or call the engine directly.}
+\item{...}{Named additional model inputs, currently \code{natural_subregion}.
+Optional inputs use the selected model's defaults when missing.
+To change settings such as \code{base_age}, \code{total_height} or \code{variant},
+choose a registered model version or call the individual model function.}
 
 \item{input_age_basis}{Character vector: \code{"total_age"},
-\code{"breast_height_age"}, \code{"plantation_age"} or \code{"corrected_age_above_1m"}.
-Required; never inferred from an SI reference clock or converted.}
+\code{"breast_height_age"} or \code{"corrected_age_above_1m"}.
+Required: describes how the supplied age was measured. Breast-height age
+is years since reaching 1.3 m. Ages are used as supplied, not converted.
+\code{"total_age"} also covers years since planting for models defined that way.}
 
 \item{reference_age}{Optional positive numeric vector of requested SI
-reference ages. \code{NULL} preserves native reference ages when estimating SI.
-This filters models; it never changes \code{base_age} or uses plot overrides.}
+reference ages, in years. For example, \code{50} requests site index at age 50.
+\code{NULL} uses the selected model's reference age when estimating SI.
+This restricts model selection; it does not change a model's reference age.}
 
-\item{reference_age_basis}{Optional character vector of SI reference clocks,
-with the same choices as \code{input_age_basis}, independent of the input clock.}
+\item{reference_age_basis}{Optional character vector describing how the
+SI reference age is measured, with the same choices as \code{input_age_basis}.
+It can differ from the type of age supplied in \code{age}.}
 
 \item{productivity_quantity}{Optional character vector: \code{"site_index"} or
-\code{"height_index"} (non-climate realized HI). \code{NULL} allows either, always
-labelled in the output.}
+\code{"height_index"}, depending on the quantity used by the model.
+\code{NULL} allows either; the result identifies which was used.}
 
 \item{si_datum}{Optional character vector: \code{"total_height"} or
-\code{"above_breast_height"}, describing the requested/supplied SI.}
+\code{"above_breast_height"}. Describes whether the height defining the
+requested or supplied SI is measured from the ground or above 1.3 m.}
 
-\item{height_datum}{Character vector describing measured or predicted height:
-\code{"total_height"} (default) or \code{"above_breast_height"}. This is independent
-of SI datum and does not specify the sampling population.}
+\item{height_datum}{Character vector describing how measured or predicted
+height is expressed: \code{"total_height"} (from the ground, the default) or
+\code{"above_breast_height"} (above 1.3 m). This can differ from the height
+definition used for SI.}
 
 \item{stand_origin}{Character vector: \code{"natural"}, \code{"plantation"} or \code{NA}.
-Automatic selection requires a supplied matching observation origin.
-Models not explicitly classified as plantation or mixed-origin default
-to assumed natural origin, disclosed in evidence and limitations.
-Missing observation origin is not inferred.}
+Specify whether the stand is natural or planted for automatic selection.
+Missing stand type is not inferred.}
 
-\item{bec_zone}{Optional character vector of BC BEC zone codes. Used for
-known coastal/interior and SBS/ESSF applicability restrictions, and passed
-to engines accepting it (explicitly selecting their supplied-zone mode).
-Missing values do not automatically select a zonal fit.}
+\item{bec_zone}{Optional character vector of British Columbia
+biogeoclimatic zone codes. Helps select models for the appropriate region
+and is passed to model functions that accept it.}
 
-\item{model_id}{Optional character vector of registered conventional model
-IDs, fixing each observation's model and native SI definition. \code{NA} uses
-automatic selection. Unknown applicability may be accepted for an explicit
-model with a warning and recorded limitations, but known mismatches and
-unresolved SI definitions are never overridden. Use the same ID and
-regional settings throughout a trajectory to avoid switching models.}
+\item{model_id}{Optional character vector of model IDs from
+\code{\link[=si_model_registry]{si_model_registry()}}. Selects a specific model for each observation;
+\code{NA} uses automatic selection. The model must still match your inputs.
+Some models need an explicit ID and issue a warning when suitability
+cannot be fully checked. Keep the same model ID and regional settings
+when predicting heights at different ages.}
 
 \item{pick_best}{Logical scalar. \code{TRUE} returns one row per observation;
 \code{FALSE} returns a list of candidate tibbles, one per observation, including
 exclusions and failures rather than only successful predictions.}
 
 \item{keep_model_id}{Logical scalar. Include the top-level \code{model_id}
-column (default \code{TRUE}). IDs remain in best-mode diagnostics and native
-\code{definition_id} provenance even if this is \code{FALSE}.}
+column (default \code{TRUE}). Model IDs remain available in \code{diagnostics}
+and the \code{definition_id} column still identifies the model and its settings
+when this is \code{FALSE}.}
 }
 \value{
 With \code{pick_best = TRUE}, a tibble with \code{si} or \code{height}, optional
-\code{model_id}, and scientific provenance: \code{definition_id}, \code{input_age_basis},
+\code{model_id}, and information describing the model and the result:
+\code{definition_id}, \code{input_age_basis},
 \code{reference_age}, \code{reference_age_basis}, \code{productivity_quantity}, \code{si_datum},
 \code{height_datum}, and \code{reference_age_role}. \code{status} and \code{reason} report
 success, success with warnings, missing inputs, failed predictions or no
-eligible model. \code{diagnostics} contains per-observation candidate tibbles
-with exclusions, untried candidates, failures, actual \code{engine_args},
-warnings and limitations.
+suitable model. For each observation, \code{diagnostics} lists the models
+considered, why any were excluded, predictions attempted, model inputs
+(\code{engine_args}), warnings and limitations.
 
-With \code{pick_best = FALSE}, returns those per-observation candidate tibbles
-directly. Candidates are ordered by rank then ID; empty scope matches
-produce typed empty tibbles. Inputs recycle to their common length.
-GI, ecological IQS and climate inherent HI are excluded even for explicit
-IDs; they remain available through their engines and discovery helpers.
+With \code{pick_best = FALSE}, returns a list of these model-comparison tibbles,
+one per observation, ordered by rank then model ID. An observation with no
+models covering its species and jurisdiction has an empty tibble.
+Single input values are repeated to match longer vectors; incompatible
+vector lengths cause an error.
 }
 \description{
-Estimates site index from age and height, or height from age and a defined
-site index, using the conventional non-climate models in
-\code{\link[=si_model_registry]{si_model_registry()}}. Selection is observation-wise. No age-clock, datum
-or cross-model SI conversion is performed.
+Estimates site index from age and height, or height from age and site index.
+Selects a suitable non-climate age-height model for each observation using
+species, jurisdiction, stand type and age type. Does not convert between
+age types, height definitions or site indices from different models.
 }
 \details{
-Automatic selection checks registered species/jurisdiction coverage, input
-clock, native SI definition, requested scientific fields, stand origin and
-encoded geographic restrictions before ranking. Unresolved definitions or
-source disputes are excluded. Remaining models use decreasing registry
-\code{rank}, with lexical \code{model_id} tie-breaking. Rank is a pragmatic preference,
-not evidence of statistical superiority. Sparse applicability metadata means
-many models require explicit, source-reviewed use rather than automatic use.
-Free-text composition, stand structure, local geography and height sampling
-still require review using \code{\link[=get_si_model_info]{get_si_model_info()}}.
-Published Lundgren-Dolid recommendation violations exclude automatic use;
-explicit-ID use warns and records the limitation, preserving direct values.
+Automatic selection first checks which models match the supplied species,
+jurisdiction, stand type, age type and requested SI and height definitions.
+It then chooses the matching model with the highest registry \code{rank}.
+Ties are resolved alphabetically by model ID. Rank is a selection preference,
+not a guarantee of better predictions. Use \code{\link[=find_si_models]{find_si_models()}} to explore
+models and \code{\link[=get_si_model_info]{get_si_model_info()}} to check an individual model's requirements.
 
-SI estimation without a requested scale uses the preferred eligible model's
-native definition. If it returns an invalid prediction, fallback is restricted
-to that same definition (including quantity, reference age/clock and datums);
-measured height is independently evaluated, never a failed model's SI.
-Comparison mode can show different native scales, labelled separately.
-Supplied SI is never moved to another model after a failed prediction.
+When estimating SI without a requested reference age, the result uses the
+selected model's own definition. If a model returns an unusable SI prediction,
+only models with the same SI quantity, reference age, age type and height
+definitions can be tried instead. Supplied SI is never passed to another
+model after an unsuccessful prediction. Site-index values from different
+models should not be treated as interchangeable.
 
-Native engine warnings, including extrapolation warnings, pass through and
-are recorded; values are not clipped and new empirical bounds are not
-invented. Engine errors abort with model/observation context and the original
-error as parent: arbitrary errors are not swallowed to trigger fallback.
-A malformed engine return also aborts. Non-finite/non-positive returned
-predictions are explicit candidate failures. Missing observations return
-missing predictions and a warning; invalid types, incompatible lengths and
-non-positive/non-finite supplied numeric values are errors.
+Warnings from individual models are shown and saved in \code{diagnostics}.
+Missing inputs or no usable prediction produce missing values and a warning;
+inspect \code{status}, \code{reason} and \code{diagnostics} for an explanation.
+Invalid inputs and errors reported by individual model functions stop the
+calculation rather than silently selecting a different model.
+
+Growth-intercept models (using annual height growth), ecological-site curves
+and climate-dependent models are not selected by \code{si()}. Call their individual
+functions instead.
 }
 \examples{
 si(age = c(20, 30), height = c(10, 15),
    species = "PICE.GLA", jurisdiction = "QC",
-   input_age_basis = "plantation_age", stand_origin = "plantation")
+   input_age_basis = "total_age", stand_origin = "plantation")
 
-# Explicit ID declares supplied SI on that model's native SI25 scale.
+# Use the model that defines SI as height at 25 years since planting.
 si(age = c(20, 40), si = 18, species = "PICE.GLA", jurisdiction = "QC",
-   input_age_basis = "plantation_age", stand_origin = "plantation",
+   input_age_basis = "total_age", stand_origin = "plantation",
    model_id = "pregent2010")
 }
 \seealso{
