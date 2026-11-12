@@ -20,12 +20,156 @@ library(ggplot2)
 library(patchwork)
 ```
 
+# Introduction
+
+The package currently includes
+`r length(unique(si_model_registry()$engine))` site-index model functions,
+covering a wide range of tree species, provinces and territories, and stand
+types, including natural stands and plantations. They range from
+Lundgren and Dolid's **1970** models [@LundgrenDolid1970] to
+Huang et al.'s **2026** models [@HuangEtAl2026].
+
+Most follow the same logic: estimate site index from age and height, or
+predict height from age and site index. However, the definitions differ.
+Some use **total age**, others **breast-height age** (years since reaching
+1.3 m), and plantation models may use years since planting. The reference
+age is most commonly **50 years**, but some models use 25 years or another
+age. Height may mean top height measured from the ground, or height above
+breast height. These differences matter when choosing a model and
+interpreting its results.
+
+Each model is implemented following its publication, without modifying
+the published equations or coefficients.
+
+# Using `si()` {#si-dispatcher}
+
+To make these models easier to use, `si()` selects a suitable model for
+each observation from the available age-height models. In addition to
+`age`, `height` or `si`, and `species`, it needs:
+
+- `jurisdiction`: the province or territory, such as `"QC"` or `"BC"`;
+- `input_age_basis`: how age was measured, usually `"total_age"`,
+  `"breast_height_age"` or `"plantation_age"`;
+- `stand_origin`: `"natural"` or `"plantation"` for automatic selection.
+
+Some models also need regional information, such as `bec_zone` in British
+Columbia or `natural_subregion` in Alberta. Ages are in years; heights and
+site indices are in metres. Species use NFI codes, such as `"PICE.GLA"`
+for white spruce.
+
+## Estimate site index from measured height
+
+For example, estimate site index for two white spruce observations from
+plantations in Quebec, with age measured since planting:
+
+```{r}
+#| label: si-estimation-example
+si_estimates <- si(
+  age = c(20, 30),
+  height = c(10, 15),
+  species = "PICE.GLA",
+  jurisdiction = "QC",
+  input_age_basis = "plantation_age",
+  stand_origin = "plantation"
+)
+
+si_estimates |>
+  dplyr::select(si, model_id, reference_age, status)
+```
+
+The result includes the estimated `si`, the selected `model_id`, its
+`reference_age` and a `status` indicating whether the prediction succeeded.
+Here, the selected model is `pregent2010`, which uses a reference age of
+**25 years since planting**. You can supply several observations at once;
+shared values such as species and jurisdiction only need to be supplied once.
+
+## Predict height from site index
+
+When supplying site index, the simplest option is to give the `model_id`
+of the model used to estimate it. A value such as `si = 18` could refer to
+height at age 25 or 50, with age measured since planting or at breast height.
+The model ID identifies these definitions and keeps height predictions
+consistent with the model used to estimate site index.
+
+For example, predict height for a white spruce plantation with a Pregent
+site index of 18 m at 25 years since planting:
+
+```{r}
+#| label: si-height-example
+si(
+  age = c(20, 30, 40),
+  si = 18,
+  species = "PICE.GLA",
+  jurisdiction = "QC",
+  input_age_basis = "plantation_age",
+  stand_origin = "plantation",
+  model_id = "pregent2010"
+) |>
+  dplyr::select(height, model_id, reference_age, status)
+```
+
+Alternatively, you can omit `model_id` if you explicitly supply the SI
+reference age (`reference_age`), its age type (`reference_age_basis`),
+whether SI height is measured from the ground or above breast height
+(`si_datum`), and whether the value is site index or height index
+(`productivity_quantity`). In this case, `si()` warns because models with
+the same definitions can still predict different heights at other ages.
+
+Keep the same model when predicting heights at different ages: a site-index
+value from one model should not simply be used in another. `si()` does not
+convert between age types or height definitions. If no suitable model is
+available, it returns a missing prediction with a warning; the `reason`
+column explains why.
+
+Growth-intercept models, ecological-site curves and climate-dependent models
+are used through their individual functions rather than `si()`.
+
+# Finding models and their inputs
+
+`find_si_models()` helps you explore models for your species and jurisdiction
+and see which additional inputs they need. In this example,
+`"infer_si_from_height"` means estimating site index from measured height:
+
+```{r}
+#| label: si-discovery-example
+find_si_models(
+  jurisdiction = "QC",
+  species = "PICE.GLA",
+  operation = "infer_si_from_height",
+  available = c("age", "height"),
+  input_age_basis = "plantation_age",
+  stand_origin = "plantation"
+) |>
+  dplyr::select(model_id, discovery_status, missing_predictors)
+```
+
+The results also include models that do not match your inputs, so this is a
+browsing tool rather than a list of recommended models.
+
+Use `get_si_model_info()` to look up an individual model:
+
+```{r}
+#| label: si-info-example
+info <- get_si_model_info("pregent2010")
+info$description
+info$species
+info$native_defaults$base_age
+```
+
+Here, `base_age` is the reference age used by the model. For a full list of
+models and their age types, use `si_model_registry()`:
+
+```{r}
+#| label: si-registry-example
+si_model_registry() |>
+  dplyr::select(model_id, engine, age_basis)
+```
+
 # Site index models included in the package
 
-Models are grouped by function, with separate subsections for registered
-variants. Curve labels give the site-index levels used with each variant.
-Additional predictors and illustrative scenarios are stated where required;
-they are not defaults supplied by the model functions.
+The sections below briefly describe each function and illustrate its
+height-age curves where available. Numbers beside the curves are site-index
+values. Follow the function-reference links for arguments and usage details.
 
 ```{r}
 #| label: si-model-sections
@@ -33,6 +177,27 @@ they are not defaults supplied by the model functions.
 #| warning: false
 #| message: false
 #| results: asis
+
+si_age_axis_label <- function(model_row) {
+  evidence <- model_row$metadata_evidence[[1]]
+  disputed_input <- evidence$status == "unresolved" & evidence$subject %in% c(
+    "input_age_basis", "input_and_reference_age", "input_and_reference_age_basis",
+    "species_age_basis_and_recommendation"
+  )
+  if (any(disputed_input)) {
+    return("Age (years)")
+  }
+  switch(
+    model_row$age_basis[[1]],
+    total_age = "Total age (years)",
+    breast_height_age = "Breast-height age (years)",
+    plantation_age = "Plantation age (years since planting)",
+    corrected_age_above_1m = "Corrected age above 1 m (years)",
+    species_dependent = "Age (years; type varies by species)",
+    unresolved = "Age (years)",
+    stop("Unknown SI input age basis.")
+  )
+}
 
 plot_si_curves <- function(
   model_row,
@@ -48,15 +213,20 @@ plot_si_curves <- function(
   model_fun <- get(model_name, mode = "function")
   supports_predict_height <- model_row$supports_predict_height[[1]]
   species_vec <- model_row$species[[1]]
-  age_basis <- model_row$age_basis[[1]]
   age_domain_max <- model_row$age_domain_max[[1]]
   plot_si_values <- model_row$plot_si_values[[1]]
-  x_axis_label <- switch(
-    age_basis,
-    total_age = "Total age (years)",
-    breast_height_age = "Breast-height age (years)",
-    "Age (years)"
-  )
+  x_axis_label <- si_age_axis_label(model_row)
+  definitions <- model_row$scientific_definitions[[1]]
+  native <- definitions[definitions$condition %in% c("native", "total_height=TRUE"), ]
+  y_axis_label <- if (any(native$height_datum == "unresolved")) {
+    "Height (m)"
+  } else if (any(native$height_datum == "above_breast_height")) {
+    "Height above breast height (m)"
+  } else if (any(native$productivity_quantity %in% c("height_index", "inherent_height_index"))) {
+    "Dominant/codominant tree height (m)"
+  } else {
+    "Height (m)"
+  }
 
   if (!isTRUE(supports_predict_height) || isTRUE(model_row$requires_gi[[1]])) {
     p <- ggplot2::ggplot() +
@@ -171,7 +341,7 @@ plot_si_curves <- function(
       ggplot2::labs(
         title = sp,
         x = x_axis_label,
-        y = "Top height (m)"
+        y = y_axis_label
       ) +
       ggplot2::theme_minimal(base_size = 10)
   })
@@ -188,8 +358,8 @@ plot_si_curves <- function(
   list(plot = p, n_rows = n_rows, n_species = n_species)
 }
 
-plot_lafleche_examples <- function(curve_set, facet_ncol = 4) {
-  curve_set <- match.arg(curve_set, c("potential", "observed"))
+plot_lafleche_examples <- function(model_row, facet_ncol = 4) {
+  curve_set <- model_row$fixed_args[[1]]$curve_set
 
   example_keys <- tibble::tribble(
     ~species,     ~ecological_region, ~ecological_subregion, ~ecological_type, ~label,
@@ -246,8 +416,8 @@ plot_lafleche_examples <- function(curve_set, facet_ncol = 4) {
       ) +
       ggplot2::labs(
         title = sp,
-        x = "Breast-height age (years)",
-        y = "Top height (m)"
+        x = si_age_axis_label(model_row),
+        y = "Height (m)"
       ) +
       ggplot2::theme_minimal(base_size = 10)
   })
@@ -291,14 +461,57 @@ for (i in seq_len(nrow(reg))) {
     paste(x$species[[1]], collapse = ", ")
   }
 
-  age_basis_text <- switch(
-    x$age_basis[[1]],
-    total_age = "Total age",
-    breast_height_age = "Breast-height age",
-    x$age_basis[[1]]
-  )
+  age_basis_text <- si_age_axis_label(x)
 
-  description_text <- x$description[[1]]
+  description_text <- switch(
+    x$engine[[1]],
+    si_alemdag1991 = "Canada-wide model for white spruce in natural stands",
+    si_augerward2021 = "Jack pine and black spruce plantations in Quebec",
+    si_batho2014 = "Lodgepole pine in British Columbia",
+    si_brisco2002 = "Western larch in British Columbia",
+    si_buckman2006 = "Red pine site-index model",
+    si_carmean1989 = "Site-index models for eastern tree species",
+    si_carmean1996 = "Site-index models for northwestern Ontario",
+    si_carmean2001 = "Jack pine in northern Ontario",
+    si_carmean2006 = "Black spruce and trembling aspen in northwestern Ontario",
+    si_carmeanhahn1981 = "Balsam fir and white spruce site-index models",
+    si_chenklinka2000 = "Subalpine fir, Engelmann spruce and lodgepole pine in British Columbia",
+    si_cieszewski1993 = "Site-index models for eleven Saskatchewan species",
+    si_cieszewskibella1991 = "Site-index models for four Alberta species",
+    si_goelz1992 = "Jack pine in north-central Ontario",
+    si_goudie1984 = "Lodgepole pine and white spruce in British Columbia",
+    si_huang1994 = "Site-index models for Alberta tree species",
+    si_huang2009 = "Top-height and site-index models for four Alberta species",
+    si_huang2026 = "Height-age models for eight Alberta species, with and without climate inputs",
+    si_hugarcia2009 = "Interior spruce in British Columbia",
+    si_kerbowling1991 = "Softwood site-index models for New Brunswick",
+    si_lafleche2013 = "Height curves based on species and ecological classification in Quebec",
+    si_lundgrendolid1970 = "Two alternative curve forms for several Lake States tree species",
+    si_nigh1997 = "Sitka spruce in coastal British Columbia",
+    si_nigh1998 = "Western hemlock in interior British Columbia",
+    si_nigh1998_gi = "Estimates site index from annual height growth for western hemlock",
+    si_nigh2000 = "Western redcedar in interior British Columbia",
+    si_nigh2000_gi = "Estimates site index from annual height growth for western redcedar",
+    si_nigh2002 = "Trembling aspen in British Columbia",
+    si_nigh2004 = "Young lodgepole pine and interior spruce in British Columbia",
+    si_nigh2009 = "Paper birch in British Columbia",
+    si_nigh2017 = "Lodgepole pine in British Columbia",
+    si_nighcourtin1998 = "Red alder, with site index expressed at age 25 or 50",
+    si_parresolvissage1998 = "Eastern white pine site-index model",
+    si_payandeh1974 = "Site-index models for several North American tree species",
+    si_pregent2010 = "White spruce plantations in Quebec",
+    si_pregent2016 = "Norway spruce plantations in Quebec",
+    si_scottvoorhis1986 = "Site-index models accepting total or breast-height age",
+    si_sharma2015 = "Jack pine and black spruce plantations",
+    si_sharma2021 = "Jack pine and black spruce in mixed stands",
+    si_sharma2022 = "Black spruce and trembling aspen in mixed stands",
+    si_sharmaparton2018a = "White spruce plantations",
+    si_sharmaparton2018b = "Red pine plantations",
+    si_sharmaparton2019 = "White pine plantations",
+    si_sharmareid2018 = "Jack pine and black spruce in natural stands",
+    si_thrower1994 = "Site-index models for interior British Columbia species",
+    x$description[[1]]
+  )
 
   cat("- Model ID: `", x$model_id[[1]], "`\n", sep = "")
   cat("- Description: ", description_text, "\n", sep = "")
@@ -307,6 +520,13 @@ for (i in seq_len(nrow(reg))) {
   cat("- Coverage: ", coverage, "\n", sep = "")
   cat("- Species coverage: ", species_cov, "\n", sep = "")
   cat("\n", sep = "")
+
+  if (any(x$fixed_arg_roles[[1]] == "plot_only")) {
+    cat(
+      "The figure uses a reference age of 50 years (`base_age = 50`); ",
+      "the function's default is 25 years since planting.\n\n", sep = ""
+    )
+  }
 
   if (!isTRUE(x$supports_predict_height[[1]]) || isTRUE(x$requires_gi[[1]])) {
     cat("_No height curve graphic is available for this variant._\n\n")
@@ -317,34 +537,20 @@ for (i in seq_len(nrow(reg))) {
   scenarios <- list(default = NULL)
   if (identical(x$model_id[[1]], "huang2026")) {
     cat(
-      "The default, separately fitted non-climate model uses height index at ",
-      "50 years **total age**. Heights describe dominant/codominant trees, ",
-      "not a standardized plot mean of the largest-DBH stems. ",
-      "Ages above 180 years warn about extrapolation; ambiguous inversions are rejected.\n\n",
+      "This version predicts height without climate inputs, using a height ",
+      "index at 50 years total age.\n\n",
       sep = ""
     )
   }
   if (identical(x$model_id[[1]], "huang2026_climate")) {
     cat(
-      "Climate inputs are explicit, pre-aggregated values. `MAP` (mm) and ",
-      "`MWMT` (degrees C; not mean annual temperature) exclude the current year: ",
-      "use the previous 20 years for aspen, white spruce, balsam poplar and balsam fir; ",
-      "10 years for black spruce; and all previous years since initiation for ",
-      "lodgepole pine, Douglas-fir and jack pine. For young trees, use only ",
-      "previous years since initiation, without silently omitting missing history. ",
-      "`MAP_normal` and `MWMT_normal` are location-specific **1961-1990 normals**, ",
-      "kept fixed between scenarios.\n\n",
-      "Curve labels are **inherent HI**, so realized height at age 50 is `C * HI`. ",
-      "Equal HI does not mean equal realized height across scenarios. ",
-      "The climate fit at `C = 1` differs from the separately fitted non-climate model. ",
-      "These dominant/codominant-height curves evaluate fixed-climate points, ",
-      "**not changing-climate annual trajectories**; continuous projection ",
-      "would require re-anchoring HI at each step and is not implemented here.\n\n",
-      "The illustrative normals below are the species-specific reference values ",
-      "used in Tables A33-A40 of the report, **not provincial defaults**. ",
-      "The second scenario has 10% lower `MAP` and 1 degree C higher `MWMT`, ",
-      "with normals unchanged. Neither scenario represents an observed site ",
-      "or a forecast.\n\n",
+      "This version also requires precipitation and warmest-month temperature, ",
+      "plus their long-term averages; see the function reference for inputs. ",
+      "The figures compare two illustrative, fixed climate settings: ",
+      "reference conditions, and 10% less precipitation with a 1 degree C ",
+      "warmer warmest month. Labels show the model's climate-adjusted height ",
+      "index, not necessarily height at age 50. These are illustrations, ",
+      "not forecasts of growth under changing climate.\n\n",
       sep = ""
     )
     normals <- tibble::tribble(
@@ -358,21 +564,11 @@ for (i in seq_len(nrow(reg))) {
       "PSEU.MEN", 625, 14.5,
       "PINU.BAN", 450, 16.5
     )
-    cat(knitr::kable(normals), sep = "\n")
-    cat("\n\n")
     scenarios <- list(
       at_normals = dplyr::mutate(normals, MAP = MAP_normal, MWMT = MWMT_normal),
       warmer_drier = dplyr::mutate(
         normals, MAP = 0.9 * MAP_normal, MWMT = MWMT_normal + 1
       )
-    )
-    cat(
-      "For example, the aspen point predictions in Section 4.1 use:\n\n",
-      "```r\nsi_huang2026(\n",
-      "  age = c(20, 50, 80), si = 16, species = \"POPU.TRE\",\n",
-      "  MAP = 400, MWMT = 18, MAP_normal = 500, MWMT_normal = 15.5,\n",
-      "  variant = \"climate\"\n)\n```\n\n",
-      sep = ""
     )
   }
 
@@ -388,13 +584,12 @@ for (i in seq_len(nrow(reg))) {
     if (identical(x$engine[[1]], "si_lafleche2013")) {
       curve_set <- x$fixed_args[[1]]$curve_set
       cat(
-        "This model uses fixed ecological-site curves rather than arbitrary site-index levels. ",
-        "The figure below shows selected example combinations of species and ecological keys ",
-        "for the ", curve_set, " curve set.\n\n",
+        "This model predicts height from species and ecological classification. ",
+        "The figure shows examples from the ", curve_set, " curve set.\n\n",
         sep = ""
       )
 
-      plot_out <- plot_lafleche_examples(curve_set = curve_set, facet_ncol = 4)
+      plot_out <- plot_lafleche_examples(model_row = x, facet_ncol = 4)
     } else {
       plot_out <- plot_si_curves(
         model_row = x,
