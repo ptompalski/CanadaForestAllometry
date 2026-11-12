@@ -13,11 +13,13 @@ si_lundgrendolid1970(
 )
 }
 \arguments{
-\item{age}{Numeric vector. Breast-height age (years).}
+\item{age}{Numeric vector. Breast-height age for \code{ABIE.BAL} and \code{PICE.GLA};
+total age for all other supported species (years).}
 
 \item{height}{Optional numeric vector. Total tree height (m). If provided, \code{si} is predicted.}
 
-\item{si}{Optional numeric vector. Site index (m, base age 50 years at breast height). If provided, \code{height} is predicted.}
+\item{si}{Optional numeric vector. Site index (m total height at age 50 on
+the species-specific clock described above). If provided, \code{height} is predicted.}
 
 \item{species}{Character vector of species codes (e.g., \code{"PICE.MAR"}).}
 
@@ -49,6 +51,18 @@ Provide exactly one of \code{height} or \code{si}:
 
 Inputs/outputs are metric; the original equations are in imperial units, so
 the function converts internally.
+
+Table 1 (pp. 3-4) and the antecedent species curve notes distinguish age
+clocks. Balsam fir (\code{ABIE.BAL}) and white spruce (\code{PICE.GLA}) use
+breast-height age; all other supported species use total age.
+The reference age is 50 years on that same species-specific clock.
+No age conversion is performed.
+
+Neither fitted form is recommended for white spruce (Tables 2-3,
+footnote 3). The exponential-monomolecular balsam-fir form is recommended
+only at ages of at least 20 years BHA (Table 2). The direct engine retains
+its equations; \code{\link[=si]{si()}} excludes these cases automatically and warns when
+explicitly requested with a model ID.
 }
 \examples{
 # Predict site index from age + height (default variant: exponential_monomolecular)

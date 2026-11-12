@@ -9,11 +9,11 @@ si_sharmareid2018(age, height = NULL, si = NULL, species, base_age = 50)
 \arguments{
 \item{age}{Numeric vector. Breast-height age (years), with \code{age > 0}.}
 
-\item{height}{Optional numeric vector. Stand height (m). If provided, \code{si}
-is predicted.}
+\item{height}{Optional numeric vector. Stand height above breast height (m),
+not total height. If provided, \code{si} is predicted.}
 
-\item{si}{Optional numeric vector. Site index (m) at \code{base_age} years
-breast-height age. If provided, \code{height} is predicted.}
+\item{si}{Optional numeric vector. Site index (m above breast height) at
+\code{base_age} years breast-height age. If provided, \code{height} is predicted.}
 
 \item{species}{Character vector of species codes (e.g., \code{"PINU.BAN"} or
 \code{"PICE.MAR"}).}
@@ -24,8 +24,8 @@ breast height). Defaults to \code{50}.}
 \value{
 A tibble with columns:
 \describe{
-\item{height}{Predicted stand height (m), returned when input \code{si} is provided.}
-\item{si}{Predicted site index (m), returned when input \code{height} is provided.}
+\item{height}{Predicted stand height above breast height (m), returned when input \code{si} is provided.}
+\item{si}{Predicted site index above breast height (m), returned when input \code{height} is provided.}
 }
 }
 \description{
@@ -42,7 +42,8 @@ Ontario.
 \strong{Age definition note:} \code{age} is breast-height age (years).
 
 \strong{Height definition note:} the source model uses stand height
-(top height) in metres measured from breast height.
+(top height) in metres above breast height (1.3 m), not total height.
+Site index uses the same above-breast-height datum.
 
 \strong{Base-age note:} the source paper recommends breast-height age 50
 years as the operational base age for both species in Ontario. The
@@ -58,6 +59,16 @@ Provide exactly one of \code{height} or \code{si}:
 This implementation uses Equation 1 from Sharma and Reid (2018), i.e. the
 fixed-effects form without random effects or autocorrelation. The paper
 recommends this form when stand-level repeated measurements are unavailable.
+
+Figure 2 (p. 38) explicitly identifies Equation 1 heights for both species
+as measured from breast height. Heights at the reference age define SI
+on that same datum. No 1.3 m offset is added or subtracted by this engine.
+The antecedent Carmean models' SI definitions must not be substituted for
+this native above-breast-height scale.
+
+When using \code{\link[=si]{si()}}, specify \code{height_datum = "above_breast_height"} for both
+prediction directions. The wrapper does not convert total height or SI
+to this datum.
 }
 \examples{
 # Predict site index from age + height

@@ -12,8 +12,8 @@ si_nigh2004(age, height = NULL, si = NULL, species, bec_zone = NULL)
 \item{height}{Optional numeric vector. Site height (m). If provided, \code{si} is
 predicted.}
 
-\item{si}{Optional numeric vector. Site index (m). If provided, \code{height} is
-predicted.}
+\item{si}{Optional numeric vector. Site index (m total height at 50 years
+breast-height age). If provided, \code{height} is predicted.}
 
 \item{species}{Character vector of NFI species codes: \code{"PINU.CON"}
 (lodgepole pine) or \code{"PICE.GLA"} (interior spruce). Recycled to a common
@@ -44,6 +44,13 @@ engelmannii}, and their hybrid) in British Columbia.
 \strong{Age definition note:} \code{age} is \emph{total} age (years), not
 breast-height age. The model is conditioned to predict a height of zero at
 total age zero.
+
+\strong{SI definition note:} SI is total site height at 50 years
+breast-height age, despite total-age observations. The source estimated
+SI through the lodgepole-pine and spruce growth-intercept models
+(Nigh 1997, EN11; Nigh 2004, TR013, tracing spruce to Nigh 1999, EN37).
+This juvenile model is not constrained to satisfy \code{height(50) = si}
+and should not be extrapolated to mature ages to test that identity.
 
 \strong{Model form:} the base model (eq. 3) is
 \deqn{H = a_1 \times SI \times A^{a_2 + a_3 SI} \times a_4^{A}}

@@ -7,16 +7,16 @@
 si_parresolvissage1998(age, height = NULL, si = NULL, base_age = 50)
 }
 \arguments{
-\item{age}{Numeric vector. Breast-height age (years), with \code{age >= 10}.}
+\item{age}{Numeric vector. Total age (years), with \code{age >= 10}.}
 
 \item{height}{Optional numeric vector. Dominant/codominant height (m). If
 provided, \code{si} is predicted.}
 
 \item{si}{Optional numeric vector. Site index (m) at \code{base_age} years
-breast-height age. If provided, \code{height} is predicted.}
+total age. If provided, \code{height} is predicted.}
 
-\item{base_age}{Positive numeric scalar. Site-index base age (years at breast
-height), with \code{base_age >= 10}. Defaults to \code{50}.}
+\item{base_age}{Positive numeric scalar. Site-index base age (total years),
+with \code{base_age >= 10}. Defaults to \code{50}.}
 }
 \value{
 A tibble with columns:
@@ -38,11 +38,12 @@ southern U.S. forest survey. In Canada, use is most defensible for eastern
 white pine in eastern regions, and should be treated cautiously outside that
 domain.
 
-\strong{Age definition note:} \code{age} is breast-height age (years).
+\strong{Age definition note:} \code{age} is total age (years), not breast-height age.
+The antecedent Frothingham (1914) data include growth from germination.
 
 \strong{Base-age note:} the source paper derives a base-age invariant system.
 This implementation accepts any positive \code{base_age}; the default is 50 years
-at breast height.
+total age.
 
 \strong{Domain note:} although the algebraic form can be evaluated below age
 10, the source data and paper discussion indicate reliable behavior for ages

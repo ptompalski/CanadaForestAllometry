@@ -12,7 +12,8 @@
 #' \strong{Age definition note:} `age` is breast-height age (years).
 #'
 #' \strong{Height definition note:} the source model uses stand height
-#' (top height) in metres measured from breast height.
+#' (top height) in metres above breast height (1.3 m), not total height.
+#' Site index uses the same above-breast-height datum.
 #'
 #' \strong{Base-age note:} the source paper recommends breast-height age 50
 #' years as the operational base age for both species in Ontario. The
@@ -29,11 +30,22 @@
 #' fixed-effects form without random effects or autocorrelation. The paper
 #' recommends this form when stand-level repeated measurements are unavailable.
 #'
+#' @details
+#' Figure 2 (p. 38) explicitly identifies Equation 1 heights for both species
+#' as measured from breast height. Heights at the reference age define SI
+#' on that same datum. No 1.3 m offset is added or subtracted by this engine.
+#' The antecedent Carmean models' SI definitions must not be substituted for
+#' this native above-breast-height scale.
+#'
+#' When using [si()], specify `height_datum = "above_breast_height"` for both
+#' prediction directions. The wrapper does not convert total height or SI
+#' to this datum.
+#'
 #' @param age Numeric vector. Breast-height age (years), with `age > 0`.
-#' @param height Optional numeric vector. Stand height (m). If provided, `si`
-#'   is predicted.
-#' @param si Optional numeric vector. Site index (m) at `base_age` years
-#'   breast-height age. If provided, `height` is predicted.
+#' @param height Optional numeric vector. Stand height above breast height (m),
+#'   not total height. If provided, `si` is predicted.
+#' @param si Optional numeric vector. Site index (m above breast height) at
+#'   `base_age` years breast-height age. If provided, `height` is predicted.
 #' @param species Character vector of species codes (e.g., `"PINU.BAN"` or
 #'   `"PICE.MAR"`).
 #' @param base_age Positive numeric scalar. Site-index base age (years at
@@ -41,8 +53,8 @@
 #'
 #' @return A tibble with columns:
 #' \describe{
-#'   \item{height}{Predicted stand height (m), returned when input `si` is provided.}
-#'   \item{si}{Predicted site index (m), returned when input `height` is provided.}
+#'   \item{height}{Predicted stand height above breast height (m), returned when input `si` is provided.}
+#'   \item{si}{Predicted site index above breast height (m), returned when input `height` is provided.}
 #' }
 #'
 #' @references

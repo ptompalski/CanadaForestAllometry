@@ -7,11 +7,13 @@
 si_payandeh1974(age, height = NULL, si = NULL, species)
 }
 \arguments{
-\item{age}{Numeric vector. Breast-height age (years).}
+\item{age}{Numeric vector. Total age (years), not breast-height age.}
 
 \item{height}{Optional numeric vector. Total tree height (m). If provided, \code{si} is predicted.}
 
-\item{si}{Optional numeric vector. Site index (m, base age 50 years at breast height). If provided, \code{height} is predicted.}
+\item{si}{Optional numeric vector. Site index (m), representing total height
+at the species-specific total-age reference of 50, 80 or 100 years listed
+above. If provided, \code{height} is predicted.}
 
 \item{species}{Character vector of species codes (e.g., \code{"ABIE.BAL"}).}
 }
@@ -28,7 +30,8 @@ index equations.
 }
 \details{
 \strong{Index-age note:} this model uses species-specific site-index base
-ages (not a single common base age for all species). In this implementation:
+ages in total years (not a single common base age for all species).
+In this implementation:
 50 years for \code{ABIE.BAL, PICE.GLA, PICE.RUB, PINU.MON};
 80 years for \code{PINU.CON}; and
 100 years for \code{PICE.SIT, PINU.PON, PSEU.MEN, TSUG.HET}.
@@ -41,6 +44,25 @@ Provide exactly one of \code{height} or \code{si}:
 
 Inputs/outputs are metric; the original equations are in imperial units, so
 the function converts internally.
+
+Both input age and the site-index reference use total age, not breast-height
+age. No years-to-breast-height adjustment is applied.
+
+Total-age definitions were established in Haig (1932, pp. 2, 7) for western
+white pine, Smithers (1961, pp. 54, 143) for lodgepole pine, and Meyer
+(1929, p. 5; 1937, pp. 7-8; 1938, pp. 7-8) for red spruce, Sitka spruce/
+western hemlock, and ponderosa pine, respectively. Douglas-fir total age is
+corroborated by McArdle's 1949/1961 revisions, but the cited 1941 revision
+has not been verified. Total age for balsam fir and white spruce is an
+explicit implementation assumption: their antecedent full texts were not
+obtained, so these two clocks are not publication-verified.
+
+Stand-age statistics and height sampling remain source-specific: Haig uses
+the oldest dominant tree's age. Smithers cautions that lodgepole pine SI
+combines site quality and density and should not predict stands radically
+changed by thinning. Payandeh converted red-spruce SI65 to SI50 without
+changing the total-age clock. Height and SI directions are separately fitted
+and are not exact inverses.
 }
 \examples{
 # Predict site index from age + height

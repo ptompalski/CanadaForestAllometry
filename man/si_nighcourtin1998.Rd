@@ -25,7 +25,7 @@ and its inverse.}
 A tibble with columns:
 \describe{
 \item{height}{Predicted dominant height (m), returned when input \code{si} is provided.}
-\item{si}{Predicted site index SI25 (m), returned when input \code{height} is provided.}
+\item{si}{Predicted site index SI25, or SI50 when \code{si50 = TRUE} (m total height), returned when input \code{height} is provided.}
 }
 }
 \description{
@@ -48,6 +48,9 @@ Provide exactly one of \code{height} or \code{si}:
 }
 
 Both directions are explicit closed forms from the source publication.
+Equation 7 (p. 66) publishes the SI25-to-SI50 conversion used here.
+Both indices are total height at their respective breast-height reference
+ages. The rounded conversion is not an exact \code{height(50) = SI50} constraint.
 }
 \examples{
 # Predict site index SI25 from age + height

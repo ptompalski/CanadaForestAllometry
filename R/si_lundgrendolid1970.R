@@ -18,9 +18,24 @@
 #' Inputs/outputs are metric; the original equations are in imperial units, so
 #' the function converts internally.
 #'
-#' @param age Numeric vector. Breast-height age (years).
+#' @details
+#' Table 1 (pp. 3-4) and the antecedent species curve notes distinguish age
+#' clocks. Balsam fir (`ABIE.BAL`) and white spruce (`PICE.GLA`) use
+#' breast-height age; all other supported species use total age.
+#' The reference age is 50 years on that same species-specific clock.
+#' No age conversion is performed.
+#'
+#' Neither fitted form is recommended for white spruce (Tables 2-3,
+#' footnote 3). The exponential-monomolecular balsam-fir form is recommended
+#' only at ages of at least 20 years BHA (Table 2). The direct engine retains
+#' its equations; [si()] excludes these cases automatically and warns when
+#' explicitly requested with a model ID.
+#'
+#' @param age Numeric vector. Breast-height age for `ABIE.BAL` and `PICE.GLA`;
+#'   total age for all other supported species (years).
 #' @param height Optional numeric vector. Total tree height (m). If provided, `si` is predicted.
-#' @param si Optional numeric vector. Site index (m, base age 50 years at breast height). If provided, `height` is predicted.
+#' @param si Optional numeric vector. Site index (m total height at age 50 on
+#'   the species-specific clock described above). If provided, `height` is predicted.
 #' @param species Character vector of species codes (e.g., `"PICE.MAR"`).
 #' @param variant Character scalar. One of `"exponential_monomolecular"` or `"monomolecular"`.
 #'

@@ -5,1093 +5,804 @@
 #' by higher-level wrappers to select candidate models by jurisdiction/species
 #' and required inputs.
 #'
+#' @details
+#' `age_basis` describes the input age clock, not the SI reference clock.
+#' In addition to total and breast-height age, `plantation_age` means years
+#' since planting and `corrected_age_above_1m` means the source's corrected
+#' age above 1 m (not simply elapsed years above 1 m). `unresolved` must not
+#' be treated as evidence of compatibility.
+#'
+#' The `scientific_definitions`, `applicability`, `metadata_evidence` and
+#' `age_constraints` list-columns contain focused scientific metadata.
+#' Empty child tables mean metadata has not yet been encoded, not unrestricted
+#' applicability. Evidence status applies to individual claims; disputed
+#' source interpretations remain unresolved, even where an engine documents
+#' an age or height convention. `species_dependent` identifies models whose
+#' clocks require species-specific scientific definitions.
+#'
+#' Stand origin defaults to natural when the encoded source applicability does
+#' not identify plantations or a mixed-origin population. Such defaults carry
+#' an explicit, non-publication-verified `stand_origin_assumption` evidence
+#' record; known plantation and mixed-origin classifications are preserved.
+#' This policy does not infer the origin of a user's observation or establish
+#' unrestricted geographic, sampling or stand-structure applicability.
+#' Lundgren-Dolid published recommendations are retained in `input_constraints`.
+#'
+#' Scientific definitions distinguish input/reference clocks, SI/height datums,
+#' and conventional SI, height index, inherent HI and ecological IQS.
+#' Configurable reference ages describe engine-native defaults, derived from
+#' formals; changing `base_age` changes that reference. Conditions on
+#' `total_height` affect height datum only, not SI datum.
+#' No universal base-age identity, inverse identity or SI-scale conversion
+#' is implied. Applicability describes source populations, not engine inputs
+#' or a newly approved geographic transfer domain.
+#'
+#' Raw `fixed_args` are preserved for existing plotting consumers.
+#' `fixed_arg_roles` labels selectors as `variant`, except the two Pregent
+#' `base_age = 50` overrides, which are `plot_only`; their native default is 25.
+#' `age_domain_max` remains a legacy plotting summary, not an eligibility rule.
+#' The legacy height-capability flag includes ecological curve evaluation,
+#' which does not accept arbitrary SI. Growth-intercept models predict SI only.
+#'
+#' `operation_inputs` is the authoritative operation-aware input table.
+#' Roles are `required`, `optional`, `fixed` or `forbidden`; height and SI
+#' belong to separate operations and must not both be supplied. Ecological
+#' curves accept neither, and climate HI retains its distinct quantity.
+#' Each requirement carries units, a scientific definition and evidence.
+#' A non-missing `condition_id` refers to `input_constraints`, whose
+#' `selectors` are conjunctions of exact named scalar selector/species/key
+#' matches, not executable expressions. An explicit missing ecological
+#' subregion matches a missing key, not every subregion.
+#'
+#' `input_constraints` describes discrete support, exact joint ecological
+#' keys, conditional subregions, unsupported forms, and climate domains,
+#' observed ranges and aggregation semantics. `engine_action` records current
+#' enforcement, not a discovery/selection policy. Aggregate climate values
+#' cannot verify their temporal coverage. These tables do not evaluate inputs
+#' or establish scientific compatibility.
+#'
+#' `native_defaults` is derived from engine formals, resolving multi-choice
+#' selectors to their first (native) choice. `variant_args` contains only
+#' variant-defining arguments; `plot_args` additionally applies the legacy
+#' plot overrides. The legacy `nigh2009` ID explicitly denotes base variant 1,
+#' and `huang2026` denotes the non-climate fit. No new variants are registered.
+#' Engine-documented scientific definitions are present for every variant;
+#' this is not independent publication verification or resolution of disputed
+#' claims in `metadata_evidence`.
+#'
 #' @return A tibble with one row per site-index model variant and metadata
 #'   fields used for model selection.
 #' @export
 si_model_registry <- function() {
+  dplyr::bind_rows(.si_model_definitions()) |>
+    .si_add_scientific_metadata() |>
+    .si_add_operation_metadata()
+}
+
+.si_registry_row <- function(
+  model_id,
+  reference,
+  engine,
+  age_basis,
+  requires_species,
+  province_scope,
+  description,
+  rank,
+  fixed_args = list(),
+  plot_si_values = NULL,
+  age_domain_max = NA_real_,
+  requires_gi = FALSE,
+  supports_predict_si = TRUE,
+  supports_predict_height = TRUE,
+  scope = "regional",
+  subregion_type = "none",
+  subregion_required = FALSE,
+  subregion_arg = NA_character_,
+  subregion_scope = NA_character_,
+  subregion_desc = "none",
+  params_key = NA_character_,
+  species_manual = NULL
+) {
   tibble::tibble(
-    model_id = c(
-      "buckman2006",
-      "carmean1989",
-      "carmean1996",
-      "carmeanhahn1981",
-      "cieszewskibella1991",
-      "kerbowling1991",
-      "lundgrendolid1970_exponential_monomolecular",
-      "lundgrendolid1970_monomolecular",
-      "nigh2000",
-      "nigh2000_gi",
-      "nighcourtin1998_si25",
-      "nighcourtin1998_si50",
-      "huang1994",
-      "augerward2021",
-      "pregent2010",
-      "pregent2016",
-      "sharma2021",
-      "sharmaparton2018a",
-      "sharmaparton2018b",
-      "sharmaparton2019",
-      "sharma2015",
-      "parresolvissage1998",
-      "payandeh1974",
-      "sharmareid2018",
-      "sharma2022",
-      "lafleche2013_potential",
-      "lafleche2013_observed",
-      "scottvoorhis1986_bh_age",
-      "scottvoorhis1986_total_age",
-      "thrower1994",
-      "hugarcia2009",
-      "nigh1997",
-      "nigh2002",
-      "cieszewski1993",
-      "goudie1984",
-      "nigh2004",
-      "nigh2009",
-      "carmean2006",
-      "carmean2001",
-      "goelz1992",
-      "nigh2017",
-      "batho2014",
-      "nigh1998",
-      "nigh1998_gi",
-      "alemdag1991",
-      "brisco2002",
-      "chenklinka2000",
-      "huang2009_bh_age",
-      "huang2009_total_age",
-      "huang2026",
-      "huang2026_climate"
+    model_id = model_id,
+    reference = reference,
+    engine = engine,
+    fixed_args = list(fixed_args),
+    plot_si_values = list(plot_si_values),
+    age_basis = age_basis,
+    age_domain_max = age_domain_max,
+    requires_species = requires_species,
+    requires_gi = requires_gi,
+    supports_predict_si = supports_predict_si,
+    supports_predict_height = supports_predict_height,
+    scope = scope,
+    province_scope = list(province_scope),
+    subregion_type = subregion_type,
+    subregion_required = subregion_required,
+    subregion_arg = subregion_arg,
+    subregion_scope = list(subregion_scope),
+    subregion_desc = subregion_desc,
+    description = description,
+    rank = rank,
+    params_key = params_key,
+    species_manual = list(species_manual)
+  )
+}
+
+.si_model_definitions <- function() {
+  list(
+    .si_registry_row(
+      model_id = "buckman2006",
+      reference = "@Buckman2006",
+      engine = "si_buckman2006",
+      age_basis = "total_age",
+      requires_species = FALSE,
+      province_scope = "ON",
+      description = "Buckman et al. (2006) piecewise red pine site-index model",
+      rank = 72,
+      species_manual = "PINU.RES"
     ),
-    reference = c(
-      "@Buckman2006",
-      "@Carmean1989",
-      "@Carmean1996",
-      "@CarmeanHahn1981",
-      "@CieszewskiBella1991",
-      "@KerBowling1991",
-      "@LundgrenDolid1970",
-      "@LundgrenDolid1970",
-      "@Nigh2000",
-      "@Nigh2000",
-      "@NighCourtin1998",
-      "@NighCourtin1998",
-      "@Huang1994si",
-      "@AugerWard2021",
-      "@Pregent2010",
-      "@Pregent2016",
-      "@Sharma2021SI",
-      "@SharmaParton2018a",
-      "@SharmaParton2018b",
-      "@SharmaParton2019",
-      "@SharmaEtAl2015",
-      "@ParresolVissage1998",
-      "@Payandeh1974",
-      "@SharmaReid2018",
-      "@Sharma2022",
-      "@LaflecheEtAl2013",
-      "@LaflecheEtAl2013",
-      "@ScottVoorhis1986",
-      "@ScottVoorhis1986",
-      "@Thrower1994",
-      "@HuGarcia2009",
-      "@Nigh1997",
-      "@Nigh2002",
-      "@Cieszewski1993",
-      "@Goudie1984",
-      "@Nigh2004",
-      "@Nigh2009",
-      "@Carmean2006",
-      "@Carmean2001",
-      "@Goelz1992",
-      "@Nigh2017",
-      "@Batho2014",
-      "@Nigh1998",
-      "@Nigh1998",
-      "@Alemdag1991",
-      "@Brisco2002",
-      "@ChenKlinka2000",
-      "@Huang2009gypsy",
-      "@Huang2009gypsy",
-      "@HuangEtAl2026",
-      "@HuangEtAl2026"
+    .si_registry_row(
+      model_id = "carmean1989",
+      reference = "@Carmean1989",
+      engine = "si_carmean1989",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = c("ON", "QC", "NB", "NS", "PE", "NL"),
+      description = "Carmean et al. (1989) eastern species site-index model set",
+      rank = 67,
+      params_key = "parameters_Carmean1989",
+      species_manual = c(
+        "ACER.SAH", "BETU.ALL", "FAGU.GRA", "FRAX.AME", "FRAX.NIG", "PRUN.SER",
+        "QUER.RUB", "TILI.AME", "ULMU.AME", "CHAM.THY", "TSUG.CAN"
+      )
     ),
-    engine = c(
-      "si_buckman2006",
-      "si_carmean1989",
-      "si_carmean1996",
-      "si_carmeanhahn1981",
-      "si_cieszewskibella1991",
-      "si_kerbowling1991",
-      "si_lundgrendolid1970",
-      "si_lundgrendolid1970",
-      "si_nigh2000",
-      "si_nigh2000_gi",
-      "si_nighcourtin1998",
-      "si_nighcourtin1998",
-      "si_huang1994",
-      "si_augerward2021",
-      "si_pregent2010",
-      "si_pregent2016",
-      "si_sharma2021",
-      "si_sharmaparton2018a",
-      "si_sharmaparton2018b",
-      "si_sharmaparton2019",
-      "si_sharma2015",
-      "si_parresolvissage1998",
-      "si_payandeh1974",
-      "si_sharmareid2018",
-      "si_sharma2022",
-      "si_lafleche2013",
-      "si_lafleche2013",
-      "si_scottvoorhis1986",
-      "si_scottvoorhis1986",
-      "si_thrower1994",
-      "si_hugarcia2009",
-      "si_nigh1997",
-      "si_nigh2002",
-      "si_cieszewski1993",
-      "si_goudie1984",
-      "si_nigh2004",
-      "si_nigh2009",
-      "si_carmean2006",
-      "si_carmean2001",
-      "si_goelz1992",
-      "si_nigh2017",
-      "si_batho2014",
-      "si_nigh1998",
-      "si_nigh1998_gi",
-      "si_alemdag1991",
-      "si_brisco2002",
-      "si_chenklinka2000",
-      "si_huang2009",
-      "si_huang2009",
-      "si_huang2026",
-      "si_huang2026"
+    .si_registry_row(
+      model_id = "carmean1996",
+      reference = "@Carmean1996",
+      engine = "si_carmean1996",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Carmean (1996) northwest Ontario site-index model set",
+      rank = 89,
+      params_key = "parameters_Carmean1996"
     ),
-    fixed_args = list(
-      list(),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(variant = "exponential_monomolecular"),
-      list(variant = "monomolecular"),
-      list(),
-      list(),
-      list(si50 = FALSE),
-      list(si50 = TRUE),
-      list(),
-      list(),
-      list(base_age = 50),
-      list(base_age = 50),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(),
-      list(curve_set = "potential"),
-      list(curve_set = "observed"),
-      list(convert_to_total_age = FALSE),
-      list(convert_to_total_age = TRUE),
-      list(),
-      list(), # hugarcia2009
-      list(), # nigh1997
-      list(), # nigh2002 fixed_args
-      list(), # cieszewski1993
-      list(), # goudie1984
-      list(), # nigh2004
-      list(), # nigh2009
-      list(), # carmean2006
-      list(), # carmean2001
-      list(), # goelz1992
-      list(), # nigh2017
-      list(), # batho2014
-      list(), # nigh1998
-      list(), # nigh1998_gi
-      list(), # alemdag1991
-      list(), # brisco2002
-      list(), # chenklinka2000
-      list(index_age = "breast_height"), # huang2009_bh_age
-      list(index_age = "total"), # huang2009_total_age
-      list(), # huang2026
-      list(variant = "climate") # huang2026_climate
+    .si_registry_row(
+      model_id = "carmeanhahn1981",
+      reference = "@CarmeanHahn1981",
+      engine = "si_carmeanhahn1981",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Lake States site-index model for balsam fir and white spruce",
+      rank = 70,
+      species_manual = c("ABIE.BAL", "PICE.GLA")
     ),
-    plot_si_values = list(
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      c(4, 8, 12, 16),
-      c(4, 8, 12, 16),
-      c(4, 8, 12, 16),
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      NULL, # nigh1997
-      NULL, # nigh2002
-      NULL, # cieszewski1993
-      NULL, # goudie1984
-      NULL, # nigh2004
-      NULL, # nigh2009
-      NULL, # carmean2006
-      NULL, # carmean2001
-      NULL, # goelz1992
-      NULL, # nigh2017
-      NULL, # batho2014
-      c(5, 10, 15, 20, 25), # nigh1998
-      NULL, # nigh1998_gi
-      c(5, 10, 15, 20, 25), # alemdag1991
-      c(12, 16, 20, 24), # brisco2002
-      c(8, 12, 16, 20, 24), # chenklinka2000
-      NULL, # huang2009_bh_age
-      NULL, # huang2009_total_age
-      NULL, # huang2026
-      NULL # huang2026_climate
+    .si_registry_row(
+      model_id = "cieszewskibella1991",
+      reference = "@CieszewskiBella1991",
+      engine = "si_cieszewskibella1991",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "AB",
+      description = "Alberta polymorphic variable-age site-index model for four major tree species",
+      rank = 87,
+      params_key = "parameters_CieszewskiBella1991"
     ),
-    age_basis = c(
-      "total_age", # buckman2006
-      "total_age", # carmean1989
-      "breast_height_age", # carmean1996
-      "total_age", # carmeanhahn1981
-      "breast_height_age", # cieszewskibella1991
-      "breast_height_age", # kerbowling1991
-      "breast_height_age", # lundgrendolid1970_exponential_monomolecular
-      "breast_height_age", # lundgrendolid1970_monomolecular
-      "breast_height_age", # nigh2000
-      "breast_height_age", # nigh2000_gi
-      "breast_height_age", # nighcourtin1998_si25
-      "breast_height_age", # nighcourtin1998_si50
-      "breast_height_age", # huang1994
-      "total_age", # augerward2021
-      "breast_height_age", # pregent2010
-      "breast_height_age", # pregent2016
-      "breast_height_age", # sharma2021
-      "breast_height_age", # sharmaparton2018a
-      "breast_height_age", # sharmaparton2018b
-      "breast_height_age", # sharmaparton2019
-      "breast_height_age", # sharma2015
-      "breast_height_age", # parresolvissage1998
-      "breast_height_age", # payandeh1974
-      "breast_height_age", # sharmareid2018
-      "breast_height_age", # sharma2022
-      "breast_height_age", # lafleche2013_potential
-      "breast_height_age", # lafleche2013_observed
-      "breast_height_age", # scottvoorhis1986_bh_age
-      "total_age", # scottvoorhis1986_total_age
-      "breast_height_age", # thrower1994
-      "breast_height_age", # hugarcia2009
-      "breast_height_age", # nigh1997
-      "breast_height_age", # nigh2002
-      "breast_height_age", # cieszewski1993
-      "breast_height_age", # goudie1984
-      "total_age", # nigh2004
-      "breast_height_age", # nigh2009
-      "breast_height_age", # carmean2006
-      "breast_height_age", # carmean2001
-      "breast_height_age", # goelz1992
-      "breast_height_age", # nigh2017
-      "breast_height_age", # batho2014
-      "breast_height_age", # nigh1998
-      "breast_height_age", # nigh1998_gi
-      "breast_height_age", # alemdag1991
-      "breast_height_age", # brisco2002
-      "breast_height_age", # chenklinka2000
-      "total_age", # huang2009_bh_age (age input is total age)
-      "total_age", # huang2009_total_age
-      "total_age", # huang2026
-      "total_age" # huang2026_climate
+    .si_registry_row(
+      model_id = "kerbowling1991",
+      reference = "@KerBowling1991",
+      engine = "si_kerbowling1991",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "NB",
+      description = "New Brunswick polymorphic site-index model for softwoods",
+      rank = 80,
+      params_key = "parameters_KerBowling1991"
     ),
-    age_domain_max = c(
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      100,
-      60,
-      70,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_,
-      NA_real_, # nigh1997
-      NA_real_,
-      140, # goudie1984
-      20, # nigh2004 (juvenile model)
-      NA_real_, # nigh2009
-      100, # carmean2006
-      100, # carmean2001
-      NA_real_, # goelz1992 (base-age invariant; ~20-80 yr application range)
-      NA_real_, # nigh2017
-      NA_real_, # batho2014
-      NA_real_, # nigh1998
-      50, # nigh1998_gi (coefficients tabulated to BHA 50)
-      150, # alemdag1991 (BH age range 10-150)
-      134, # brisco2002 (BH age range 45-134)
-      150, # chenklinka2000 (tables published to BH age 150)
-      NA_real_, # huang2009_bh_age
-      NA_real_, # huang2009_total_age
-      180, # huang2026
-      180 # huang2026_climate
+    .si_registry_row(
+      model_id = "lundgrendolid1970_exponential_monomolecular",
+      reference = "@LundgrenDolid1970",
+      engine = "si_lundgrendolid1970",
+      age_basis = "species_dependent",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Lundgren and Dolid model (exponential monomolecular form)",
+      rank = 60,
+      fixed_args = list(variant = "exponential_monomolecular"),
+      params_key = "parameters_LungrenDolid1970"
     ),
-    requires_species = c(
-      FALSE, # buckman2006
-      TRUE, # carmean1989
-      TRUE, # carmean1996
-      TRUE, # carmeanhahn1981
-      TRUE, # cieszewskibella1991
-      TRUE, # kerbowling1991
-      TRUE, # lundgrendolid1970_exponential_monomolecular
-      TRUE, # lundgrendolid1970_monomolecular
-      FALSE, # nigh2000
-      FALSE, # nigh2000_gi
-      FALSE, # nighcourtin1998_si25
-      FALSE, # nighcourtin1998_si50
-      FALSE, # huang1994
-      TRUE, # augerward2021
-      FALSE, # pregent2010
-      FALSE, # pregent2016
-      TRUE, # sharma2021
-      FALSE, # sharmaparton2018a
-      FALSE, # sharmaparton2018b
-      FALSE, # sharmaparton2019
-      TRUE, # sharma2015
-      FALSE, # parresolvissage1998
-      TRUE, # payandeh1974
-      TRUE, # sharmareid2018
-      TRUE, # sharma2022
-      TRUE, # lafleche2013_potential
-      TRUE, # lafleche2013_observed
-      TRUE, # scottvoorhis1986_bh_age
-      TRUE, # scottvoorhis1986_total_age
-      TRUE, # thrower1994
-      TRUE, # hugarcia2009
-      FALSE, # nigh1997 (single species, no species arg)
-      FALSE, # nigh2002 (single species, no species arg)
-      TRUE, # cieszewski1993
-      TRUE, # goudie1984
-      TRUE, # nigh2004 (species arg selects pine vs spruce)
-      FALSE, # nigh2009 (single species, no species arg)
-      TRUE, # carmean2006
-      FALSE, # carmean2001 (single species, no species arg)
-      FALSE, # goelz1992 (single species, no species arg)
-      FALSE, # nigh2017 (single species, no species arg)
-      FALSE, # batho2014 (single species, no species arg)
-      FALSE, # nigh1998 (single species, no species arg)
-      FALSE, # nigh1998_gi (single species, no species arg)
-      FALSE, # alemdag1991 (single species, no species arg)
-      FALSE, # brisco2002 (single species, no species arg)
-      TRUE, # chenklinka2000 (species arg selects fir/spruce/pine)
-      TRUE, # huang2009_bh_age
-      TRUE, # huang2009_total_age
-      TRUE, # huang2026
-      TRUE # huang2026_climate
+    .si_registry_row(
+      model_id = "lundgrendolid1970_monomolecular",
+      reference = "@LundgrenDolid1970",
+      engine = "si_lundgrendolid1970",
+      age_basis = "species_dependent",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Lundgren and Dolid model (monomolecular form)",
+      rank = 55,
+      fixed_args = list(variant = "monomolecular"),
+      params_key = "parameters_LungrenDolid1970"
     ),
-    requires_gi = c(
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      TRUE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE,
-      FALSE, # nigh1997 (added; extends list to 41)
-      FALSE, # goelz1992
-      FALSE, # nigh1998
-      TRUE, # nigh1998_gi (growth-intercept model requires gi)
-      FALSE, # alemdag1991
-      FALSE, # brisco2002
-      FALSE, # chenklinka2000
-      FALSE, # huang2009_bh_age
-      FALSE, # huang2009_total_age
-      FALSE, # huang2026
-      FALSE # huang2026_climate
+    .si_registry_row(
+      model_id = "nigh2000",
+      reference = "@Nigh2000",
+      engine = "si_nigh2000",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh (2000) polymorphic site-index model for interior western redcedar",
+      rank = 90,
+      subregion_type = "bec_region",
+      subregion_scope = "BC_INTERIOR",
+      subregion_desc = "BC interior",
+      species_manual = "THUJ.PLI"
     ),
-    supports_predict_si = c(
-      rep(TRUE, 25),
-      FALSE,
-      FALSE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE, # nigh1997
-      TRUE, # nigh2002
-      TRUE, # cieszewski1993
-      TRUE, # goudie1984
-      TRUE, # nigh2004
-      TRUE, # nigh2009
-      TRUE, # carmean2006
-      TRUE, # carmean2001
-      TRUE, # goelz1992
-      TRUE, # nigh2017
-      TRUE, # batho2014
-      TRUE, # nigh1998
-      TRUE, # nigh1998_gi
-      TRUE, # alemdag1991
-      TRUE, # brisco2002
-      TRUE, # chenklinka2000
-      TRUE, # huang2009_bh_age
-      TRUE, # huang2009_total_age
-      TRUE, # huang2026
-      TRUE # huang2026_climate
+    .si_registry_row(
+      model_id = "nigh2000_gi",
+      reference = "@Nigh2000",
+      engine = "si_nigh2000_gi",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh (2000) growth-intercept site-index model for interior western redcedar",
+      rank = 85,
+      age_domain_max = 50,
+      requires_gi = TRUE,
+      supports_predict_height = FALSE,
+      subregion_type = "bec_region",
+      subregion_scope = "BC_INTERIOR",
+      subregion_desc = "BC interior",
+      params_key = "parameters_Nigh2000_gi",
+      species_manual = "THUJ.PLI"
     ),
-    supports_predict_height = c(
-      TRUE, # buckman2006 (supports_predict_height start)
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE,
-      TRUE, # cieszewski1993 (+ goudie1984)
-      TRUE, # nigh2004
-      TRUE, # nigh2009
-      TRUE, # carmean2006
-      TRUE, # carmean2001
-      TRUE, # goelz1992
-      TRUE, # nigh2017
-      TRUE, # batho2014
-      TRUE, # nigh1998
-      FALSE, # nigh1998_gi (growth-intercept model predicts si only)
-      TRUE, # alemdag1991
-      TRUE, # brisco2002
-      TRUE, # chenklinka2000
-      TRUE, # huang2009_bh_age
-      TRUE, # huang2009_total_age
-      TRUE, # huang2026
-      TRUE # huang2026_climate
+    .si_registry_row(
+      model_id = "nighcourtin1998_si25",
+      reference = "@NighCourtin1998",
+      engine = "si_nighcourtin1998",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh and Courtin (1998) red alder model, SI25 scale",
+      rank = 85,
+      fixed_args = list(si50 = FALSE),
+      subregion_type = "bec_region",
+      subregion_scope = "BC_COAST",
+      subregion_desc = "BC coast",
+      species_manual = "ALNU.RUB"
     ),
-    scope = c(
-      rep("regional", 44),
-      "national",
-      "regional",
-      "regional",
-      "regional",
-      "regional",
-      "regional",
-      "regional"
+    .si_registry_row(
+      model_id = "nighcourtin1998_si50",
+      reference = "@NighCourtin1998",
+      engine = "si_nighcourtin1998",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh and Courtin (1998) red alder model, SI50 scale",
+      rank = 84,
+      fixed_args = list(si50 = TRUE),
+      subregion_type = "bec_region",
+      subregion_scope = "BC_COAST",
+      subregion_desc = "BC coast",
+      species_manual = "ALNU.RUB"
     ),
-    province_scope = list(
-      c("ON"),
-      c("ON", "QC", "NB", "NS", "PE", "NL"),
-      c("ON"),
-      c("ON"),
-      c("AB"),
-      c("NB"),
-      c("ON"),
-      c("ON"),
-      c("BC"),
-      c("BC"),
-      c("BC"),
-      c("BC"),
-      c("AB"),
-      c("QC"),
-      c("QC"),
-      c("QC"),
-      c("ON"),
-      c("ON"),
-      c("ON"),
-      c("ON"),
-      c("ON"),
-      c("NB", "NS", "PE", "NL", "QC", "ON"),
-      c("ALL"),
-      c("ON"),
-      c("ON"),
-      c("QC"),
-      c("QC"),
-      c("NB", "NS", "PE", "NL", "QC", "ON"),
-      c("NB", "NS", "PE", "NL", "QC", "ON"),
-      c("BC"),
-      c("BC"),
-      c("BC"), # nigh1997
-      c("BC"),
-      c("SK"),
-      c("BC"),
-      c("BC"),
-      c("BC"),
-      c("ON"),
-      c("ON"),
-      c("ON"),
-      c("BC"),
-      c("BC"),
-      c("BC"), # nigh1998
-      c("BC"), # nigh1998_gi
-      c("ALL"), # alemdag1991 (national)
-      c("BC"), # brisco2002
-      c("BC"), # chenklinka2000
-      c("AB"), # huang2009_bh_age
-      c("AB"), # huang2009_total_age
-      c("AB"), # huang2026
-      c("AB") # huang2026_climate
+    .si_registry_row(
+      model_id = "huang1994",
+      reference = "@Huang1994si",
+      engine = "si_huang1994",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "AB",
+      description = "Huang et al. (1994) Alberta polymorphic site-index model set",
+      rank = 88,
+      subregion_type = "ab_natural_region_group",
+      subregion_arg = "natural_subregion",
+      subregion_scope = "AB",
+      subregion_desc = "Alberta natural-region groups",
+      params_key = "parameters_Huang1994_si"
     ),
-    subregion_type = c(
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "bec_region",
-      "bec_region",
-      "bec_region",
-      "bec_region",
-      "ab_natural_region_group",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "qc_ecological_subregion",
-      "qc_ecological_subregion",
-      "none",
-      "none",
-      "bec_region", # thrower1994
-      "bec_region", # hugarcia2009
-      "none", # nigh1997
-      "bec_region", # nigh2002
-      "none", # cieszewski1993
-      "none", # goudie1984
-      "bec_region", # nigh2004 (optional zonal parameters)
-      "bec_region", # nigh2009 (zonal model 3)
-      "none", # carmean2006
-      "none", # carmean2001
-      "none", # goelz1992
-      "none", # nigh2017
-      "none", # batho2014
-      "none", # nigh1998
-      "none", # nigh1998_gi
-      "none", # alemdag1991
-      "none", # brisco2002
-      "none", # chenklinka2000
-      "none", # huang2009_bh_age
-      "none", # huang2009_total_age
-      "none", # huang2026
-      "none" # huang2026_climate
+    .si_registry_row(
+      model_id = "augerward2021",
+      reference = "@AugerWard2021",
+      engine = "si_augerward2021",
+      age_basis = "plantation_age",
+      requires_species = TRUE,
+      province_scope = "QC",
+      description = "Auger and Ward (2021) Quebec plantation site-index model",
+      rank = 88,
+      plot_si_values = c(4, 8, 12, 16),
+      age_domain_max = 100,
+      species_manual = c("PINU.BAN", "PICE.MAR")
     ),
-    subregion_required = rep(FALSE, 51),
-    subregion_arg = c(
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      "natural_subregion",
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      "ecological_subregion",
-      "ecological_subregion",
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_, # hugarcia2009
-      NA_character_, # nigh1997
-      "bec_zone",
-      NA_character_,
-      NA_character_,
-      "bec_zone", # nigh2004
-      "bec_zone", # nigh2009
-      NA_character_, # carmean2006
-      NA_character_, # carmean2001
-      NA_character_, # goelz1992
-      NA_character_, # nigh2017
-      NA_character_, # batho2014
-      NA_character_, # nigh1998
-      NA_character_, # nigh1998_gi
-      NA_character_, # alemdag1991
-      NA_character_, # brisco2002
-      NA_character_, # chenklinka2000
-      NA_character_, # huang2009_bh_age
-      NA_character_, # huang2009_total_age
-      NA_character_, # huang2026
-      NA_character_ # huang2026_climate
+    .si_registry_row(
+      model_id = "pregent2010",
+      reference = "@Pregent2010",
+      engine = "si_pregent2010",
+      age_basis = "plantation_age",
+      requires_species = FALSE,
+      province_scope = "QC",
+      description = "Pregent et al. (2010) white spruce plantation site-index model",
+      rank = 88,
+      fixed_args = list(base_age = 50),
+      plot_si_values = c(4, 8, 12, 16),
+      age_domain_max = 60,
+      species_manual = "PICE.GLA"
     ),
-    subregion_scope = list(
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      c("BC_INTERIOR"),
-      c("BC_INTERIOR"),
-      c("BC_COAST"),
-      c("BC_COAST"),
-      c("AB"),
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      c("QC"),
-      c("QC"),
-      NA_character_,
-      NA_character_,
-      c("BC_INTERIOR"),
-      c("BC_INTERIOR"),
-      NA_character_, # nigh1997
-      c("BWBS", "ICH", "IDF", "MS", "SBPS", "SBS"),
-      NA_character_,
-      NA_character_,
-      c("BWBS", "ESSF", "ICH", "IDF", "MS", "SBS", "SBPS"),
-      c("ICH", "IDF", "SBS"),
-      NA_character_, # carmean2006
-      NA_character_, # carmean2001
-      NA_character_, # goelz1992
-      NA_character_, # nigh2017
-      NA_character_, # batho2014
-      NA_character_, # nigh1998
-      NA_character_, # nigh1998_gi
-      NA_character_, # alemdag1991
-      NA_character_, # brisco2002
-      NA_character_, # chenklinka2000
-      NA_character_, # huang2009_bh_age
-      NA_character_, # huang2009_total_age
-      NA_character_, # huang2026
-      NA_character_ # huang2026_climate
+    .si_registry_row(
+      model_id = "pregent2016",
+      reference = "@Pregent2016",
+      engine = "si_pregent2016",
+      age_basis = "plantation_age",
+      requires_species = FALSE,
+      province_scope = "QC",
+      description = "Pregent et al. (2016) Norway spruce plantation site-index model",
+      rank = 88,
+      fixed_args = list(base_age = 50),
+      plot_si_values = c(4, 8, 12, 16),
+      age_domain_max = 70,
+      species_manual = "PICE.ABI"
     ),
-    subregion_desc = c(
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "BC interior",
-      "BC interior",
-      "BC coast",
-      "BC coast",
-      "Alberta natural-region groups",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "none",
-      "Quebec ecological subregion",
-      "Quebec ecological subregion",
-      "none",
-      "none",
-      "BC interior", # thrower1994
-      "BC interior", # hugarcia2009
-      "none", # nigh1997
-      "BC biogeoclimatic zone (extended model)", # nigh2002
-      "none", # cieszewski1993
-      "none", # goudie1984
-      "BC biogeoclimatic zone (optional; province-wide otherwise)", # nigh2004
-      "BC biogeoclimatic zone (zonal model 3)", # nigh2009
-      "none", # carmean2006
-      "none", # carmean2001
-      "none", # goelz1992
-      "none", # nigh2017
-      "none", # batho2014
-      "none", # nigh1998
-      "none", # nigh1998_gi
-      "none", # alemdag1991
-      "none", # brisco2002
-      "none", # chenklinka2000
-      "none", # huang2009_bh_age
-      "none", # huang2009_total_age
-      "none", # huang2026
-      "none" # huang2026_climate
+    .si_registry_row(
+      model_id = "sharma2021",
+      reference = "@Sharma2021SI",
+      engine = "si_sharma2021",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Sharma (2021) fixed-effects no-climate mixed-stand site-index model",
+      rank = 89,
+      species_manual = c("PINU.BAN", "PICE.MAR")
     ),
-    description = c(
-      "Buckman et al. (2006) piecewise red pine site-index model",
-      "Carmean et al. (1989) eastern species site-index model set",
-      "Carmean (1996) northwest Ontario site-index model set",
-      "Lake States site-index model for balsam fir and white spruce",
-      "Alberta polymorphic variable-age site-index model for four major tree species",
-      "New Brunswick polymorphic site-index model for softwoods",
-      "Lundgren and Dolid model (exponential monomolecular form)",
-      "Lundgren and Dolid model (monomolecular form)",
-      "Nigh (2000) polymorphic site-index model for interior western redcedar",
-      "Nigh (2000) growth-intercept site-index model for interior western redcedar",
-      "Nigh and Courtin (1998) red alder model, SI25 scale",
-      "Nigh and Courtin (1998) red alder model, SI50 scale",
-      "Huang et al. (1994) Alberta polymorphic site-index model set",
-      "Auger and Ward (2021) Quebec plantation site-index model",
-      "Pregent et al. (2010) white spruce plantation site-index model",
-      "Pregent et al. (2016) Norway spruce plantation site-index model",
-      "Sharma (2021) fixed-effects no-climate mixed-stand site-index model",
-      "Sharma and Parton (2018) non-climate white spruce plantation model",
-      "Sharma and Parton (2018) non-climate red pine plantation model",
-      "Sharma and Parton (2019) non-climate white pine plantation model",
-      "Sharma et al. (2015) no-climate plantation model for jack pine and black spruce",
-      "Parresol and Vissage (1998) base-age invariant eastern white pine model",
-      "Payandeh (1974) nonlinear site-index equations",
-      "Sharma and Reid (2018) fixed-effects natural-stand site-index model",
-      "Sharma (2022) fixed-effects no-climate mixed-stand site-index model",
-      "Lafleche et al. (2013) Quebec ecological-site potential-height IQS curves",
-      "Lafleche et al. (2013) Quebec ecological-site observed-height IQS curves",
-      "Scott and Voorhis (1986) model using breast-height age directly",
-      "Scott and Voorhis (1986) model with internal conversion to total age",
-      "Thrower et al. (1994) BC interior species model set",
-      "Hu and Garcia (2009) interior spruce height-growth and site-index model (BC SBS zone)",
-      "Nigh (1997) logistic height-age (site index) model for Sitka spruce in coastal British Columbia",
-      "Nigh et al. (2002) trembling aspen height-age (site index) model for British Columbia",
-      "Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species",
-      "Goudie (1984) logistic height-age (site-index) model for lodgepole pine and white spruce in British Columbia (SAS-reference implementation; pine dry-site coefficients)",
-      "Nigh (2004) juvenile height-age (site index) model for lodgepole pine and interior spruce in British Columbia (province-wide and biogeoclimatic-zone parameter sets)",
-      "Nigh et al. (2009) paper birch log-logistic height-age (site index) model for British Columbia (base, operational, and zonal variants)",
-      "Carmean, Hazenberg and Deschamps (2006) polymorphic (Newnham) site-index model for black spruce and trembling aspen in northwest Ontario",
-      "Carmean, Niznowski and Hazenberg (2001) polymorphic (Newnham) site-index model for jack pine in northern Ontario",
-      "Goelz and Burk (1992) base-age invariant Chapman-Richards site-index model for jack pine in north central Ontario",
-      "Nigh (2017) grounded-GADA (Chapman-Richards) height-age (site index) model for lodgepole pine in British Columbia",
-      "Batho and Garcia (2014) polymorphic Bertalanffy-Richards height-age (site index) model for lodgepole pine in the Sub-Boreal Spruce zone of British Columbia",
-      "Nigh (1998) log-logistic height-age (site index) model for western hemlock in the interior of British Columbia",
-      "Nigh (1998) growth-intercept site-index model for western hemlock in the interior of British Columbia",
-      "Alemdag (1991) national (Canada-wide) modified Chapman-Richards site-index and height-growth model for white spruce in natural stands",
-      "Brisco, Klinka and Nigh (2002) Chapman-Richards height-age (site index) model for western larch in British Columbia",
-      "Chen and Klinka (2000) conditioned Chapman-Richards height-age (site index) model for subalpine fir, Engelmann spruce, and lodgepole pine in the ESSF zone of British Columbia",
-      "Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years breast-height age)",
-      "Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years total age)",
-      "Huang et al. (2026) non-climate height-age model for eight Alberta species (height index at 50 years total age)",
-      "Huang et al. (2026) climate height-age model for eight Alberta species (inherent HI; requires species-specific previous-years MAP and MWMT averages and location-specific 1961-1990 MAP_normal and MWMT_normal)"
+    .si_registry_row(
+      model_id = "sharmaparton2018a",
+      reference = "@SharmaParton2018a",
+      engine = "si_sharmaparton2018a",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "ON",
+      description = "Sharma and Parton (2018) non-climate white spruce plantation model",
+      rank = 86,
+      species_manual = "PICE.GLA"
     ),
-    rank = c(
-      72,
-      67,
-      89,
-      70,
-      87,
-      80,
-      60,
-      55,
-      90,
-      85,
-      85,
-      84,
-      88,
-      88,
-      88,
-      88,
-      89,
-      86,
-      86,
-      86,
-      88,
-      68,
-      50,
-      89,
-      89,
-      87,
-      72,
-      65,
-      66,
-      90,
-      88,
-      88,
-      86,
-      64,
-      66,
-      86,
-      86,
-      85,
-      66,
-      66,
-      90,
-      88,
-      88,
-      85,
-      60,
-      88,
-      88,
-      88,
-      88,
-      88,
-      88
+    .si_registry_row(
+      model_id = "sharmaparton2018b",
+      reference = "@SharmaParton2018b",
+      engine = "si_sharmaparton2018b",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "ON",
+      description = "Sharma and Parton (2018) non-climate red pine plantation model",
+      rank = 86,
+      species_manual = "PINU.RES"
     ),
-    params_key = c(
-      NA_character_,
-      "parameters_Carmean1989",
-      "parameters_Carmean1996",
-      NA_character_,
-      "parameters_CieszewskiBella1991",
-      "parameters_KerBowling1991",
-      "parameters_LungrenDolid1970",
-      "parameters_LungrenDolid1970",
-      NA_character_,
-      "parameters_Nigh2000_gi",
-      NA_character_,
-      NA_character_,
-      "parameters_Huang1994_si",
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      NA_character_,
-      "parameters_Payandeh1974",
-      NA_character_,
-      NA_character_,
-      "parameters_QC_IQS2013",
-      "parameters_QC_IQS2013",
-      "parameters_ScottVoorhis1986",
-      "parameters_ScottVoorhis1986",
-      "parameters_Thrower1994",
-      "parameters_HuGarcia2009",
-      "parameters_Nigh1997",
-      "parameters_Nigh2002",
-      "parameters_Cieszewski1993",
-      "parameters_Goudie1984",
-      "parameters_Nigh2004",
-      "parameters_Nigh2009",
-      "parameters_Carmean2006",
-      "parameters_Carmean2001",
-      "parameters_Goelz1992",
-      "parameters_Nigh2017",
-      NA_character_,
-      NA_character_, # nigh1998 (coefficients hardcoded in si_nigh1998)
-      "parameters_Nigh1998_gi",
-      "parameters_Alemdag1991",
-      "parameters_Brisco2002",
-      "parameters_ChenKlinka1998",
-      "parameters_Huang2009",
-      "parameters_Huang2009",
-      "parameters_Huang2026",
-      "parameters_Huang2026_climate"
+    .si_registry_row(
+      model_id = "sharmaparton2019",
+      reference = "@SharmaParton2019",
+      engine = "si_sharmaparton2019",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "ON",
+      description = "Sharma and Parton (2019) non-climate white pine plantation model",
+      rank = 86,
+      species_manual = "PINU.STR"
     ),
-    species_manual = list(
-      c("PINU.RES"),
-      c(
-        "ACER.SAH",
-        "BETU.ALL",
-        "FAGU.GRA",
-        "FRAX.AME",
-        "FRAX.NIG",
-        "PRUN.SER",
-        "QUER.RUB",
-        "TILI.AME",
-        "ULMU.AME",
-        "CHAM.THY",
-        "TSUG.CAN"
-      ),
-      NULL,
-      c("ABIE.BAL", "PICE.GLA"),
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      c("THUJ.PLI"),
-      c("THUJ.PLI"),
-      c("ALNU.RUB"),
-      c("ALNU.RUB"),
-      NULL,
-      c("PINU.BAN", "PICE.MAR"),
-      c("PICE.GLA"),
-      c("PICE.ABI"),
-      c("PINU.BAN", "PICE.MAR"),
-      c("PICE.GLA"),
-      c("PINU.RES"),
-      c("PINU.STR"),
-      c("PINU.BAN", "PICE.MAR"),
-      c("PINU.STR"),
-      NULL,
-      c("PINU.BAN", "PICE.MAR"),
-      c("PICE.MAR", "POPU.TRE"),
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      c(
-        "PINU.CON",
-        "PICE.GLA",
-        "PSEU.MEN",
-        "ABIE.LAS",
-        "TSUG.HET",
-        "THUJ.PLI",
-        "PINU.MON",
-        "PINU.PON",
-        "LARI.OCC",
-        "POPU.TRE",
-        "BETU.PAP"
-      ),
-      c("PICE.GLA", "PICE.ENG"),
-      c("PICE.SIT"),
-      c("POPU.TRE"),
-      c(
-        "ABIE.BAL",
-        "POPU.BAL",
-        "PICE.MAR",
-        "PINU.BAN",
-        "PINU.CON",
-        "ACER.NEG",
-        "POPU.TRE",
-        "LARI.LAR",
-        "BETU.PAP",
-        "ULMU.AME",
-        "PICE.GLA"
-      ),
-      c("PINU.CON", "PICE.GLA"),
-      c("PINU.CON", "PICE.GLA"),
-      c("BETU.PAP"),
-      c("PICE.MAR", "POPU.TRE"),
-      c("PINU.BAN"),
-      c("PINU.BAN"), # goelz1992
-      c("PINU.CON"),
-      c("PINU.CON"),
-      c("TSUG.HET"), # nigh1998
-      c("TSUG.HET"), # nigh1998_gi
-      c("PICE.GLA"), # alemdag1991
-      c("LARI.OCC"), # brisco2002
-      c("ABIE.LAS", "PICE.ENG", "PINU.CON"), # chenklinka2000
-      c("POPU.TRE", "PICE.MAR", "PINU.CON", "PICE.GLA"), # huang2009_bh_age
-      c("POPU.TRE", "PICE.MAR", "PINU.CON", "PICE.GLA"), # huang2009_total_age
-      NULL, # huang2026 (coverage from parameters)
-      NULL # huang2026_climate (coverage from parameters)
+    .si_registry_row(
+      model_id = "sharma2015",
+      reference = "@SharmaEtAl2015",
+      engine = "si_sharma2015",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Sharma et al. (2015) no-climate plantation model for jack pine and black spruce",
+      rank = 88,
+      species_manual = c("PINU.BAN", "PICE.MAR")
+    ),
+    .si_registry_row(
+      model_id = "parresolvissage1998",
+      reference = "@ParresolVissage1998",
+      engine = "si_parresolvissage1998",
+      age_basis = "total_age",
+      requires_species = FALSE,
+      province_scope = c("NB", "NS", "PE", "NL", "QC", "ON"),
+      description = "Parresol and Vissage (1998) base-age invariant eastern white pine model",
+      rank = 68,
+      species_manual = "PINU.STR"
+    ),
+    .si_registry_row(
+      model_id = "payandeh1974",
+      reference = "@Payandeh1974",
+      engine = "si_payandeh1974",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = "ALL",
+      description = "Payandeh (1974) nonlinear site-index equations",
+      rank = 50,
+      params_key = "parameters_Payandeh1974"
+    ),
+    .si_registry_row(
+      model_id = "sharmareid2018",
+      reference = "@SharmaReid2018",
+      engine = "si_sharmareid2018",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Sharma and Reid (2018) fixed-effects natural-stand site-index model",
+      rank = 89,
+      species_manual = c("PINU.BAN", "PICE.MAR")
+    ),
+    .si_registry_row(
+      model_id = "sharma2022",
+      reference = "@Sharma2022",
+      engine = "si_sharma2022",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Sharma (2022) fixed-effects no-climate mixed-stand site-index model",
+      rank = 89,
+      species_manual = c("PICE.MAR", "POPU.TRE")
+    ),
+    .si_registry_row(
+      model_id = "lafleche2013_potential",
+      reference = "@LaflecheEtAl2013",
+      engine = "si_lafleche2013",
+      age_basis = "corrected_age_above_1m",
+      requires_species = TRUE,
+      province_scope = "QC",
+      description = "Lafleche et al. (2013) Quebec ecological-site potential-height IQS curves",
+      rank = 87,
+      fixed_args = list(curve_set = "potential"),
+      supports_predict_si = FALSE,
+      subregion_type = "qc_ecological_subregion",
+      subregion_arg = "ecological_subregion",
+      subregion_scope = "QC",
+      subregion_desc = "Quebec ecological subregion",
+      params_key = "parameters_QC_IQS2013"
+    ),
+    .si_registry_row(
+      model_id = "lafleche2013_observed",
+      reference = "@LaflecheEtAl2013",
+      engine = "si_lafleche2013",
+      age_basis = "unresolved",
+      requires_species = TRUE,
+      province_scope = "QC",
+      description = "Lafleche et al. (2013) Quebec ecological-site observed-height IQS curves",
+      rank = 72,
+      fixed_args = list(curve_set = "observed"),
+      supports_predict_si = FALSE,
+      subregion_type = "qc_ecological_subregion",
+      subregion_arg = "ecological_subregion",
+      subregion_scope = "QC",
+      subregion_desc = "Quebec ecological subregion",
+      params_key = "parameters_QC_IQS2013"
+    ),
+    .si_registry_row(
+      model_id = "scottvoorhis1986_bh_age",
+      reference = "@ScottVoorhis1986",
+      engine = "si_scottvoorhis1986",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = c("NB", "NS", "PE", "NL", "QC", "ON"),
+      description = "Scott and Voorhis (1986) total-age input model (legacy bh_age ID; no internal conversion)",
+      rank = 65,
+      fixed_args = list(convert_to_total_age = FALSE),
+      params_key = "parameters_ScottVoorhis1986"
+    ),
+    .si_registry_row(
+      model_id = "scottvoorhis1986_total_age",
+      reference = "@ScottVoorhis1986",
+      engine = "si_scottvoorhis1986",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = c("NB", "NS", "PE", "NL", "QC", "ON"),
+      description = "Scott and Voorhis (1986) BHA input model (legacy total_age ID; internal source YTBH conversion)",
+      rank = 66,
+      fixed_args = list(convert_to_total_age = TRUE),
+      params_key = "parameters_ScottVoorhis1986"
+    ),
+    .si_registry_row(
+      model_id = "thrower1994",
+      reference = "@Thrower1994",
+      engine = "si_thrower1994",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "BC",
+      description = "Thrower et al. (1994) BC interior species model set",
+      rank = 90,
+      subregion_type = "bec_region",
+      subregion_scope = "BC_INTERIOR",
+      subregion_desc = "BC interior",
+      params_key = "parameters_Thrower1994",
+      species_manual = c(
+        "PINU.CON", "PICE.GLA", "PSEU.MEN", "ABIE.LAS", "TSUG.HET", "THUJ.PLI",
+        "PINU.MON", "PINU.PON", "LARI.OCC", "POPU.TRE", "BETU.PAP"
+      )
+    ),
+    .si_registry_row(
+      model_id = "hugarcia2009",
+      reference = "@HuGarcia2009",
+      engine = "si_hugarcia2009",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "BC",
+      description = "Hu and Garcia (2009) interior spruce height-growth and site-index model (BC SBS zone)",
+      rank = 88,
+      subregion_type = "bec_region",
+      subregion_scope = "BC_INTERIOR",
+      subregion_desc = "BC interior",
+      params_key = "parameters_HuGarcia2009",
+      species_manual = c("PICE.GLA", "PICE.ENG")
+    ),
+    .si_registry_row(
+      model_id = "nigh1997",
+      reference = "@Nigh1997",
+      engine = "si_nigh1997",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh (1997) logistic height-age (site index) model for Sitka spruce in coastal British Columbia",
+      rank = 88,
+      params_key = "parameters_Nigh1997",
+      species_manual = "PICE.SIT"
+    ),
+    .si_registry_row(
+      model_id = "nigh2002",
+      reference = "@Nigh2002",
+      engine = "si_nigh2002",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh et al. (2002) trembling aspen height-age (site index) model for British Columbia",
+      rank = 86,
+      subregion_type = "bec_region",
+      subregion_arg = "bec_zone",
+      subregion_scope = c("BWBS", "ICH", "IDF", "MS", "SBPS", "SBS"),
+      subregion_desc = "BC biogeoclimatic zone (extended model)",
+      params_key = "parameters_Nigh2002",
+      species_manual = "POPU.TRE"
+    ),
+    .si_registry_row(
+      model_id = "cieszewski1993",
+      reference = "@Cieszewski1993",
+      engine = "si_cieszewski1993",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "SK",
+      description = "Cieszewski, Bella and Yeung (1993) preliminary variable-age site-index model for eleven Saskatchewan species",
+      rank = 64,
+      params_key = "parameters_Cieszewski1993",
+      species_manual = c(
+        "ABIE.BAL", "POPU.BAL", "PICE.MAR", "PINU.BAN", "PINU.CON", "ACER.NEG",
+        "POPU.TRE", "LARI.LAR", "BETU.PAP", "ULMU.AME", "PICE.GLA"
+      )
+    ),
+    .si_registry_row(
+      model_id = "goudie1984",
+      reference = "@Goudie1984",
+      engine = "si_goudie1984",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "BC",
+      description = "Goudie (1984) logistic height-age (site-index) model for lodgepole pine and white spruce in British Columbia (SAS-reference implementation; pine dry-site coefficients)",
+      rank = 66,
+      age_domain_max = 140,
+      params_key = "parameters_Goudie1984",
+      species_manual = c("PINU.CON", "PICE.GLA")
+    ),
+    .si_registry_row(
+      model_id = "nigh2004",
+      reference = "@Nigh2004",
+      engine = "si_nigh2004",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = "BC",
+      description = "Nigh (2004) juvenile height-age (site index) model for lodgepole pine and interior spruce in British Columbia (province-wide and biogeoclimatic-zone parameter sets)",
+      rank = 86,
+      age_domain_max = 20,
+      subregion_type = "bec_region",
+      subregion_arg = "bec_zone",
+      subregion_scope = c("BWBS", "ESSF", "ICH", "IDF", "MS", "SBS", "SBPS"),
+      subregion_desc = "BC biogeoclimatic zone (optional; province-wide otherwise)",
+      params_key = "parameters_Nigh2004",
+      species_manual = c("PINU.CON", "PICE.GLA")
+    ),
+    .si_registry_row(
+      model_id = "nigh2009",
+      reference = "@Nigh2009",
+      engine = "si_nigh2009",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh et al. (2009) paper birch log-logistic height-age (site index) model for British Columbia (base, operational, and zonal variants)",
+      rank = 86,
+      subregion_type = "bec_region",
+      subregion_arg = "bec_zone",
+      subregion_scope = c("ICH", "IDF", "SBS"),
+      subregion_desc = "BC biogeoclimatic zone (zonal model 3)",
+      params_key = "parameters_Nigh2009",
+      species_manual = "BETU.PAP"
+    ),
+    .si_registry_row(
+      model_id = "carmean2006",
+      reference = "@Carmean2006",
+      engine = "si_carmean2006",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "ON",
+      description = "Carmean, Hazenberg and Deschamps (2006) polymorphic (Newnham) site-index model for black spruce and trembling aspen in northwest Ontario",
+      rank = 85,
+      age_domain_max = 100,
+      params_key = "parameters_Carmean2006",
+      species_manual = c("PICE.MAR", "POPU.TRE")
+    ),
+    .si_registry_row(
+      model_id = "carmean2001",
+      reference = "@Carmean2001",
+      engine = "si_carmean2001",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "ON",
+      description = "Carmean, Niznowski and Hazenberg (2001) polymorphic (Newnham) site-index model for jack pine in northern Ontario",
+      rank = 66,
+      age_domain_max = 100,
+      params_key = "parameters_Carmean2001",
+      species_manual = "PINU.BAN"
+    ),
+    .si_registry_row(
+      model_id = "goelz1992",
+      reference = "@Goelz1992",
+      engine = "si_goelz1992",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "ON",
+      description = "Goelz and Burk (1992) base-age invariant Chapman-Richards site-index model for jack pine in north central Ontario",
+      rank = 66,
+      params_key = "parameters_Goelz1992",
+      species_manual = "PINU.BAN"
+    ),
+    .si_registry_row(
+      model_id = "nigh2017",
+      reference = "@Nigh2017",
+      engine = "si_nigh2017",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh (2017) grounded-GADA (Chapman-Richards) height-age (site index) model for lodgepole pine in British Columbia",
+      rank = 90,
+      params_key = "parameters_Nigh2017",
+      species_manual = "PINU.CON"
+    ),
+    .si_registry_row(
+      model_id = "batho2014",
+      reference = "@Batho2014",
+      engine = "si_batho2014",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "BC",
+      description = "Batho and Garcia (2014) polymorphic Bertalanffy-Richards height-age (site index) model for lodgepole pine in the Sub-Boreal Spruce zone of British Columbia",
+      rank = 88,
+      species_manual = "PINU.CON"
+    ),
+    .si_registry_row(
+      model_id = "nigh1998",
+      reference = "@Nigh1998",
+      engine = "si_nigh1998",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh (1998) log-logistic height-age (site index) model for western hemlock in the interior of British Columbia",
+      rank = 88,
+      plot_si_values = c(5, 10, 15, 20, 25),
+      species_manual = "TSUG.HET"
+    ),
+    .si_registry_row(
+      model_id = "nigh1998_gi",
+      reference = "@Nigh1998",
+      engine = "si_nigh1998_gi",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Nigh (1998) growth-intercept site-index model for western hemlock in the interior of British Columbia",
+      rank = 85,
+      age_domain_max = 50,
+      requires_gi = TRUE,
+      supports_predict_height = FALSE,
+      params_key = "parameters_Nigh1998_gi",
+      species_manual = "TSUG.HET"
+    ),
+    .si_registry_row(
+      model_id = "alemdag1991",
+      reference = "@Alemdag1991",
+      engine = "si_alemdag1991",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "ALL",
+      description = "Alemdag (1991) national (Canada-wide) modified Chapman-Richards site-index and height-growth model for white spruce in natural stands",
+      rank = 60,
+      plot_si_values = c(5, 10, 15, 20, 25),
+      age_domain_max = 150,
+      scope = "national",
+      params_key = "parameters_Alemdag1991",
+      species_manual = "PICE.GLA"
+    ),
+    .si_registry_row(
+      model_id = "brisco2002",
+      reference = "@Brisco2002",
+      engine = "si_brisco2002",
+      age_basis = "breast_height_age",
+      requires_species = FALSE,
+      province_scope = "BC",
+      description = "Brisco, Klinka and Nigh (2002) Chapman-Richards height-age (site index) model for western larch in British Columbia",
+      rank = 88,
+      plot_si_values = c(12, 16, 20, 24),
+      age_domain_max = 134,
+      params_key = "parameters_Brisco2002",
+      species_manual = "LARI.OCC"
+    ),
+    .si_registry_row(
+      model_id = "chenklinka2000",
+      reference = "@ChenKlinka2000",
+      engine = "si_chenklinka2000",
+      age_basis = "breast_height_age",
+      requires_species = TRUE,
+      province_scope = "BC",
+      description = "Chen and Klinka (2000) conditioned Chapman-Richards height-age (site index) model for subalpine fir, Engelmann spruce, and lodgepole pine in the ESSF zone of British Columbia",
+      rank = 88,
+      plot_si_values = c(8, 12, 16, 20, 24),
+      age_domain_max = 150,
+      params_key = "parameters_ChenKlinka1998",
+      species_manual = c("ABIE.LAS", "PICE.ENG", "PINU.CON")
+    ),
+    .si_registry_row(
+      model_id = "huang2009_bh_age",
+      reference = "@Huang2009gypsy",
+      engine = "si_huang2009",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = "AB",
+      description = "Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years breast-height age)",
+      rank = 88,
+      fixed_args = list(index_age = "breast_height"),
+      params_key = "parameters_Huang2009",
+      species_manual = c("POPU.TRE", "PICE.MAR", "PINU.CON", "PICE.GLA")
+    ),
+    .si_registry_row(
+      model_id = "huang2009_total_age",
+      reference = "@Huang2009gypsy",
+      engine = "si_huang2009",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = "AB",
+      description = "Huang, Meng and Yang (2009) GYPSY top-height / site-index model for four Alberta tree species (site index at 50 years total age)",
+      rank = 88,
+      fixed_args = list(index_age = "total"),
+      params_key = "parameters_Huang2009",
+      species_manual = c("POPU.TRE", "PICE.MAR", "PINU.CON", "PICE.GLA")
+    ),
+    .si_registry_row(
+      model_id = "huang2026",
+      reference = "@HuangEtAl2026",
+      engine = "si_huang2026",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = "AB",
+      description = "Huang et al. (2026) non-climate height-age model for eight Alberta species (height index at 50 years total age)",
+      rank = 88,
+      age_domain_max = 180,
+      params_key = "parameters_Huang2026"
+    ),
+    .si_registry_row(
+      model_id = "huang2026_climate",
+      reference = "@HuangEtAl2026",
+      engine = "si_huang2026",
+      age_basis = "total_age",
+      requires_species = TRUE,
+      province_scope = "AB",
+      description = "Huang et al. (2026) climate height-age model for eight Alberta species (inherent HI; requires species-specific previous-years MAP and MWMT averages and location-specific 1961-1990 MAP_normal and MWMT_normal)",
+      rank = 88,
+      fixed_args = list(variant = "climate"),
+      age_domain_max = 180,
+      params_key = "parameters_Huang2026_climate"
     )
   )
 }

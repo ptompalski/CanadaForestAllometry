@@ -13,6 +13,13 @@
 #' breast-height age. The model is conditioned to predict a height of zero at
 #' total age zero.
 #'
+#' \strong{SI definition note:} SI is total site height at 50 years
+#' breast-height age, despite total-age observations. The source estimated
+#' SI through the lodgepole-pine and spruce growth-intercept models
+#' (Nigh 1997, EN11; Nigh 2004, TR013, tracing spruce to Nigh 1999, EN37).
+#' This juvenile model is not constrained to satisfy `height(50) = si`
+#' and should not be extrapolated to mature ages to test that identity.
+#'
 #' \strong{Model form:} the base model (eq. 3) is
 #' \deqn{H = a_1 \times SI \times A^{a_2 + a_3 SI} \times a_4^{A}}
 #' where \eqn{H} is height (m), \eqn{SI} is site index (m), \eqn{A} is total age
@@ -40,8 +47,8 @@
 #' @param age Numeric vector. Total age (years).
 #' @param height Optional numeric vector. Site height (m). If provided, `si` is
 #'   predicted.
-#' @param si Optional numeric vector. Site index (m). If provided, `height` is
-#'   predicted.
+#' @param si Optional numeric vector. Site index (m total height at 50 years
+#'   breast-height age). If provided, `height` is predicted.
 #' @param species Character vector of NFI species codes: `"PINU.CON"`
 #'   (lodgepole pine) or `"PICE.GLA"` (interior spruce). Recycled to a common
 #'   length with the other inputs.

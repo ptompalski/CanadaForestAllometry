@@ -18,6 +18,9 @@
 #' }
 #'
 #' Both directions are explicit closed forms from the source publication.
+#' Equation 7 (p. 66) publishes the SI25-to-SI50 conversion used here.
+#' Both indices are total height at their respective breast-height reference
+#' ages. The rounded conversion is not an exact `height(50) = SI50` constraint.
 #'
 #' @param age Numeric vector. Breast-height age (years).
 #' @param height Optional numeric vector. Dominant height (m). If provided, `si`
@@ -33,7 +36,7 @@
 #' @return A tibble with columns:
 #' \describe{
 #'   \item{height}{Predicted dominant height (m), returned when input `si` is provided.}
-#'   \item{si}{Predicted site index SI25 (m), returned when input `height` is provided.}
+#'   \item{si}{Predicted site index SI25, or SI50 when `si50 = TRUE` (m total height), returned when input `height` is provided.}
 #' }
 #'
 #' @references

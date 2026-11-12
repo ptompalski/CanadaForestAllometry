@@ -2,7 +2,19 @@
 
 ## New features
 
+- Added `si()` for conventional non-climate site-index/height-age dispatch with explicit input age clocks, native SI-definition provenance, reproducible model IDs, conservative applicability checks and candidate diagnostics. No generic age/SI conversion or specialized-family selection is performed.
+- Added `find_si_models()` and `get_si_model_info()` for operation-aware SI discovery and scientific metadata inspection, including missing inputs, conditional requirements, incompatible near-misses and unresolved evidence. Discovery itself does not execute/select models or validate row-level eligibility.
 - Added `si_huang2026()`, the Huang et al. (2026) non-climate and climate-sensitive height-age and site-index models for eight Alberta tree species, with explicit species-specific climate averages and 1961-1990 normals for the climate variant.
+
+## Site index metadata corrections
+
+- Reconciled the remaining conventional SI clocks/conversion provenance, applied the disclosed non-plantation natural-origin default, and enforced Lundgren-Dolid automatic-use recommendations while preserving native equations and legacy IDs.
+- Resolved Sharma-Reid (2018) height/SI datums from Figure 2, enabling native above-breast-height BHA50 dispatch and compatible natural-origin selection without changing equations.
+- Corrected Payandeh (1974) input/reference clocks to total age, retaining species-specific SI50/80/100 scales and explicitly disclosing assumed clocks for balsam fir/white spruce and the Douglas-fir edition caveat, without changing numerical equations.
+- Added operation-aware SI input contracts and internal registry consistency checks, including height/SI alternatives, GI support, exact ecological keys and conditional subregions, and climate requirements/aggregation semantics. Native, variant and plotting arguments remain separate; no engine behaviour, model IDs or rankings changed.
+- Corrected plantation input ages for Auger-Ward/Prégent, the supported Laflèche potential-curve corrected-age clock, cedar GI's SI-only capability, and required-species flags for Huang (1994) and Batho (2014). The observed Laflèche source clock remains explicitly unresolved.
+- Added focused scientific definitions, applicability, claim-level evidence, GI discrete-age support, and fixed-argument roles to `si_model_registry()`. SI reference clocks, species-specific Payandeh reference ages, height/SI datums, and inherent HI are distinguished; disputed interpretations remain unresolved.
+- Preserved Prégent's SI50 plot overrides and labelled them as plot-only, separate from native SI25 defaults. Updated article age/height labels and scientific caveats without changing equations, model IDs, rankings or parameter data.
 
 # CanadaForestAllometry 0.8.7
 

@@ -16,3 +16,68 @@ CanadaForestAllometry. The registry supports model discovery and can be used
 by higher-level wrappers to select candidate models by jurisdiction/species
 and required inputs.
 }
+\details{
+\code{age_basis} describes the input age clock, not the SI reference clock.
+In addition to total and breast-height age, \code{plantation_age} means years
+since planting and \code{corrected_age_above_1m} means the source's corrected
+age above 1 m (not simply elapsed years above 1 m). \code{unresolved} must not
+be treated as evidence of compatibility.
+
+The \code{scientific_definitions}, \code{applicability}, \code{metadata_evidence} and
+\code{age_constraints} list-columns contain focused scientific metadata.
+Empty child tables mean metadata has not yet been encoded, not unrestricted
+applicability. Evidence status applies to individual claims; disputed
+source interpretations remain unresolved, even where an engine documents
+an age or height convention. \code{species_dependent} identifies models whose
+clocks require species-specific scientific definitions.
+
+Stand origin defaults to natural when the encoded source applicability does
+not identify plantations or a mixed-origin population. Such defaults carry
+an explicit, non-publication-verified \code{stand_origin_assumption} evidence
+record; known plantation and mixed-origin classifications are preserved.
+This policy does not infer the origin of a user's observation or establish
+unrestricted geographic, sampling or stand-structure applicability.
+Lundgren-Dolid published recommendations are retained in \code{input_constraints}.
+
+Scientific definitions distinguish input/reference clocks, SI/height datums,
+and conventional SI, height index, inherent HI and ecological IQS.
+Configurable reference ages describe engine-native defaults, derived from
+formals; changing \code{base_age} changes that reference. Conditions on
+\code{total_height} affect height datum only, not SI datum.
+No universal base-age identity, inverse identity or SI-scale conversion
+is implied. Applicability describes source populations, not engine inputs
+or a newly approved geographic transfer domain.
+
+Raw \code{fixed_args} are preserved for existing plotting consumers.
+\code{fixed_arg_roles} labels selectors as \code{variant}, except the two Pregent
+\code{base_age = 50} overrides, which are \code{plot_only}; their native default is 25.
+\code{age_domain_max} remains a legacy plotting summary, not an eligibility rule.
+The legacy height-capability flag includes ecological curve evaluation,
+which does not accept arbitrary SI. Growth-intercept models predict SI only.
+
+\code{operation_inputs} is the authoritative operation-aware input table.
+Roles are \code{required}, \code{optional}, \code{fixed} or \code{forbidden}; height and SI
+belong to separate operations and must not both be supplied. Ecological
+curves accept neither, and climate HI retains its distinct quantity.
+Each requirement carries units, a scientific definition and evidence.
+A non-missing \code{condition_id} refers to \code{input_constraints}, whose
+\code{selectors} are conjunctions of exact named scalar selector/species/key
+matches, not executable expressions. An explicit missing ecological
+subregion matches a missing key, not every subregion.
+
+\code{input_constraints} describes discrete support, exact joint ecological
+keys, conditional subregions, unsupported forms, and climate domains,
+observed ranges and aggregation semantics. \code{engine_action} records current
+enforcement, not a discovery/selection policy. Aggregate climate values
+cannot verify their temporal coverage. These tables do not evaluate inputs
+or establish scientific compatibility.
+
+\code{native_defaults} is derived from engine formals, resolving multi-choice
+selectors to their first (native) choice. \code{variant_args} contains only
+variant-defining arguments; \code{plot_args} additionally applies the legacy
+plot overrides. The legacy \code{nigh2009} ID explicitly denotes base variant 1,
+and \code{huang2026} denotes the non-climate fit. No new variants are registered.
+Engine-documented scientific definitions are present for every variant;
+this is not independent publication verification or resolution of disputed
+claims in \code{metadata_evidence}.
+}

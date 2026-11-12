@@ -13,20 +13,21 @@ si_scottvoorhis1986(
 )
 }
 \arguments{
-\item{age}{Numeric vector. Breast-height age (years).}
+\item{age}{Numeric vector. Total age (years) when \code{convert_to_total_age}
+is \code{FALSE}; breast-height age when it is \code{TRUE}.}
 
 \item{height}{Optional numeric vector. Total tree height (m). If provided,
 \code{si} is predicted.}
 
-\item{si}{Optional numeric vector. Site index (m, base age 50 years at
-breast height). If provided, \code{height} is predicted.}
+\item{si}{Optional numeric vector. Site index (m, total height at
+50 years total age). If provided, \code{height} is predicted.}
 
 \item{species}{Character vector of species codes (e.g., \code{"ABIE.BAL"}).}
 
 \item{convert_to_total_age}{Logical scalar. If \code{TRUE}, converts
 breast-height age to total age internally using the Scott and Voorhis
 age-to-breast-height relation (source-consistent behavior). If \code{FALSE}
-(default), uses \code{age} directly in the height equation.}
+(default), takes total \code{age} directly in the height equation.}
 }
 \value{
 A tibble with columns:
@@ -51,12 +52,13 @@ forest conditions. In Canada, it is most defensible for species/populations
 in eastern regions (notably Atlantic Canada and adjacent central Canada where
 these species occur). Use caution outside that domain.
 
-\strong{Age definition note:} \code{age} is breast-height age (years). The model
-internally computes age-to-breast-height and uses total age in the height
-equation.
+\strong{Age definition note:} \code{age} is total age by default
+(\code{convert_to_total_age = FALSE}). With \code{convert_to_total_age = TRUE},
+supply breast-height age; the model adds its source-specific estimated
+years to breast height internally. Both modes use SI50 at total age.
 
 \strong{Base-age note:} site index in this model is referenced to base age
-50 years, but the fitted equations were not constrained to pass exactly
+50 total years, but the fitted equations were not constrained to pass exactly
 through SI at base age for every species.
 
 Provide exactly one of \code{height} or \code{si}:
@@ -65,12 +67,19 @@ Provide exactly one of \code{height} or \code{si}:
 \item If \code{si} is provided, the function predicts \code{height}.
 }
 
-In this model, total age is the sum of breast-height age and age-to-breast-height.
+In the conversion mode, total age is the sum of breast-height age and age-to-breast-height.
 Age-to-breast-height is itself a function of site index, so predicting \code{si} from
 \code{height} is implicit and solved numerically with \code{stats::uniroot()}.
 
 Inputs/outputs are metric; the original equations are in imperial units, so
 the function converts internally.
+
+Equation 4 and Table 2 (p. 145) define total-age SI50. The discussion on
+p. 146 and BASIC appendix (pp. 147-148) describe converting BHA to total
+age when necessary. The wrapper's legacy IDs are preserved:
+\code{scottvoorhis1986_bh_age} selects \code{FALSE} and takes total age;
+\code{scottvoorhis1986_total_age} selects \code{TRUE} and takes BHA.
+The suffixes do not identify the input clocks.
 }
 \examples{
 # Predict site index from age + height

@@ -11,11 +11,12 @@
 #' white pine in eastern regions, and should be treated cautiously outside that
 #' domain.
 #'
-#' \strong{Age definition note:} `age` is breast-height age (years).
+#' \strong{Age definition note:} `age` is total age (years), not breast-height age.
+#' The antecedent Frothingham (1914) data include growth from germination.
 #'
 #' \strong{Base-age note:} the source paper derives a base-age invariant system.
 #' This implementation accepts any positive `base_age`; the default is 50 years
-#' at breast height.
+#' total age.
 #'
 #' \strong{Domain note:} although the algebraic form can be evaluated below age
 #' 10, the source data and paper discussion indicate reliable behavior for ages
@@ -33,13 +34,13 @@
 #'
 #' Both directions are explicit closed forms from the source publication.
 #'
-#' @param age Numeric vector. Breast-height age (years), with `age >= 10`.
+#' @param age Numeric vector. Total age (years), with `age >= 10`.
 #' @param height Optional numeric vector. Dominant/codominant height (m). If
 #'   provided, `si` is predicted.
 #' @param si Optional numeric vector. Site index (m) at `base_age` years
-#'   breast-height age. If provided, `height` is predicted.
-#' @param base_age Positive numeric scalar. Site-index base age (years at breast
-#'   height), with `base_age >= 10`. Defaults to `50`.
+#'   total age. If provided, `height` is predicted.
+#' @param base_age Positive numeric scalar. Site-index base age (total years),
+#'   with `base_age >= 10`. Defaults to `50`.
 #'
 #' @return A tibble with columns:
 #' \describe{
