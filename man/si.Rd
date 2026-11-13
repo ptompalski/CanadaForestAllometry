@@ -119,6 +119,8 @@ Single input values are repeated to match longer vectors; incompatible
 vector lengths cause an error.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Estimates site index from age and height, or height from age and site index.
 Selects a suitable non-climate age-height model for each observation using
 species, jurisdiction, stand type and age type. Does not convert between

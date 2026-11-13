@@ -1,5 +1,8 @@
 #' Site-index model registry
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Lists the available site-index models, their species and geographic
 #' coverage, age and height definitions, and required inputs.
 #' Used by [find_si_models()], [get_si_model_info()] and [si()].

@@ -1,5 +1,8 @@
 #' Calculate tree volume: choose best available model or run all candidate models
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `vol()` is the main convenience wrapper for estimating total and
 #' merchantable stem volume from diameter and height. It automatically
 #' selects and runs one (or more) of the volume models implemented in CanadaForestAllometry,

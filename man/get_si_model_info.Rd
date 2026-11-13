@@ -31,6 +31,8 @@ suitable everywhere. SI values from different models should not be treated
 as interchangeable.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Returns information about one model version, including its species,
 age and height definitions, required inputs and usage limits.
 Does not calculate predictions.

@@ -2,6 +2,7 @@
 
 ## New features
 
+- Marked `vol()`, `si()`, `hd()` and their public registry/discovery helpers as experimental with lifecycle documentation badges. Individual model functions and runtime behavior are unchanged.
 - Added `si()` for conventional non-climate site-index/height-age dispatch with explicit input age clocks, native SI-definition provenance, reproducible model IDs, conservative applicability checks and candidate diagnostics. No generic age/SI conversion or specialized-family selection is performed.
 - Added `find_si_models()` and `get_si_model_info()` for operation-aware SI discovery and scientific metadata inspection, including missing inputs, conditional requirements, incompatible near-misses and unresolved evidence. Discovery itself does not execute/select models or validate row-level eligibility.
 - Added `si_huang2026()`, the Huang et al. (2026) non-climate and climate-sensitive height-age and site-index models for eight Alberta tree species, with explicit species-specific climate averages and 1961-1990 normals for the climate variant.

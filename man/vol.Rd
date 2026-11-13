@@ -41,6 +41,8 @@ with one element per tree. Each element is a tibble of candidate model outputs
 (\code{vol_total}, \code{vol_merchantable}, and optionally \code{model_id}).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{vol()} is the main convenience wrapper for estimating total and
 merchantable stem volume from diameter and height. It automatically
 selects and runs one (or more) of the volume models implemented in CanadaForestAllometry,

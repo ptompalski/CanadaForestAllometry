@@ -35,13 +35,14 @@ coefficients are not stored in a parameter table.}
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Returns a registry (metadata table) of the DBH–height (\verb{hd_*()}) models
 available in CanadaForestAllometry, one row per model variant. Use it with
 \code{\link[=get_hd_model_info]{get_hd_model_info()}} and \code{\link[=find_hd_models]{find_hd_models()}} to discover which model suits
 your data, then call the corresponding \verb{hd_*()} function directly, or let
 \code{\link[=hd]{hd()}} select a model automatically (using \code{rank}).
-}
-\details{
+
 All models predict total tree height (m) from DBH (cm) at the population
 level (random effects set to zero for mixed-effects sources).
 }

@@ -92,6 +92,8 @@ the model can be used for your observations.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Lists models covering the requested species and jurisdictions without
 calculating predictions or selecting a model. Models that do not match the
 requested age, height or stand definitions remain in the results with an

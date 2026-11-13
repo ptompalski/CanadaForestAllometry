@@ -26,6 +26,8 @@ The matching rows of \code{hd_model_registry()} with species coverage
 (logical). Usable models are listed first.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Filters \code{\link[=hd_model_registry]{hd_model_registry()}} by jurisdiction and species, and reports which
 required predictors each candidate model needs that you do not have. Models
 with missing predictors are kept (as near-misses) so you can see what extra

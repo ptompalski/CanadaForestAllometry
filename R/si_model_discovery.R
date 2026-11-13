@@ -1,5 +1,8 @@
 #' Look up a site-index model and its required inputs
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Returns information about one model version, including its species,
 #' age and height definitions, required inputs and usage limits.
 #' Does not calculate predictions.
@@ -53,6 +56,9 @@ get_si_model_info <- function(model_id) {
 }
 
 #' Find site-index models and check their input requirements
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' Lists models covering the requested species and jurisdictions without
 #' calculating predictions or selecting a model. Models that do not match the

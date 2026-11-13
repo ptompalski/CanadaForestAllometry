@@ -11,6 +11,8 @@ A tibble with one row per site-index model variant and metadata
 fields used for model selection.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Lists the available site-index models, their species and geographic
 coverage, age and height definitions, and required inputs.
 Used by \code{\link[=find_si_models]{find_si_models()}}, \code{\link[=get_si_model_info]{get_si_model_info()}} and \code{\link[=si]{si()}}.

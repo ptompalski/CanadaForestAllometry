@@ -1,5 +1,8 @@
 #' Predict tree height: choose best available DBH–height model or run all candidates
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `hd()` is a convenience wrapper that predicts total tree height (m) from DBH
 #' by selecting, per tree, one (or more) of the DBH–height (`hd_*()`) models
 #' listed in [hd_model_registry()]. It is the DBH–height counterpart of

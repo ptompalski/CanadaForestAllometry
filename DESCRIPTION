@@ -47,6 +47,7 @@ Imports:
     glue
 Roxygen: list(markdown = TRUE)
 Suggests: 
+    lifecycle,
     quarto,
     ggplot2,
     patchwork,

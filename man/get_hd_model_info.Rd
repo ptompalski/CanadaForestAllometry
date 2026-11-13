@@ -15,6 +15,8 @@ unwrapped), its \code{species} coverage, and \code{predictors}, a tibble with co
 \code{arg}, \code{level}, \code{units}, \code{required}, \code{definition} and \code{source_locator}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Returns the registry metadata for one \verb{hd_*()} model variant together with
 its predictor table (argument, level, units, whether required, and the
 source's definition of the predictor).

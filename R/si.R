@@ -1,5 +1,8 @@
 #' Estimate site index or height with automatic model selection
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Estimates site index from age and height, or height from age and site index.
 #' Selects a suitable non-climate age-height model for each observation using
 #' species, jurisdiction, stand type and age type. Does not convert between

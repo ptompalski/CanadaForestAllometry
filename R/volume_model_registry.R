@@ -1,5 +1,8 @@
 #' Volume model registry
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Returns a registry (metadata table) describing tree volume models available in CanadaForestAllometry.
 #' The registry is used by wrapper functions to (1) discover models, (2) select the
 #' best applicable model for a given tree, and (3) select the correct model function.

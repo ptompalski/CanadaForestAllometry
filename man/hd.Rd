@@ -59,6 +59,8 @@ outputs of every successful candidate model (\code{height}, and optionally
 \code{model_id}), ordered from most to least preferred.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{hd()} is a convenience wrapper that predicts total tree height (m) from DBH
 by selecting, per tree, one (or more) of the DBH–height (\verb{hd_*()}) models
 listed in \code{\link[=hd_model_registry]{hd_model_registry()}}. It is the DBH–height counterpart of

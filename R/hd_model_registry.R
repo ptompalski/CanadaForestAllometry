@@ -735,6 +735,9 @@
 
 #' DBH–height model registry
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Returns a registry (metadata table) of the DBH–height (`hd_*()`) models
 #' available in CanadaForestAllometry, one row per model variant. Use it with
 #' [get_hd_model_info()] and [find_hd_models()] to discover which model suits
@@ -841,6 +844,9 @@ hd_model_registry_species <- function(reg = hd_model_registry()) {
 
 #' Get information about a DBH–height model
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Returns the registry metadata for one `hd_*()` model variant together with
 #' its predictor table (argument, level, units, whether required, and the
 #' source's definition of the predictor).
@@ -880,6 +886,9 @@ get_hd_model_info <- function(model_id) {
 }
 
 #' Find DBH–height models usable with your data
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' Filters [hd_model_registry()] by jurisdiction and species, and reports which
 #' required predictors each candidate model needs that you do not have. Models
